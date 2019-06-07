@@ -1,0 +1,21 @@
+
+Adding classes to database
+
+STEP1:
+Create classes in Models folder
+
+STEP2: 
+Create references for newly created classes
+Models=>ApplicationDbContext=> public DbSet<Class Name> Table name { get; set; }
+
+STEP3:
+Create a migration in Package Manager Console with the following command
+add-migration <MigrationName>
+
+STEP4: 
+Submit the changes to the database with the following command
+update-database.
+
+Note - To see the database and its content => Show all files (Above solution name).
+A file will appear in App_Data folder (black one)
+Click on that thing and the database will pop up in top left corner of the screen mf

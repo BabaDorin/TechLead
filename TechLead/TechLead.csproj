@@ -177,11 +177,24 @@
     <Compile Include="Migrations\201906061342126_Migration.Designer.cs">
       <DependentUpon>201906061342126_Migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906071813581_coreClasses.cs" />
+    <Compile Include="Migrations\201906071813581_coreClasses.Designer.cs">
+      <DependentUpon>201906071813581_coreClasses.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906071826393_coreClasses1.cs" />
+    <Compile Include="Migrations\201906071826393_coreClasses1.Designer.cs">
+      <DependentUpon>201906071826393_coreClasses1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906071830223_coreClasses2.cs" />
+    <Compile Include="Migrations\201906071830223_coreClasses2.Designer.cs">
+      <DependentUpon>201906071830223_coreClasses2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Domain.cs" />
     <Compile Include="Models\Exercise.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -208,6 +221,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include=".Tutorials\Adding classes to db.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -262,6 +276,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201906061342126_Migration.resx">
       <DependentUpon>201906061342126_Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906071813581_coreClasses.resx">
+      <DependentUpon>201906071813581_coreClasses.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906071826393_coreClasses1.resx">
+      <DependentUpon>201906071826393_coreClasses1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906071830223_coreClasses2.resx">
+      <DependentUpon>201906071830223_coreClasses2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

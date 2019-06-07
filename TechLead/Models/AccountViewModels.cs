@@ -100,6 +100,11 @@ namespace TechLead.Models
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
+
+        //Add RecievedPoints property. (Recieved points from solving exercises)
+        private int recievedPoints = 0;
+        public int RecievedPonts { get { return recievedPoints; } set { recievedPoints = value; } }
+
     }
 
     public class ForgotPasswordViewModel
