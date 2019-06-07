@@ -1,0 +1,5 @@
+
+Commit All and Push issue
+
+1) Permission denies, can't acces TechLead-34332990032.mdf
+Solution => Server explorer => RClick on server name => Deatach database.
