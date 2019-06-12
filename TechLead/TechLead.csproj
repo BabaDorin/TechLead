@@ -189,6 +189,10 @@
     <Compile Include="Migrations\201906071830223_coreClasses2.Designer.cs">
       <DependentUpon>201906071830223_coreClasses2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906121159229_PopulateDomainTable.cs" />
+    <Compile Include="Migrations\201906121159229_PopulateDomainTable.Designer.cs">
+      <DependentUpon>201906121159229_PopulateDomainTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -200,6 +204,7 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".Tutorials\Adding migrations.txt" />
     <Content Include=".Tutorials\Push to github issues.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -286,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906071830223_coreClasses2.resx">
       <DependentUpon>201906071830223_coreClasses2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906121159229_PopulateDomainTable.resx">
+      <DependentUpon>201906121159229_PopulateDomainTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

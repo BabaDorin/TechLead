@@ -47,8 +47,8 @@ namespace TechLead
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            //   clientId: "",
+            //   clientSecret: "");
 
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
@@ -58,11 +58,11 @@ namespace TechLead
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "664015820152-oes41a5j9j4269eevj3ujvmgqg49cpqr.apps.googleusercontent.com",
+                ClientSecret = "t8ZOG73tNaUgmGBK4wdifiOb"
+            });
         }
     }
 }

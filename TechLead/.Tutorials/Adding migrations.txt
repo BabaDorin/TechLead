@@ -1,0 +1,17 @@
+
+Adding migratios to the database
+
+NuGet manager => type add-migration <migration name>
+
+A migration will be automatically created
+
+then, there will be the UP and Down methds. 
+
+The UP method is for adding data, modification etc.
+the Down method is for canceling data that was change within Up method.
+
+To add some inregistrations to the db, use in Up method
+Sql("insert into <table name> (field names) values (values), (values2) ....");
+
+and then do not forget to write the opposite of this in the down method, like
+Sql("delete from <table name> where filed = (values1)").... 
