@@ -193,6 +193,14 @@
     <Compile Include="Migrations\201906121159229_PopulateDomainTable.Designer.cs">
       <DependentUpon>201906121159229_PopulateDomainTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906130931171_add-migration addRole.cs" />
+    <Compile Include="Migrations\201906130931171_add-migration addRole.Designer.cs">
+      <DependentUpon>201906130931171_add-migration addRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906130935200_SetTheAdministrator.cs" />
+    <Compile Include="Migrations\201906130935200_SetTheAdministrator.Designer.cs">
+      <DependentUpon>201906130935200_SetTheAdministrator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -294,6 +302,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906121159229_PopulateDomainTable.resx">
       <DependentUpon>201906121159229_PopulateDomainTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906130931171_add-migration addRole.resx">
+      <DependentUpon>201906130931171_add-migration addRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906130935200_SetTheAdministrator.resx">
+      <DependentUpon>201906130935200_SetTheAdministrator.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

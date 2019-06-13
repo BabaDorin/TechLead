@@ -326,3 +326,5 @@ C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.csproj.Copy
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.dll
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.pdb
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.PopulateDomainTable.resources
+C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.addmigrationaddRole.resources
+C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.SetTheAdministrator.resources
