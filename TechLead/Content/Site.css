@@ -22,3 +22,72 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/*  Bootstrap overrides  */
+
+html{
+    height:100%;
+    margin:0;
+    padding:0;
+}
+
+.navbar-inverse {
+    background-color: #333332;
+    border-color: #333332;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.jumbotron {
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: center;
+    color: none;
+    margin-bottom:0;
+    padding:8%;
+    padding-left:15%;
+    padding-right:15%;
+    background-size: cover;
+    background-image: url(https://mdbootstrap.com/img/Photos/Others/forest2.jpg);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    /* background-color: #fff; */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+.Content {
+    width: auto;
+    align-content: center;
+    padding-right: 16%;
+    padding-left: 16%;
+    text-align: center;
+    min-height: 80%;
+    position: relative;
+    background-color: #333332;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: #e2e8f6;
+    padding-top: 3%;
+}
+.footer {
+    background-color: white;
+    padding-bottom: 1%;
+    padding-top: 1%;
+    /* margin-top: -6%; */
+    text-align: center;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #101010;
+    padding-top: 20px;
+    padding-bottom: 5px;
+}

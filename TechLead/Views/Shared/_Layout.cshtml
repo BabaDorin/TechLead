@@ -17,7 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("TechLead", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -29,9 +29,30 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <div class="text-white text-center rgba-stylish-strong py-5 px-4">
+            <div class="py-5">
+
+                <!-- Content -->
+                <h5 class="h5 orange-text"><i class="fas fa-camera-retro"></i> Photography</h5>
+                <h2 class="card-title h2 my-4 py-2">Jumbotron with image overlay</h2>
+                <p class="mb-4 pb-2 px-md-5 mx-md-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur obcaecati vero 
+                aliquid libero doloribus ad, unde tempora maiores, ullam, modi qui quidem minima debitis perferendis vitae 
+                cumque et quo impedit.</p>
+
+            </div>
+        </div>
+
+
+    </div>
+    <!-- Jumbotron -->
+
+    <div class="Content">
         @RenderBody()
-        <hr />
+    </div>
+    <div class="footer">
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
