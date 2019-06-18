@@ -44,12 +44,19 @@ html{
     background-position-x: center;
     color: none;
     margin-bottom:0;
-    padding:8%;
+    padding:6%;
     padding-left:15%;
     padding-right:15%;
     background-size: cover;
     background-image: url(https://mdbootstrap.com/img/Photos/Others/forest2.jpg);
 }
+
+    .jumbotron h1 {
+        font: 70px 'Arial Narrow', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: -4px;
+        text-align:center;
+    }
 
 body {
     margin: 0;
@@ -77,6 +84,7 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #e2e8f6;
     padding-top: 3%;
+    padding-bottom:5%;
 }
 .footer {
     background-color: white;
@@ -91,3 +99,30 @@ body {
     padding-top: 20px;
     padding-bottom: 5px;
 }
+
+.option {
+    border-radius: 8%;
+    
+    color: azure;
+    background-color: #333332;
+    
+    height: 16pc;
+   /* width: 16pc; */
+    padding: 10%;
+    /* align-items: center; */
+    -webkit-box-align: center;
+}
+
+.option {
+    transition: all .2s ease-in-out;
+}
+
+    .option:hover {
+        position:relative;
+        z-index:1;
+        transform: scale(1.1);
+        background-color: azure;
+        color: #333332;
+        border-bottom: double;
+        border-color: aliceblue;
+    }
