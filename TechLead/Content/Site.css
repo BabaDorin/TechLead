@@ -23,7 +23,13 @@ textarea {
     max-width: 280px;
 }
 
-/*  Bootstrap overrides  */
+
+
+
+/*  -----------------------------------Bootstrap overrides-----------------------------------  */
+
+
+
 
 html{
     height:100%;
@@ -32,31 +38,37 @@ html{
 }
 
 .navbar-inverse {
-    background-color: #333332;
-    border-color: #333332;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: white;
+
+    /* Gradient */
+    background: #B2FEFA;
+    background: -webkit-linear-gradient(to left, #636363, #3a3a3a);
+    background: linear-gradient(to left, #636363, #3a3a3a);
+    background: -moz-linear-gradient(to left, #636363, #3a3a3a);
+    background: -o-linear-gradient(to left, #636363, #3a3a3a);
+    background: -webkit-gradient(to left, #636363, #3a3a3a);
+    border:none;
 }
 
 .jumbotron {
-    background-attachment: fixed;
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: center;
-    color: none;
-    margin-bottom:0;
-    padding:6%;
-    padding-left:15%;
-    padding-right:15%;
+    margin-bottom: 0;
+    padding: 6%;
+    padding-left: 15%;
+    padding-right: 15%;
     background-size: cover;
-    background-image: url(https://mdbootstrap.com/img/Photos/Others/forest2.jpg);
+    background-image: url(http://hdwpro.com/wp-content/uploads/2018/01/blur-wallpaper-blue-1229x768.jpg);
 }
 
-    .jumbotron h1 {
-        font: 70px 'Arial Narrow', sans-serif;
-        text-transform: uppercase;
-        letter-spacing: -4px;
-        text-align:center;
-    }
+.jumbotron h1 {
+    font: 70px 'Arial Narrow', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -4px;
+    text-align:center;
+}
 
 body {
     margin: 0;
@@ -66,7 +78,6 @@ body {
     font-size: 14px;
     line-height: 1.42857143;
     color: #333;
-    /* background-color: #fff; */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -75,22 +86,25 @@ body {
 .Content {
     width: auto;
     align-content: center;
-    padding-right: 16%;
-    padding-left: 16%;
+    padding: 3% 16% 5% 16%;
     text-align: center;
     min-height: 80%;
     position: relative;
-    background-color: #333332;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #e2e8f6;
-    padding-top: 3%;
-    padding-bottom:5%;
+
+    /* Gradient */
+    background: #B2FEFA;
+    background: -webkit-linear-gradient(to left, #0ED2F7, #B2FEFA);
+    background: linear-gradient(to left, #21d9fb, #0061a5);
+    background: -moz-linear-gradient(to left, #21d9fb, #0061a5);
+    background: -o-linear-gradient(to left, #21d9fb, #0061a5);
+    background: -webkit-gradient(to left, #21d9fb, #0061a5);
 }
 .footer {
     background-color: white;
     padding-bottom: 1%;
     padding-top: 1%;
-    /* margin-top: -6%; */
     text-align: center;
 }
 
@@ -102,27 +116,23 @@ body {
 
 .option {
     border-radius: 8%;
-    
-    color: azure;
-    background-color: #333332;
-    
+    color: white;
     height: 16pc;
-   /* width: 16pc; */
     padding: 10%;
-    /* align-items: center; */
     -webkit-box-align: center;
+    -moz-box-align:center;
 }
 
 .option {
     transition: all .2s ease-in-out;
 }
 
-    .option:hover {
-        position:relative;
-        z-index:1;
-        transform: scale(1.1);
-        background-color: azure;
-        color: #333332;
-        border-bottom: double;
-        border-color: aliceblue;
-    }
+.option:hover {
+    position:relative;
+    z-index:1;
+    transform: scale(1.1);
+    background-color: azure;
+    color: #333332;
+    border-bottom: double;
+    border-color: aliceblue;
+}
