@@ -15,5 +15,6 @@ namespace TechLead.Models
             // Add custom user claims here
             return userIdentity;
         }
+            public string Username { get; set; }
     }
 }

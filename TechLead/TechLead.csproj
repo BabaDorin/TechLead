@@ -204,6 +204,10 @@
     <Compile Include="Migrations\201906130935200_SetTheAdministrator.Designer.cs">
       <DependentUpon>201906130935200_SetTheAdministrator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906232042245_AddingUsername.cs" />
+    <Compile Include="Migrations\201906232042245_AddingUsername.Designer.cs">
+      <DependentUpon>201906232042245_AddingUsername.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -314,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906130935200_SetTheAdministrator.resx">
       <DependentUpon>201906130935200_SetTheAdministrator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906232042245_AddingUsername.resx">
+      <DependentUpon>201906232042245_AddingUsername.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

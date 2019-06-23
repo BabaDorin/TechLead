@@ -441,3 +441,4 @@ C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.csproj
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.csproj.CopyComplete
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.dll
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.pdb
+C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingUsername.resources

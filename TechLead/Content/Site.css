@@ -87,7 +87,6 @@ body {
     width: auto;
     align-content: center;
     padding: 3% 16% 5% 16%;
-    text-align: center;
     min-height: 80%;
     position: relative;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -119,6 +118,7 @@ body {
     color: white;
     height: 16pc;
     padding: 10%;
+    text-align:center;
     -webkit-box-align: center;
     -moz-box-align:center;
 }
