@@ -48,10 +48,6 @@ namespace TechLead.Models
 
     public class LoginViewModel
     {
-        [Required]
-        [Display(Name = "Username")]
-        [StringLength(100, ErrorMessage = "The username should be at least 5 characters long", MinimumLength = 5)]
-        public string Username { get; set; }
 
         [Required]
         [Display(Name = "Email")]
@@ -73,7 +69,7 @@ namespace TechLead.Models
         [Required]
         [Display(Name ="Username")]
         [StringLength(100, ErrorMessage = "The username should be at least 5 characters long", MinimumLength =5)]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [EmailAddress]

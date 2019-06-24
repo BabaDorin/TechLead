@@ -208,6 +208,26 @@
     <Compile Include="Migrations\201906232042245_AddingUsername.Designer.cs">
       <DependentUpon>201906232042245_AddingUsername.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906232155197_sd.cs" />
+    <Compile Include="Migrations\201906232155197_sd.Designer.cs">
+      <DependentUpon>201906232155197_sd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906232206092_username.cs" />
+    <Compile Include="Migrations\201906232206092_username.Designer.cs">
+      <DependentUpon>201906232206092_username.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906241815549_aa.cs" />
+    <Compile Include="Migrations\201906241815549_aa.Designer.cs">
+      <DependentUpon>201906241815549_aa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906241834286_username1.cs" />
+    <Compile Include="Migrations\201906241834286_username1.Designer.cs">
+      <DependentUpon>201906241834286_username1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906241839276_CleaningTheDB.cs" />
+    <Compile Include="Migrations\201906241839276_CleaningTheDB.Designer.cs">
+      <DependentUpon>201906241839276_CleaningTheDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -221,6 +241,7 @@
   <ItemGroup>
     <Content Include=".Tutorials\Adding migrations.txt" />
     <Content Include=".Tutorials\Push to github issues.txt" />
+    <Content Include="0To Do List\ToDo list.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -321,6 +342,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906232042245_AddingUsername.resx">
       <DependentUpon>201906232042245_AddingUsername.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906232155197_sd.resx">
+      <DependentUpon>201906232155197_sd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906232206092_username.resx">
+      <DependentUpon>201906232206092_username.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906241815549_aa.resx">
+      <DependentUpon>201906241815549_aa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906241834286_username1.resx">
+      <DependentUpon>201906241834286_username1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906241839276_CleaningTheDB.resx">
+      <DependentUpon>201906241839276_CleaningTheDB.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
