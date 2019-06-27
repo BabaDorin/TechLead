@@ -87,7 +87,7 @@ body {
     width: auto;
     align-content: center;
     padding: 3% 16% 5% 16%;
-    min-height: 80%;
+    min-height: 96%;
     position: relative;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #e2e8f6;
@@ -101,9 +101,10 @@ body {
     background: -webkit-gradient(to left, #21d9fb, #0061a5);
 }
 .footer {
-    background-color: white;
-    padding-bottom: 1%;
-    padding-top: 1%;
+    background-color: #333;
+    color: white;
+    padding-bottom: 0.8%;
+    padding-top: 0.8%;
     text-align: center;
 }
 
@@ -118,6 +119,7 @@ body {
     color: white;
     height: 16pc;
     padding: 10%;
+    margin-top:4%;
     text-align:center;
     -webkit-box-align: center;
     -moz-box-align:center;
@@ -135,4 +137,25 @@ body {
     color: #333332;
     border-bottom: double;
     border-color: aliceblue;
+}
+
+.Pre-info-Container {
+    background-color: white;
+    color: #21d9fb;
+    padding:1%;
+    text-align:center;
+}
+
+.problem{
+    padding:1%;
+    background-color:white;
+    border-bottom-color:gray;
+    border-bottom-style:groove;
+    border-radius:5px;
+    color:darkcyan;
+}
+.problem .points{
+    text-align:right;
+    border-color:black;
+    border-radius:10%;
 }

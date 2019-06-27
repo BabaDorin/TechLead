@@ -2,35 +2,58 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row">
+<!-- Jumbotron -->
+<div class="jumbotron">
+    <div class="text-white text-center rgba-stylish-strong">
+        <!-- Content -->
+        <h1>TechLead</h1>
+        <h2>Learn. Code. Get better. </h2>
+    </div>
+</div>
+<!-- Jumbotron -->
 
-    <a href="@Url.Action("FirstBranch", "Branch1")" class="elements">
-        <div class="col-md-4">
-            <div class="option">
-                <h2>Getting started</h2>
-                <p>
-                    ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                </p>
+<div class="Content">
+
+    <div class="Pre-info-Container">
+        <h3>
+            Some info goes here
+        </h3>
+    </div>
+
+    <div class="row">
+
+        <a href="@Url.Action("FirstBranch", "Branch1")" class="elements">
+            <div class="col-md-4">
+                <div class="option">
+                    <h2>Beginner</h2>
+                    <p>
+                        Easy problems to solve for beginners. It's never too late to start learning something new!
+                    </p>
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
 
-    <a href="@Url.Action("Secondbranch", "Branch2")" class="elements">
-        <div class="col-md-4">
-            <div class="option">
-                <h2>Get more libraries</h2>
-                <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <a href="@Url.Action("Secondbranch", "Branch2")" class="elements">
+            <div class="col-md-4">
+                <div class="option">
+                    <h2>Intermediate</h2>
+                    <p>
+                        If you already have some background in problem-solving, then this collection of problems is for you. Enjoy!
+                    </p>
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
 
-    <a href="@Url.Action("Thirdbranch", "Branch3")" class="elements">
-        <div class="col-md-4">
-            <div class="option">
-                <h2>Web Hosting</h2>
-                <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <a href="@Url.Action("Thirdbranch", "Branch3")" class="elements">
+            <div class="col-md-4">
+                <div class="option">
+                    <h2>Advanced</h2>
+                    <p>
+                        I see we have some pro's out here. Glad to meet you on this platform! Here are some problems for you!
+                    </p>
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
 
+    </div>
 </div>
