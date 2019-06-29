@@ -447,3 +447,4 @@ C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.aa.resources
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.username1.resources
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.CleaningTheDB.resources
+C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingFieldsToExerciseModel.resources
