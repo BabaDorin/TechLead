@@ -13,7 +13,7 @@ namespace TechLead.Models
         public int SubmissionsAbove10Points { get; set; }
         public int SubmissionsUnder10Points { get; set; }
         public ApplicationUser Author { get; set; } 
-        public Domain Domain { get; set; }
+        public IEnumerable<Domain> Domain { get; set; }
         public string Condition { get; set; }
         public string Imput1 { get; set; }
         public string Imput2 { get; set; }

@@ -88,7 +88,6 @@ body {
     align-content: center;
     padding: 3% 16% 5% 16%;
     min-height: 96%;
-    position: relative;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #e2e8f6;
 
@@ -110,8 +109,6 @@ body {
 
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
     border-color: #101010;
-    padding-top: 20px;
-    padding-bottom: 5px;
 }
 
 .option {
@@ -159,3 +156,26 @@ body {
     border-color:black;
     border-radius:10%;
 }
+
+
+
+/*
+    -------------------------- Create / Problem --------------------------
+*/
+
+.Content .CreateProblem {
+    align-items: center;
+    background-color: aliceblue;
+    color: #333;
+    padding: 8%;
+    margin-top: 170px;
+    font-size: large;
+}
+
+.Content .CreateProblem span{
+    font-size:25px;
+}
+
+
+
+

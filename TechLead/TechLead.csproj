@@ -173,6 +173,7 @@
     <Compile Include="Controllers\AdvancedController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProblemController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -231,6 +232,10 @@
     <Compile Include="Migrations\201906291100391_AddingFieldsToExerciseModel.cs" />
     <Compile Include="Migrations\201906291100391_AddingFieldsToExerciseModel.Designer.cs">
       <DependentUpon>201906291100391_AddingFieldsToExerciseModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907031310020_sync.cs" />
+    <Compile Include="Migrations\201907031310020_sync.Designer.cs">
+      <DependentUpon>201907031310020_sync.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -305,6 +310,7 @@
     <Content Include="Views\Advanced\Advancedbranch.cshtml" />
     <Content Include="Views\Beginner\Beginnerbranch.cshtml" />
     <Content Include="Views\Intermediate\Intermediatebranch.cshtml" />
+    <Content Include="Views\Problem\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -364,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906291100391_AddingFieldsToExerciseModel.resx">
       <DependentUpon>201906291100391_AddingFieldsToExerciseModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907031310020_sync.resx">
+      <DependentUpon>201907031310020_sync.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

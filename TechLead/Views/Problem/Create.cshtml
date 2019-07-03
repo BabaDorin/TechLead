@@ -1,0 +1,53 @@
+﻿@model TechLead.Models.Exercise
+
+@{
+    ViewBag.Title = "Create";
+}
+<div class="Content">
+
+    <div class="CreateProblem">
+        <h2>Create an exercise</h2>
+        <br />
+        <hr />
+        <span>FrontEnd</span>
+        <br />
+        <p>Write down the information that will be displayed to the user</p>
+        <br /><br />
+
+        <form>
+
+            <div class="form-group">
+                @Html.LabelFor(ex => ex.Name, "Title")
+                @Html.TextBoxFor(ex => ex.Name, new { @class = "form-control"})
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(ex => ex.Domain, "Difficulty");
+                @Html.DropDownListFor(ex => ex.Domain, new SelectList(Model.Domain, "Id", "Name"))
+                @*<label for="exampleFormControlSelect1">Difficulty</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                </select>*@
+            </div>
+
+            <div class="form-group">
+                <label for="exampleFormControlSelect2">Example multiple select</label>
+                <select multiple class="form-control" id="exampleFormControlSelect2">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Example textarea</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </form>
+    </div>
+
+</div>
+
