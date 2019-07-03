@@ -8,7 +8,7 @@ namespace TechLead.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Domains",
+                "dbo.Difficulty",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -26,7 +26,7 @@ namespace TechLead.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.Author_Id)
-                .ForeignKey("dbo.Domains", t => t.Domain_Id)
+                .ForeignKey("dbo.Difficulty", t => t.Domain_Id)
                 .Index(t => t.Author_Id)
                 .Index(t => t.Domain_Id);
             
@@ -34,12 +34,12 @@ namespace TechLead.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.Exercises", "Domain_Id", "dbo.Domains");
+            DropForeignKey("dbo.Exercises", "Domain_Id", "dbo.Difficulty");
             DropForeignKey("dbo.Exercises", "Author_Id", "dbo.AspNetUsers");
             DropIndex("dbo.Exercises", new[] { "Domain_Id" });
             DropIndex("dbo.Exercises", new[] { "Author_Id" });
             DropTable("dbo.Exercises");
-            DropTable("dbo.Domains");
+            DropTable("dbo.Difficulty");
         }
     }
 }

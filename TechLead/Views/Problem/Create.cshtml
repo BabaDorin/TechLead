@@ -14,39 +14,50 @@
         <p>Write down the information that will be displayed to the user</p>
         <br /><br />
 
-        <form>
+              <form>
 
-            <div class="form-group">
-                @Html.LabelFor(ex => ex.Name, "Title")
-                @Html.TextBoxFor(ex => ex.Name, new { @class = "form-control"})
-            </div>
+                  <div class="form-group">
+                      @Html.LabelFor(ex => ex.Name, "Title")
+                      @Html.TextBoxFor(ex => ex.Name, new { @class = "form-control" })
+                  </div>
+                  <br />
+                  <div class="form-group">
+                      @Html.LabelFor(ex => ex.Difficulty, "Difficulty\n")
+                      @Html.DropDownListFor(ex => ex.Difficulty, new SelectList(Model.Difficulty, "Id", "Name"), new { @class = "form-control", id = "exampleFormControlTextarea1" })
+                  </div>
+                  <br />
+                  <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Condition</label>
+                      <textarea class ="form-control" id="notes" name="notes" rows="6" value="" style="width:800px; max-width: none;" class="form-control col-sm-12"></textarea>
+                      @Model.Condition
+                  </div>
+                  <br />
 
-            <div class="form-group">
-                @Html.LabelFor(ex => ex.Domain, "Difficulty");
-                @Html.DropDownListFor(ex => ex.Domain, new SelectList(Model.Domain, "Id", "Name"))
-                @*<label for="exampleFormControlSelect1">Difficulty</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                    <option>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                </select>*@
-            </div>
+                  <p>
+                      *By default there are 5 test cases to display to the user. If you have less than 5 test-cases to display, let the rest blank.
+                  </p>
+                  <br />
 
-            <div class="form-group">
-                <label for="exampleFormControlSelect2">Example multiple select</label>
-                <select multiple class="form-control" id="exampleFormControlSelect2">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Example textarea</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-        </form>
+              </form>
+
+             <div class="row">
+                 Test case 1:
+
+                 <div class="form-group">
+                     <label for="exampleFormControlTextarea1">Imput</label>
+                     textarea class="form-control" id="notes" name="notes" rows="6" value="" style="width:150px; max-width: none;" class="form-control"></textarea>
+                     @Model.Condition
+                 </div>
+
+
+                 <div class="form-group">
+                     <label for="exampleFormControlTextarea1">OutPut</label>
+                     <textarea class="form-control" id="notes" name="notes" rows="6" value="" style="width:150px; max-width: none;" class="form-control"></textarea>
+                     @Model.Condition
+                 </div>
+             </div>
+                  
+                
     </div>
 
 </div>

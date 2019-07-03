@@ -14,12 +14,16 @@ namespace TechLead.Controllers
         {
             _context = new ApplicationDbContext();     
         }
+
+        //[Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Teacher")]
         // GET: Problem
+
         public ActionResult Create()
         {
             var viewModel = new Exercise
             {
-                Domain = _context.Domains.ToList()
+                Difficulty = _context.Difficulty.ToList()
             };
 
             return View(viewModel);

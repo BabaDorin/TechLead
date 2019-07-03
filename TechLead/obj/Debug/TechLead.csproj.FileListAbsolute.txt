@@ -448,3 +448,7 @@ C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.username1.resources
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.CleaningTheDB.resources
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingFieldsToExerciseModel.resources
+C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.sync.resources
+C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.ChangeDomainTableIntoDifficultyTable.resources
+C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.InsertingDifficulties.resources
+C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.InsertingNewDifficulties.resources

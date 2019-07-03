@@ -7,7 +7,7 @@ namespace TechLead.Migrations
     {
         public override void Up()
         {
-            DropForeignKey("dbo.Exercises", "Domain_Id", "dbo.Domains");
+            DropForeignKey("dbo.Exercises", "Domain_Id", "dbo.Difficulty");
             DropIndex("dbo.Exercises", new[] { "Domain_Id" });
             DropColumn("dbo.Exercises", "Domain_Id");
         }
@@ -16,7 +16,7 @@ namespace TechLead.Migrations
         {
             AddColumn("dbo.Exercises", "Domain_Id", c => c.Int());
             CreateIndex("dbo.Exercises", "Domain_Id");
-            AddForeignKey("dbo.Exercises", "Domain_Id", "dbo.Domains", "Id");
+            AddForeignKey("dbo.Exercises", "Domain_Id", "dbo.Difficulty", "Id");
         }
     }
 }

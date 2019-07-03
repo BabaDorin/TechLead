@@ -237,10 +237,22 @@
     <Compile Include="Migrations\201907031310020_sync.Designer.cs">
       <DependentUpon>201907031310020_sync.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907031316055_ChangeDomainTableIntoDifficultyTable.cs" />
+    <Compile Include="Migrations\201907031316055_ChangeDomainTableIntoDifficultyTable.Designer.cs">
+      <DependentUpon>201907031316055_ChangeDomainTableIntoDifficultyTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907031316500_InsertingDifficulties.cs" />
+    <Compile Include="Migrations\201907031316500_InsertingDifficulties.Designer.cs">
+      <DependentUpon>201907031316500_InsertingDifficulties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907031317472_InsertingNewDifficulties.cs" />
+    <Compile Include="Migrations\201907031317472_InsertingNewDifficulties.Designer.cs">
+      <DependentUpon>201907031317472_InsertingNewDifficulties.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\Domain.cs" />
+    <Compile Include="Models\Difficulty.cs" />
     <Compile Include="Models\Exercise.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -373,6 +385,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907031310020_sync.resx">
       <DependentUpon>201907031310020_sync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907031316055_ChangeDomainTableIntoDifficultyTable.resx">
+      <DependentUpon>201907031316055_ChangeDomainTableIntoDifficultyTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907031316500_InsertingDifficulties.resx">
+      <DependentUpon>201907031316500_InsertingDifficulties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907031317472_InsertingNewDifficulties.resx">
+      <DependentUpon>201907031317472_InsertingNewDifficulties.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
