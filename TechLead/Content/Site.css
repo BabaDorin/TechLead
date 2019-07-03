@@ -118,8 +118,6 @@ body {
     padding: 10%;
     margin-top:4%;
     text-align:center;
-    -webkit-box-align: center;
-    -moz-box-align:center;
 }
 
 .option {
@@ -172,10 +170,21 @@ body {
     font-size: large;
 }
 
+.CreateProblem2 {
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 8%;
+    font-size: large;
+}
+
 .Content .CreateProblem span{
     font-size:25px;
 }
 
-
+textarea {
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
 
 
