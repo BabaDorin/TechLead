@@ -14,21 +14,39 @@
         <p>Write down the information that will be displayed to the user</p>
         <br /><br />
 
-        <form>
+        @using (Html.BeginForm("Create", "Problem"))
+        {
             <div class="form-group">
                 @Html.LabelFor(ex => ex.Name, "Title")
                 @Html.TextBoxFor(ex => ex.Name, new { @class = "form-control" })
+                @Html.ValidationMessageFor(ex=>ex.Name)
             </div>
             <br />
             <div class="form-group">
                 @Html.LabelFor(ex => ex.Difficulty, "Difficulty\n")
-                @Html.DropDownListFor(ex => ex.Difficulty, new SelectList(Model.Difficulty, "Id", "Name"), new { @class = "form-control", id = "exampleFormControlTextarea1" })
+                @Html.DropDownListFor(ex => ex.Difficulty, new SelectList(Model.Difficulty, "Name", "Name"), "", new { @class = "form-control"})
+                @Html.ValidationMessageFor(ex => ex.Difficulty)
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="PointInfo">
+                    <p>*Range: 10-400. Please, set the points according to the problem's difficulty.</p>
+                    <br />
+                    <p><b>Recommended:</b></p>
+                    <p>Beginner 10-100</p>
+                    <p>Intermediate 50-200</p>
+                    <p>Advanced 150-400</p>
+                </div>
+                @Html.LabelFor(ex => ex.Points);
+                @Html.TextBoxFor(ex => ex.Points, new { @class = "form-control" })
+                @Html.ValidationMessageFor(ex => ex.Points)
             </div>
             <br />
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Condition</label>
                 <textarea id="notes" name="notes" rows="6" value="" style="width:100%; max-width: none;" class="form-control"></textarea>
                 @Model.Condition
+                @Html.ValidationMessageFor(ex => ex.Condition)
             </div>
 
             <br />
@@ -45,6 +63,7 @@
                         <label for="exampleFormControlTextarea1">Imput</label>
                         <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
                         @Model.Imput1
+                        @Html.ValidationMessageFor(ex => ex.Imput1)
                     </div>
                 </div>
 
@@ -53,6 +72,7 @@
                         <label for="exampleFormControlTextarea1">Output</label>
                         <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
                         @Model.Output1
+                        @Html.ValidationMessageFor(ex => ex.Output1)
                     </div>
                 </div>
             </div>
@@ -67,6 +87,7 @@
                         <label for="exampleFormControlTextarea1">Imput</label>
                         <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
                         @Model.Imput2
+                        @Html.ValidationMessageFor(ex => ex.Imput2)
                     </div>
                 </div>
 
@@ -75,6 +96,7 @@
                         <label for="exampleFormControlTextarea1">Output</label>
                         <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
                         @Model.Output2
+                        @Html.ValidationMessageFor(ex => ex.Output2)
                     </div>
                 </div>
             </div>
@@ -144,23 +166,248 @@
                     </div>
                 </div>
             </div>
-        </form>
+            <span>BackEnd</span>
+            <br />
+            <p>Create the test-cases that will score the points for the problem.</p>
+            <br />
+            <br />
+            <div class="row">
+                Test case 1:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput1
+                        @Html.ValidationMessageFor(ex => ex.TestImput1)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput1
+                        @Html.ValidationMessageFor(ex => ex.TestOutput1)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 2:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput2
+                        @Html.ValidationMessageFor(ex => ex.TestImput2)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput2
+                        @Html.ValidationMessageFor(ex => ex.TestOutput2)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 3:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput3
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput3
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 4:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput4
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput4
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 5:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput5
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput5
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 6:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput6
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput6
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 7:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput7
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput7
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 8:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput8
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput8
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 9:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput9
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput9
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 10:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Imput</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestImput10
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Output</label>
+                        <textarea id="notes" name="notes" rows="6" class="form-control" style="width:100%; max-width: none;"></textarea>
+                        @Model.TestOutput10
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <button type="submit" class="btn btn-primary">Save</button>
+
+        }
     </div>
     <div class="CreateProblem2">
-        <span>BackEnd</span>
-        <br />
-        <p>Create the test-cases that will score the points for the problem.</p>
+        
         <form>
-            @Html.LabelFor(ex => ex.Points);
-            @Html.TextBoxFor(ex => ex.Points, new { @class = "form-control" })
 
             @*To do:
-                0) Create a "Problem files" folder. There will be n folders, which names will be problem ids.
-                1) Find a way to write the content of a form into a file.
-                2) Write test cases (imput, output) in the folder.
-                3) Create the submit button.
-                4) Validation (Anti hack and so on)
-                *@
+        3) Create the submit button.
+        4) Validation (Anti hack and so on)
+            *@
+
+            
         </form>
     </div>
 </div>

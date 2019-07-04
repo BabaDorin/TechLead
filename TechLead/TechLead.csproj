@@ -249,6 +249,18 @@
     <Compile Include="Migrations\201907031317472_InsertingNewDifficulties.Designer.cs">
       <DependentUpon>201907031317472_InsertingNewDifficulties.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907041218409_UpdateExerciseTable.cs" />
+    <Compile Include="Migrations\201907041218409_UpdateExerciseTable.Designer.cs">
+      <DependentUpon>201907041218409_UpdateExerciseTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907041250350_AddDateTimeToExerciseModel.cs" />
+    <Compile Include="Migrations\201907041250350_AddDateTimeToExerciseModel.Designer.cs">
+      <DependentUpon>201907041250350_AddDateTimeToExerciseModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907041336185_ModifyExerciseModel.cs" />
+    <Compile Include="Migrations\201907041336185_ModifyExerciseModel.Designer.cs">
+      <DependentUpon>201907041336185_ModifyExerciseModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -394,6 +406,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907031317472_InsertingNewDifficulties.resx">
       <DependentUpon>201907031317472_InsertingNewDifficulties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907041218409_UpdateExerciseTable.resx">
+      <DependentUpon>201907041218409_UpdateExerciseTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907041250350_AddDateTimeToExerciseModel.resx">
+      <DependentUpon>201907041250350_AddDateTimeToExerciseModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907041336185_ModifyExerciseModel.resx">
+      <DependentUpon>201907041336185_ModifyExerciseModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

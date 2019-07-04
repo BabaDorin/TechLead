@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,7 +10,7 @@ namespace TechLead.Controllers
 {
     public class ProblemController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         public ProblemController()
         {
             _context = new ApplicationDbContext();     
@@ -27,6 +28,31 @@ namespace TechLead.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Create(Exercise Exercise)
+        {
+            if (!ModelState.IsValid)
+            {
+                Exercise.Difficulty = _context.Difficulty.ToList();
+                return View("Create", Exercise);
+            }
+            try
+            {
+                var authorID = User.Identity.GetUserId();
+                Exercise.Author = _context.Users.Single(u => u.Id == authorID);
+            }
+            catch (Exception)
+            {
+                Exercise.Author = null;
+            }
+            
+            Exercise.Datetime = DateTime.Now;
+
+            _context.Exercises.Add(Exercise);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

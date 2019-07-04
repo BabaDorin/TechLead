@@ -168,6 +168,7 @@ body {
     padding: 8%;
     margin-top: 170px;
     font-size: large;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .CreateProblem2 {
@@ -176,6 +177,7 @@ body {
     color: white;
     padding: 8%;
     font-size: large;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .Content .CreateProblem span{
@@ -187,4 +189,11 @@ textarea {
     overflow-x: scroll;
 }
 
+.PointInfo {
+    background-color: #f5f5f5;
+    font-size: initial;
+    padding: 4%;
+    margin-bottom: 3%;
+    border-radius: 15px;
+}
 
