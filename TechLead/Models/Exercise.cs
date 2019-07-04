@@ -10,29 +10,27 @@ namespace TechLead.Models
     {
         public int Id { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
-        [Range(10,400)]
+
         public int Points { get; set; }
 
         public int SubmissionsAbove10Points { get; set; }
-        public DateTime Datetime { get; set; }
 
         public int SubmissionsUnder10Points { get; set; }
 
         public ApplicationUser Author { get; set; }
 
-        [Required]
+
         public int DifficulyId { get; set; }
 
-        [Required]
+
         public IEnumerable<Difficulty> Difficulty { get; set; }
 
-        [Required]
+
         public string Condition { get; set; }
 
-        [Required]
+ 
         public string Imput1 { get; set; }
 
         public string Imput2 { get; set; }
@@ -43,7 +41,7 @@ namespace TechLead.Models
 
         public string Imput5 { get; set; }
 
-        [Required]
+
         public string Output1 { get; set; }
 
         public string Output2 { get; set; }
@@ -55,13 +53,12 @@ namespace TechLead.Models
         public string Output5 { get; set; }
 
         //Backend test cases------------------------------------------------
-        [Required]
+
         public string TestImput1 { get; set; }
 
-        [Required]
+
         public string TestImput2 { get; set; }
 
-        [Required]
         public string TestImput3 { get; set; }
         public string TestImput4 { get; set; }
         public string TestImput5 { get; set; }
@@ -71,13 +68,11 @@ namespace TechLead.Models
         public string TestImput9 { get; set; }
         public string TestImput10 { get; set; }
 
-        [Required]
         public string TestOutput1 { get; set; }
 
-        [Required]
         public string TestOutput2 { get; set; }
 
-        [Required]
+
         public string TestOutput3 { get; set; }
 
         public string TestOutput4 { get; set; }

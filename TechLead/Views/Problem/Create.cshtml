@@ -3,6 +3,10 @@
 @{
     ViewBag.Title = "Create";
 }
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
 <div class="Content">
 
     <div class="CreateProblem">
@@ -14,17 +18,17 @@
         <p>Write down the information that will be displayed to the user</p>
         <br /><br />
 
-        @using (Html.BeginForm("Create", "Problem"))
+        @using (Html.BeginForm("Create", "Problem", FormMethod.Post))
         {
             <div class="form-group">
                 @Html.LabelFor(ex => ex.Name, "Title")
                 @Html.TextBoxFor(ex => ex.Name, new { @class = "form-control" })
-                @Html.ValidationMessageFor(ex=>ex.Name)
+                @Html.ValidationMessageFor(ex => ex.Name)
             </div>
             <br />
             <div class="form-group">
-                @Html.LabelFor(ex => ex.Difficulty, "Difficulty\n")
-                @Html.DropDownListFor(ex => ex.Difficulty, new SelectList(Model.Difficulty, "Name", "Name"), "", new { @class = "form-control"})
+                @Html.LabelFor(ex => ex.DifficulyId, "Difficulty\n")
+                @Html.DropDownListFor(ex => ex.DifficulyId, new SelectList(Model.Difficulty, "Id", "Name"), "", new { @class = "form-control" })
                 @Html.ValidationMessageFor(ex => ex.Difficulty)
             </div>
             <br />
@@ -45,7 +49,7 @@
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Condition</label>
                 <textarea id="notes" name="notes" rows="6" value="" style="width:100%; max-width: none;" class="form-control"></textarea>
-                @Model.Condition
+                @Html.TextAreaFor(ex => ex.Condition);
                 @Html.ValidationMessageFor(ex => ex.Condition)
             </div>
 
@@ -399,15 +403,15 @@
         }
     </div>
     <div class="CreateProblem2">
-        
+
         <form>
 
             @*To do:
-        3) Create the submit button.
-        4) Validation (Anti hack and so on)
+                3) Create the submit button.
+                4) Validation (Anti hack and so on)
             *@
 
-            
+
         </form>
     </div>
 </div>

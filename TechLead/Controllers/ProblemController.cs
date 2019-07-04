@@ -5,12 +5,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TechLead.Models;
+using System.Data;
 
 namespace TechLead.Controllers
 {
     public class ProblemController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private ApplicationDbContext _context;
         public ProblemController()
         {
             _context = new ApplicationDbContext();     
@@ -33,24 +34,18 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult Create(Exercise Exercise)
         {
+            
             if (!ModelState.IsValid)
             {
                 Exercise.Difficulty = _context.Difficulty.ToList();
                 return View("Create", Exercise);
             }
-            try
-            {
-                var authorID = User.Identity.GetUserId();
-                Exercise.Author = _context.Users.Single(u => u.Id == authorID);
-            }
-            catch (Exception)
-            {
-                Exercise.Author = null;
-            }
-            
-            Exercise.Datetime = DateTime.Now;
 
-            _context.Exercises.Add(Exercise);
+            Exercise e = new Exercise();
+            e.Name = Exercise.Name;
+            e.Condition = Exercise.Condition;
+
+            _context.Exercises.Add(e);
             _context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }

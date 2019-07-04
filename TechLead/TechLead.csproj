@@ -261,6 +261,14 @@
     <Compile Include="Migrations\201907041336185_ModifyExerciseModel.Designer.cs">
       <DependentUpon>201907041336185_ModifyExerciseModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907041345409_update.cs" />
+    <Compile Include="Migrations\201907041345409_update.Designer.cs">
+      <DependentUpon>201907041345409_update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907041442517_up.cs" />
+    <Compile Include="Migrations\201907041442517_up.Designer.cs">
+      <DependentUpon>201907041442517_up.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -415,6 +423,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907041336185_ModifyExerciseModel.resx">
       <DependentUpon>201907041336185_ModifyExerciseModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907041345409_update.resx">
+      <DependentUpon>201907041345409_update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907041442517_up.resx">
+      <DependentUpon>201907041442517_up.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
