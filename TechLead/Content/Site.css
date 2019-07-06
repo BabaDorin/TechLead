@@ -90,7 +90,6 @@ body {
     min-height: 96%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #e2e8f6;
-
     /* Gradient */
     background: #B2FEFA;
     background: -webkit-linear-gradient(to left, #0ED2F7, #B2FEFA);
@@ -98,6 +97,8 @@ body {
     background: -moz-linear-gradient(to left, #21d9fb, #0061a5);
     background: -o-linear-gradient(to left, #21d9fb, #0061a5);
     background: -webkit-gradient(to left, #21d9fb, #0061a5);
+    /*Font style*/
+    font-family: 'Roboto', sans-serif;
 }
 .footer {
     background-color: #333;
@@ -180,7 +181,7 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.Content .CreateProblem span {
+.Content span {
     font-size: 40px;
 }
 

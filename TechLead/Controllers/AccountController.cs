@@ -28,6 +28,12 @@ namespace TechLead.Controllers
             SignInManager = signInManager;
         }
 
+        public ActionResult Denied()
+        {
+            return View();
+        }
+
+
         public ApplicationSignInManager SignInManager
         {
             get

@@ -10,9 +10,11 @@ namespace TechLead.Models
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage ="Please, enter a Name for your problem")]
         public string Name { get; set; }
 
-
+        [Required]
+        [Range(10, 400, ErrorMessage = "Range for the points property is 10-400. Insert a number between 10 and 400")]
         public int Points { get; set; }
 
         public int SubmissionsAbove10Points { get; set; }
@@ -21,16 +23,16 @@ namespace TechLead.Models
 
         public ApplicationUser Author { get; set; }
 
-
+        [Required(ErrorMessage ="Please, check a difficulty level for the problem")]
         public int DifficulyId { get; set; }
 
 
         public IEnumerable<Difficulty> Difficulty { get; set; }
 
-
+        [Required(ErrorMessage ="Please, enter a condition for your problem")]
         public string Condition { get; set; }
 
- 
+        [Required(ErrorMessage ="This field is required")]
         public string Imput1 { get; set; }
 
         public string Imput2 { get; set; }
@@ -41,7 +43,7 @@ namespace TechLead.Models
 
         public string Imput5 { get; set; }
 
-
+        [Required(ErrorMessage = "This field is required")]
         public string Output1 { get; set; }
 
         public string Output2 { get; set; }
@@ -53,10 +55,10 @@ namespace TechLead.Models
         public string Output5 { get; set; }
 
         //Backend test cases------------------------------------------------
-
+        [Required(ErrorMessage = "This field is required")]
         public string TestImput1 { get; set; }
 
-
+        [Required(ErrorMessage = "This field is required")]
         public string TestImput2 { get; set; }
 
         public string TestImput3 { get; set; }
@@ -68,8 +70,10 @@ namespace TechLead.Models
         public string TestImput9 { get; set; }
         public string TestImput10 { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
         public string TestOutput1 { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
         public string TestOutput2 { get; set; }
 
 

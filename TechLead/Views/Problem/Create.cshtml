@@ -8,6 +8,7 @@
 
     @using (Html.BeginForm("Create", "Problem", FormMethod.Post))
     {
+        @Html.AntiForgeryToken();
         <div class="CreateProblem">
             <h2>Create an exercise</h2>
             <br />
@@ -26,7 +27,7 @@
             <br />
             <div class="form-group">
                 @Html.LabelFor(ex => ex.DifficulyId, "Difficulty\n")
-                @Html.DropDownListFor(ex => ex.DifficulyId, new SelectList(Model.Difficulty, "Id", "Name"), "", new { @class = "form-control" })
+                @Html.DropDownListFor(ex => ex.DifficulyId, new SelectList(Model.Difficulty, "Id", "Name"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(ex => ex.Difficulty)
             </div>
             <br />
@@ -163,247 +164,244 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="CreateProblem2">
+            <span>BackEnd</span>
+            <br />
+            <p>Create the test-cases that will score the points for the problem.</p>
+            <br />
+            <br />
+            <div class="row">
+                Test case 1:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput1, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput1, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput1)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput1, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput1, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput1)
+                    </div>
+                </div>
             </div>
-            <div class="CreateProblem2">
-                <span>BackEnd</span>
-                <br />
-                <p>Create the test-cases that will score the points for the problem.</p>
-                <br />
-                <br />
-                <div class="row">
-                    Test case 1:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput1, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput1, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput1)
-                        </div>
-                    </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput1, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput1, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput1)
-                        </div>
+            <br />
+            <br />
+            <div class="row">
+                Test case 2:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput2, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput2, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput2)
                     </div>
                 </div>
 
-                <br />
-                <br />
-                <div class="row">
-                    Test case 2:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput2, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput2, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput2)
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput2, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput2, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput2)
-                        </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput2, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput2, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput2)
                     </div>
                 </div>
-
-                <br />
-                <br />
-                <div class="row">
-                    Test case 3:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput3, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput3, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput3)
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput3, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput3, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput3)
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <br />
-                <div class="row">
-                    Test case 4:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput4, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput4, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput4)
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput4, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput4, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput4)
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <br />
-                <div class="row">
-                    Test case 5:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput5, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput5, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput5)
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput5, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput5, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput5)
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <br />
-                <div class="row">
-                    Test case 6:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput6, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput6, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput6)
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput6, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput6, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput6)
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <br />
-                <div class="row">
-                    Test case 7:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput7, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput7, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput7)
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput7, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput7, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput7)
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <br />
-                <div class="row">
-                    Test case 8:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput8, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput8, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput8)
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput8, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput8, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput8)
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <br />
-                <div class="row">
-                    Test case 9:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput9, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput9, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput9)
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput9, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput9, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput9)
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <br />
-                <div class="row">
-                    Test case 10:
-                    <br />
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestImput10, "Imput")
-                            @Html.TextAreaFor(ex => ex.TestImput10, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestImput10)
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(ex => ex.TestOutput10, "Output")
-                            @Html.TextAreaFor(ex => ex.TestOutput10, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
-                            @Html.ValidationMessageFor(ex => ex.TestOutput10)
-                        </div>
-                    </div>
-                </div>
-
-                <br />
-                <button type="submit" class="btn btn-primary">Save</button>
             </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 3:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput3, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput3, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput3)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput3, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput3, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput3)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 4:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput4, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput4, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput4)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput4, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput4, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput4)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 5:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput5, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput5, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput5)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput5, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput5, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput5)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 6:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput6, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput6, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput6)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput6, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput6, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput6)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 7:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput7, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput7, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput7)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput7, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput7, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput7)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 8:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput8, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput8, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput8)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput8, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput8, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput8)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 9:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput9, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput9, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput9)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput9, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput9, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput9)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div class="row">
+                Test case 10:
+                <br />
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestImput10, "Imput")
+                        @Html.TextAreaFor(ex => ex.TestImput10, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestImput10)
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(ex => ex.TestOutput10, "Output")
+                        @Html.TextAreaFor(ex => ex.TestOutput10, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.ValidationMessageFor(ex => ex.TestOutput10)
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
     }
 </div>
 
 @*
-        To Do Next
-               Validation
-                Antihack
-                 Show the view only to Admins and Teachers
-
-
+    To Do Next
+           Validation
+            Antihack
+             Show the view only to Admins and Teachers
 *@
-<script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/index.js")" type="text/javascript"></script>
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

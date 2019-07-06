@@ -32,6 +32,8 @@ namespace TechLead.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AccessDeniedAuthorize(Roles = "SuperAdmin, Teacher")]
         public ActionResult Create(Exercise Exercise)
         {
             

@@ -273,7 +273,12 @@
     <Compile Include="Migrations\201907060805339_ClearExercisesData.Designer.cs">
       <DependentUpon>201907060805339_ClearExercisesData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907060907540_ModifyExercisesTable.cs" />
+    <Compile Include="Migrations\201907060907540_ModifyExercisesTable.Designer.cs">
+      <DependentUpon>201907060907540_ModifyExercisesTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\Difficulty.cs" />
@@ -347,6 +352,7 @@
     <Content Include="Views\Beginner\Beginnerbranch.cshtml" />
     <Content Include="Views\Intermediate\Intermediatebranch.cshtml" />
     <Content Include="Views\Problem\Create.cshtml" />
+    <Content Include="Views\Account\Denied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -436,6 +442,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907060805339_ClearExercisesData.resx">
       <DependentUpon>201907060805339_ClearExercisesData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907060907540_ModifyExercisesTable.resx">
+      <DependentUpon>201907060907540_ModifyExercisesTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
