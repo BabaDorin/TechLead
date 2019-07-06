@@ -41,11 +41,7 @@ namespace TechLead.Controllers
                 return View("Create", Exercise);
             }
 
-            Exercise e = new Exercise();
-            e.Name = Exercise.Name;
-            e.Condition = Exercise.Condition;
-
-            _context.Exercises.Add(e);
+            _context.Exercises.Add(Exercise);
             _context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }

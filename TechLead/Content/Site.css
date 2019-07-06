@@ -180,8 +180,8 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.Content .CreateProblem span{
-    font-size:25px;
+.Content .CreateProblem span {
+    font-size: 40px;
 }
 
 textarea {
@@ -197,3 +197,11 @@ textarea {
     border-radius: 15px;
 }
 
+.Content h2 {
+    text-align: center;
+}
+
+.Content button {
+    float: right;
+    width: 20%;
+}

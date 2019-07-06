@@ -269,6 +269,10 @@
     <Compile Include="Migrations\201907041442517_up.Designer.cs">
       <DependentUpon>201907041442517_up.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907060805339_ClearExercisesData.cs" />
+    <Compile Include="Migrations\201907060805339_ClearExercisesData.Designer.cs">
+      <DependentUpon>201907060805339_ClearExercisesData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -429,6 +433,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907041442517_up.resx">
       <DependentUpon>201907041442517_up.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907060805339_ClearExercisesData.resx">
+      <DependentUpon>201907060805339_ClearExercisesData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
