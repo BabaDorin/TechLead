@@ -20,6 +20,11 @@ namespace TechLead.Controllers
         //[Authorize(Roles = "Administrator")]
         //[Authorize(Roles = "Teacher")]
         // GET: Problem
+        public ActionResult Details(int id)
+        {
+            Exercise e = _context.Exercises.Single(ex => ex.Id == id);
+            return View(e);
+        }
 
         public ActionResult Create()
         {

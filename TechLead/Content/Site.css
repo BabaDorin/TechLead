@@ -212,3 +212,31 @@ textarea {
 .Level{
     font-size:40px;
 }
+
+.Box {
+    align-items: center;
+    background-color: aliceblue;
+    color: #333;
+    padding: 4%;
+    margin-top: 170px;
+    font-size: large;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.TitleBar {
+    background-color: #cff7ff;
+    padding: 7px;
+    border-radius: 10px;
+}
+
+.PointsAndDifficultyBox {
+    text-align: center;
+}
+
+.PointsAndDifficultyBox p{
+    color:green;
+}
+
+.IOContainer{
+    background-color:antiquewhite;
+}

@@ -1,0 +1,120 @@
+﻿@model TechLead.Models.Exercise
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="Content">
+
+    <div class="Box">
+        <div class="TitleBar">
+            <div class="row">
+
+                <div class="col-md-8"> <h3><b>@Html.DisplayFor(ex => ex.Name)</b></h3></div>
+
+                <div class="col-md-4">
+                    <div class="PointsAndDifficultyBox">
+                        @switch (Model.DifficulyId)
+                        {
+                            case 4:<p>Beginner</p>break;
+                            case 5:<p>Intermediate</p>break;
+                            case 6:<p>Advanced</p>break;
+                        }
+
+                        @Html.DisplayFor(ex => ex.Points)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br /><br /><br />
+
+        <h3>Condition</h3>
+        <br />
+        @Html.DisplayFor(ex => ex.Condition);
+        <br /><br /><br />
+
+        <div class="row">
+            Test case 1:
+            <br />
+            <div class="col-md-6">
+                <div class="IOContainer">
+                    @Html.DisplayNameFor(ex => ex.Imput1)
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="IOContainer">
+                    @Html.DisplayNameFor(ex => ex.Output1)
+                </div>
+            </div>
+        </div>
+
+        <br /> <br />
+
+        @if (Model.Imput2 != null)
+        {
+            <div class="row">
+                <div class="IOContainer">
+                    @Html.DisplayNameFor(ex => ex.Imput2)
+                </div>
+
+                <div class="IOContainer">
+                    @Html.DisplayNameFor(ex => ex.Output2)
+                </div>
+            </div>
+
+            <br /> <br />
+        }
+
+        @if (Model.Imput3 != null)
+        {
+            <div class="row">
+                <div class="IOContainer">
+                    @Html.DisplayNameFor(ex => ex.Imput3)
+                </div>
+
+                <div class="/OContainer">
+                    @Html.DisplayNameFor(ex => ex.Output3)
+                </div>
+            </div>
+
+            <br /> <br />
+        }
+
+        @if (Model.Imput4 != null)
+        {
+            <div class="row">
+                <div class="IOContainer">
+                    @Html.DisplayNameFor(ex => ex.Imput4)
+                </div>
+
+                <div class="IOContainer">
+                    @Html.DisplayNameFor(ex => ex.Output4)
+                </div>
+            </div>
+
+            <br /> <br />
+        }
+
+        @if (Model.Imput5 != null)
+        {
+            <div class="row">
+                <div class="IOContainer">
+                    @Html.DisplayNameFor(ex => ex.Imput5)
+                </div>
+
+                <div class="IOContainer">
+                    @Html.DisplayNameFor(ex => ex.Output5)
+                </div>
+            </div>
+
+            <br /> <br />
+        }
+
+        <hr />
+
+    </div>
+</div>
+
+
