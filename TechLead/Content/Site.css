@@ -240,3 +240,9 @@ textarea {
 .IOContainer{
     background-color:antiquewhite;
 }
+
+pre {
+    line-height: 1.375;
+    white-space: pre-wrap;
+    padding: 1em;
+}
