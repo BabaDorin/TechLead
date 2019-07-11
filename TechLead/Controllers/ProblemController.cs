@@ -22,8 +22,16 @@ namespace TechLead.Controllers
         // GET: Problem
         public ActionResult Details(int id)
         {
-            Exercise e = _context.Exercises.Single(ex => ex.Id == id);
-            return View(e);
+            try
+            {
+                Exercise e = _context.Exercises.Single(ex => ex.Id == id);
+                return View(e);
+            }
+            catch (Exception)
+            {
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            
         }
 
         public ActionResult Create()
@@ -38,7 +46,6 @@ namespace TechLead.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AccessDeniedAuthorize(Roles = "SuperAdmin, Teacher")]
         public ActionResult Create(Exercise Exercise)
         {
             

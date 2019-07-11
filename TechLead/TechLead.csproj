@@ -277,6 +277,10 @@
     <Compile Include="Migrations\201907060907540_ModifyExercisesTable.Designer.cs">
       <DependentUpon>201907060907540_ModifyExercisesTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907111334381_ModifyExerciseTable.cs" />
+    <Compile Include="Migrations\201907111334381_ModifyExerciseTable.Designer.cs">
+      <DependentUpon>201907111334381_ModifyExerciseTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -446,6 +450,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907060907540_ModifyExercisesTable.resx">
       <DependentUpon>201907060907540_ModifyExercisesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907111334381_ModifyExerciseTable.resx">
+      <DependentUpon>201907111334381_ModifyExerciseTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -459,3 +459,4 @@ C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.up.resources
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.ClearExercisesData.resources
 C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.ModifyExercisesTable.resources
+C:\Users\Maria Baba\Desktop\git\techlead\TechLead\obj\Debug\TechLead.Migrations.ModifyExerciseTable.resources

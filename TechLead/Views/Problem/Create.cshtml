@@ -6,7 +6,7 @@
 
 <div class="Content">
 
-    @using (Html.BeginForm("Create", "Problem", FormMethod.Post))
+    @using (Html.BeginForm("Create", "Problem", FormMethod.Post, new { id = "submitForm" }))
     {
         @Html.AntiForgeryToken();
     <div class="CreateProblem">
@@ -54,6 +54,28 @@
             @Html.ValidationMessageFor(ex => ex.Condition)
         </div>
 
+
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(ex => ex.ImputFormat, "Imput Format: ")
+            @Html.TextAreaFor(ex => ex.ImputFormat, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+            @Html.ValidationMessageFor(ex => ex.Explanation3)
+        </div>
+
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(ex => ex.OutputFormat, "Output Format:")
+            @Html.TextAreaFor(ex => ex.OutputFormat, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+            @Html.ValidationMessageFor(ex => ex.Explanation3)
+        </div>
+
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(ex => ex.Constraints, "Constrains: ")
+            @Html.TextAreaFor(ex => ex.Constraints, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+            @Html.ValidationMessageFor(ex => ex.Explanation3)
+        </div>
+
         <br />
         <div class="alert alert-info">
             <strong>Info!</strong> By default there are 5 test cases to display to the user. If you have less than 5 test-cases to display, let the rest blank.
@@ -79,6 +101,12 @@
                 </div>
             </div>
         </div>
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(ex => ex.Explanation1)
+            @Html.TextAreaFor(ex => ex.Explanation1, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+            @Html.ValidationMessageFor(ex => ex.Explanation1)
+        </div>
 
         <br />
         <br />
@@ -100,6 +128,12 @@
                     @Html.ValidationMessageFor(ex => ex.Output2)
                 </div>
             </div>
+        </div>
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(ex => ex.Explanation2)
+            @Html.TextAreaFor(ex => ex.Explanation2, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+            @Html.ValidationMessageFor(ex => ex.Explanation2)
         </div>
 
         <br />
@@ -123,6 +157,12 @@
                 </div>
             </div>
         </div>
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(ex => ex.Explanation3)
+            @Html.TextAreaFor(ex => ex.Explanation3, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+            @Html.ValidationMessageFor(ex => ex.Explanation3)
+        </div>
 
         <br />
         <br />
@@ -144,6 +184,12 @@
                     @Html.ValidationMessageFor(ex => ex.Output4)
                 </div>
             </div>
+        </div>
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(ex => ex.Explanation4)
+            @Html.TextAreaFor(ex => ex.Explanation4, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+            @Html.ValidationMessageFor(ex => ex.Explanation4)
         </div>
 
         <br />
@@ -167,6 +213,13 @@
                 </div>
             </div>
         </div>
+        <br />
+        <div class="form-group">
+            @Html.LabelFor(ex => ex.Explanation5)
+            @Html.TextAreaFor(ex => ex.Explanation5, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+            @Html.ValidationMessageFor(ex => ex.Explanation5)
+        </div>
+
     </div>
         <div class="CreateProblem2">
             <div class="Level">
@@ -409,4 +462,6 @@
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
 }

@@ -32,16 +32,34 @@ namespace TechLead.Models
         [Required(ErrorMessage ="Please, enter a condition for your problem")]
         public string Condition { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
+        public string ImputFormat { get; set; }
+
+        [Required(ErrorMessage = "This field is required")]
+        public string OutputFormat { get; set; }
+
+        [Required(ErrorMessage = "This field is required")]
+        public string Constraints { get; set; }
+
+
+
         [Required(ErrorMessage ="This field is required")]
         public string Imput1 { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
+        public string Explanation1 { get; set; }
+
         public string Imput2 { get; set; }
+        public string Explanation2 { get; set; }
 
         public string Imput3 { get; set; }
+        public string Explanation3 { get; set; }
 
         public string Imput4 { get; set; }
+        public string Explanation4 { get; set; }
 
         public string Imput5 { get; set; }
+        public string Explanation5 { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
         public string Output1 { get; set; }
