@@ -1,12 +1,23 @@
-﻿
+﻿@model IEnumerable<TechLead.Models.Exercise>
+@using TechLead.Models
 @{
-    ViewBag.Title = "Beginnerbranch";
+    ViewBag.Title = "Beginner";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="Content">
 
-    <h2>Beginnerbranch</h2>
+    <h2>Beginner</h2>
+    <br />
+    <br />
+    <ul>
+        @foreach(Exercise E in Model)
+        {
+        <li>
+            @Html.ActionLink(E.Name, "Details", "Problem", new { id = E.Id }, null)
+        </li>
+        }
+    </ul>
 
 </div>
 
