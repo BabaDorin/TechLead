@@ -127,7 +127,6 @@ body {
 }
 
 .option {
-    border-radius: 8%;
     color: white;
     height: 16pc;
     padding: 10%;
@@ -145,7 +144,6 @@ body {
     transform: scale(1.1);
     background-color: azure;
     color: #333332;
-    border-bottom: double;
     border-color: aliceblue;
 }
 
