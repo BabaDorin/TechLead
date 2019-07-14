@@ -29,7 +29,20 @@ textarea {
 /*  -----------------------------------Bootstrap overrides-----------------------------------  */
 
 
+/******************************************************************** G E N E R A L   C H A N G E S **********************************************************/
 
+
+li {
+    list-style-type: none;
+}
+
+a:hover, a:visited, a:link, a:active {
+    text-decoration: none;
+}
+
+ul{
+    padding:0;
+}
 
 html{
     height:100%;
@@ -86,7 +99,7 @@ body {
 .Content {
     width: auto;
     align-content: center;
-    padding: 3% 16% 5% 16%;
+    padding: 3% 4% 5% 4%;
     min-height: 96%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #e2e8f6;
@@ -267,21 +280,37 @@ pre {
     font-family: 'Roboto', sans-serif;
 }
 
-/*.form-control {
-    display: block;
+
+
+/********************************* Beginner / Intermediate / Advanced BranceS ****************************************************************************************/
+
+.ProblemToDisplay {
+    align-items: center;
+    background-color: aliceblue;
+    color: #333;
+    padding: 2%;
+    margin: 2px;
+    font-size: large;
     width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 16px;
-    line-height: 1.42857143;
-    color: #595757;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-}*/
+    box-shadow: 1px 8px 20px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(64, 64, 75, 0);
+    transition: all .2s ease-in-out;
+    text-decoration: none;
+}
+
+.ProblemToDisplay:hover{
+    position:relative;
+    z-index:1;
+    transform: scale(1.02);
+    background-color: aliceblue;
+    color: #333332;
+    border-color: aliceblue;
+    text-decoration:none;
+}
+
+.ProblemToDisplay:visited{
+    background-color:red;
+}
+
+.PointsToDisplay {
+    float: right;
+}

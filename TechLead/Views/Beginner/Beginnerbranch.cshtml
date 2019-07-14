@@ -7,18 +7,26 @@
 
 <div class="Content">
 
-    <h2>Beginner</h2>
-    <br />
-    <br />
-    <ul>
-        @foreach(Exercise E in Model)
-        {
-        <li>
-            @Html.ActionLink(E.Name, "Details", "Problem", new { id = E.Id }, null)
-        </li>
-        }
-    </ul>
-
+    <div class="TitleBox">
+        <h2>Beginner</h2>
+    </div>
+    <div class="Box">
+        <br />
+        <br />
+        <ul>
+            @foreach (Exercise E in Model)
+            {
+                <li>
+                    <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
+                        <div class="ProblemToDisplay">
+                           @E.Name
+                           <span class="PointsToDisplay">@E.Points</span>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>  
+    </div>
 </div>
 
 
