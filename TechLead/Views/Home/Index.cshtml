@@ -57,19 +57,33 @@
         </a>
     </div>
 
-    <div class="modal fade bootstrapmodal">
-        <div class="modal-dialog">
+    <!-- Button trigger modal -->
+    
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button data-dismiss="modal" class="close"><span>&times;</span></button>
-                    <div class="modal-title">Guci</div>
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
-                    @*Create a partial view for Register and insert
-                        it here*@
+                    <div id="partialViewContent">
+
+                    </div>
                 </div>
-                <div class="modal-footer">spungi</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
+
+
+
+
 </div>
