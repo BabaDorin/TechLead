@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@model TechLead.Models.RegisterViewModel
 <html>
 <head>
     <meta charset="utf-8" />
@@ -11,6 +12,10 @@
 
 </head>
 <body>
+    <button id="btnShowModal" type="button"
+            class="btn btn-sm btn-default pull-left col-lg-11 button button4">
+        Satya Modals
+    </button>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -35,7 +40,7 @@
     @RenderBody()
 
     @*Register modal, just in case*@
-    <div class="modal fade bootstrapmodal">
+    <div class="modal" id="MyModal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -43,7 +48,8 @@
                     <div class="modal-title">Guci</div>
                 </div>
                 <div class="modal-body">
-
+                    @Html.Partial("~/Views/Account/Register.cshtml")
+                    
                 </div>
                 <div class="modal-footer">spungi</div>
             </div>
@@ -62,37 +68,3 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
-
-<script>
-
-    $(document).ready(function () {
-
-        $('#btnGetData').click(function () {
-
-
-            var requestUrl = '@Url.Action("About")';
-
-            $.get(requestUrl)
-
-            .done(function (responsedata) {
-
-                console.log("success");
-
-                $("#partialViewContent").html(responsedata);
-
-                $('#myModal').modal('show')
-
-            })
-            .fail(function () {
-                alert("error");
-            })
-            .always(function () {
-                console.log("finished");
-            });
-
-        })
-
-        });
-
-
-</script>

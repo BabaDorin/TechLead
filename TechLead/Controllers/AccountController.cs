@@ -140,6 +140,8 @@ namespace TechLead.Controllers
             }
         }
 
+        //*INFO - THE REGISTER PAGE WAS TRANSFORMED INTO A PARTIAL PAGE (VIEW). THE ORIGINAL CODE FOR
+        //THE NORMAL VIEW OF THE REGISTER IS UNDER COMMENTS BELOW
         //
         // GET: /Account/Register
         [AllowAnonymous]
@@ -147,6 +149,40 @@ namespace TechLead.Controllers
         {
             return View();
         }
+
+        public ActionResult _RegisterPartialView()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> _RegisterPartialView(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    return RedirectToAction("Index", "Home");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
 
         //
         // POST: /Account/Register
@@ -161,8 +197,8 @@ namespace TechLead.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -175,7 +211,7 @@ namespace TechLead.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View("_RegisterPartialView",model);
+            return View("_RegisterPartialView", model);
         }
 
         //
