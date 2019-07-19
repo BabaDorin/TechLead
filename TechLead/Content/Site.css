@@ -32,8 +32,18 @@ textarea {
 /******************************************************************** G E N E R A L   C H A N G E S **********************************************************/
 
 
+textarea {
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
 li {
     list-style-type: none;
+}
+
+textarea {
+    overflow-y: scroll;
+    overflow-x: scroll;
 }
 
 a:hover, a:visited, a:link, a:active {
@@ -50,6 +60,23 @@ html{
     padding:0;
 }
 
+body {
+    margin-top: 50px;
+    padding: 0;
+    height: 100%;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+
+/******************************************************************** L A Y O U T **************************************************************************/
+
 .navbar-inverse {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: white;
@@ -64,38 +91,10 @@ html{
     border:none;
 }
 
-.jumbotron {
-    background-repeat: no-repeat;
-    background-position-y: center;
-    background-position-x: center;
-    margin-bottom: 0;
-    padding: 6%;
-    padding-left: 15%;
-    padding-right: 15%;
-    background-size: cover;
-    background-image: url(http://hdwpro.com/wp-content/uploads/2018/01/blur-wallpaper-blue-1229x768.jpg);
-}
+    .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+        border-color: #101010;
+    }
 
-.jumbotron h1 {
-    font: 70px 'Arial Narrow', sans-serif;
-    text-transform: uppercase;
-    letter-spacing: -4px;
-    text-align:center;
-}
-
-body {
-    margin-top: 50px;
-    padding: 0;
-    height: 100%;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #333;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-}
 .Content {
     width: auto;
     align-content: center;
@@ -114,6 +113,7 @@ body {
     /*Font style*/
     font-family: 'Roboto', sans-serif;
 }
+
 .footer {
     background-color: #333;
     color: white;
@@ -122,8 +122,26 @@ body {
     text-align: center;
 }
 
-.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-    border-color: #101010;
+
+/******************************************************************** I N D E X   V I E W **************************************************************************/
+
+.jumbotron {
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: center;
+    margin-bottom: 0;
+    padding: 6%;
+    padding-left: 15%;
+    padding-right: 15%;
+    background-size: cover;
+    background-image: url(http://hdwpro.com/wp-content/uploads/2018/01/blur-wallpaper-blue-1229x768.jpg);
+}
+
+.jumbotron h1 {
+    font: 70px 'Arial Narrow', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -4px;
+    text-align:center;
 }
 
 .option {
@@ -156,25 +174,7 @@ body {
     text-align: center;
 }
 
-.problem{
-    padding:1%;
-    background-color:white;
-    border-bottom-color:gray;
-    border-bottom-style:groove;
-    border-radius:5px;
-    color:darkcyan;
-}
-.problem .points{
-    text-align:right;
-    border-color:black;
-    border-radius:10%;
-}
-
-
-
-/*
-    -------------------------- Create / Problem --------------------------
-*/
+/********************************************************************  C R E A T E   P R O B L E M **************************************************************************/
 
 .CreateProblem {
     align-items: center;
@@ -193,11 +193,6 @@ body {
     padding: 8%;
     font-size: 18px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-textarea {
-    overflow-y: scroll;
-    overflow-x: scroll;
 }
 
 .PointInfo {
@@ -221,6 +216,22 @@ textarea {
     color: red;
     font-size: 14px;
     font-weight:bold;
+}
+
+
+
+.problem{
+    padding:1%;
+    background-color:white;
+    border-bottom-color:gray;
+    border-bottom-style:groove;
+    border-radius:5px;
+    color:darkcyan;
+}
+.problem .points{
+    text-align:right;
+    border-color:black;
+    border-radius:10%;
 }
 
 .Box {
