@@ -13,151 +13,154 @@
 
             <div class="col-md-4">
                 <div class="PointsAndDifficultyBox">
-                    @switch (Model.DifficulyId)
+                    @*@switch (Model.DifficulyId)
                     {
                         case 4:<p>Beginner</p>break;
                         case 5:<p>Intermediate</p>break;
                         case 6:<p>Advanced</p>break;
-                    }
+                    }*@
 
                     @Html.DisplayFor(ex => ex.Points)
                 </div>
             </div>
         </div>
     </div>
-    <div class="Box">
-        <br />
-
-        <p><strong>Condition</strong></p>
-        <br />
-        <pre> @Html.DisplayFor(ex => ex.Condition)</pre>
-        <br /><br /><br />
-
-        <p><strong>Imput Format</strong></p>
-        <pre> @Html.DisplayFor(ex => ex.ImputFormat)</pre>
-        <br /><br /><br />
-
-        <p><strong>Constraints</strong></p>
-        <pre> @Html.DisplayFor(ex => ex.Constraints)</pre>
-        <br /><br /><br />
-
-        <p><strong>Output Format</strong></p>
-        <pre> @Html.DisplayFor(ex => ex.OutputFormat)</pre>
-        <br /><br /><br />
-
-        <div class="row">
-            <p><strong>Test case</strong></p>
-            <br />
-            <div class="col-md-6">
-                <div class="IOContainer">
-                    <pre>@Html.DisplayFor(ex => ex.Imput1) </pre>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="IOContainer">
-                    <pre> @Html.DisplayFor(ex => ex.Output1)</pre>
-                </div>
-            </div>
-        </div>
-
-        <br /> <br />
-
-        @if (Model.Imput2 != null)
-        {
-            <div class="row">
-                <p><strong>Test case</strong></p>
-                <div class="col-md-6">
-                    <div class="IOContainer">
-                        <pre>@Html.DisplayFor(ex => ex.Imput2) </pre>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="IOContainer">
-                        <pre> @Html.DisplayFor(ex => ex.Output2)</pre>
-                    </div>
-                </div>
-            </div>
-
-            <br /> <br />
-        }
-
-        @if (Model.Imput3 != null)
-        {
-            <div class="row">
-                <p><strong>Test case</strong></p>
-                <div class="col-md-6">
-                    <div class="IOContainer">
-                        <pre>@Html.DisplayFor(ex => ex.Imput3) </pre>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="IOContainer">
-                        <pre>  @Html.DisplayFor(ex => ex.Output3)</pre>
-                    </div>
-                </div>
-            </div>
-
-            <br /> <br />
-        }
-
-        @if (Model.Imput4 != null)
-        {
-            <div class="row">
-                <p><strong>Test case</strong></p>
-                <div class="col-md-6">
-                    <div class="IOContainer">
-                        <pre> @Html.DisplayFor(ex => ex.Imput4)</pre>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="IOContainer">
-                        <pre> @Html.DisplayFor(ex => ex.Output4)</pre>
-                    </div>
-                </div>
-            </div>
-
-            <br /> <br />
-        }
-
-        @if (Model.Imput5 != null)
-        {
-            <div class="row">
-                <p><strong>Test case</strong></p>
-                <div class="col-md-6">
-                    <div class="IOContainer">
-                        <pre>@Html.DisplayFor(ex => ex.Imput5) </pre>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="IOContainer">
-                        <pre>@Html.DisplayFor(ex => ex.Output5) </pre>
-                    </div>
-                </div>
-            </div>
-
-            <br /> <br />
-        }
-
-        <hr />
-
-        <p><strong>Upload your solution here.</strong></p>
-        @using (Html.BeginForm("Index",
-                                "Home",
+    @using (Html.BeginForm("Details",
+                                "Problem",
                                 FormMethod.Post,
                                 new { enctype = "multipart/form-data" }))
-        {
-            <input type="file" name="file" id="file" /><br><br>
-            <input type="submit" value="Submit sollution" />
-            <br><br>
-            @ViewBag.Message
-        }
+    {
 
-    </div>
+        <div class="Box">
+            <br />
+
+            <p><strong>Condition</strong></p>
+            <br />
+            <pre> @Html.DisplayFor(ex => ex.Condition)</pre>
+            <br /><br /><br />
+
+            <p><strong>Imput Format</strong></p>
+            <pre> @Html.DisplayFor(ex => ex.ImputFormat)</pre>
+            <br /><br /><br />
+
+            <p><strong>Constraints</strong></p>
+            <pre> @Html.DisplayFor(ex => ex.Constraints)</pre>
+            <br /><br /><br />
+
+            <p><strong>Output Format</strong></p>
+            <pre> @Html.DisplayFor(ex => ex.OutputFormat)</pre>
+            <br /><br /><br />
+
+            <div class="row">
+                <p><strong>Test case</strong></p>
+                <br />
+                <div class="col-md-6">
+                    <div class="IOContainer">
+                        <pre>@Html.DisplayFor(ex => ex.Imput1) </pre>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="IOContainer">
+                        <pre> @Html.DisplayFor(ex => ex.Output1)</pre>
+                    </div>
+                </div>
+            </div>
+
+            <br /> <br />
+
+            @if (Model.Imput2 != null)
+            {
+                <div class="row">
+                    <p><strong>Test case</strong></p>
+                    <div class="col-md-6">
+                        <div class="IOContainer">
+                            <pre>@Html.DisplayFor(ex => ex.Imput2) </pre>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="IOContainer">
+                            <pre> @Html.DisplayFor(ex => ex.Output2)</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <br /> <br />
+            }
+
+            @if (Model.Imput3 != null)
+            {
+                <div class="row">
+                    <p><strong>Test case</strong></p>
+                    <div class="col-md-6">
+                        <div class="IOContainer">
+                            <pre>@Html.DisplayFor(ex => ex.Imput3) </pre>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="IOContainer">
+                            <pre>  @Html.DisplayFor(ex => ex.Output3)</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <br /> <br />
+            }
+
+            @if (Model.Imput4 != null)
+            {
+                <div class="row">
+                    <p><strong>Test case</strong></p>
+                    <div class="col-md-6">
+                        <div class="IOContainer">
+                            <pre> @Html.DisplayFor(ex => ex.Imput4)</pre>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="IOContainer">
+                            <pre> @Html.DisplayFor(ex => ex.Output4)</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <br /> <br />
+            }
+
+            @if (Model.Imput5 != null)
+            {
+                <div class="row">
+                    <p><strong>Test case</strong></p>
+                    <div class="col-md-6">
+                        <div class="IOContainer">
+                            <pre>@Html.DisplayFor(ex => ex.Imput5) </pre>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="IOContainer">
+                            <pre>@Html.DisplayFor(ex => ex.Output5) </pre>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <br /> <br />
+
+            <h2>Basic File Upload</h2>
+
+            <hr />
+        </div>
+
+        <label for="file">Upload your solution</label>
+        <input type="file" name="file" id="file" /><br><br>
+        <input type="submit" value="Upload" />
+        <br><br>
+        @ViewBag.Message
+    }
+
 </div>
 
 

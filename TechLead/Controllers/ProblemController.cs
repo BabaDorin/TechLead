@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using TechLead.Models;
 using System.Data;
+using System.IO;
 
 namespace TechLead.Controllers
 {
@@ -14,24 +15,39 @@ namespace TechLead.Controllers
         private ApplicationDbContext _context;
         public ProblemController()
         {
-            _context = new ApplicationDbContext();     
+            _context = new ApplicationDbContext();
         }
 
         //[Authorize(Roles = "Administrator")]
         //[Authorize(Roles = "Teacher")]
         // GET: Problem
+        [HttpGet]
         public ActionResult Details(int id)
         {
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
+                TempData["Object"] = e;
                 return View(e);
             }
             catch (Exception)
             {
                 return View("~/Views/Shared/Error.cshtml");
             }
-            
+        }
+
+        [HttpPost]
+        public ActionResult Details(HttpPostedFileBase file)
+        {
+            Exercise E = TempData["Object"] as Exercise;
+            return RedirectToAction("Compiling","Problem", E.Id);
+        }
+
+        public ActionResult Compiling()
+        {
+            //Find a way how to pass the object id and the file from Details to this controller.
+            Exercise e = _context.Exercises.Single(ex => ex.Id == 12);
+            return View(e);
         }
 
         public ActionResult Create()
