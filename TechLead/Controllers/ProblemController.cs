@@ -27,6 +27,8 @@ namespace TechLead.Controllers
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
+
+                //Here we store the object. We will need it later for the 'Compiling' view.
                 TempData["Object"] = e;
                 return View(e);
             }
@@ -39,15 +41,25 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult Details(HttpPostedFileBase file)
         {
-            Exercise E = TempData["Object"] as Exercise;
-            return RedirectToAction("Compiling","Problem", E.Id);
+            //When the user submits a solution to a specific problem, he will be redirected to the 'Compiling' page of the
+            //Problem controller.
+            return RedirectToAction("Compiling","Problem");
         }
 
         public ActionResult Compiling()
         {
-            //Find a way how to pass the object id and the file from Details to this controller.
-            Exercise e = _context.Exercises.Single(ex => ex.Id == 12);
-            return View(e);
+            try
+            {
+                //Here we extract the data from TempData and pass it to the view.
+                Exercise E = TempData["Object"] as Exercise;
+                TempData.Keep();
+                return View(E);
+            }
+            catch (Exception)
+            {
+                return View("~/Views/Shared/Error.cshtml");
+            }
+            
         }
 
         public ActionResult Create()
