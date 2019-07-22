@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using TechLead.Models;
 using System.Data;
 using System.IO;
+using TechLead.Compiler;
 
 namespace TechLead.Controllers
 {
@@ -41,6 +42,15 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult Details(HttpPostedFileBase file)
         {
+
+            //Store the file and send the path to 'Compiling'
+            if (file.ContentLength > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var path = Path.Combine(Server.MapPath("~/Solutions/"), fileName);
+                TempData["FileLocation"] = path;
+                file.SaveAs(path);
+            }
             //When the user submits a solution to a specific problem, he will be redirected to the 'Compiling' page of the
             //Problem controller.
             return RedirectToAction("Compiling","Problem");
@@ -52,6 +62,16 @@ namespace TechLead.Controllers
             {
                 //Here we extract the data from TempData and pass it to the view.
                 Exercise E = TempData["Object"] as Exercise;
+
+                //Here we extract the path of the source code (solution).
+                string Path = TempData["FileLocation"].ToString();
+
+                //The list with the scores for each test case.
+                List<int> ScoredPoints = new List<int>();
+
+                Compiler.Compiler compiler = new Compiler.Compiler();
+                ScoredPoints = compiler.Compilation(Path);
+
                 TempData.Keep();
                 return View(E);
             }

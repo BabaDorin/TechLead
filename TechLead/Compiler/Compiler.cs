@@ -32,27 +32,28 @@ namespace TechLead.Compiler
 
         //Call the specific compiler for the language the program was written in.
         //The function will return a list with all the scored points for the problem.
-        public List<int> Compilation(string fileName)
+        public List<int> Compilation(string FilePath)
         {
+            string fileName = Path.GetFileName(FilePath);
 
             //The points for each test case will be stored in a List of integers.
             switch (GetFileExtension(fileName))
             {
                 case ".cpp":
                     CPPCompiler CPP = new CPPCompiler();
-                    return CPP.CPPCompilerFunction(fileName);
+                    return CPP.CPPCompilerFunction(FilePath);
 
                 case ".cs":
                     CSharpCompiler CSharp = new CSharpCompiler();
-                    return CSharp.CSharpCompilerFunction(fileName);
+                    return CSharp.CSharpCompilerFunction(FilePath);
 
                 case ".pas":
                     PascalCompiler Pas = new PascalCompiler();
-                    return Pas.PascalCompilerFunction(fileName);
+                    return Pas.PascalCompilerFunction(FilePath);
 
                 case ".java":
                     JavaCompiler Java = new JavaCompiler();
-                    return Java.JavaCompilerFunction(fileName);
+                    return Java.JavaCompilerFunction(FilePath);
             }
 
             return null;
