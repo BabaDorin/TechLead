@@ -50,6 +50,11 @@ namespace TechLead.Controllers
                 var path = Path.Combine(Server.MapPath("~/Solutions/"), fileName);
                 TempData["FileLocation"] = path;
                 file.SaveAs(path);
+                ModelState.Clear();
+            }
+            else
+            {
+                return View("~/Views/Shared/Error.cshtml");
             }
             //When the user submits a solution to a specific problem, he will be redirected to the 'Compiling' page of the
             //Problem controller.
@@ -73,7 +78,16 @@ namespace TechLead.Controllers
                 ScoredPoints = compiler.Compilation(Path);
 
                 TempData.Keep();
-                return View(E);
+
+                if (System.IO.File.Exists(Path))
+                {
+                    return View(E);
+                }
+                else
+                {
+                    return View("~/Views/Shared/Error.cshtml");
+                }
+                
             }
             catch (Exception)
             {
