@@ -75,7 +75,7 @@ namespace TechLead.Controllers
                 List<int> ScoredPoints = new List<int>();
 
                 Compiler.Compiler compiler = new Compiler.Compiler();
-                ScoredPoints = compiler.Compilation(Path);
+                ScoredPoints = compiler.Compilation(Path,E);
 
                 TempData.Keep();
 

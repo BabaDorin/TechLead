@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.IO;
 using System.Diagnostics;
+using TechLead.Models;
 
 namespace TechLead.Compiler
 {
@@ -13,8 +14,9 @@ namespace TechLead.Compiler
         string SourceFileName;
         string fileName;
         string extension = ".cpp";
-        public List<int> CSharpCompilerFunction(string FilePath)
+        public List<int> CSharpCompilerFunction(string FilePath, List<string>Imputs, List<string>Outputs, int  maxPointsForATestCase)
         {
+            List<int> ScoredPoints = new List<int>();
             fileName = Path.GetFileName(FilePath);
 
             //We need to know the name of the source file to add the .exe or smth later. The point is that we need it.
@@ -56,10 +58,20 @@ namespace TechLead.Compiler
             {
                 Console.WriteLine("Eroare. Fisierul sursa nu a fost gasit.");
             }
+            Process p = new Process();
+            Procesare(p);
+
+            int TestCases = Imputs.Count();
+            
+            for(int i=0; i<TestCases; i++)
+            {
+                ScoredPoints.Add(CompileATestCase(Imputs[1], Outputs[2], p, maxPointsForATestCase));
+            }
+
             return new List<int>();
         }
 
-        public void Procesare()
+        public void Procesare(Process p)
         {
 
             if (!IsThereAnySourceFile)
@@ -69,7 +81,7 @@ namespace TechLead.Compiler
             else
             {
                 //Daca exista fisierul sursa inseamna ca acesta deja a trecut prin procesul de compilare
-                Process p = new Process();
+               
                 string ExecutableAdress = Directory.GetCurrentDirectory();
 
                 //The app waits for the executable. It can be created in a longer period of time. 
