@@ -87,12 +87,8 @@ namespace TechLead.Compiler
                 } while (!executableExists);
 
                 Console.WriteLine();
-                
-            }
-
-            using (StreamWriter sr = new StreamWriter(adress + "scor.txt"))
-            {
-                sr.WriteLine(scor);
+             
+                //Here we have to call the CompileATestCase function for each test.
             }
         }
 
