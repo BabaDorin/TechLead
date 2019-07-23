@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using System.Diagnostics;
 
 namespace TechLead.Compiler
 {
@@ -27,6 +28,26 @@ namespace TechLead.Compiler
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        private static void KillPorocess(string sourceFile)
+        {
+            foreach (Process Proc in Process.GetProcesses())
+                if (Proc.ProcessName.Equals(sourceFile + ".exe"))
+                    Proc.Kill();
+        }
+
+        public void DeleteProgramEXE(string fileName)
+        {
+            try
+            {
+                File.Delete(Directory.GetCurrentDirectory() + @"\" + Path.GetFileNameWithoutExtension(fileName) + ".exe");
+                Console.WriteLine("File path of Program2.exe: " + Directory.GetCurrentDirectory() + @"\" + Path.GetFileNameWithoutExtension(fileName) + ".exe");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("! Program.exe was not deleted. ");
             }
         }
 
