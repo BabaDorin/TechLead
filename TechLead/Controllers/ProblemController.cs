@@ -8,7 +8,7 @@ using TechLead.Models;
 using System.Data;
 using System.IO;
 using TechLead.Compiler;
-
+using System.Dynamic;
 namespace TechLead.Controllers
 {
     public class ProblemController : Controller
@@ -60,11 +60,16 @@ namespace TechLead.Controllers
             //Problem controller.
             return RedirectToAction("Compiling","Problem");
         }
+        public class ViewModel
+        {
+            public Exercise  Ex = new Exercise();
+            public List<int> Points = new List<int>();
+        }
 
         public ActionResult Compiling()
         {
-            try
-            {
+            //try
+            //{
                 //Here we extract the data from TempData and pass it to the view.
                 Exercise E = TempData["Object"] as Exercise;
 
@@ -78,21 +83,16 @@ namespace TechLead.Controllers
                 ScoredPoints = compiler.Compilation(Path,E);
 
                 TempData.Keep();
+                ViewModel mymodel = new ViewModel();
+                mymodel.Ex = E;
+                mymodel.Points = ScoredPoints;
 
-                if (System.IO.File.Exists(Path))
-                {
-                    return View(E);
-                }
-                else
-                {
-                    return View("~/Views/Shared/Error.cshtml");
-                }
-                
-            }
-            catch (Exception)
-            {
-                return View("~/Views/Shared/Error.cshtml");
-            }
+                return View(mymodel);
+            //}
+            //catch (Exception)
+            //{
+            //    return View("~/Views/Shared/Error.cshtml");
+            //}
             
         }
 

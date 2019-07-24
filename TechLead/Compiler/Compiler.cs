@@ -42,44 +42,31 @@ namespace TechLead.Compiler
                     Proc.Kill();
         }
 
-        public void DeleteProgramEXE(string fileName)
-        {
-            try
-            {
-                File.Delete(Directory.GetCurrentDirectory() + @"\" + Path.GetFileNameWithoutExtension(fileName) + ".exe");
-                Console.WriteLine("File path of Program2.exe: " + Directory.GetCurrentDirectory() + @"\" + Path.GetFileNameWithoutExtension(fileName) + ".exe");
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("! Program.exe was not deleted. ");
-            }
-        }
-
         //Call the specific compiler for the language the program was written in.
         //The function will return a list with all the scored points for the problem.
         public List<int> Compilation(string FilePath, Exercise E)
         {
             string fileName = Path.GetFileName(FilePath);
-
+            CreatingImputOutputLists(E);
             //The points for each test case will be stored in a List of integers.
             switch (GetFileExtension(fileName))
             {
-                case ".cpp":
-                    CPPCompiler CPP = new CPPCompiler();
-                    return CPP.CPPCompilerFunction(FilePath);
+                //case ".cpp":
+                //    CPPCompiler CPP = new CPPCompiler();
+                //    return CPP.CPPCompilerFunction(FilePath);
 
-                case ".cs":
-                    CSharpCompiler CSharp = new CSharpCompiler();
-                    int MaxPointsPerTestCase = E.Points / Imputs.Count();
-                    return CSharp.CSharpCompilerFunction(FilePath,Imputs,Outputs,MaxPointsPerTestCase);
+                //case ".cs":
+                //    CSharpCompiler CSharp = new CSharpCompiler();
+                //    int MaxPointsPerTestCase = E.Points / Imputs.Count();
+                //    return CSharp.CSharpCompilerFunction(FilePath,Imputs,Outputs,MaxPointsPerTestCase);
 
-                case ".pas":
-                    PascalCompiler Pas = new PascalCompiler();
-                    return Pas.PascalCompilerFunction(FilePath);
+                //case ".pas":
+                //    PascalCompiler Pas = new PascalCompiler();
+                //    return Pas.PascalCompilerFunction(FilePath);
 
-                case ".java":
-                    JavaCompiler Java = new JavaCompiler();
-                    return Java.JavaCompilerFunction(FilePath);
+                //case ".java":
+                //    JavaCompiler Java = new JavaCompiler();
+                //    return Java.JavaCompilerFunction(FilePath);
             }
 
             return null;

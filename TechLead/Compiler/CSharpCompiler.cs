@@ -68,7 +68,7 @@ namespace TechLead.Compiler
                 ScoredPoints.Add(CompileATestCase(Imputs[1], Outputs[2], p, maxPointsForATestCase));
             }
 
-            return new List<int>();
+            return ScoredPoints;
         }
 
         public void Procesare(Process p)
@@ -81,7 +81,6 @@ namespace TechLead.Compiler
             else
             {
                 //Daca exista fisierul sursa inseamna ca acesta deja a trecut prin procesul de compilare
-               
                 string ExecutableAdress = Directory.GetCurrentDirectory();
 
                 //The app waits for the executable. It can be created in a longer period of time. 
@@ -99,11 +98,33 @@ namespace TechLead.Compiler
                 } while (!executableExists);
 
                 Console.WriteLine();
-             
-                //Here we have to call the CompileATestCase function for each test.
             }
         }
 
+        public void DeleteProgramEXE(string fileName)
+        {
+            try
+            {
+                File.Delete(Directory.GetCurrentDirectory() + @"\" + Path.GetFileNameWithoutExtension(fileName) + ".exe");
+                Console.WriteLine("File path of Program2.exe: " + Directory.GetCurrentDirectory() + @"\" + Path.GetFileNameWithoutExtension(fileName) + ".exe");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("! Program.exe was not deleted. ");
+            }
+        }
+
+        public void DeleteSourceCode(string path)
+        {
+            //Remove the process from the task manager
+            foreach (Process Proc in Process.GetProcesses())
+                if (Proc.ProcessName.Equals(fileName))
+                    Proc.Kill();
+
+            //Delete the source code (main.cpp)
+            File.Delete(path);
+
+        }
         public int CompileATestCase(string Imput, string Output, Process p, int maxPointsForATestCase)
         {
             int PointsScored = 0;

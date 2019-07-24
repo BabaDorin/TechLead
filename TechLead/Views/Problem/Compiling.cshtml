@@ -1,17 +1,16 @@
-﻿@model TechLead.Models.Exercise
+﻿
+@model dynamic
 @{
     ViewBag.Title = "Compiling";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var imagePath = @Model.Name;
 }
 
 
 <div class="Content">
 
     <h2>Compilling</h2>
-
+    @Model.Ex.Name;
     <div class="TitleBox">
-        @Html.DisplayFor(ex => ex.Name);
     </div>
 </div>
 
