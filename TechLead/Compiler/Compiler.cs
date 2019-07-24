@@ -51,24 +51,23 @@ namespace TechLead.Compiler
             //The points for each test case will be stored in a List of integers.
             switch (GetFileExtension(fileName))
             {
-                //case ".cpp":
-                //    CPPCompiler CPP = new CPPCompiler();
-                //    return CPP.CPPCompilerFunction(FilePath);
+                case ".cpp":
+                    CPPCompiler CPP = new CPPCompiler();
+                    return CPP.CPPCompilerFunction(FilePath);
 
-                //case ".cs":
-                //    CSharpCompiler CSharp = new CSharpCompiler();
-                //    int MaxPointsPerTestCase = E.Points / Imputs.Count();
-                //    return CSharp.CSharpCompilerFunction(FilePath,Imputs,Outputs,MaxPointsPerTestCase);
+                case ".cs":
+                    CSharpCompiler CSharp = new CSharpCompiler();
+                    int MaxPointsPerTestCase = E.Points / Imputs.Count();
+                    return CSharp.CSharpCompilerFunction(FilePath, Imputs, Outputs, MaxPointsPerTestCase);
 
-                //case ".pas":
-                //    PascalCompiler Pas = new PascalCompiler();
-                //    return Pas.PascalCompilerFunction(FilePath);
+                case ".pas":
+                    PascalCompiler Pas = new PascalCompiler();
+                    return Pas.PascalCompilerFunction(FilePath);
 
-                //case ".java":
-                //    JavaCompiler Java = new JavaCompiler();
-                //    return Java.JavaCompilerFunction(FilePath);
+                case ".java":
+                    JavaCompiler Java = new JavaCompiler();
+                    return Java.JavaCompilerFunction(FilePath);
             }
-
             return null;
         }
         

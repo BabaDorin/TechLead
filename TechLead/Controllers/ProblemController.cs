@@ -81,13 +81,11 @@ namespace TechLead.Controllers
 
                 Compiler.Compiler compiler = new Compiler.Compiler();
                 ScoredPoints = compiler.Compilation(Path,E);
+                ScoredPoints.Add(3);
+                ScoredPoints.Add(5);
 
                 TempData.Keep();
-                ViewModel mymodel = new ViewModel();
-                mymodel.Ex = E;
-                mymodel.Points = ScoredPoints;
-
-                return View(mymodel);
+                return View(ScoredPoints);
             //}
             //catch (Exception)
             //{

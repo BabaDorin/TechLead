@@ -1,5 +1,4 @@
-﻿
-@model dynamic
+﻿@model List<int>
 @{
     ViewBag.Title = "Compiling";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,9 +8,15 @@
 <div class="Content">
 
     <h2>Compilling</h2>
-    @Model.Ex.Name;
     <div class="TitleBox">
+    @foreach(int i in Model)
+    {
+        <div>
+            @i
+        </div>
+    }
     </div>
+    <h2>Test cases</h2>
 </div>
 
 

@@ -35,15 +35,17 @@ namespace TechLead.Compiler
             {
                 try
                 {
+
+                    //THIS THINK IS NOT WORKING
                     Process cmd = new Process();
                     cmd.StartInfo.FileName = "cmd.exe";
-                    cmd.StartInfo.WorkingDirectory = Directory.GetCurrentDirectory();
+                    cmd.StartInfo.WorkingDirectory = FilePath;
                     cmd.StartInfo.RedirectStandardInput = true;
                     cmd.StartInfo.RedirectStandardOutput = true;
                     cmd.StartInfo.CreateNoWindow = true;
                     cmd.StartInfo.UseShellExecute = false;
                     cmd.Start();
-                    cmd.StandardInput.WriteLine(@"~bin\roslyn\csc.exe " + fileName);
+                    cmd.StandardInput.WriteLine(@"~/bin/roslyn/csc.exe " + fileName);
                     cmd.StandardInput.Flush();
                     cmd.StandardInput.Close();
                     cmd.Close();
@@ -88,7 +90,7 @@ namespace TechLead.Compiler
                 bool executableExists;
                 do
                 {
-                    executableExists = File.Exists(ExecutableAdress + @"\"+SourceFileName+".exe");
+                    executableExists = File.Exists(ExecutableAdress + @"/"+SourceFileName+".exe");
                     if (!executableExists)
                     {
                         System.Threading.Thread.Sleep(100);
@@ -105,7 +107,7 @@ namespace TechLead.Compiler
         {
             try
             {
-                File.Delete(Directory.GetCurrentDirectory() + @"\" + Path.GetFileNameWithoutExtension(fileName) + ".exe");
+                File.Delete(Directory.GetCurrentDirectory() + @"/" + Path.GetFileNameWithoutExtension(fileName) + ".exe");
                 Console.WriteLine("File path of Program2.exe: " + Directory.GetCurrentDirectory() + @"\" + Path.GetFileNameWithoutExtension(fileName) + ".exe");
             }
             catch (Exception)
