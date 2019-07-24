@@ -36,7 +36,7 @@ namespace TechLead.Compiler
                 try
                 {
 
-                    //THIS THINK IS NOT WORKING
+                    //THIS THINK IS NOT WORKINGg
                     Process cmd = new Process();
                     cmd.StartInfo.FileName = "cmd.exe";
                     cmd.StartInfo.WorkingDirectory = FilePath;
