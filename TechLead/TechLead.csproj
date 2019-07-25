@@ -366,6 +366,7 @@
     <Content Include="Views\Problem\Details.cshtml" />
     <Content Include="Views\Account\_RegisterPartialView.cshtml" />
     <Content Include="Views\Problem\Compiling.cshtml" />
+    <Content Include="Views\Problem\Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

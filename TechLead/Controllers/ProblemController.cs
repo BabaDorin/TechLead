@@ -42,20 +42,27 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult Details(HttpPostedFileBase file)
         {
-
             //Store the file and send the path to 'Compiling'
-            if (file.ContentLength > 0)
+            try
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var path = Path.Combine(Server.MapPath("~/Solutions/"), fileName);
-                TempData["FileLocation"] = path;
-                file.SaveAs(path);
-                ModelState.Clear();
+                if (file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Solutions/"), fileName);
+                    TempData["FileLocation"] = path;
+                    file.SaveAs(path);
+                    ModelState.Clear();
+                }
+                else
+                {
+                    return View("~/Views/Shared/Error.cshtml");
+                }
             }
-            else
+            catch (Exception e)
             {
-                return View("~/Views/Shared/Error.cshtml");
+                return View("~/Views/Shared/Error.cshtml", e);
             }
+            
             //When the user submits a solution to a specific problem, he will be redirected to the 'Compiling' page of the
             //Problem controller.
             return RedirectToAction("Compiling","Problem");
@@ -68,30 +75,34 @@ namespace TechLead.Controllers
 
         public ActionResult Compiling()
         {
-            //try
-            //{
+            try
+            {
                 //Here we extract the data from TempData and pass it to the view.
                 Exercise E = TempData["Object"] as Exercise;
 
                 //Here we extract the path of the source code (solution).
                 string Path = TempData["FileLocation"].ToString();
+                TempData.Keep();
+
+                Compiler.Compiler compiler = new Compiler.Compiler();
 
                 //The list with the scores for each test case.
                 List<int> ScoredPoints = new List<int>();
+                ScoredPoints = compiler.Compilation(Path, E);
+                TempData["Score"] = ScoredPoints;
 
-                Compiler.Compiler compiler = new Compiler.Compiler();
-                ScoredPoints = compiler.Compilation(Path,E);
-                ScoredPoints.Add(3);
-                ScoredPoints.Add(5);
-
-                TempData.Keep();
-                return View(ScoredPoints);
-            //}
-            //catch (Exception)
-            //{
-            //    return View("~/Views/Shared/Error.cshtml");
-            //}
-            
+                return RedirectToAction("Results", "Problem", ScoredPoints);
+            }
+            catch (Exception)
+            {
+                return View("~/Views/Shared/Error.cshtml");
+            }
+        }
+        public ActionResult Results()
+        {
+            List<int> ScoredPoints = TempData["Score"] as List<int>;
+            TempData.Keep();
+            return View(ScoredPoints);
         }
 
         public ActionResult Create()
