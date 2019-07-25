@@ -5,6 +5,7 @@ using System.Web;
 using System.IO;
 using System.Diagnostics;
 using TechLead.Models;
+using System.Data;
 
 namespace TechLead.Compiler
 {
@@ -13,7 +14,6 @@ namespace TechLead.Compiler
         bool IsThereAnySourceFile;
         string SourceFileName;
         string fileName;
-        string extension = ".cpp";
         public List<int> CSharpCompilerFunction(string FilePath, List<string>Imputs, List<string>Outputs, int  maxPointsForATestCase)
         {
             List<int> ScoredPoints = new List<int>();
@@ -31,21 +31,40 @@ namespace TechLead.Compiler
 
             //Here goes all the souuuce
             //Here is the compiler which converts the source file from .cpp in .exe
+            Process cmd = new Process();
             if (IsThereAnySourceFile)
             {
                 try
                 {
 
-                    //THIS THINK IS NOT WORKINGg
-                    Process cmd = new Process();
-                    cmd.StartInfo.FileName = "cmd.exe";
-                    cmd.StartInfo.WorkingDirectory = FilePath;
+                    //THIS THING IS NOT WORKING
+
+                    //var process = new Process
+                    //{
+                    //    StartInfo =
+                    //            {
+                    //                CreateNoWindow = true,
+                    //                UseShellExecute = false,
+                    //                RedirectStandardOutput = true,
+                    //                RedirectStandardInput = true,
+                    //                RedirectStandardError = true,
+                    //                Verb = "runas",
+                    //                FileName = @"C:\Windows\System32\cmd.exe",
+                    //                Domain = "dir",
+                    //            }
+                    //};
+                    //process.Start();
+
+                    
+                    cmd.StartInfo.FileName = @"C:\Windows\System32\cmd.exe";
+                    cmd.StartInfo.WorkingDirectory = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/");
                     cmd.StartInfo.RedirectStandardInput = true;
                     cmd.StartInfo.RedirectStandardOutput = true;
                     cmd.StartInfo.CreateNoWindow = true;
                     cmd.StartInfo.UseShellExecute = false;
                     cmd.Start();
-                    cmd.StandardInput.WriteLine(@"~/bin/roslyn/csc.exe " + fileName);
+                    //cmd.StandardInput.WriteLine(@"~/bin/roslyn/csc.exe " + fileName);
+                    cmd.StandardInput.WriteLine(@"C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe " + fileName);
                     cmd.StandardInput.Flush();
                     cmd.StandardInput.Close();
                     cmd.Close();
@@ -60,14 +79,13 @@ namespace TechLead.Compiler
             {
                 Console.WriteLine("Eroare. Fisierul sursa nu a fost gasit.");
             }
-            Process p = new Process();
-            Procesare(p);
+            Procesare(cmd);
 
             int TestCases = Imputs.Count();
             
             for(int i=0; i<TestCases; i++)
             {
-                ScoredPoints.Add(CompileATestCase(Imputs[1], Outputs[2], p, maxPointsForATestCase));
+                ScoredPoints.Add(CompileATestCase(Imputs[1], Outputs[2], cmd, maxPointsForATestCase));
             }
 
             return ScoredPoints;
@@ -83,7 +101,7 @@ namespace TechLead.Compiler
             else
             {
                 //Daca exista fisierul sursa inseamna ca acesta deja a trecut prin procesul de compilare
-                string ExecutableAdress = Directory.GetCurrentDirectory();
+                string ExecutableAdress = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/");
 
                 //The app waits for the executable. It can be created in a longer period of time. 
                 ////Programul asteapta pana cand apare executabilul. Compilarea poate lua mai mult timp pentru un program mai complex
@@ -133,7 +151,7 @@ namespace TechLead.Compiler
             try
             {
                 //Here we take the executable and run it
-                p.StartInfo.FileName = SourceFileName + ".exe";
+                p.StartInfo.FileName = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/"+SourceFileName+".exe");
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardInput = true;
                 p.StartInfo.RedirectStandardOutput = true;
