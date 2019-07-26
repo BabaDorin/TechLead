@@ -13,12 +13,12 @@
 
             <div class="col-md-4">
                 <div class="PointsAndDifficultyBox">
-                    @*@switch (Model.DifficulyId)
+                    @switch (Model.DifficulyId)
                     {
                         case 4:<p>Beginner</p>break;
                         case 5:<p>Intermediate</p>break;
                         case 6:<p>Advanced</p>break;
-                    }*@
+                    }
 
                     @Html.DisplayFor(ex => ex.Points)
                 </div>
@@ -67,7 +67,10 @@
                 </div>
             </div>
 
-            <br /> <br />
+            <br /><br />
+            <p><strong>Explanation</strong></p>
+            <pre> @Html.DisplayFor(ex => ex.Explanation1)</pre>
+            <br /><br /><br />
 
             @if (Model.Imput2 != null)
             {
@@ -87,6 +90,10 @@
                 </div>
 
                 <br /> <br />
+                <p><strong>Explanation</strong></p>
+                <pre> @Html.DisplayFor(ex => ex.Explanation2)</pre>
+                <br /><br /><br />
+
             }
 
             @if (Model.Imput3 != null)
@@ -107,6 +114,9 @@
                 </div>
 
                 <br /> <br />
+                <p><strong>Explanation</strong></p>
+                <pre> @Html.DisplayFor(ex => ex.Explanation3)</pre>
+                <br /><br /><br />
             }
 
             @if (Model.Imput4 != null)
@@ -127,6 +137,9 @@
                 </div>
 
                 <br /> <br />
+                <p><strong>Explanation</strong></p>
+                <pre> @Html.DisplayFor(ex => ex.Explanation4)</pre>
+                <br /><br /><br />
             }
 
             @if (Model.Imput5 != null)
@@ -145,19 +158,23 @@
                         </div>
                     </div>
                 </div>
+                <br /> <br />
+                <p><strong>Explanation</strong></p>
+                <pre> @Html.DisplayFor(ex => ex.Explanation2)</pre>
+                <br /><br /><br />
             }
 
-            <br /> <br />
+            <div class="fileUpload">
+                <p><strong>Submit your solution here </strong></p>
+                <br />
 
-            <h2>Basic File Upload</h2>
+                <input type="file" name="file" id="real-imput" />
+                <br />
+                <input type="submit" value="Submit" />
+            </div>
 
             <hr />
         </div>
-
-        <label for="file">Upload your solution</label>
-        <input type="file" name="file" id="file" /><br><br>
-        <input type="submit" value="Upload" />
-        <br><br>
         @ViewBag.Message
     }
 

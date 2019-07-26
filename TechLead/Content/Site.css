@@ -323,3 +323,21 @@ pre {
 .PointsToDisplay {
     float: right;
 }
+
+input[type='file'] {
+    display: block;
+}
+
+.Box input[type='submit'] {
+    background: #03A595;
+    color: #fff;
+    min-height: 35px;
+    padding: 10px;
+    border: none;
+    border-radius:5px;
+    font-size: 0.9em;
+}
+
+.Box input[type='submit']:hover {
+    background: #4ec0b4;
+}

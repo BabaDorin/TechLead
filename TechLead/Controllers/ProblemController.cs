@@ -42,6 +42,10 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult Details(HttpPostedFileBase file)
         {
+            if (file == null)
+            {
+                return View("~/Views/Shared/Error.cshtml");
+            }
             //Store the file and send the path to 'Compiling'
             try
             {
@@ -60,7 +64,7 @@ namespace TechLead.Controllers
             }
             catch (Exception e)
             {
-                return View("~/Views/Shared/Error.cshtml", e);
+                return View("~/Views/Shared/Error.cshtml");
             }
             
             //When the user submits a solution to a specific problem, he will be redirected to the 'Compiling' page of the
