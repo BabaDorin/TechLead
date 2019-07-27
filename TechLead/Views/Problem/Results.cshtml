@@ -26,10 +26,13 @@
                 <tr>
                     <td>Test @TestNumber</td>
                     <td>@i</td>
-                    TestNumber++
-                    ScoredPoints+=@i
+                    @{ 
+                        TestNumber++;
+                        ScoredPoints += @i;
+                    }
+                    
                 </tr>
-            }
+             }
             <tr>
                 <td>Total</td>
                 <td>@ScoredPoints</td>

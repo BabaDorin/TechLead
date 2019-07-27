@@ -68,9 +68,23 @@ namespace TechLead.Compiler
                     JavaCompiler Java = new JavaCompiler();
                     return Java.JavaCompilerFunction(FilePath);
             }
-            return null;
+            //if it's none of the cases
+            //Delete the file
+            DeleteSourceCode(fileName);
+
+            List<int> ScoredPoints = new List<int>();
+            //put put 0 as result for each test case
+            for(int i=0; i<Imputs.Count(); i++)
+            {
+                ScoredPoints.Add(0);
+            }
+            return ScoredPoints;
         }
-        
+
+        public void DeleteSourceCode(string FileName)
+        {
+            File.Delete(System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/" + FileName));
+        }
         //Creating 2 lists. One for Imputs and one for outputs.
         public void CreatingImputOutputLists(Exercise E)
         {

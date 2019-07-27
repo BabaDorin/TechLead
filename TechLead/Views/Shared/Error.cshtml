@@ -1,9 +1,27 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
+﻿@model List<string>
 
 @{
     ViewBag.Title = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+@*
+    The model will be a list with 2 cells. The first one is the title of the error. The 2nd one - details.
+    like List[0] = ERROR 404
+    List[1] = Invalid link adress.
+*@
+
+<div class="Content" style="height:80%">
+    <div class="ErrorBox">
+
+        <h1>@Model[0]</h1>
+        <p>@Model[1]</p>
+        <br /><br />
+        @if (Request.UrlReferrer != null)
+        {
+            <a class="bottomNav" onclick="history.go(-1); return false;" href="#">Back</a><br />
+        }
+
+    </div>
+</div>
+
 

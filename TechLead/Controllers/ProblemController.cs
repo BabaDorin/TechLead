@@ -44,7 +44,10 @@ namespace TechLead.Controllers
         {
             if (file == null)
             {
-                return View("~/Views/Shared/Error.cshtml");
+                List<string> Error = new List<string>();
+                Error.Add("Error");
+                Error.Add("You did not upload any solution");
+                return View("~/Views/Shared/Error.cshtml",Error);
             }
             //Store the file and send the path to 'Compiling'
             try
@@ -62,7 +65,7 @@ namespace TechLead.Controllers
                     return View("~/Views/Shared/Error.cshtml");
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return View("~/Views/Shared/Error.cshtml");
             }

@@ -14,7 +14,7 @@ namespace TechLead.Compiler
         bool IsThereAnySourceFile;
         string FileNameWithoutExtension;
         string fileName;
-        public List<int> CSharpCompilerFunction(string FilePath, List<string>Imputs, List<string>Outputs, int  maxPointsForATestCase)
+        public List<int> CSharpCompilerFunction(string FilePath, List<string>Imputs, List<string>Outputs, int maxPointsForATestCase)
         {
             List<int> ScoredPoints = new List<int>();
 

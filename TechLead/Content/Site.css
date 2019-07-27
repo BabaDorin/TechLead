@@ -341,3 +341,19 @@ input[type='file'] {
 .Box input[type='submit']:hover {
     background: #4ec0b4;
 }
+
+/********************************************************* Error page ****************************************************************************************/
+.ErrorBox {
+    color: #a50d0d;
+    background-color: #fff6f6;
+    margin: 8%;
+    padding: 5%;
+}
+
+.ErrorBox p{
+    font-size:medium;
+}
+
+.ErrorBox a{
+    font-size:large;
+}
