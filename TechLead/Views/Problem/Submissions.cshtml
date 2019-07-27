@@ -1,0 +1,38 @@
+﻿@model IEnumerable<TechLead.Models.Submission>
+@using TechLead.Models
+@{
+    ViewBag.Title = "Submissions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="Content">
+
+    <div class="TitleBox">
+        <h2>Submissions</h2>
+    </div>
+
+    <div class="Box">
+        <table>
+            <tr>
+                <th>Submission ID</th>
+                <th>User</th>
+                <th>Time</th>
+                <th>Exercise</th>
+                <th>Points</th>
+            </tr>
+            @foreach (Submission S in Model)
+            {
+                <tr>
+                    <td>@S.SubmissionID</td>
+                    <td>@S.User</td>
+                    <td>@S.Time</td>
+                    <td>@S.Exercise</td>
+                    <td>@S.Points</td>
+                    
+                </tr>
+            }
+        </table>
+
+    </div>
+</div>
+

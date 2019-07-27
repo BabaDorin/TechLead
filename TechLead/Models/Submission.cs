@@ -12,9 +12,9 @@ namespace TechLead.Models
         public int SubmissionID { get; set; }
         public ApplicationUser User { get; set; }
 
-        public Exercise Exercise { get; set; }
-
-        public int Points;
+        public string Exercise { get; set; }
+        public int ExerciseId { get; set; }
+        public int Points { get; set; }
         public string Time { get; set; }
         public string SourceCode { get; set; }
     }

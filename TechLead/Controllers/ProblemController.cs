@@ -75,11 +75,13 @@ namespace TechLead.Controllers
             //Problem controller.
             return RedirectToAction("Compiling","Problem");
         }
-        public class ViewModel
-        {
-            public Exercise  Ex = new Exercise();
-            public List<int> Points = new List<int>();
-        }
+
+
+
+
+
+
+
 
         public ActionResult Compiling()
         {
@@ -124,7 +126,8 @@ namespace TechLead.Controllers
                 SubmissionInstance.Points = sum;
 
                 SubmissionInstance.Time = DateTime.Now.ToString("MM/dd/yyyy");
-                SubmissionInstance.Exercise = E;
+                SubmissionInstance.Exercise = E.Name;
+                SubmissionInstance.ExerciseId = E.Id;
 
                 //Insert the data into DB
                 _context.Submissions.Add(SubmissionInstance);
@@ -144,6 +147,13 @@ namespace TechLead.Controllers
             return View(ScoredPoints);
         }
 
+
+
+
+
+
+
+
         public ActionResult Create()
         {
             var viewModel = new Exercise
@@ -158,7 +168,7 @@ namespace TechLead.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Exercise Exercise)
         {
-            
+
             if (!ModelState.IsValid)
             {
                 Exercise.Difficulty = _context.Difficulty.ToList();
@@ -169,5 +179,31 @@ namespace TechLead.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
+
+
+
+
+
+
+
+
+
+        public ActionResult Submissions()
+        {
+            Exercise e = TempData["Object"] as Exercise;
+            int ExerciseIdParam = e.Id;
+            TempData.Keep();
+            List<Submission> SubmissionForASpecificExercise = new List<Submission>();
+            foreach (Submission S in _context.Submissions)
+            {
+                if (S.ExerciseId==ExerciseIdParam)
+                {
+                    SubmissionForASpecificExercise.Add(S);
+                }
+            }
+            return View(SubmissionForASpecificExercise);
+        }
+
+        
     }
 }

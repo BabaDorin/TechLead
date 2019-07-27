@@ -298,6 +298,14 @@
     <Compile Include="Migrations\201907271308005_UpdateSubmissionTable_AddSourceCodeField.Designer.cs">
       <DependentUpon>201907271308005_UpdateSubmissionTable_AddSourceCodeField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907271938056_updateDatabase.cs" />
+    <Compile Include="Migrations\201907271938056_updateDatabase.Designer.cs">
+      <DependentUpon>201907271938056_updateDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907271951032_RepairSubmissionTable.cs" />
+    <Compile Include="Migrations\201907271951032_RepairSubmissionTable.Designer.cs">
+      <DependentUpon>201907271951032_RepairSubmissionTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -381,6 +389,7 @@
     <Content Include="Views\Account\_RegisterPartialView.cshtml" />
     <Content Include="Views\Problem\Compiling.cshtml" />
     <Content Include="Views\Problem\Results.cshtml" />
+    <Content Include="Views\Problem\Submissions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -486,6 +495,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907271308005_UpdateSubmissionTable_AddSourceCodeField.resx">
       <DependentUpon>201907271308005_UpdateSubmissionTable_AddSourceCodeField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907271938056_updateDatabase.resx">
+      <DependentUpon>201907271938056_updateDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907271951032_RepairSubmissionTable.resx">
+      <DependentUpon>201907271951032_RepairSubmissionTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
