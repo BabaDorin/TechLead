@@ -593,3 +593,5 @@ C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\Te
 C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.dll
 C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.pdb
 C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.AddSubmissionTableToTheDB.resources
+C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.updateSubmissionTable.resources
+C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionTable_AddSourceCodeField.resources

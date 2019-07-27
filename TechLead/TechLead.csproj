@@ -290,6 +290,14 @@
     <Compile Include="Migrations\201907271238197_AddSubmissionTableToTheDB.Designer.cs">
       <DependentUpon>201907271238197_AddSubmissionTableToTheDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907271254030_updateSubmissionTable.cs" />
+    <Compile Include="Migrations\201907271254030_updateSubmissionTable.Designer.cs">
+      <DependentUpon>201907271254030_updateSubmissionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907271308005_UpdateSubmissionTable_AddSourceCodeField.cs" />
+    <Compile Include="Migrations\201907271308005_UpdateSubmissionTable_AddSourceCodeField.Designer.cs">
+      <DependentUpon>201907271308005_UpdateSubmissionTable_AddSourceCodeField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -305,6 +313,7 @@
   <ItemGroup>
     <Content Include=".Tutorials\Adding migrations.txt" />
     <Content Include=".Tutorials\Push to github issues.txt" />
+    <Content Include="0To Do List\TextFile1.txt" />
     <Content Include="0To Do List\ToDo list.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -472,6 +481,15 @@
     <EmbeddedResource Include="Migrations\201907271238197_AddSubmissionTableToTheDB.resx">
       <DependentUpon>201907271238197_AddSubmissionTableToTheDB.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907271254030_updateSubmissionTable.resx">
+      <DependentUpon>201907271254030_updateSubmissionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907271308005_UpdateSubmissionTable_AddSourceCodeField.resx">
+      <DependentUpon>201907271308005_UpdateSubmissionTable_AddSourceCodeField.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,0 +1,12 @@
+﻿Create a view that will display all the submissions for a specific problem and modiffy the Details view by adding an extra containver
+with some info about the problem, like the list of submissions, succes rate, number of submissions etc etc. (Maybe comments in the future, who knows)
+
+The view that will display submissions will be accesibile this way:
+
+Branch => Choose a problem => Details (Here will be a link)
+
+Details => Results (Here will be another link)
+
+
+IMPORTANT: Find a way to display the source code for each sollution. The source code will also get stored in a submission table column (to be added).
+A view will be created to see the context of that damn souce code.

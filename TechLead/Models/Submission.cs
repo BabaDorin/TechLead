@@ -15,6 +15,7 @@ namespace TechLead.Models
         public Exercise Exercise { get; set; }
 
         public int Points;
-        public DateTime Time { get; set; }
+        public string Time { get; set; }
+        public string SourceCode { get; set; }
     }
 }

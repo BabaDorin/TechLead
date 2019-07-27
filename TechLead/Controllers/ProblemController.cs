@@ -9,6 +9,7 @@ using System.Data;
 using System.IO;
 using TechLead.Compiler;
 using System.Dynamic;
+using System.Text;
 namespace TechLead.Controllers
 {
     public class ProblemController : Controller
@@ -91,12 +92,43 @@ namespace TechLead.Controllers
                 string Path = TempData["FileLocation"].ToString();
                 TempData.Keep();
 
+                Submission SubmissionInstance = new Submission();
                 Compiler.Compiler compiler = new Compiler.Compiler();
+
+                //For the first, we will copy the source code content 
+                var fileStream = new FileStream(Path, FileMode.Open);
+                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
+                {
+                    SubmissionInstance.SourceCode = streamReader.ReadToEnd();
+                }
+                fileStream.Close();
 
                 //The list with the scores for each test case.
                 List<int> ScoredPoints = new List<int>();
                 ScoredPoints = compiler.Compilation(Path, E);
                 TempData["Score"] = ScoredPoints;
+
+                //Insert the submission into the database
+                
+                if (Request.IsAuthenticated)
+                {
+                    SubmissionInstance.User = _context.Users.FirstOrDefault(x => x.Id == User.Identity.GetUserId());
+                }
+
+                int sum = 0;
+                //Count the points
+                for (int i = 0; i < ScoredPoints.Count(); i++)
+                {
+                    sum += ScoredPoints[i];
+                }
+                SubmissionInstance.Points = sum;
+
+                SubmissionInstance.Time = DateTime.Now.ToString("MM/dd/yyyy");
+                SubmissionInstance.Exercise = E;
+
+                //Insert the data into DB
+                _context.Submissions.Add(SubmissionInstance);
+                _context.SaveChanges();
 
                 return RedirectToAction("Results", "Problem", ScoredPoints);
             }
