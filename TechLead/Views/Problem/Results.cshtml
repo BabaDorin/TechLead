@@ -9,35 +9,38 @@
 
 <div class="Content">
 
-    <h2>Compilling</h2>
-
     <div class="TitleBox">
-
+        <h2>Testing your solution</h2>
     </div>
+
     <div class="Box">
-        <h2>Test cases</h2>
-        <table style="width:100%">
+        
+        <h2>Results</h2>
+        <br /><br />
+
+        <table>
             <tr>
                 <th>Test</th>
-                <th>Points gained</th>
+                <th>Points</th>
             </tr>
             @foreach (int i in Model)
             {
                 <tr>
                     <td>Test @TestNumber</td>
                     <td>@i</td>
-                    @{ 
+                    @{
                         TestNumber++;
                         ScoredPoints += @i;
                     }
-                    
+
                 </tr>
-             }
+            }
             <tr>
-                <td>Total</td>
+                <td><strong>Total</strong></td>
                 <td>@ScoredPoints</td>
             </tr>
         </table>
+
     </div>
 </div>
 

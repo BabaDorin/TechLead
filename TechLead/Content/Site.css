@@ -357,3 +357,26 @@ input[type='file'] {
 .ErrorBox a{
     font-size:large;
 }
+
+/********************************************************* Results page ****************************************************************************************/
+
+table {
+    text-align: center;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+th {
+   text-align:center;
+   padding-bottom:20px;
+}
+
+td{
+    padding:5px;
+}
+
+tr {
+    border-bottom: 1px solid #ccc;
+    padding:5px;
+}
