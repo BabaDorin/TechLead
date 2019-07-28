@@ -108,7 +108,6 @@ namespace TechLead.Controllers
                 //The list with the scores for each test case.
                 List<int> ScoredPoints = new List<int>();
                 ScoredPoints = compiler.Compilation(Path, E);
-                TempData["Score"] = ScoredPoints;
 
                 //Insert the submission into the database
                 
@@ -128,12 +127,12 @@ namespace TechLead.Controllers
                 SubmissionInstance.Time = DateTime.Now.ToString("MM/dd/yyyy");
                 SubmissionInstance.Exercise = E.Name;
                 SubmissionInstance.ExerciseId = E.Id;
-
+                TempData["Submission"] = SubmissionInstance;
                 //Insert the data into DB
                 _context.Submissions.Add(SubmissionInstance);
                 _context.SaveChanges();
-
-                return RedirectToAction("Results", "Problem", ScoredPoints);
+                ScoredPoints.Clear();
+                return RedirectToAction("Results", "Problem");
             }
             catch (Exception)
             {
@@ -142,9 +141,9 @@ namespace TechLead.Controllers
         }
         public ActionResult Results()
         {
-            List<int> ScoredPoints = TempData["Score"] as List<int>;
+            Submission S = TempData["Submission"] as Submission;
             TempData.Keep();
-            return View(ScoredPoints);
+            return View(S);
         }
 
 

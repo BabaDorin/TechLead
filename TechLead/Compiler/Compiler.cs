@@ -88,6 +88,8 @@ namespace TechLead.Compiler
         //Creating 2 lists. One for Imputs and one for outputs.
         public void CreatingImputOutputLists(Exercise E)
         {
+            Imputs.Clear();
+            Outputs.Clear();
             //Go througn each test case and insert data in those lists
             //The first 2 are mandatory. For the rest we should check their existence
             Imputs.Add(E.TestImput1);
