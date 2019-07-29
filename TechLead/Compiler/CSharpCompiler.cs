@@ -151,8 +151,6 @@ namespace TechLead.Compiler
                 //Read the output from the program
                 string ActualOutput = "";
                 ActualOutput = p.StandardOutput.ReadToEnd();
-                //DeleteProcessFromTaskManager(FileNameWithoutExtension);
-                //p.Close();
 
                 //Here we have the user's program output and the correct one. We have to compare them.
                 if (ActualOutput.Equals(Output))
@@ -163,15 +161,8 @@ namespace TechLead.Compiler
                 {
                     Debug.WriteLine("Incorrect. Rezultatul >> \n" + ActualOutput + " | rezultatul corect: \n" + Output);
                 }
-                DeleteProcessFromTaskManager(FileNameWithoutExtension);
-                p.WaitForExit(700);
-
-                //p.StandardInput.Close();
-                //p.WaitForInputIdle(1000);
-                //p.WaitForExit();
-                //p.Kill();
-                //DeleteProcessFromTaskManager(FileNameWithoutExtension);
-                //p.WaitForExit(1000);
+                Debug.WriteLine("Went through a test");
+                p.WaitForExit();
             }
             catch (Exception e)
             {

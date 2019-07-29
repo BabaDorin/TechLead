@@ -107,8 +107,10 @@ namespace TechLead.Controllers
 
                 //The list with the scores for each test case.
                 List<int> ScoredPoints = new List<int>();
+                ScoredPoints.Clear();
                 ScoredPoints = compiler.Compilation(Path, E);
-
+                TempData["Score"] = null;
+                TempData["Score"] = ScoredPoints;
                 //Insert the submission into the database
                 
                 if (Request.IsAuthenticated)
@@ -127,11 +129,10 @@ namespace TechLead.Controllers
                 SubmissionInstance.Time = DateTime.Now.ToString("MM/dd/yyyy");
                 SubmissionInstance.Exercise = E.Name;
                 SubmissionInstance.ExerciseId = E.Id;
-                TempData["Submission"] = SubmissionInstance;
+                //TempData["Submission"] = SubmissionInstance;
                 //Insert the data into DB
                 _context.Submissions.Add(SubmissionInstance);
                 _context.SaveChanges();
-                ScoredPoints.Clear();
                 return RedirectToAction("Results", "Problem");
             }
             catch (Exception)
@@ -139,11 +140,12 @@ namespace TechLead.Controllers
                 return View("~/Views/Shared/Error.cshtml");
             }
         }
+
         public ActionResult Results()
         {
-            Submission S = TempData["Submission"] as Submission;
+            List<int> ScoredPoints = TempData["Score"] as List<int>;
             TempData.Keep();
-            return View(S);
+            return View(ScoredPoints);
         }
 
 
@@ -200,6 +202,7 @@ namespace TechLead.Controllers
                     SubmissionForASpecificExercise.Add(S);
                 }
             }
+            SubmissionForASpecificExercise.Reverse();
             return View(SubmissionForASpecificExercise);
         }
 

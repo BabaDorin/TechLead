@@ -1,4 +1,4 @@
-﻿@model TechLead.Models.Submission
+﻿@model List<int>
 @{
     ViewBag.Title = "Results";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,8 +17,7 @@
         
         <h2>Results</h2>
         <br /><br />
-        Points gained: @Model.Points
-        @*<table>
+        <table>
             <tr>
                 <th>Test</th>
                 <th>Points</th>
@@ -39,7 +38,7 @@
                 <td><strong>Total</strong></td>
                 <td>@ScoredPoints</td>
             </tr>
-        </table>*@
+        </table>
 
     </div>
 </div>
