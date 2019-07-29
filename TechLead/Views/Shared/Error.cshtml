@@ -13,8 +13,16 @@
 <div class="Content" style="height:80%">
     <div class="ErrorBox">
 
-        <h1>@Model[0]</h1>
-        <p>@Model[1]</p>
+        <h1>@if (Model[0] != null)
+        {
+            @Model[0]
+        }</h1>
+        <p>
+            @if (Model[1] != null)
+            {
+                @Model[1]
+            }
+            </p>
         <br /><br />
         @if (Request.UrlReferrer != null)
         {

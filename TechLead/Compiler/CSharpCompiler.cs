@@ -6,6 +6,7 @@ using System.IO;
 using System.Diagnostics;
 using TechLead.Models;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace TechLead.Compiler
 {
@@ -59,11 +60,38 @@ namespace TechLead.Compiler
             {
                 Debug.WriteLine("Eroare. Fisierul sursa nu a fost gasit.");
             }
-
-            WaitForTheExeFile();
-
-            int TestCases = Imputs.Count();
             
+
+            //If the .exe file wont be created in 10 seconds, it means that something is wrong with the file submitted by user. 
+            var task = Task.Run(() =>
+            {
+                return WaitForTheExeFile();
+            }
+            );
+            Debug.WriteLine("1");
+            //bool exeWasFound=task.Wait(TimeSpan.FromSeconds(5));
+            //FIND A WAY TO STOP THE FUNCTION FROM EXECUTING FROM HERE.
+            int TestCases = Imputs.Count();
+            Debug.WriteLine("2");
+            if (task.Wait(TimeSpan.FromSeconds(5))==false)
+            {
+                for (int i = 0; i < TestCases; i++)
+                {
+                    ScoredPoints.Add(0);
+                }
+                DeleteSourceCode(FileNameWithoutExtension);
+                try
+                {
+                    task.Dispose();
+                    cmd.WaitForExit(700);
+                    return ScoredPoints;
+                }
+                catch (Exception)
+                {
+                    return ScoredPoints;
+                }
+            }
+
             //Here we go through each test case.
             for(int i=0; i<TestCases; i++)
             {
@@ -79,8 +107,10 @@ namespace TechLead.Compiler
             return ScoredPoints;
         }
 
-        public void WaitForTheExeFile()
+        public bool WaitForTheExeFile()
         {
+            bool exeWasFound = false;
+            int Try = 0;
             if (!IsThereAnySourceFile)
             {
 
@@ -92,18 +122,28 @@ namespace TechLead.Compiler
 
                 //The app waits for the executable. It can be created in a longer period of time. 
                 bool executableExists;
+                executableExists = File.Exists(ExecutableAdress + @"/" + FileNameWithoutExtension + ".exe");
                 do
                 {
-                    executableExists = File.Exists(ExecutableAdress + @"/"+FileNameWithoutExtension+".exe");
-                    if (!executableExists)
+                    if (!executableExists && Try<100)
                     {
                         System.Threading.Thread.Sleep(100);
+                        Try++;
                         Debug.Write(".");
                     }
                     else break;
                 } while (!executableExists);
-                Debug.WriteLine("The executable has been created.");
+                if (Try >= 100)
+                {
+                    exeWasFound = false;
+                }
+                else
+                {
+                    Debug.WriteLine("The executable has been created.");
+                    exeWasFound = true;
+                }
             }
+            return exeWasFound;
         }
 
         public void DeleteProgramEXE(string FileNameWithoutExtension)
