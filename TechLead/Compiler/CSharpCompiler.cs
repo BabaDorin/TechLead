@@ -7,6 +7,7 @@ using System.Diagnostics;
 using TechLead.Models;
 using System.Data;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace TechLead.Compiler
 {
@@ -63,26 +64,27 @@ namespace TechLead.Compiler
             
 
             //If the .exe file wont be created in 10 seconds, it means that something is wrong with the file submitted by user. 
-            var task = Task.Run(() =>
-            {
-                return WaitForTheExeFile();
-            }
-            );
-            Debug.WriteLine("1");
-            //bool exeWasFound=task.Wait(TimeSpan.FromSeconds(5));
-            //FIND A WAY TO STOP THE FUNCTION FROM EXECUTING FROM HERE.
+            
+            Thread WaitForExe = new Thread(WaitForTheExeFile);
+
             int TestCases = Imputs.Count();
-            Debug.WriteLine("2");
-            if (task.Wait(TimeSpan.FromSeconds(5))==false)
+            Debug.WriteLine("Starting the LookingForEXE THREAD");
+            WaitForExe.Start();
+            Debug.WriteLine("thread has been started");
+
+            if (!WaitForExe.Join(10000))
             {
                 for (int i = 0; i < TestCases; i++)
                 {
                     ScoredPoints.Add(0);
                 }
+
                 DeleteSourceCode(FileNameWithoutExtension);
+
                 try
                 {
-                    task.Dispose();
+                    Debug.WriteLine("Abuse detected. Abort thread");
+                    WaitForExe.Abort();
                     cmd.WaitForExit(700);
                     return ScoredPoints;
                 }
@@ -93,9 +95,16 @@ namespace TechLead.Compiler
             }
 
             //Here we go through each test case.
-            for(int i=0; i<TestCases; i++)
+            for (int i=0; i<TestCases; i++)
             {
-                ScoredPoints.Add(CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase));
+
+                int Score = 0;
+                //Thread Testing = new Thread(() => CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase, out Score));
+                //Testing.Start();
+                CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase, out Score);
+                //Thread AntiAbuse = new Thread(() => MeasureTime(Testing));
+                Debug.WriteLine("Score for test " + i + " = " + Score);
+                ScoredPoints.Add(Score);
             }
 
             //Clean up the space.
@@ -107,10 +116,19 @@ namespace TechLead.Compiler
             return ScoredPoints;
         }
 
-        public bool WaitForTheExeFile()
+        public void MeasureTime(Thread T)
         {
-            bool exeWasFound = false;
-            int Try = 0;
+
+            Thread.Sleep(5000);
+            Debug.WriteLine("Gone 5 seconds");
+            if (T.IsAlive)
+            {
+                T.Abort();
+                Debug.WriteLine("Thread was aborted");
+            }
+        }
+        public void WaitForTheExeFile()
+        {
             if (!IsThereAnySourceFile)
             {
 
@@ -122,28 +140,19 @@ namespace TechLead.Compiler
 
                 //The app waits for the executable. It can be created in a longer period of time. 
                 bool executableExists;
-                executableExists = File.Exists(ExecutableAdress + @"/" + FileNameWithoutExtension + ".exe");
                 do
                 {
-                    if (!executableExists && Try<100)
+                    executableExists = File.Exists(ExecutableAdress + @"/" + FileNameWithoutExtension + ".exe");
+                    if (!executableExists)
                     {
                         System.Threading.Thread.Sleep(100);
-                        Try++;
                         Debug.Write(".");
                     }
                     else break;
                 } while (!executableExists);
-                if (Try >= 100)
-                {
-                    exeWasFound = false;
-                }
-                else
-                {
-                    Debug.WriteLine("The executable has been created.");
-                    exeWasFound = true;
-                }
+
+                Debug.WriteLine("The executable has been created.");
             }
-            return exeWasFound;
         }
 
         public void DeleteProgramEXE(string FileNameWithoutExtension)
@@ -170,9 +179,9 @@ namespace TechLead.Compiler
                     Proc.Kill();
         }
 
-        public int CompileATestCase(string Imput, string Output, Process p, int maxPointsForATestCase)
+        public void CompileATestCase(string Imput, string Output, Process p, int maxPointsForATestCase, out int Score)
         {
-            int PointsScored = 0;
+            Score = 0;
             try
             {
                 //Here we take the executable and run it
@@ -195,7 +204,7 @@ namespace TechLead.Compiler
                 //Here we have the user's program output and the correct one. We have to compare them.
                 if (ActualOutput.Equals(Output))
                 {
-                    PointsScored += maxPointsForATestCase;
+                    Score += maxPointsForATestCase;
                 }
                 else
                 {
@@ -209,7 +218,6 @@ namespace TechLead.Compiler
                 Debug.WriteLine("Eroare Process: ");
                 Debug.Write(e);
             }
-            return PointsScored;
         }
     }
 }
