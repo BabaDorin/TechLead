@@ -43,6 +43,13 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult Details(HttpPostedFileBase file)
         {
+            //First of all, clear the folder with solutions.
+            System.IO.DirectoryInfo di = new DirectoryInfo(Server.MapPath("~/Solutions/"));
+            foreach (FileInfo fileinfo in di.GetFiles())
+            {
+                fileinfo.Delete();
+            }
+
             if (file == null)
             {
                 List<string> Error = new List<string>();

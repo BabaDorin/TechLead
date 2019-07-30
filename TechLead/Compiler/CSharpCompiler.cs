@@ -97,22 +97,35 @@ namespace TechLead.Compiler
             //Here we go through each test case.
             for (int i=0; i<TestCases; i++)
             {
-
+                int Error = 0;
                 int Score = 0;
-                //Thread Testing = new Thread(() => CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase, out Score));
-                //Testing.Start();
-                CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase, out Score);
-                //Thread AntiAbuse = new Thread(() => MeasureTime(Testing));
-                Debug.WriteLine("Score for test " + i + " = " + Score);
-                ScoredPoints.Add(Score);
+                CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase, out Score,out Error);
+                if (Error == -1)
+                {
+                    //Abuse detected. There is no reason to pass the solution to other tests.
+                    for(int j=i; j<TestCases; j++)
+                    {
+                        ScoredPoints.Add(0);
+                    }
+                    Debug.WriteLine("Abuse detected. Test " + i);
+                    break;
+                }
+                else
+                {
+                    Debug.WriteLine("Score for test " + i + " = " + Score);
+                    ScoredPoints.Add(Score);
+                }
             }
 
+            Debug.WriteLine("Going to DeleteProgramEXE");
             //Clean up the space.
             DeleteProgramEXE(FileNameWithoutExtension);
+            Debug.WriteLine("Going to DeleteSourceCode");
             DeleteSourceCode(FileNameWithoutExtension);
+            Debug.WriteLine("Going to DeleteFromTaskManager");
             DeleteProcessFromTaskManager(FileNameWithoutExtension);
 
-            //Return the list of scored for each test case.
+            Debug.WriteLine("Going to return the results");
             return ScoredPoints;
         }
 
@@ -175,12 +188,13 @@ namespace TechLead.Compiler
         public void DeleteProcessFromTaskManager(string FileNameWithoutExtension)
         {
             foreach (Process Proc in Process.GetProcesses())
-                if (Proc.ProcessName.Equals(FileNameWithoutExtension+".exe"))
+                if (Proc.ProcessName.Equals(FileNameWithoutExtension))
                     Proc.Kill();
         }
 
-        public void CompileATestCase(string Imput, string Output, Process p, int maxPointsForATestCase, out int Score)
+        public void CompileATestCase(string Imput, string Output, Process p, int maxPointsForATestCase, out int Score, out int ErrorCode)
         {
+            ErrorCode = 0; //No error
             Score = 0;
             try
             {
@@ -192,14 +206,28 @@ namespace TechLead.Compiler
                 p.StartInfo.CreateNoWindow = true;
                 p.Start();
 
-                //Write the Imput to the program
-                var streamWriter = p.StandardInput;
-                streamWriter.WriteLine(Imput);
-                p.StandardInput.Close();
-
-                //Read the output from the program
                 string ActualOutput = "";
-                ActualOutput = p.StandardOutput.ReadToEnd();
+                Thread Test = new Thread(() => SetImputGetOutput(p, Imput, out ActualOutput));
+                Debug.WriteLine("Starting the TEST Thread");
+                Test.Start();
+                Debug.WriteLine("Test thread has been started");
+
+                //Check is the solution is not an abuse (Ex: Infinite loop)
+                //If it runs the test in 8 seconds, it means that it's at least legit. Otherwise, it is an abuse and 
+                //It won't be sent to any other tests.
+                if (!Test.Join(5000))
+                {
+                    Test.Abort();
+                    p.StandardInput.Close();
+                    p.WaitForExit(100);
+                    Debug.WriteLine("Process killed");
+
+                    ErrorCode = -1; //The code for 'Abuse'
+                    return;
+                }
+                //SetImputGetOutput(p, Imput, out ActualOutput);
+                //Write the Imput to the program
+                
 
                 //Here we have the user's program output and the correct one. We have to compare them.
                 if (ActualOutput.Equals(Output))
@@ -218,6 +246,16 @@ namespace TechLead.Compiler
                 Debug.WriteLine("Eroare Process: ");
                 Debug.Write(e);
             }
+        }
+        public void SetImputGetOutput(Process p, string imput, out string output)
+        {
+            var streamWriter = p.StandardInput;
+            streamWriter.WriteLine(imput);
+            p.StandardInput.Close();
+
+            //Read the output from the program
+            output = "";
+            output = p.StandardOutput.ReadToEnd();
         }
     }
 }
