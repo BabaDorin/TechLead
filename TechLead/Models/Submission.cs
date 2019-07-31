@@ -9,6 +9,8 @@ namespace TechLead.Models
 {
     public class Submission
     {
+        //public IEnumerable<int> Scores { get; set; }
+        //public IEnumerable<int> ExecutionTimeForEachTest { get; set; }
         public int SubmissionID { get; set; }
         public ApplicationUser User { get; set; }
 

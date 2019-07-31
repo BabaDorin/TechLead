@@ -60,7 +60,7 @@ namespace TechLead.Controllers
             //Store the file and send the path to 'Compiling'
             try
             {
-                if (file.ContentLength > 0)
+                if (file.ContentLength > 0&&file.ContentLength< 10000000)
                 {
                     var fileName = Path.GetFileName(file.FileName);
                     var path = Path.Combine(Server.MapPath("~/Solutions/"), fileName);
@@ -70,12 +70,18 @@ namespace TechLead.Controllers
                 }
                 else
                 {
-                    return View("~/Views/Shared/Error.cshtml");
+                    List<string> Error = new List<string>();
+                    Error.Add("Error");
+                    Error.Add("Somethig is wrong with your solution (Maybe it is bigger than 10MB)");
+                    return View("~/Views/Shared/Error.cshtml",Error);
                 }
             }
-            catch (Exception)
+            catch (Exception E)
             {
-                return View("~/Views/Shared/Error.cshtml");
+                List<string> Error = new List<string>();
+                Error.Add("Error");
+                Error.Add(E.ToString());
+                return View("~/Views/Shared/Error.cshtml", Error);
             }
             
             //When the user submits a solution to a specific problem, he will be redirected to the 'Compiling' page of the
@@ -142,9 +148,12 @@ namespace TechLead.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("Results", "Problem");
             }
-            catch (Exception)
+            catch (Exception E)
             {
-                return View("~/Views/Shared/Error.cshtml");
+                List<string> Error = new List<string>();
+                Error.Add("Error. Your file could not be compiled properly. Details below");
+                Error.Add(E.ToString());
+                return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
 
@@ -212,7 +221,5 @@ namespace TechLead.Controllers
             SubmissionForASpecificExercise.Reverse();
             return View(SubmissionForASpecificExercise);
         }
-
-        
     }
 }

@@ -99,7 +99,13 @@ namespace TechLead.Compiler
             {
                 int Error = 0;
                 int Score = 0;
+
+                //Here we measure the execution time
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase, out Score,out Error);
+                watch.Stop();
+
+                var elapsedMs = watch.ElapsedMilliseconds;
                 if (Error == -1)
                 {
                     //Abuse detected. There is no reason to pass the solution to other tests.
