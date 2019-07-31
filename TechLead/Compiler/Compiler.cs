@@ -44,8 +44,9 @@ namespace TechLead.Compiler
 
         //Call the specific compiler for the language the program was written in.
         //The function will return a list with all the scored points for the problem.
-        public List<int> Compilation(string FilePath, Exercise E)
+        public List<int> Compilation(string FilePath, Exercise E, out List<int> ExecutionTime)
         {
+            ExecutionTime = new List<int>();
             string fileName = Path.GetFileName(FilePath);
             CreatingImputOutputLists(E);
             //The points for each test case will be stored in a List of integers.
@@ -58,7 +59,7 @@ namespace TechLead.Compiler
                 case ".cs":
                     CSharpCompiler CSharp = new CSharpCompiler();
                     int MaxPointsPerTestCase = E.Points / Imputs.Count();
-                    return CSharp.CSharpCompilerFunction(FilePath, Imputs, Outputs, MaxPointsPerTestCase);
+                    return CSharp.CSharpCompilerFunction(FilePath, Imputs, Outputs, MaxPointsPerTestCase, out ExecutionTime);
 
                 case ".pas":
                     PascalCompiler Pas = new PascalCompiler();

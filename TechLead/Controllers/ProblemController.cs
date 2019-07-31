@@ -120,8 +120,9 @@ namespace TechLead.Controllers
 
                 //The list with the scores for each test case.
                 List<int> ScoredPoints = new List<int>();
+                List<int> ExecutionTime = new List<int>();
                 ScoredPoints.Clear();
-                ScoredPoints = compiler.Compilation(Path, E);
+                ScoredPoints = compiler.Compilation(Path, E, out ExecutionTime);
                 TempData["Score"] = null;
                 TempData["Score"] = ScoredPoints;
                 //Insert the submission into the database
@@ -137,11 +138,14 @@ namespace TechLead.Controllers
                 {
                     sum += ScoredPoints[i];
                 }
-                SubmissionInstance.Points = sum;
 
+                SubmissionInstance.Points = sum;
                 SubmissionInstance.Time = DateTime.Now.ToString("MM/dd/yyyy");
                 SubmissionInstance.Exercise = E.Name;
                 SubmissionInstance.ExerciseId = E.Id;
+                SubmissionInstance.Scores = ScoredPoints;
+                SubmissionInstance.ExecutionTimeForEachTest = ExecutionTime;
+
                 //TempData["Submission"] = SubmissionInstance;
                 //Insert the data into DB
                 _context.Submissions.Add(SubmissionInstance);

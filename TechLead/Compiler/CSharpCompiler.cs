@@ -16,10 +16,10 @@ namespace TechLead.Compiler
         bool IsThereAnySourceFile;
         string FileNameWithoutExtension;
         string fileName;
-        public List<int> CSharpCompilerFunction(string FilePath, List<string>Imputs, List<string>Outputs, int maxPointsForATestCase)
+        public List<int> CSharpCompilerFunction(string FilePath, List<string>Imputs, List<string>Outputs, int maxPointsForATestCase, out List<int> ExecutionTime)
         {
             List<int> ScoredPoints = new List<int>();
-
+            ExecutionTime = new List<int>();
             fileName = Path.GetFileName(FilePath);
 
             //We need to know the name of the source file to add the .exe or smth later. The point is that we need it.
@@ -104,14 +104,13 @@ namespace TechLead.Compiler
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase, out Score,out Error);
                 watch.Stop();
-
-                var elapsedMs = watch.ElapsedMilliseconds;
                 if (Error == -1)
                 {
                     //Abuse detected. There is no reason to pass the solution to other tests.
                     for(int j=i; j<TestCases; j++)
                     {
                         ScoredPoints.Add(0);
+                        ExecutionTime.Add(0);
                     }
                     Debug.WriteLine("Abuse detected. Test " + i);
                     break;
@@ -120,6 +119,7 @@ namespace TechLead.Compiler
                 {
                     Debug.WriteLine("Score for test " + i + " = " + Score);
                     ScoredPoints.Add(Score);
+                    ExecutionTime.Add(int.Parse(watch.ElapsedMilliseconds.ToString()));
                 }
             }
 
@@ -135,17 +135,6 @@ namespace TechLead.Compiler
             return ScoredPoints;
         }
 
-        public void MeasureTime(Thread T)
-        {
-
-            Thread.Sleep(5000);
-            Debug.WriteLine("Gone 5 seconds");
-            if (T.IsAlive)
-            {
-                T.Abort();
-                Debug.WriteLine("Thread was aborted");
-            }
-        }
         public void WaitForTheExeFile()
         {
             if (!IsThereAnySourceFile)
