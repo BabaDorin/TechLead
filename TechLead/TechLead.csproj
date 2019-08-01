@@ -306,9 +306,9 @@
     <Compile Include="Migrations\201907271951032_RepairSubmissionTable.Designer.cs">
       <DependentUpon>201907271951032_RepairSubmissionTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201907312013438_UpdateSubmissionTable_AddScoredAndExecutionTimeForEachTest1.cs" />
-    <Compile Include="Migrations\201907312013438_UpdateSubmissionTable_AddScoredAndExecutionTimeForEachTest1.Designer.cs">
-      <DependentUpon>201907312013438_UpdateSubmissionTable_AddScoredAndExecutionTimeForEachTest1.cs</DependentUpon>
+    <Compile Include="Migrations\201908012052181_UpdateSubmissionTable_AddScoresAndExecutionTime2.cs" />
+    <Compile Include="Migrations\201908012052181_UpdateSubmissionTable_AddScoresAndExecutionTime2.Designer.cs">
+      <DependentUpon>201908012052181_UpdateSubmissionTable_AddScoresAndExecutionTime2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
@@ -506,8 +506,8 @@
     <EmbeddedResource Include="Migrations\201907271951032_RepairSubmissionTable.resx">
       <DependentUpon>201907271951032_RepairSubmissionTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201907312013438_UpdateSubmissionTable_AddScoredAndExecutionTimeForEachTest1.resx">
-      <DependentUpon>201907312013438_UpdateSubmissionTable_AddScoredAndExecutionTimeForEachTest1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908012052181_UpdateSubmissionTable_AddScoresAndExecutionTime2.resx">
+      <DependentUpon>201908012052181_UpdateSubmissionTable_AddScoresAndExecutionTime2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

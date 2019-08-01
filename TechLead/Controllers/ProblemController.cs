@@ -143,11 +143,9 @@ namespace TechLead.Controllers
                 SubmissionInstance.Time = DateTime.Now.ToString("MM/dd/yyyy");
                 SubmissionInstance.Exercise = E.Name;
                 SubmissionInstance.ExerciseId = E.Id;
-                SubmissionInstance.Scores = ScoredPoints;
-                SubmissionInstance.ExecutionTimeForEachTest = ExecutionTime;
+                InsertScoresAndExecutionTimesIntoSubmissionInstance(ref SubmissionInstance, ScoredPoints, ExecutionTime);
 
-                //TempData["Submission"] = SubmissionInstance;
-                //Insert the data into DB
+                //Save data about submission. 
                 _context.Submissions.Add(SubmissionInstance);
                 _context.SaveChanges();
                 return RedirectToAction("Results", "Problem");
@@ -158,6 +156,57 @@ namespace TechLead.Controllers
                 Error.Add("Error. Your file could not be compiled properly. Details below");
                 Error.Add(E.ToString());
                 return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
+        private void InsertScoresAndExecutionTimesIntoSubmissionInstance(ref Submission submissionInstance, List<int> scoredPoints, List<int> executionTime)
+        {
+            int TestNr = scoredPoints.Count();
+            for (int i = 0; i < TestNr; i++)
+            {
+                switch (i)
+                {
+                    case 1:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                    case 2:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                    case 3:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                    case 4:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                    case 5:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                    case 6:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                    case 7:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                    case 8:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                    case 9:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                    case 10:
+                        submissionInstance.Score1 = scoredPoints[i];
+                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        break;
+                }
             }
         }
 

@@ -597,4 +597,4 @@ C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\Te
 C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionTable_AddSourceCodeField.resources
 C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.updateDatabase.resources
 C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.RepairSubmissionTable.resources
-C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionTable_AddScoredAndExecutionTimeForEachTest1.resources
+C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionTable_AddScoresAndExecutionTime2.resources
