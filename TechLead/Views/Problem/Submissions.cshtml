@@ -17,8 +17,9 @@
                 <th>Submission ID</th>
                 <th>User</th>
                 <th>Time</th>
-                <th>Exercise</th>
+                <th>Exercise ID</th>
                 <th>Points</th>
+                <th></th>
             </tr>
             @foreach (Submission S in Model)
             {
@@ -26,12 +27,19 @@
                     <td>@S.SubmissionID</td>
                     <td>@S.User</td>
                     <td>@S.Time</td>
-                    <td>@S.Exercise</td>
+                    <td>@S.ExerciseId</td>
                     <td>@S.Points</td>
-                    
+                    <td>@Html.ActionLink("See More", "SubmissionDetails", "Problem", new { id = @S.SubmissionID }, null)</td>
+
                 </tr>
             }
         </table>
+
+        <br />
+        @if (Request.UrlReferrer != null)
+        {
+            <a class="bottomNav" onclick="history.go(-1); return false;" href="#">Back</a><br />
+        }
 
     </div>
 </div>

@@ -14,7 +14,7 @@
     </div>
 
     <div class="Box">
-        
+
         <h2>Results</h2>
         <br /><br />
         <table>
@@ -40,6 +40,11 @@
             </tr>
         </table>
 
+        <br />
+        @if (Request.UrlReferrer != null)
+        {
+            <a class="bottomNav" onclick="history.go(-1); return false;" href="#">Back</a><br />
+        }
     </div>
 </div>
 

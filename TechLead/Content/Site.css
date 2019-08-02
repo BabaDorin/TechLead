@@ -362,7 +362,7 @@ input[type='file'] {
 
 table {
     text-align: center;
-    width: 70%;
+    width: 67%;
     margin-left: 15%;
     margin-right: 15%;
 }
@@ -380,3 +380,18 @@ tr {
     border-bottom: 1px solid #ccc;
     padding:5px;
 }
+
+
+/********************************************************* Submission Page ****************************************************************************************/
+
+.InfoSubmission {
+    text-align: center;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.InfoSubmission .col-md-4{
+    margin-bottom:10px;
+}
+
