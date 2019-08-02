@@ -1,0 +1,163 @@
+﻿@model TechLead.Models.Submission
+@{
+    ViewBag.Title = "SubmissionDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var TestNumber=1;
+    var ScoredPoints = 0;
+}
+
+
+
+
+<div class="Content">
+
+    <div class="TitleBox">
+        <h2>Submission ID @Model.SubmissionID</h2>
+        <h2>@Model.Exercise</h2>
+    </div>
+
+    <div class="Box">
+        <table>
+            <tr>
+                <th>Test</th>
+                <th>Time (Miliseconds)</th>
+                <th>Points</th>
+            </tr>
+            @if (Model.Score1 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime1</td>
+                    <td>@Model.Score1</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score1;
+                    }
+
+                </tr>
+            }
+            @if (Model.Score2 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime2</td>
+                    <td>@Model.Score2</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score2;
+                    }
+
+                </tr>
+            }
+            @if (Model.Score3 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime3</td>
+                    <td>@Model.Score3</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score3;
+                    }
+
+                </tr>
+            }
+            @if (Model.Score4 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime4</td>
+                    <td>@Model.Score4</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score4;
+                    }
+
+                </tr>
+            }
+            @if (Model.Score5 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime5</td>
+                    <td>@Model.Score5</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score5;
+                    }
+
+                </tr>
+            }
+            @if (Model.Score6 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime6</td>
+                    <td>@Model.Score6</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score6;
+                    }
+
+                </tr>
+            }
+            @if (Model.Score7 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime7</td>
+                    <td>@Model.Score7</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score7;
+                    }
+
+                </tr>
+            }
+            @if (Model.Score8 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime8</td>
+                    <td>@Model.Score8</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score8;
+                    }
+
+                </tr>
+            }
+            @if (Model.Score9 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime9</td>
+                    <td>@Model.Score9</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score9;
+                    }
+
+                </tr>
+            }
+            @if (Model.Score10 != -1)
+            {
+                <tr>
+                    <td>Test @TestNumber</td>
+                    <td>@Model.ExecutionTime10</td>
+                    <td>@Model.Score10</td>
+                    @{
+                        TestNumber++;
+                        ScoredPoints += Model.Score10;
+                    }
+
+                </tr>
+            }
+            <tr>
+                <td><strong>Total</strong></td>
+                <td>@ScoredPoints</td>
+            </tr>
+        </table>
+    </div>
+</div>
+

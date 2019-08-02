@@ -36,7 +36,10 @@ namespace TechLead.Controllers
             }
             catch (Exception)
             {
-                return View("~/Views/Shared/Error.cshtml");
+                List<string> Error = new List<string>();
+                Error.Add("Error");
+                Error.Add("We couldn't find the exercise specified. ");
+                return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
 
@@ -164,47 +167,47 @@ namespace TechLead.Controllers
             int TestNr = scoredPoints.Count();
             for (int i = 0; i < TestNr; i++)
             {
-                switch (i)
+                switch (i+1)
                 {
                     case 1:
                         submissionInstance.Score1 = scoredPoints[i];
                         submissionInstance.ExecutionTime1 = executionTime[i];
                         break;
                     case 2:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        submissionInstance.Score2 = scoredPoints[i];
+                        submissionInstance.ExecutionTime2 = executionTime[i];
                         break;
                     case 3:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        submissionInstance.Score3 = scoredPoints[i];
+                        submissionInstance.ExecutionTime3 = executionTime[i];
                         break;
                     case 4:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        submissionInstance.Score4 = scoredPoints[i];
+                        submissionInstance.ExecutionTime4 = executionTime[i];
                         break;
                     case 5:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        submissionInstance.Score5 = scoredPoints[i];
+                        submissionInstance.ExecutionTime5 = executionTime[i];
                         break;
                     case 6:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        submissionInstance.Score6 = scoredPoints[i];
+                        submissionInstance.ExecutionTime6 = executionTime[i];
                         break;
                     case 7:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        submissionInstance.Score7 = scoredPoints[i];
+                        submissionInstance.ExecutionTime7 = executionTime[i];
                         break;
                     case 8:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        submissionInstance.Score8 = scoredPoints[i];
+                        submissionInstance.ExecutionTime8 = executionTime[i];
                         break;
                     case 9:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        submissionInstance.Score9 = scoredPoints[i];
+                        submissionInstance.ExecutionTime9 = executionTime[i];
                         break;
                     case 10:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
+                        submissionInstance.Score10 = scoredPoints[i];
+                        submissionInstance.ExecutionTime10 = executionTime[i];
                         break;
                 }
             }
@@ -216,6 +219,22 @@ namespace TechLead.Controllers
             TempData.Keep();
             return View(ScoredPoints);
         }
+        public ActionResult SubmissionDetails(int id)
+        {
+            try
+            {
+                Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
+                return View(S);
+            }
+            catch (Exception)
+            {
+                List<string> Error = new List<string>();
+                Error.Add("Error");
+                Error.Add("We couldn't find the submission specified. ");
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
 
 
 

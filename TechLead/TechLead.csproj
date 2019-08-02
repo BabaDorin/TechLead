@@ -310,6 +310,10 @@
     <Compile Include="Migrations\201908012052181_UpdateSubmissionTable_AddScoresAndExecutionTime2.Designer.cs">
       <DependentUpon>201908012052181_UpdateSubmissionTable_AddScoresAndExecutionTime2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908012106470_UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.cs" />
+    <Compile Include="Migrations\201908012106470_UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.Designer.cs">
+      <DependentUpon>201908012106470_UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -394,6 +398,7 @@
     <Content Include="Views\Problem\Compiling.cshtml" />
     <Content Include="Views\Problem\Results.cshtml" />
     <Content Include="Views\Problem\Submissions.cshtml" />
+    <Content Include="Views\Problem\SubmissionDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -508,6 +513,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908012052181_UpdateSubmissionTable_AddScoresAndExecutionTime2.resx">
       <DependentUpon>201908012052181_UpdateSubmissionTable_AddScoresAndExecutionTime2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908012106470_UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.resx">
+      <DependentUpon>201908012106470_UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

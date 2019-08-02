@@ -72,11 +72,12 @@ namespace TechLead.Compiler
             WaitForExe.Start();
             Debug.WriteLine("thread has been started");
 
-            if (!WaitForExe.Join(10000))
+            if (!WaitForExe.Join(25000))
             {
                 for (int i = 0; i < TestCases; i++)
                 {
                     ScoredPoints.Add(0);
+                    ExecutionTime.Add(0);
                 }
 
                 DeleteSourceCode(FileNameWithoutExtension);
@@ -101,9 +102,8 @@ namespace TechLead.Compiler
                 int Score = 0;
 
                 //Here we measure the execution time
-                var watch = System.Diagnostics.Stopwatch.StartNew();
-                CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase, out Score,out Error);
-                watch.Stop();
+                int Time = 0;
+                CompileATestCase(Imputs[i], Outputs[i], cmd, maxPointsForATestCase, out Score,out Error, ref Time);
                 if (Error == -1)
                 {
                     //Abuse detected. There is no reason to pass the solution to other tests.
@@ -119,7 +119,7 @@ namespace TechLead.Compiler
                 {
                     Debug.WriteLine("Score for test " + i + " = " + Score);
                     ScoredPoints.Add(Score);
-                    ExecutionTime.Add(int.Parse(watch.ElapsedMilliseconds.ToString()));
+                    ExecutionTime.Add(Time);
                 }
             }
 
@@ -187,14 +187,14 @@ namespace TechLead.Compiler
                     Proc.Kill();
         }
 
-        public void CompileATestCase(string Imput, string Output, Process p, int maxPointsForATestCase, out int Score, out int ErrorCode)
+        public void CompileATestCase(string Imput, string Output, Process p, int maxPointsForATestCase, out int Score, out int ErrorCode, ref int Time)
         {
             ErrorCode = 0; //No error
             Score = 0;
             try
             {
                 //Here we take the executable and run it
-                p.StartInfo.FileName = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/"+FileNameWithoutExtension+".exe");
+                p.StartInfo.FileName = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/" + FileNameWithoutExtension + ".exe");
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardInput = true;
                 p.StartInfo.RedirectStandardOutput = true;
@@ -204,21 +204,28 @@ namespace TechLead.Compiler
                 string ActualOutput = "";
                 Thread Test = new Thread(() => SetImputGetOutput(p, Imput, out ActualOutput));
                 Debug.WriteLine("Starting the TEST Thread");
+                var ExecutionTime = System.Diagnostics.Stopwatch.StartNew();
                 Test.Start();
+
                 Debug.WriteLine("Test thread has been started");
 
                 //Check is the solution is not an abuse (Ex: Infinite loop)
                 //If it runs the test in 8 seconds, it means that it's at least legit. Otherwise, it is an abuse and 
                 //It won't be sent to any other tests.
-                if (!Test.Join(5000))
+                if (!Test.Join(8000))
                 {
                     Test.Abort();
                     p.StandardInput.Close();
                     p.WaitForExit(100);
                     Debug.WriteLine("Process killed");
-
+                    ExecutionTime.Stop();
                     ErrorCode = -1; //The code for 'Abuse'
                     return;
+                }
+                else
+                {
+                    ExecutionTime.Stop();
+                    Time = int.Parse(ExecutionTime.ElapsedMilliseconds.ToString());
                 }
                 //SetImputGetOutput(p, Imput, out ActualOutput);
                 //Write the Imput to the program
