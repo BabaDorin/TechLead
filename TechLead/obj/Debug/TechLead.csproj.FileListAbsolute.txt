@@ -599,3 +599,7 @@ C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\Te
 C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.RepairSubmissionTable.resources
 C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionTable_AddScoresAndExecutionTime2.resources
 C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.resources
+C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\bin\PagedList.dll
+C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\bin\PagedList.Mvc.dll
+C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\bin\PagedList.xml
+C:\Users\Maria Baba\Desktop\Новая папка\techlead\TechLead\bin\PagedList.Mvc.xml

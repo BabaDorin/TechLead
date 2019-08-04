@@ -10,6 +10,8 @@ using System.IO;
 using TechLead.Compiler;
 using System.Dynamic;
 using System.Text;
+using PagedList;
+using PagedList.Mvc;
 namespace TechLead.Controllers
 {
     public class ProblemController : Controller
@@ -277,8 +279,9 @@ namespace TechLead.Controllers
 
 
 
-        public ActionResult Submissions()
+        public ActionResult Submissions(int? page)
         {
+            
             Exercise e = TempData["Object"] as Exercise;
             int ExerciseIdParam = e.Id;
             TempData.Keep();
@@ -291,7 +294,7 @@ namespace TechLead.Controllers
                 }
             }
             SubmissionForASpecificExercise.Reverse();
-            return View(SubmissionForASpecificExercise);
+            return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
         }
     }
 }

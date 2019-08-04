@@ -1,5 +1,8 @@
-﻿@model IEnumerable<TechLead.Models.Submission>
-@using TechLead.Models
+﻿@using TechLead.Models;
+@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<TechLead.Models.Submission>
+
 @{
     ViewBag.Title = "Submissions";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -34,7 +37,7 @@
                 </tr>
             }
         </table>
-
+        @Html.PagedListPager(Model, page => Url.Action("Submissions","Problem", new { page }))
         <br />
         @if (Request.UrlReferrer != null)
         {
