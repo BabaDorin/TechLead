@@ -13,6 +13,7 @@
 
     <div class="TitleBox">
         <h2>Submission ID @Model.SubmissionID</h2>
+        <button type="button" class="btn btn-info btn-lg" data-target="#SourceCode" data-toggle="modal">See the code</button>
     </div>
 
     <div class="Box">
@@ -191,5 +192,19 @@
             <a class="bottomNav" onclick="history.go(-1); return false;" href="#">Back</a><br />
         }
     </div>
+
+    <div class="modal" id="SourceCode" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button data-dismiss="modal" class="close"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <pre>@Model.SourceCode</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 

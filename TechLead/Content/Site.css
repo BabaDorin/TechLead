@@ -395,3 +395,28 @@ tr {
     margin-bottom:10px;
 }
 
+.TitleBox button{
+    float:right;
+}
+
+.Content .modal{
+    color:black;
+    font-size:medium;
+}
+
+.modal pre{
+    font-size:medium;
+}
+
+.Content .modal-dialog {
+    padding: 0;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    align-content: center;
+}
+.Content .modal-content {
+    margin-top: 20%;
+    position: center;
+}
+
