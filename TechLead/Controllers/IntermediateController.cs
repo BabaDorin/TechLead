@@ -4,13 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TechLead.Models;
+using PagedList;
+using PagedList.Mvc;
 
 namespace TechLead.Controllers
 {
     public class IntermediateController : Controller
     {
         // GET: Branch2
-        public ActionResult Intermediatebranch()
+        public ActionResult Intermediatebranch(int? page)
         {
             ApplicationDbContext _context = new ApplicationDbContext();
             List<Exercise> IntermediateExercises = new List<Exercise>();
@@ -21,7 +23,7 @@ namespace TechLead.Controllers
                     IntermediateExercises.Add(e);
                 }
             }
-            return View(IntermediateExercises);
+            return View(IntermediateExercises.ToPagedList(page??1,20));
         }
     }
 }

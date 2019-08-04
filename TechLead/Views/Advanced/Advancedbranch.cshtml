@@ -1,5 +1,8 @@
-﻿@model IEnumerable<TechLead.Models.Exercise>
-@using TechLead.Models
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using TechLead.Models;
+@model IPagedList<TechLead.Models.Exercise>
+
 @{
     ViewBag.Title = "Advanced";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,14 +15,14 @@
     <br />
     <br />
     <ul>
-        @foreach(Exercise E in Model)
+        @foreach (Exercise E in Model)
         {
-        <li>
-            @Html.ActionLink(E.Name, "Details", "Problem", new { id = E.Id }, null)
-        </li>
+            <li>
+                @Html.ActionLink(E.Name, "Details", "Problem", new { id = E.Id }, null)
+            </li>
         }
     </ul>
-
+    @Html.PagedListPager(Model, page => Url.Action("Advancedbranch", "Advanced", new { page }))
 </div>
 
 

@@ -1,5 +1,8 @@
-﻿@model IEnumerable<TechLead.Models.Exercise>
-@using TechLead.Models
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using TechLead.Models;
+@model IPagedList<TechLead.Models.Exercise>
+
 @{
     ViewBag.Title = "Beginner";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -19,13 +22,15 @@
                 <li>
                     <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
                         <div class="ProblemToDisplay">
-                           @E.Name
-                           <span class="PointsToDisplay">@E.Points</span>
+                            @E.Name
+                            <span class="PointsToDisplay">@E.Points</span>
                         </div>
                     </a>
                 </li>
             }
-        </ul>  
+        </ul>
+
+        @Html.PagedListPager(Model, page => Url.Action("Beginnerbranch", "Beginner", new { page }))
     </div>
 </div>
 
