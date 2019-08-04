@@ -207,9 +207,8 @@ body {
     text-align: center;
 }
 
-.Content button {
-    float: right;
-    width: 20%;
+.Content button{
+    font-size:18px;
 }
 
 .field-validation-error {
@@ -244,6 +243,8 @@ body {
 }
 
 .TitleBox {
+    display:block;
+    overflow:hidden;
     align-items: center;
     background-color: aliceblue;
     color: #333;
@@ -251,6 +252,7 @@ body {
     margin-top: 170px;
     font-size: large;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    clear: both;
 }
 /*.TitleBar {
     background-color: #cff7ff;
@@ -395,7 +397,7 @@ tr {
     margin-bottom:10px;
 }
 
-.TitleBox button{
+.TitleBox button {
     float:right;
 }
 
@@ -416,7 +418,9 @@ tr {
     align-content: center;
 }
 .Content .modal-content {
-    margin-top: 20%;
+    margin-top: 10%;
     position: center;
 }
-
+.Content .modal-header{
+    font-size:30px;
+}
