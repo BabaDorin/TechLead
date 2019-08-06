@@ -746,6 +746,5 @@ C:\Users\Maria Baba\Desktop\Новая папка (2)\techlead\TechLead\obj\Debu
 C:\Users\Maria Baba\Desktop\Новая папка (2)\techlead\TechLead\obj\Debug\TechLead.csproj.CopyComplete
 C:\Users\Maria Baba\Desktop\Новая папка (2)\techlead\TechLead\obj\Debug\TechLead.dll
 C:\Users\Maria Baba\Desktop\Новая папка (2)\techlead\TechLead\obj\Debug\TechLead.pdb
-C:\Users\Maria Baba\Desktop\Новая папка (2)\techlead\TechLead\bin\Sandbox.dll
 C:\Users\Maria Baba\Desktop\Новая папка (2)\techlead\TechLead\bin\System.Reactive.dll
 C:\Users\Maria Baba\Desktop\Новая папка (2)\techlead\TechLead\bin\System.Reactive.xml

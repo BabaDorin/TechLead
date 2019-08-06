@@ -201,7 +201,7 @@ namespace TechLead.Compiler
                 //TIMEOUT
                 //SEND IMPUT
                 //GET THE OUTPUT
-
+                //DELETE THE SANDBOX BROUGHT HERE THROUGH NUGET PACKET MANAGER
                 PermissionSet pset = new PermissionSet(PermissionState.None);
                 //pset.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
                 //pset.AddPermission(new FileIOPermission(PermissionState.None));
