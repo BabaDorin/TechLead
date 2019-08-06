@@ -8,6 +8,8 @@ using TechLead.Models;
 using System.Data;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Security;
+using System.Security.Permissions;
 
 namespace TechLead.Compiler
 {
@@ -193,6 +195,38 @@ namespace TechLead.Compiler
             Score = 0;
             try
             {
+
+                //HERE IS THE NEW METHOD OF RUNNING THE EXECUTABLE. 
+                //TO DO: IMPLEMENT SECURITY (PERMISSIONS)
+                //TIMEOUT
+                //SEND IMPUT
+                //GET THE OUTPUT
+
+                PermissionSet pset = new PermissionSet(PermissionState.None);
+                //pset.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+                //pset.AddPermission(new FileIOPermission(PermissionState.None));
+                // pset.AddPermission(new ReflectionPermission(PermissionState.None));
+
+                //AppDomainSetup setup = new AppDomainSetup();
+                //setup.ApplicationBase = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/");
+
+                //
+                //AppDomain sandbox = AppDomain.CreateDomain("Submited Code", null, setup, pset);
+                //string assemblyPath = setup.ApplicationBase + FileNameWithoutExtension + ".exe";
+                //sandbox.ExecuteAssembly(assemblyPath);
+                AppDomain ap = AppDomain.CreateDomain("ProgramEXE",null);
+                Debug.WriteLine("Going to start the appdomain");
+                string assemblyPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/" + FileNameWithoutExtension + ".exe");
+                ap.ExecuteAssembly(assemblyPath);
+                AppDomain.Unload(ap);
+                Debug.WriteLine("AppDomain has been started");
+                Score = 3;
+                Time = 3;
+
+
+                //HERE IS THE OLD METHOD
+                /*
+
                 //Here we take the executable and run it
                 p.StartInfo.FileName = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/" + FileNameWithoutExtension + ".exe");
                 p.StartInfo.UseShellExecute = false;
@@ -241,7 +275,7 @@ namespace TechLead.Compiler
                     Debug.WriteLine("Incorrect. Rezultatul >> \n" + ActualOutput + " | rezultatul corect: \n" + Output);
                 }
                 Debug.WriteLine("Went through a test");
-                p.WaitForExit();
+                p.WaitForExit();*/
             }
             catch (Exception e)
             {

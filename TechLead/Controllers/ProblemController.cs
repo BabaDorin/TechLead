@@ -12,6 +12,10 @@ using System.Dynamic;
 using System.Text;
 using PagedList;
 using PagedList.Mvc;
+using System.Security;
+using System.Security.Policy;
+using System.Security.Permissions;
+
 namespace TechLead.Controllers
 {
     public class ProblemController : Controller
@@ -127,6 +131,19 @@ namespace TechLead.Controllers
                 List<int> ScoredPoints = new List<int>();
                 List<int> ExecutionTime = new List<int>();
                 ScoredPoints.Clear();
+
+                //AppDomain
+                //PermissionSet pset = new PermissionSet(PermissionState.None);
+                //pset.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+                //pset.AddPermission(new FileIOPermission(PermissionState.None));
+                //pset.AddPermission(new ReflectionPermission(PermissionState.None));
+
+                //AppDomainSetup setup = new AppDomainSetup();
+                //setup.ApplicationBase = Server.MapPath("~/Solutions/");
+
+                //AppDomain sandbox = AppDomain.CreateDomain("Submited Code", null, setup, pset);
+
+
                 ScoredPoints = compiler.Compilation(Path, E, out ExecutionTime);
                 TempData["Score"] = null;
                 TempData["Score"] = ScoredPoints;
