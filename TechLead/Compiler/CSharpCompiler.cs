@@ -214,14 +214,19 @@ namespace TechLead.Compiler
                 //AppDomain sandbox = AppDomain.CreateDomain("Submited Code", null, setup, pset);
                 //string assemblyPath = setup.ApplicationBase + FileNameWithoutExtension + ".exe";
                 //sandbox.ExecuteAssembly(assemblyPath);
-                AppDomain ap = AppDomain.CreateDomain("ProgramEXE",null);
-                Debug.WriteLine("Going to start the appdomain");
+
+                AppDomainSetup setup = new AppDomainSetup();
+                setup.ApplicationBase = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/" + FileNameWithoutExtension + ".exe");
+                //pset.AddPermission(new FileIOPermission(PermissionState.None));
+                pset.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
+                Debug.WriteLine("Start sandbox");
+                AppDomain ap = AppDomain.CreateDomain("ProgramEXE",null,setup,pset);
                 string assemblyPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Solutions/" + FileNameWithoutExtension + ".exe");
                 ap.ExecuteAssembly(assemblyPath);
                 AppDomain.Unload(ap);
-                Debug.WriteLine("AppDomain has been started");
                 Score = 3;
                 Time = 3;
+                Debug.WriteLine("Sandbox worked");
 
 
                 //HERE IS THE OLD METHOD
