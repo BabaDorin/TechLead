@@ -19,7 +19,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("TechLead", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a class="navbar-brand" href=@Url.Action("Index","Home") style="padding:2px;">
+                    <span><img src="https://centredactionbenevolecowansville.files.wordpress.com/2017/09/logo-facebook.png" style="width:auto; height:46px;" /></span>
+                    <span> TechLead</span>
+                </a>
+                @*@Html.ActionLink("TechLead", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -32,11 +36,13 @@
         </div>
     </div>
 
+
+
     @RenderBody()
 
     @*Register modal, just in case*@
     @*Must DO: Implement Ajax for modal validation for Register.*@
-    @*<div class="modal" id="MyModal" role="dialog">
+    <div class="modal" id="RegisterModal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -49,7 +55,22 @@
                 <div class="modal-footer">spungi</div>
             </div>
         </div>
-    </div>*@
+    </div>
+
+    <div class="modal" id="LoginModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button data-dismiss="modal" class="close"><span>&times;</span></button>
+                    <div class="modal-title">Guci</div>
+                </div>
+                <div class="modal-body">
+                    @Html.Partial("~/Views/Account/_Login.cshtml");
+                </div>
+                <div class="modal-footer">spungi</div>
+            </div>
+        </div>
+    </div>
 
     <div class="footer">
         <footer>

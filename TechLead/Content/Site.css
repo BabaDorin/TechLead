@@ -32,6 +32,13 @@ textarea {
 /******************************************************************** G E N E R A L   C H A N G E S **********************************************************/
 
 
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: 3%;
+    margin-left: 3%;
+    width:auto;
+}
 textarea {
     overflow-y: scroll;
     overflow-x: scroll;
@@ -76,6 +83,45 @@ body {
 
 
 /******************************************************************** L A Y O U T **************************************************************************/
+
+.navbar-nav {
+    padding-left: 30px;
+}
+
+.RegisterButton {
+    background-color: transparent;
+    border: none;
+    color: #e2e2e2;
+    padding: 15px 32px;
+    text-align: center;
+    display: inline-block;
+}
+
+.RegisterButton:hover{
+    background-color: #4e4e4e;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    display: inline-block;
+}
+
+.LoginButton {
+    background-color: #17b4dd;
+    border: none;
+    color: #e2e2e2;
+    padding: 15px 32px;
+    text-align: center;
+    display: inline-block;
+}
+.LoginButton:hover{
+    background-color:#16a0c4;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    display: inline-block;
+}
 
 .navbar-inverse {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);

@@ -412,6 +412,7 @@
     <Content Include="Views\Problem\Results.cshtml" />
     <Content Include="Views\Problem\Submissions.cshtml" />
     <Content Include="Views\Problem\SubmissionDetails.cshtml" />
+    <Content Include="Views\Account\_Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
