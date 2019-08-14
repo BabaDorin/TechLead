@@ -19,12 +19,13 @@ else
 {
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <button class="RegisterButton" data-target="#RegisterModal" data-toggle="modal">Register(Dev)</button>
+            @*<button class="RegisterButton" data-target="#RegisterModal" data-toggle="modal">Register(Dev)</button>*@
         </li>
          <li>
-            <button class="LoginButton" data-target="#LoginModal" data-toggle="modal">Login(Dev)</button>
+            @*<button class="LoginButton" data-target="#LoginModal" data-toggle="modal">Login(Dev)</button>*@
         </li>
-        @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
+
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
 }

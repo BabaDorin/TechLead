@@ -7,7 +7,7 @@
     <title>@ViewBag.Title - TechLead</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jqueryval")
 
 </head>
 <body>
@@ -37,22 +37,22 @@
     </div>
 
 
-
     @RenderBody()
 
-    @*Register modal, just in case*@
     @*Must DO: Implement Ajax for modal validation for Register.*@
     <div class="modal" id="RegisterModal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button data-dismiss="modal" class="close"><span>&times;</span></button>
-                    <div class="modal-title">Guci</div>
+                    <div class="modal-title">Register</div>
                 </div>
                 <div class="modal-body">
-                    @RenderPage("~/Views/Account/Register.cshtml");
+                    @*
+                    Render partial Register view here.    
+                    *@
                 </div>
-                <div class="modal-footer">spungi</div>
+                <div class="modal-footer"></div>
             </div>
         </div>
     </div>
@@ -62,12 +62,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button data-dismiss="modal" class="close"><span>&times;</span></button>
-                    <div class="modal-title">Guci</div>
+                    <div class="modal-title">Login</div>
                 </div>
                 <div class="modal-body">
-                    @Html.Partial("~/Views/Account/_Login.cshtml");
+                    @*
+                    Render partial Login view here.    
+                    *@
                 </div>
-                <div class="modal-footer">spungi</div>
+                <div class="modal-footer"></div>
             </div>
         </div>
     </div>

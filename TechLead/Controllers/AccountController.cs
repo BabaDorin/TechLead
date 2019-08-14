@@ -58,11 +58,7 @@ namespace TechLead.Controllers
             }
         }
 
-        //
         // GET: /Account/Login
-        // Original Login Actions bellow 
-
-        /*
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -99,57 +95,7 @@ namespace TechLead.Controllers
                     return View(model);
             }
         }
-        */
 
-        //Partial view Login
-        [AllowAnonymous]
-        public PartialViewResult _Login(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return PartialView();
-        }
-
-        //
-        // POST: /Account/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> _Login(LoginViewModel model, string returnUrl)
-        {
-            if (!ModelState.IsValid)
-            {
-                return PartialView("_Login",model);
-            }
-
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            return _LoginAnalise(model, returnUrl, result);
-        }
-
-        public ActionResult _LoginAnalise(LoginViewModel model, string returnUrl, SignInStatus result)
-        {
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    return _LoginInvalid(model);
-            }
-        }
-
-        public PartialViewResult _LoginInvalid(LoginViewModel model)
-        {
-            ModelState.AddModelError("", "Invalid login attempt.");
-            return PartialView("~/Views/Account/_Login.cshtml",model);
-        }
-
-        //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
