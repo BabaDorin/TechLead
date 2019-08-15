@@ -326,6 +326,10 @@
     <Compile Include="Migrations\201908012106470_UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.Designer.cs">
       <DependentUpon>201908012106470_UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908151828147_CleanUsersTable.cs" />
+    <Compile Include="Migrations\201908151828147_CleanUsersTable.Designer.cs">
+      <DependentUpon>201908151828147_CleanUsersTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -530,6 +534,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908012106470_UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.resx">
       <DependentUpon>201908012106470_UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908151828147_CleanUsersTable.resx">
+      <DependentUpon>201908151828147_CleanUsersTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -5,8 +5,11 @@ namespace TechLead.Models
 {
     public class ExternalLoginConfirmationViewModel
     {
+        [Required(ErrorMessage = "User name is required")]
+        [Display(Name = "Username")]
+        public string Username { get; set; }
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name ="Email")]
         public string Email { get; set; }
     }
 
