@@ -473,26 +473,50 @@ tr {
 
 /********************************************** L O G I N  /  R E G I S T R A T I O N  P A G E *******************************************************************/
 
-.RegistrationLoginForm {
-    /*background-color: white;
-    margin: auto;
+.RegistrationLoginForm input {
+    max-width: 400px;
+}
+
+.RegistrationLoginForm form-control {
+    width: 100%;
     display: inline-block;
-    display:table;*/
+}
+
+.RegistrationLoginForm {
+    color: #292929;
     background: #fff;
     width: 400px;
     max-width: 100%;
-    box-sizing: border-box;
     padding: 25px;
     margin: 4% auto 0;
     position: relative;
     z-index: 1;
-    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.1);
+}
+
+.RegistrationLoginForm input[type='submit'] {
+    background: #03A595;
+    color: #fff;
+    min-height: 35px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-left: 15px;
 }
 
 .ExternLogRegBox {
-    width: 100%;
-    float:right;
-    background-color: #ededed;
+    color: #292929;
+    background: #f1f1f1;
+    width: 400px;
+    max-width: 100%;
+    padding: 10px 25px 25px 25px;
+    margin: 0 auto 0;
+    position: relative;
+    z-index: 1;
+    -webkit-box-shadow: 0 17px 20px 20px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 17px 20px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 17px 20px 20px rgba(0, 0, 0, 0.1);
 }
+
