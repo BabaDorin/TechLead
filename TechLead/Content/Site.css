@@ -470,3 +470,29 @@ tr {
 .Content .modal-header{
     font-size:30px;
 }
+
+/********************************************** L O G I N  /  R E G I S T R A T I O N  P A G E *******************************************************************/
+
+.RegistrationLoginForm {
+    /*background-color: white;
+    margin: auto;
+    display: inline-block;
+    display:table;*/
+    background: #fff;
+    width: 400px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 25px;
+    margin: 4% auto 0;
+    position: relative;
+    z-index: 1;
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.ExternLogRegBox {
+    width: 100%;
+    float:right;
+    background-color: #ededed;
+}
