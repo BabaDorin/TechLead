@@ -477,9 +477,13 @@ tr {
     max-width: 400px;
 }
 
-.RegistrationLoginForm form-control {
+.RegistrationLoginForm .form-control {
     width: 100%;
     display: inline-block;
+}
+
+.RegistrationLoginForm .checkbox {
+    padding: 0 21px 15px;
 }
 
 .RegistrationLoginForm {

@@ -1,5 +1,8 @@
 ﻿@model TechLead.Models.RegisterViewModel
 @using TechLead.Models
+@{ 
+    ViewBag.Title = "Register";
+}
 
 
 <div class="Content">
@@ -44,10 +47,6 @@
         <h4>Use another service to register</h4>
         @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
     </div>
-        
-
-
-    
 </div>
 
 @section Scripts {
