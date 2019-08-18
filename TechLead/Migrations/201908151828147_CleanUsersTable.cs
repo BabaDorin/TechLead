@@ -7,7 +7,7 @@ namespace TechLead.Migrations
     {
         public override void Up()
         {
-            Sql("Delete from AspNetUsers");
+            Sql("TRUNCATE TABLE AspNetUsers");
         }
         
         public override void Down()
