@@ -527,6 +527,14 @@ tr {
 
 /********************************************** M A N A G E *******************************************************************/
 
-.ProfilePhoto{
-    padding:0;
+.ProfilePhoto {
+    height: 170px;
+    width: 170px;
+}
+
+.ProfilePhoto img{
+    height:80%; 
+    width:80%;
+    margin-top:10%;
+    margin-bottom:10px;
 }
