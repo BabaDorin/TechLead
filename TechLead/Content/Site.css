@@ -533,8 +533,18 @@ tr {
 }
 
 .ProfilePhoto img{
-    height:80%; 
-    width:80%;
+    height:85%; 
+    width:85%;
     margin-top:10%;
     margin-bottom:10px;
+}
+
+.About{
+    min-width:250px;
+    max-width:1000px;
+    margin:auto;
+}
+
+.About p{
+    text-align:center;
 }
