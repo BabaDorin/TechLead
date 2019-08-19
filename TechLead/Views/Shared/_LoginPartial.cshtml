@@ -8,8 +8,11 @@
         @Html.AntiForgeryToken()
 
         <ul class="nav navbar-nav navbar-right">
+             <li>
+                Search box here
+            </li>
             <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
             </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>
@@ -18,13 +21,15 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
+         <li>
+                Search box here
+         </li>
         <li>
             @*<button class="RegisterButton" data-target="#RegisterModal" data-toggle="modal">Register(Dev)</button>*@
         </li>
-         <li>
+        <li>
             @*<button class="LoginButton" data-target="#LoginModal" data-toggle="modal">Login(Dev)</button>*@
         </li>
-
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: new { @returnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery }, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: new { @returnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery }, htmlAttributes: new { id = "loginLink" })</li>
     </ul>

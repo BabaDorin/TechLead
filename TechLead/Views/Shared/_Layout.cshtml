@@ -20,14 +20,13 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href=@Url.Action("Index","Home") style="padding:2px;">
-                    <span><img src="https://centredactionbenevolecowansville.files.wordpress.com/2017/09/logo-facebook.png" style="width:auto; height:46px;" /></span>
+                    <span><img src="~/logo.png" style="width:auto; height:46px;" /></span>
                     <span> TechLead</span>
                 </a>
                 @*@Html.ActionLink("TechLead", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
