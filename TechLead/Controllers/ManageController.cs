@@ -53,7 +53,6 @@ namespace TechLead.Controllers
         //
         // GET: /Manage/Index
         [HttpGet]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -79,12 +78,12 @@ namespace TechLead.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Index(IndexViewModel model)
+        public ActionResult Index()
         {
             //Update the database here.
-            return View("Index", "Home");
+            return View("~/Views/Home/Index.cshtml");
         }
+
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
