@@ -52,6 +52,8 @@ namespace TechLead.Controllers
 
         //
         // GET: /Manage/Index
+        [HttpGet]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -68,6 +70,7 @@ namespace TechLead.Controllers
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
+                About = UserManager.FindById(userId).About,
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
@@ -75,6 +78,13 @@ namespace TechLead.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(IndexViewModel model)
+        {
+            //Update the database here.
+            return View("Index", "Home");
+        }
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]

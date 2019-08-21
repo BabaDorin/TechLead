@@ -334,6 +334,10 @@
     <Compile Include="Migrations\201908181053360_CleanAspNetUsersTablex2.Designer.cs">
       <DependentUpon>201908181053360_CleanAspNetUsersTablex2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908210953491_AddingAboutPropertyToTheAspNetUsers.cs" />
+    <Compile Include="Migrations\201908210953491_AddingAboutPropertyToTheAspNetUsers.Designer.cs">
+      <DependentUpon>201908210953491_AddingAboutPropertyToTheAspNetUsers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -544,6 +548,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908181053360_CleanAspNetUsersTablex2.resx">
       <DependentUpon>201908181053360_CleanAspNetUsersTablex2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908210953491_AddingAboutPropertyToTheAspNetUsers.resx">
+      <DependentUpon>201908210953491_AddingAboutPropertyToTheAspNetUsers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

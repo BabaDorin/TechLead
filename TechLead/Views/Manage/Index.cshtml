@@ -22,7 +22,14 @@
     <div class="Box">
         <div class="About">
             <p><strong>About</strong></p>
-            <pre>Sfântul Mare Mucenic Gheorghe (în greacă Άγιος Γεώργιος, Ágios Geó̱rgios, sau George, versiuni: Georgiu, Georz, Giurgiu, Iorgu, din greacă Gheorghios, „agricultor”; c. 275/280 – d. 23 aprilie 303) a fost un soldat roman de origine greacă și ofițer în Garda împăratului roman Dioclețian, care a fost condamnat la moarte pentru că nu a renunțat la credința creștină. În calitate de martir creștin, el a devenit mai târziu unul dintre cei mai venerați sfinți ai creștinismului și a fost în mod special venerat de cruciați. Sfântul Gheorghe este un sfânt pomenit de aproape toate Bisericile tradiționale, de obicei pe data de 23 aprilie. Este considerat patron al multor țări, regiuni și orașe.</pre>
+            @if (Model.About == null)
+            {
+                <pre><button type="submit">Add</button></pre>
+            }
+            else
+            {
+                <pre>@Html.DisplayFor(u=>u.About)</pre>
+            }
         </div>
     </div>
     <br /><br />
