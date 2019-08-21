@@ -26,7 +26,8 @@
             {
                 using (Html.BeginForm("Index", "Manage", FormMethod.Post))
                 {
-                    <pre><input type="submit" value="Submit" /></pre>
+                    Html.TextAreaFor(u => u.About);
+                    <pre><input type="submit" value="Add info" /></pre>
                 }
 
             }

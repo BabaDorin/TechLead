@@ -13,11 +13,13 @@ namespace TechLead.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+        private ApplicationDbContext _context;
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
         public ManageController()
         {
+            _context = new ApplicationDbContext();
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -78,10 +80,16 @@ namespace TechLead.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index()
+        public ActionResult Index(IndexViewModel model)
         {
             //Update the database here.
-            return View("~/Views/Home/Index.cshtml");
+            var UserId = User.Identity.GetUserId();
+            ApplicationUser user = _context.Users.FirstOrDefault(x => x.Id == UserId);
+            user.About = "ggg";
+            model.About = null;
+            _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+            return View("Index",model);
         }
 
         //
