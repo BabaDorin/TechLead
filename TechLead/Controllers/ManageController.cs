@@ -85,8 +85,7 @@ namespace TechLead.Controllers
             //Update the database here.
             var UserId = User.Identity.GetUserId();
             ApplicationUser user = _context.Users.FirstOrDefault(x => x.Id == UserId);
-            user.About = "ggg";
-            model.About = null;
+            user.About = model.About;
             _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
             _context.SaveChanges();
             return View("Index",model);
