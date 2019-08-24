@@ -29,7 +29,7 @@
 
                     <input type="button" onclick="openAbout()" value="Add Info" />
                     <div id="AboutDiv" style="display:none;">
-                        @Html.TextAreaFor(u => u.About, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.TextAreaFor(u => u.About, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
                         <button type="submit" class="btn btn-primary">Save</button>
                     </div>
 
@@ -43,7 +43,7 @@
                 {
                     <input type="button" onclick="openAbout()" value="Edit" />
                     <div id="AboutDiv" style="display:none;">
-                        @Html.TextAreaFor(u => u.About, new { @class = "form-control", @rows = "6", @style = "width:100%; max-width: none;" })
+                        @Html.TextAreaFor(u => u.About, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
                         <button type="submit" class="btn btn-primary">Save</button>
                     </div>
 

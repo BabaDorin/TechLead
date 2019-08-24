@@ -229,16 +229,22 @@ body {
 /********************************************************************  C R E A T E   P R O B L E M **************************************************************************/
 
 .CreateProblem {
+    margin: auto;
+    width: 1200px;
+    max-width: 100%;
     align-items: center;
     background-color: aliceblue;
     color: #333;
     padding: 8%;
-    margin-top: 170px;
+    margin-top: 120px;
     font-size: 18px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .CreateProblem2 {
+    margin: auto;
+    width: 1200px;
+    max-width: 100%;
     align-items: center;
     background-color: #333;
     color: white;
@@ -286,6 +292,9 @@ body {
 }
 
 .Box {
+    margin:auto;
+    width:1200px;
+    max-width:100%;
     align-items: center;
     background-color: aliceblue;
     color: #333;
@@ -295,13 +304,16 @@ body {
 }
 
 .TitleBox {
-    display:block;
-    overflow:hidden;
+    margin: auto;
+    width: 1200px;
+    max-width: 100%;
+    display: block;
+    overflow: hidden;
     align-items: center;
     background-color: aliceblue;
     color: #333;
     padding: 4%;
-    margin-top: 170px;
+    margin-top: 120px;
     font-size: large;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     clear: both;
