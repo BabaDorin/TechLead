@@ -26,11 +26,12 @@
             {
                 using (Html.BeginForm("Index", "Manage", FormMethod.Post))
                 {
-
-                    <input type="button" onclick="openAbout()" value="Add Info" />
+                    @Html.AntiForgeryToken();
+                    <p><input type="button" onclick="openAbout()" value="Add Info" /></p>
                     <div id="AboutDiv" style="display:none;">
                         @Html.TextAreaFor(u => u.About, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        @Html.ValidationMessage("CustomError");
+                        <input type="submit" value="Save" />
                     </div>
 
                 }
@@ -38,16 +39,20 @@
             }
             else
             {
-                <pre>@Html.DisplayFor(u=>u.About)</pre>
                 using (Html.BeginForm("Index", "Manage", FormMethod.Post))
                 {
-                    <input type="button" onclick="openAbout()" value="Edit" />
+                    @Html.AntiForgeryToken();
+                    <p><input type="button" onclick="openAbout()" value="Edit" /></p>
                     <div id="AboutDiv" style="display:none;">
                         @Html.TextAreaFor(u => u.About, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        @Html.ValidationMessage("CustomError");
+                        <input type="submit" value="Save" />
                     </div>
-
                 }
+
+                <div id="InfoAbout">
+                    <pre>@Html.DisplayFor(u=>u.About)</pre>
+                </div>
             }
         </div>
     </div>
@@ -140,10 +145,13 @@
 <script type="text/javascript">
     function openAbout() {
         var x = document.getElementById("AboutDiv");
+        var y = document.getElementById("InfoAbout");
         if (x.style.display === "none") {
             x.style.display = "block";
+            y.style.display = "none";
         } else {
             x.style.display = "none";
+            y.style.display = "block";
         }
     }
 </script>
