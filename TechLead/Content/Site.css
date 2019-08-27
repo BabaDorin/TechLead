@@ -30,6 +30,9 @@ textarea {
 
 
 /******************************************************************** G E N E R A L   C H A N G E S **********************************************************/
+span{
+    white-space:pre-wrap;
+}
 
 .asText{
     background:none;
@@ -45,10 +48,6 @@ textarea {
     margin-right: 3%;
     margin-left: 3%;
     width:auto;
-}
-textarea {
-    overflow-y: scroll;
-    overflow-x: scroll;
 }
 
 li {

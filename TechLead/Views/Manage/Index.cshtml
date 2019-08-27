@@ -30,7 +30,7 @@
                     <p><input type="button" onclick="openAbout()" value="Add Info" /></p>
                     <div id="AboutDiv" style="display:none;">
                         @Html.TextAreaFor(u => u.About, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
-                        @Html.ValidationMessage("CustomError");
+                        @Html.ValidationMessage("CustomError")
                         <input type="submit" value="Save" />
                     </div>
 
@@ -45,13 +45,13 @@
                     <p><input type="button" onclick="openAbout()" value="Edit" /></p>
                     <div id="AboutDiv" style="display:none;">
                         @Html.TextAreaFor(u => u.About, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
-                        @Html.ValidationMessage("CustomError");
+                        @Html.ValidationMessage("CustomError")
                         <input type="submit" value="Save" />
                     </div>
                 }
 
                 <div id="InfoAbout">
-                    <pre>@Html.DisplayFor(u=>u.About)</pre>
+                    <span>@Html.DisplayFor(u=>u.About)</span>
                 </div>
             }
         </div>
