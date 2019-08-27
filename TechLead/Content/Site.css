@@ -557,10 +557,21 @@ tr {
     margin-bottom:10px;
 }
 
+.Info1{
+    min-width:50%;
+    background-color:rebeccapurple;
+}
+
+.Info2 {
+    min-width: 50%;
+    background-color: seashell;
+}
+
 .About{
     min-width:250px;
     max-width:1000px;
     margin:auto;
+    font-size:19px;
 }
 
 .About p{
@@ -569,13 +580,13 @@ tr {
 
 .Box textarea {
     font-family: 'Roboto', sans-serif;
-    font-size:18px;
+    font-size:19px;
 }
 
 .About input[type="button"] {
     border: none;
     outline: none;
-    text-decoration: none;
+    text-decoration: underline;
     background: none;
     color: #636363;
     font-size:17px;
@@ -592,11 +603,19 @@ tr {
     text-decoration: none;
     background: none;
     color: #636363;
-    font-size: 17px;
+    font-size: 19px;
     margin: 0;
 }
 
 .About input[type="submit"]:hover {
     color: #292929;
     background:none;
+}
+
+.About textarea {
+    font-family: 'Crimson Text', serif;
+}
+
+.About {
+    font-family: 'Crimson Text', serif;
 }
