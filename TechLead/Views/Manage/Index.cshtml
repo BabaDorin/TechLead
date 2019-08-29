@@ -13,13 +13,43 @@
                 </div>
             </div>
             <div class="col-md-10">
-                <div class="ProfileInformation" style="background-color:gray; height:170px">
-                    <div class="Info1">
-                        ds
-                    </div>
-                    <div class="Info2">
-                        ds
-                    </div>
+                <div class="ProfileInformation" id="ProfileInformation">
+                    <table>
+                        <tr>
+                            <td><strong>Name:</strong> Andrew</td>
+                            <td><strong>Email:</strong><span style="color:#ff6a00"> Andre@gmail.com</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Job:</strong> Student</td>
+                            <td><strong>Rank:</strong> Newbie</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Phone Number:</strong> 0432342222</td>
+                            <td><strong>Points gained:</strong> 2400</td>
+                        </tr>
+                    </table>
+                    <p><input type="button" onclick="openInfoEdit()" value="Edit info" /></p>
+                </div>
+                <div id="ProfileInformationEdit" style="display:none">
+                    @using (Html.BeginForm("Index", "Manage", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken();
+                        <table>
+                            <tr>
+                                <td>TextBox etc etc</td>
+                                <td><strong>Email:</strong><span style="color:#ff6a00"> Andre@gmail.com</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Job:</strong> Student</td>
+                                <td><strong>Rank:</strong> Newbie</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phone Number:</strong> 0432342222</td>
+                                <td><strong>Points gained:</strong> 2400</td>
+                            </tr>
+                        </table>
+                        <p><input type="button" onclick="openInfoEdit()" value="Edit info" /></p>
+                    }
                 </div>
             </div>
         </div>
@@ -56,9 +86,13 @@
                 }
 
                 <div id="InfoAbout">
-                    <span>@Html.DisplayFor(u=>u.About)</span>
+                    <span>@Html.DisplayFor(u => u.About)</span>
                 </div>
             }
+        </div>
+        <div class="ExercisesByUser">
+            <p>Exercises created by Andrew:</p>
+            <p>The list is empty</p>
         </div>
     </div>
     <br /><br />
@@ -152,6 +186,18 @@
         var x = document.getElementById("AboutDiv");
         var y = document.getElementById("InfoAbout");
         if (x.style.display === "none") {
+            x.style.display = "block";
+            y.style.display = "none";
+        } else {
+            x.style.display = "none";
+            y.style.display = "block";
+        }
+    }
+
+    function openInfoEdit() {
+        var x = document.getElementById("ProfileInformationEdit");
+        var y = document.getElementById("ProfileInformation");
+        if (x.style.display == "none") {
             x.style.display = "block";
             y.style.display = "none";
         } else {

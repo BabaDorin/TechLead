@@ -551,8 +551,9 @@ tr {
 }
 
 .ProfilePhoto img{
-    height:85%; 
-    width:85%;
+    height:100%; 
+    width:100%;
+    min-width:100%;
     margin-top:10%;
     margin-bottom:10px;
 }
@@ -618,4 +619,51 @@ tr {
 
 .About {
     font-family: 'Crimson Text', serif;
+}
+
+.ProfileInformation{
+    margin:1px;
+}
+.ProfileInformation table{
+    margin:10px;
+}
+.ProfileInformation tr{
+    border:none;
+    text-align:left;
+    padding:20px;
+    margin:20px;
+}
+
+.ProfileInformation td{
+    padding:20px;
+}
+
+.ProfileInformation input[type="button"] {
+    padding-left:20px;
+    border: none;
+    outline: none;
+    text-decoration: underline;
+    background: none;
+    color: #636363;
+    font-size:17px;
+    margin:0;
+}
+
+.ProfileInformation input[type="button"]:hover {
+    color:#292929;
+}
+
+.ProfileInformation input[type="submit"] {
+    border: none;
+    outline: none;
+    text-decoration: none;
+    background: none;
+    color: #636363;
+    font-size: 19px;
+    margin: 0;
+}
+
+.ProfileInformation input[type="submit"]:hover {
+    color: #292929;
+    background:none;
 }
