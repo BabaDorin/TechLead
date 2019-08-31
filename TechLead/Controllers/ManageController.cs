@@ -75,18 +75,41 @@ namespace TechLead.Controllers
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                UserName = CurrentUser.UserName,
                 About = CurrentUser.About,
                 Job = CurrentUser.Job,
-                FirstRegistration=CurrentUser.FirstRegistration
+                FirstRegistration = CurrentUser.FirstRegistration,
+                TotalPoints = CurrentUser.TotalPoints,
+                Email = CurrentUser.Email
             };
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(IndexViewModel model)
+        public ActionResult IndexUpdateInfo(IndexViewModel model)
         {
             
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("CustomError", "An error occured. Please, make sure there are no brackets or pieces of code in your text.");
+                return View("Index", model);
+            }
+            //Update the database here.
+            var UserId = User.Identity.GetUserId();
+            ApplicationUser user = _context.Users.FirstOrDefault(x => x.Id == UserId);
+            user.Job = model.Job;
+            user.Email = model.Email;
+            user.UserName = model.UserName;
+            _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+            return View("Index",model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult IndexUpdateAbout(IndexViewModel model)
+        {
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("CustomError", "An error occured. Please, make sure there are no brackets or pieces of code in your text.");
@@ -98,9 +121,8 @@ namespace TechLead.Controllers
             user.About = model.About;
             _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
             _context.SaveChanges();
-            return View("Index",model);
+            return View("Index", model);
         }
-
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]

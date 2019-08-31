@@ -292,13 +292,13 @@ body {
 }
 
 .Box {
-    margin:auto;
-    width:1200px;
-    max-width:100%;
+    margin: auto;
+    width: 1200px;
+    max-width: 100%;
     align-items: center;
     background-color: aliceblue;
     color: #333;
-    padding: 4%;
+    padding: 4% 4% 1% 4%;
     font-size: large;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -545,17 +545,16 @@ tr {
 
 /********************************************** M A N A G E *******************************************************************/
 
-.ProfilePhoto {
-    height: 170px;
-    width: 170px;
-}
+
 
 .ProfilePhoto img{
     height:100%; 
     width:100%;
-    min-width:100%;
+    max-height:115.5px;
+    max-width:115.5px;
     margin-top:10%;
     margin-bottom:10px;
+    margin:auto;
 }
 
 .Info1{
@@ -622,24 +621,14 @@ tr {
 }
 
 .ProfileInformation{
-    margin:1px;
-}
-.ProfileInformation table{
-    margin:10px;
-}
-.ProfileInformation tr{
-    border:none;
-    text-align:left;
-    padding:20px;
-    margin:20px;
+    font-size:17px;
 }
 
-.ProfileInformation td{
-    padding:20px;
+.ProfileInformation p{
+    padding:4px;
 }
 
-.ProfileInformation input[type="button"] {
-    padding-left:20px;
+.ProfileInformation input{
     border: none;
     outline: none;
     text-decoration: underline;
@@ -649,21 +638,16 @@ tr {
     margin:0;
 }
 
-.ProfileInformation input[type="button"]:hover {
+.ProfileInformation input:hover {
     color:#292929;
 }
 
-.ProfileInformation input[type="submit"] {
-    border: none;
-    outline: none;
-    text-decoration: none;
-    background: none;
-    color: #636363;
-    font-size: 19px;
-    margin: 0;
+.columnInfo {
+    float: left;
+    width: 50%;
+    font-size:17px;
 }
 
-.ProfileInformation input[type="submit"]:hover {
-    color: #292929;
-    background:none;
+.columnInfo p{
+    padding:4px;
 }

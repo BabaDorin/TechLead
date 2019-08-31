@@ -11,47 +11,62 @@
                 <div class="ProfilePhoto">
                     <img src="https://is3-ssl.mzstatic.com/image/thumb/Purple128/v4/06/de/f3/06def323-ee28-c20d-6134-233989884965/AppIcon-1x_U007emarketing-85-220-3.jpeg/246x0w.jpg" />
                 </div>
+                <br />
             </div>
             <div class="col-md-10">
                 <div class="ProfileInformation" id="ProfileInformation">
-                    <table>
-                        <tr>
-                            <td><strong>Name:</strong> Andrew</td>
-                            <td><strong>Email:</strong><span style="color:#ff6a00"> Andre@gmail.com</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Job:</strong> Student</td>
-                            <td><strong>Rank:</strong> Newbie</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Phone Number:</strong> 0432342222</td>
-                            <td><strong>Points gained:</strong> 2400</td>
-                        </tr>
-                    </table>
-                    <p><input type="button" onclick="openInfoEdit()" value="Edit info" /></p>
+                    <div class="row">
+                        <div class="columnInfo">
+                            <p><strong>UserName:</strong> @Model.UserName</p>
+                            <p><strong>Email:</strong><span style="color:#ff6a00"> @Model.Email</span></p>
+                            <p>
+                                <strong>Job:</strong> @if (Model.Job == null)
+                                {
+                                    <span> none</span>
+                                }
+                                else
+                                {
+                                    <span>@Model.Job</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="columnInfo">
+                            <p>
+                                <strong>Phone Number:</strong> @if (Model.PhoneNumber == null)
+                                {
+                                    <span> none</span>
+                                }
+                                else
+                                {
+                                    <span>@Model.PhoneNumber</span>
+                                }
+                            </p>
+                            <p><strong>Here since </strong>   @Model.FirstRegistration.ToString("MM / dd / yyyy")</p>
+                        </div>
+                    </div>
                 </div>
                 <div id="ProfileInformationEdit" style="display:none">
-                    @using (Html.BeginForm("Index", "Manage", FormMethod.Post))
+                    @using (Html.BeginForm("IndexUpdateInfo", "Manage", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken();
-                        <table>
-                            <tr>
-                                <td>TextBox etc etc</td>
-                                <td><strong>Email:</strong><span style="color:#ff6a00"> Andre@gmail.com</span></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Job:</strong> Student</td>
-                                <td><strong>Rank:</strong> Newbie</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Phone Number:</strong> 0432342222</td>
-                                <td><strong>Points gained:</strong> 2400</td>
-                            </tr>
-                        </table>
-                        <p><input type="button" onclick="openInfoEdit()" value="Edit info" /></p>
+                        <div class="row">
+                            <div class="columnInfo">
+                                <p><strong>UserName:</strong> @Html.TextBoxFor(u => u.UserName, new { @class = "form-control", @value = Model.UserName })</p>
+                                <p><strong>Email:</strong> @Html.TextBoxFor(u => u.Email, new { @class = "form-control", @value = Model.Email })</p>
+                                <p><strong>Job: </strong> @Html.TextBoxFor(u => u.Job, new { @class = "form-control", @value = Model.Job })</p>
+                                <input id="buttonSubmitInfoEdit" type="submit" value="Save" />
+                            </div>
+                            <div class="columnInfo">
+                                <p><strong>Phone number: </strong> @Html.TextBoxFor(u => u.PhoneNumber, new { @class = "form-control", @value = Model.PhoneNumber })</p>
+                                <p><strong>Here since </strong>   @Model.FirstRegistration.ToString("MM / dd / yyyy")</p>
+                            </div>
+                        </div>
                     }
                 </div>
             </div>
+        </div>
+        <div class="ProfileInformation">
+            <p><input id="buttonOpenInfoEdit" type="button" onclick="openInfoEdit()" value="Edit Info" /></p>
         </div>
     </div>
     <div class="Box">
@@ -59,7 +74,7 @@
             <p><strong>About</strong></p>
             @if (Model.About == null)
             {
-                using (Html.BeginForm("Index", "Manage", FormMethod.Post))
+                using (Html.BeginForm("IndexUpdateAbout", "Manage", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken();
                     <p><input type="button" onclick="openAbout()" value="Add Info" /></p>
@@ -74,7 +89,7 @@
             }
             else
             {
-                using (Html.BeginForm("Index", "Manage", FormMethod.Post))
+                using (Html.BeginForm("IndexUpdateAbout", "Manage", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken();
                     <p><input type="button" onclick="openAbout()" value="Edit" /></p>
@@ -197,12 +212,15 @@
     function openInfoEdit() {
         var x = document.getElementById("ProfileInformationEdit");
         var y = document.getElementById("ProfileInformation");
+        var z = document.getElementById("buttonOpenInfoEdit");
         if (x.style.display == "none") {
             x.style.display = "block";
             y.style.display = "none";
+            z.value = "Back";
         } else {
             x.style.display = "none";
             y.style.display = "block";
+            z.value = "Edit Info";
         }
     }
 </script>

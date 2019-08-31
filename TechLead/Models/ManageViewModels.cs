@@ -8,15 +8,17 @@ namespace TechLead.Models
 {
     public class IndexViewModel
     {
+        public string UserName { get; set; }
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
         public string About { get; set; }
-        public int TotalPoints { get; set; }
+        public double TotalPoints { get; set; }
         public DateTime FirstRegistration { get; set; }
         public string Job { get; set; }
+        public string Email { get; set; }
     }
 
     public class ManageLoginsViewModel
