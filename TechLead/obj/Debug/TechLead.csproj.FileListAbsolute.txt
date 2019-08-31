@@ -896,3 +896,4 @@ C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debu
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.CleanUsersTable.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.CleanAspNetUsersTablex2.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingAboutPropertyToTheAspNetUsers.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddUserProprieties_Job_FirstRegistration_Points.resources

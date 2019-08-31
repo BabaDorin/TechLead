@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System;
 
 namespace TechLead.Models
 {
@@ -13,6 +14,9 @@ namespace TechLead.Models
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
         public string About { get; set; }
+        public int TotalPoints { get; set; }
+        public DateTime FirstRegistration { get; set; }
+        public string Job { get; set; }
     }
 
     public class ManageLoginsViewModel

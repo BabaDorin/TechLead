@@ -67,14 +67,17 @@ namespace TechLead.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var CurrentUser = UserManager.FindById(userId);
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                About = UserManager.FindById(userId).About,
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                About = CurrentUser.About,
+                Job = CurrentUser.Job,
+                FirstRegistration=CurrentUser.FirstRegistration
             };
             return View(model);
         }

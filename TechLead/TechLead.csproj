@@ -338,6 +338,10 @@
     <Compile Include="Migrations\201908210953491_AddingAboutPropertyToTheAspNetUsers.Designer.cs">
       <DependentUpon>201908210953491_AddingAboutPropertyToTheAspNetUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908311901082_AddUserProprieties_Job_FirstRegistration_Points.cs" />
+    <Compile Include="Migrations\201908311901082_AddUserProprieties_Job_FirstRegistration_Points.Designer.cs">
+      <DependentUpon>201908311901082_AddUserProprieties_Job_FirstRegistration_Points.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -551,6 +555,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908210953491_AddingAboutPropertyToTheAspNetUsers.resx">
       <DependentUpon>201908210953491_AddingAboutPropertyToTheAspNetUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908311901082_AddUserProprieties_Job_FirstRegistration_Points.resx">
+      <DependentUpon>201908311901082_AddUserProprieties_Job_FirstRegistration_Points.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,10 @@ namespace TechLead.Models
     {
         public string About { get; set; }
         public override string UserName { get => base.UserName; set => base.UserName = value; }
+        public string Job { get; set; }
+        public DateTime FirstRegistration { get; set; }
+        public double TotalPoints { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
