@@ -103,7 +103,8 @@ namespace TechLead.Controllers
             user.UserName = model.UserName;
             _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
             _context.SaveChanges();
-            return View("Index",model);
+            model.About = user.About;
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -121,7 +122,7 @@ namespace TechLead.Controllers
             user.About = model.About;
             _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
             _context.SaveChanges();
-            return View("Index", model);
+            return RedirectToAction("Index");
         }
         //
         // POST: /Manage/RemoveLogin
