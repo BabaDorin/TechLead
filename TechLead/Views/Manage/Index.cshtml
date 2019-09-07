@@ -29,6 +29,9 @@
                                     <span>@Model.Job</span>
                                 }
                             </p>
+                            <div class="ProfileInformation">
+                                <p><input id="buttonOpenInfoEdit" type="button" onclick="openInfoEdit()" value="Edit Info" /></p>
+                            </div>
                         </div>
                         <div class="columnInfo">
                             <p>
@@ -41,7 +44,7 @@
                                     <span>@Model.PhoneNumber</span>
                                 }
                             </p>
-                            <p><strong>Here since </strong>   @Model.FirstRegistration.ToString("MM / dd / yyyy")</p>
+                            <p><strong>Here since </strong>   @Model.FirstRegistration.ToString("MMM d yyyy")</p>
                         </div>
                     </div>
                 </div>
@@ -54,7 +57,14 @@
                                 <p><strong>UserName:</strong> @Html.TextBoxFor(u => u.UserName, new { @class = "form-control", @value = Model.UserName })</p>
                                 <p><strong>Email:</strong> @Html.TextBoxFor(u => u.Email, new { @class = "form-control", @value = Model.Email })</p>
                                 <p><strong>Job: </strong> @Html.TextBoxFor(u => u.Job, new { @class = "form-control", @value = Model.Job })</p>
-                                <input id="buttonSubmitInfoEdit" type="submit" value="Save" />
+                                <div class="col-md-2">
+                                    <input id="buttonSubmitInfoEdit" type="submit" value="Save" />
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="ProfileInformation">
+                                        <p><input id="buttonOpenInfoEdit" type="button" onclick="openInfoEdit()" value="Back" /></p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="columnInfo">
                                 <p><strong>Phone number: </strong> @Html.TextBoxFor(u => u.PhoneNumber, new { @class = "form-control", @value = Model.PhoneNumber })</p>
@@ -64,9 +74,6 @@
                     }
                 </div>
             </div>
-        </div>
-        <div class="ProfileInformation">
-            <p><input id="buttonOpenInfoEdit" type="button" onclick="openInfoEdit()" value="Edit Info" /></p>
         </div>
     </div>
     <div class="Box">
@@ -105,6 +112,7 @@
                 </div>
             }
         </div>
+        <br />
         <div class="ExercisesByUser">
             <p>Exercises created by Andrew:</p>
             <p>The list is empty</p>
@@ -216,11 +224,9 @@
         if (x.style.display == "none") {
             x.style.display = "block";
             y.style.display = "none";
-            z.value = "Back";
         } else {
             x.style.display = "none";
             y.style.display = "block";
-            z.value = "Edit Info";
         }
     }
 </script>

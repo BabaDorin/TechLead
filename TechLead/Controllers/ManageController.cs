@@ -98,6 +98,7 @@ namespace TechLead.Controllers
             //Update the database here.
             var UserId = User.Identity.GetUserId();
             ApplicationUser user = _context.Users.FirstOrDefault(x => x.Id == UserId);
+            user.PhoneNumber = model.PhoneNumber;
             user.Job = model.Job;
             user.Email = model.Email;
             user.UserName = model.UserName;
