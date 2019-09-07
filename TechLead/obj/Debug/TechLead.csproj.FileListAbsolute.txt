@@ -897,3 +897,39 @@ C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debu
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.CleanAspNetUsersTablex2.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingAboutPropertyToTheAspNetUsers.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddUserProprieties_Job_FirstRegistration_Points.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\bin\PagedList.dll
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\bin\PagedList.Mvc.dll
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\bin\System.Reactive.dll
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\bin\PagedList.xml
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\bin\PagedList.Mvc.xml
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\bin\System.Reactive.xml
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingUsername.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.sd.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.username.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.aa.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.username1.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.CleaningTheDB.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingFieldsToExerciseModel.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.sync.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.ChangeDomainTableIntoDifficultyTable.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.InsertingDifficulties.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.InsertingNewDifficulties.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateExerciseTable.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddDateTimeToExerciseModel.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.ModifyExerciseModel.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.update.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.up.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.ClearExercisesData.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.ModifyExercisesTable.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.ModifyExerciseTable.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddSubmissionTableToTheDB.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.updateSubmissionTable.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionTable_AddSourceCodeField.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.updateDatabase.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.RepairSubmissionTable.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionTable_AddScoresAndExecutionTime2.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionTable_AddDefaultValuesToScoresAndExecutionTime.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.CleanUsersTable.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.CleanAspNetUsersTablex2.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingAboutPropertyToTheAspNetUsers.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddUserProprieties_Job_FirstRegistration_Points.resources
