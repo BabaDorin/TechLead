@@ -431,11 +431,11 @@
     <Content Include="Views\Problem\Submissions.cshtml" />
     <Content Include="Views\Problem\SubmissionDetails.cshtml" />
     <Content Include="Views\Account\_Login.cshtml" />
+    <Content Include="Views\Profile\ViewProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
