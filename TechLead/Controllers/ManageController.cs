@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TechLead.Models;
+using System.IO;
 
 namespace TechLead.Controllers
 {
@@ -382,8 +383,35 @@ namespace TechLead.Controllers
 
             base.Dispose(disposing);
         }
-        
-#region Helpers
+
+        public ActionResult Profilepic()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Profilepic(string imgbase64)
+        {
+            try
+            {
+                byte[] bytes = Convert.FromBase64String(imgbase64.Split(',')[1]);
+                FileStream stream = new FileStream(Server.MapPath("~/Images/" + Guid.NewGuid() + ".png"), FileMode.Create);
+                stream.Write(bytes, 0, bytes.Length);
+                stream.Flush();
+                TempData["Success"] = "Image uploaded successfully";
+                return View();
+            }
+            catch (Exception e)
+            {
+                string[] Error = new string[2];
+                Error[0] = "Error";
+                Error[1] = e.ToString();
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+            
+        }
+
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 

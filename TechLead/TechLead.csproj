@@ -370,8 +370,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\example\iEdit.css" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\example\iEdit.js" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\example\index.html" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\example\script.js" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\src\iEdit.css" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\src\iEdit.js" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\src\iEdit.min.css" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\src\iEdit.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\example\.DS_Store" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\LICENSE" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\README.md" />
+    <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\src\.DS_Store" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -432,9 +444,11 @@
     <Content Include="Views\Problem\SubmissionDetails.cshtml" />
     <Content Include="Views\Account\_Login.cshtml" />
     <Content Include="Views\Profile\ViewProfile.cshtml" />
+    <Content Include="Views\Manage\Profilepic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Images\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
