@@ -195,6 +195,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="iframe_Crop.aspx.cs">
+      <DependentUpon>iframe_Crop.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="iframe_Crop.aspx.designer.cs">
+      <DependentUpon>iframe_Crop.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201906061342126_Migration.cs" />
     <Compile Include="Migrations\201906061342126_Migration.Designer.cs">
       <DependentUpon>201906061342126_Migration.cs</DependentUpon>
@@ -366,12 +373,63 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="cropper-master\.gitattributes" />
+    <Content Include="cropper-master\.gitignore" />
+    <Content Include="cropper-master\dist\cropper.common.js" />
+    <Content Include="cropper-master\dist\cropper.css" />
+    <Content Include="cropper-master\dist\cropper.esm.js" />
+    <Content Include="cropper-master\dist\cropper.js" />
+    <Content Include="cropper-master\dist\cropper.min.css" />
+    <Content Include="cropper-master\dist\cropper.min.js" />
+    <Content Include="cropper-master\docs\css\cropper.css" />
+    <Content Include="cropper-master\docs\css\main.css" />
+    <Content Include="cropper-master\docs\favicon.ico" />
+    <Content Include="cropper-master\docs\images\picture.jpg" />
+    <Content Include="cropper-master\docs\index.html" />
+    <Content Include="cropper-master\docs\js\cropper.js" />
+    <Content Include="cropper-master\docs\js\main.js" />
+    <Content Include="cropper-master\docs\v2.3.4\css\cropper.css" />
+    <Content Include="cropper-master\docs\v2.3.4\css\main.css" />
+    <Content Include="cropper-master\docs\v2.3.4\images\picture.jpg" />
+    <Content Include="cropper-master\docs\v2.3.4\index.html" />
+    <Content Include="cropper-master\docs\v2.3.4\js\cropper.js" />
+    <Content Include="cropper-master\docs\v2.3.4\js\main.js" />
+    <Content Include="cropper-master\docs\v3.1.6\css\cropper.css" />
+    <Content Include="cropper-master\docs\v3.1.6\css\main.css" />
+    <Content Include="cropper-master\docs\v3.1.6\images\picture.jpg" />
+    <Content Include="cropper-master\docs\v3.1.6\index.html" />
+    <Content Include="cropper-master\docs\v3.1.6\js\cropper.js" />
+    <Content Include="cropper-master\docs\v3.1.6\js\main.js" />
+    <Content Include="cropper-master\postcss.config.js" />
+    <Content Include="cropper-master\rollup.config.js" />
+    <Content Include="cropper-master\src\index.css" />
+    <Content Include="cropper-master\src\index.js" />
+    <Content Include="cropper-master\test\index.js" />
+    <Content Include="cropper-master\test\karma.conf.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="iframe_Crop.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="cropper-master\.babelrc" />
+    <Content Include="cropper-master\.commitlintrc" />
+    <Content Include="cropper-master\.editorconfig" />
+    <Content Include="cropper-master\.eslintrc" />
+    <Content Include="cropper-master\.github\CODE_OF_CONDUCT.md" />
+    <Content Include="cropper-master\.github\CONTRIBUTING.md" />
+    <Content Include="cropper-master\.github\ISSUE_TEMPLATE\bug_report.md" />
+    <Content Include="cropper-master\.github\ISSUE_TEMPLATE\feature_request.md" />
+    <Content Include="cropper-master\.github\PULL_REQUEST_TEMPLATE.md" />
+    <Content Include="cropper-master\.travis.yml" />
+    <Content Include="cropper-master\CHANGELOG.md" />
+    <Content Include="cropper-master\composer.json" />
+    <Content Include="cropper-master\LICENSE" />
+    <Content Include="cropper-master\package-lock.json" />
+    <Content Include="cropper-master\package.json" />
+    <Content Include="cropper-master\README.md" />
+    <Content Include="cropper-master\test\.eslintrc" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
