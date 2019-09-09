@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TechLead.Models;
 using System.IO;
+using System.Collections.Generic;
 
 namespace TechLead.Controllers
 {
@@ -81,7 +82,8 @@ namespace TechLead.Controllers
                 Job = CurrentUser.Job,
                 FirstRegistration = CurrentUser.FirstRegistration,
                 TotalPoints = CurrentUser.TotalPoints,
-                Email = CurrentUser.Email
+                Email = CurrentUser.Email,
+                userID = CurrentUser.Id                
             };
             return View(model);
         }
@@ -390,22 +392,27 @@ namespace TechLead.Controllers
         }
 
         [HttpPost]
-        public ActionResult Profilepic(string imgbase64)
+        public ActionResult Profilepic(string imgbase64, string userID)
         {
             try
-            {
+            { 
+                //SAVE IMAGE IN DATABASE, NOT IN PROJECT FOLDER.
+                var CurrentUser = _context.Users.Find(userID);
                 byte[] bytes = Convert.FromBase64String(imgbase64.Split(',')[1]);
-                FileStream stream = new FileStream(Server.MapPath("~/Images/" + Guid.NewGuid() + ".png"), FileMode.Create);
+                FileStream stream = new FileStream(Server.MapPath("~/Images/" + userID + ".png"), FileMode.Create);
+                CurrentUser.ProfilePhotoPath = Server.MapPath("~/Images/" + userID + ".png");
                 stream.Write(bytes, 0, bytes.Length);
                 stream.Flush();
                 TempData["Success"] = "Image uploaded successfully";
-                return View();
+                _context.Entry(CurrentUser).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
             catch (Exception e)
             {
-                string[] Error = new string[2];
-                Error[0] = "Error";
-                Error[1] = e.ToString();
+                List<string> Error = new List<string>();
+                Error.Add("Error");
+                Error.Add(e.ToString());
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
             

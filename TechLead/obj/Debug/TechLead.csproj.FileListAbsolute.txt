@@ -933,3 +933,4 @@ C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrat
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.CleanAspNetUsersTablex2.resources
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingAboutPropertyToTheAspNetUsers.resources
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddUserProprieties_Job_FirstRegistration_Points.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddProfilePhotoPathToUserModel.resources
