@@ -24,13 +24,13 @@
         <div class="row">
             <div class="col-md-2">
                 <div class="ProfilePhoto">
-                    @if (Model.ProfilePhotoPath == null)
+                    @if (Model.ProfilePhoto == null)
                     {
                         <img src="https://cdn11.bigcommerce.com/s-gho61/stencil/31cc7cb0-5035-0136-2287-0242ac11001b/e/3dad8ea0-5035-0136-cda0-0242ac110004/images/no-image.svg" />
                     }
                     else
                     {
-                        <img src="@Model.ProfilePhotoPath" />
+                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.ProfilePhoto)" />
                     }
                 </div>
                 <br />
@@ -99,11 +99,13 @@
         </div>
         <div class="ProfileInformation">
             <div class="UploadPhoto">
-                @using (Html.BeginForm("Profilepic", "Manage", FormMethod.Post, new { enctype = "multipart/form-data", userID=Model.userID }))
+                @using (Html.BeginForm("Profilepic", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
                 {
-                    <input id="file" accept="image/*" type="file" value="Change pic"><input type="hidden" id="imgbase64" />
-                    <img id="profilepic" style="display:none">
-                    <input type="submit" id="btnUpload" value="Save" style="display:none"/>
+                    <table>
+                        <tr><td width="10%">Profile image :</td><td><input id="file" accept="image/*" type="file"><input type="hidden" name="imgbase64" id="imgbase64" /></td></tr>
+                        <tr><td></td><td><img id="profilepic" style="display:none"></td></tr>
+                        <tr><td></td><td><input type="submit" id="btnUpload" value="Save" /></td></tr>
+                    </table>
                 }
                 @Html.Raw(TempData["Success"])
                 <script>
@@ -111,7 +113,6 @@
                         $("#file").change(function (e) {
                             var img = e.target.files[0];
                             document.getElementById("profilepic").style.display = 'block';
-                            document.getElementById("btnUpload").style.display = 'block';
                             if (!iEdit.open(img, true, function (res) {
                                 $("#profilepic").attr("src", res);
                                 document.getElementById("imgbase64").value = res;

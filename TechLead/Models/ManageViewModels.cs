@@ -9,7 +9,7 @@ namespace TechLead.Models
     public class IndexViewModel
     {
         public string userID { get; set; }
-        public string ProfilePhotoPath { get; set; }
+        public byte[] ProfilePhoto { get; set; }
         public string UserName { get; set; }
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }

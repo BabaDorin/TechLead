@@ -347,6 +347,14 @@
     <Compile Include="Migrations\201909092124210_AddProfilePhotoPathToUserModel.Designer.cs">
       <DependentUpon>201909092124210_AddProfilePhotoPathToUserModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909102204247_ProfilePhotoToByte.cs" />
+    <Compile Include="Migrations\201909102204247_ProfilePhotoToByte.Designer.cs">
+      <DependentUpon>201909102204247_ProfilePhotoToByte.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201909102204559_ProfilePhotoToByteStep2.cs" />
+    <Compile Include="Migrations\201909102204559_ProfilePhotoToByteStep2.Designer.cs">
+      <DependentUpon>201909102204559_ProfilePhotoToByteStep2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccesDeniedAuthorizeAttribute.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -582,6 +590,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909092124210_AddProfilePhotoPathToUserModel.resx">
       <DependentUpon>201909092124210_AddProfilePhotoPathToUserModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909102204247_ProfilePhotoToByte.resx">
+      <DependentUpon>201909102204247_ProfilePhotoToByte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909102204559_ProfilePhotoToByteStep2.resx">
+      <DependentUpon>201909102204559_ProfilePhotoToByteStep2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

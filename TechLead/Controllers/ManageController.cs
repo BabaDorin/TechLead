@@ -83,7 +83,8 @@ namespace TechLead.Controllers
                 FirstRegistration = CurrentUser.FirstRegistration,
                 TotalPoints = CurrentUser.TotalPoints,
                 Email = CurrentUser.Email,
-                userID = CurrentUser.Id                
+                userID = CurrentUser.Id,
+                ProfilePhoto = CurrentUser.ProfilePhoto
             };
             return View(model);
         }
@@ -392,21 +393,41 @@ namespace TechLead.Controllers
         }
 
         [HttpPost]
-        public ActionResult Profilepic(string imgbase64, string userID)
+        public ActionResult Profilepic(string imgbase64)
         {
             try
-            { 
-                //SAVE IMAGE IN DATABASE, NOT IN PROJECT FOLDER.
-                var CurrentUser = _context.Users.Find(userID);
+            {
                 byte[] bytes = Convert.FromBase64String(imgbase64.Split(',')[1]);
-                FileStream stream = new FileStream(Server.MapPath("~/Images/" + userID + ".png"), FileMode.Create);
-                CurrentUser.ProfilePhotoPath = Server.MapPath("~/Images/" + userID + ".png");
+                FileStream stream = new FileStream(Server.MapPath("~/Images/" + Guid.NewGuid() + ".png"), FileMode.Create);
                 stream.Write(bytes, 0, bytes.Length);
                 stream.Flush();
+                var CurrentUser = _context.Users.Find(User.Identity.GetUserId());
+                CurrentUser.ProfilePhoto = bytes;
                 TempData["Success"] = "Image uploaded successfully";
                 _context.Entry(CurrentUser).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();
                 return RedirectToAction("Index");
+                /*
+                var CurrentUser = _context.Users.Find(User.Identity.GetUserId());
+                byte[] bytes = Convert.FromBase64String(imgbase64.Split(',')[1]);
+                CurrentUser.ProfilePhoto = bytes;
+                TempData["Success"] = "Image uploaded successfully";
+                _context.Entry(CurrentUser).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");*/
+                /*
+                var CurrentUser = _context.Users.Find(User.Identity.GetUserId());
+                if (photo != null)
+                {
+                    CurrentUser.ProfilePhoto = new byte[photo.ContentLength];
+                    photo.InputStream.Read(CurrentUser.ProfilePhoto, 0, photo.ContentLength);
+                    CurrentUser.UserName = "Done";
+                }
+                _context.Entry(CurrentUser).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+                TempData["Success"] = "Image uploaded successfully";
+                return RedirectToAction("Index");*/
+
             }
             catch (Exception e)
             {

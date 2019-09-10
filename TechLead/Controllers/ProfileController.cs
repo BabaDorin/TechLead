@@ -15,7 +15,7 @@ namespace TechLead.Controllers
             ProfileViewModel model;
             ApplicationUser User = _context.Users.Find(userID);
             model = new ProfileViewModel(User.UserName, User.PhoneNumber, User.About,
-                User.TotalPoints, User.FirstRegistration, User.Job, User.Email,User.ProfilePhotoPath);
+                User.TotalPoints, User.FirstRegistration, User.Job, User.Email, User.ProfilePhoto);
             return View(model);
         }
     }
