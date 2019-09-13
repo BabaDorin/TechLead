@@ -14,16 +14,26 @@ namespace TechLead.Controllers
         // GET: Branch2
         public ActionResult Intermediatebranch(int? page)
         {
-            ApplicationDbContext _context = new ApplicationDbContext();
-            List<Exercise> IntermediateExercises = new List<Exercise>();
-            foreach (Exercise e in _context.Exercises)
+            try
             {
-                if (e.DifficulyId == 5)
+                ApplicationDbContext _context = new ApplicationDbContext();
+                List<Exercise> IntermediateExercises = new List<Exercise>();
+                foreach (Exercise e in _context.Exercises)
                 {
-                    IntermediateExercises.Add(e);
+                    if (e.DifficulyId == 5)
+                    {
+                        IntermediateExercises.Add(e);
+                    }
                 }
+                return View(IntermediateExercises.ToPagedList(page ?? 1, 20));
             }
-            return View(IntermediateExercises.ToPagedList(page??1,20));
+            catch (Exception E)
+            {
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = E.Message.ToString();
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
         }
     }
 }

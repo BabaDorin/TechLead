@@ -15,16 +15,26 @@ namespace TechLead.Controllers
         // GET: Branch1
         public ActionResult Beginnerbranch(int? page)
         {
-            ApplicationDbContext _context = new ApplicationDbContext();
-            List<Exercise> BeginnerExercises = new List<Exercise>();
-            foreach(Exercise e in _context.Exercises)
+            try
             {
-                if (e.DifficulyId == 4)
+                ApplicationDbContext _context = new ApplicationDbContext();
+                List<Exercise> BeginnerExercises = new List<Exercise>();
+                foreach (Exercise e in _context.Exercises)
                 {
-                    BeginnerExercises.Add(e);
+                    if (e.DifficulyId == 4)
+                    {
+                        BeginnerExercises.Add(e);
+                    }
                 }
+                return View(BeginnerExercises.ToPagedList(page ?? 1, 20));
             }
-            return View(BeginnerExercises.ToPagedList(page??1,20));
+            catch (Exception E)
+            {
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = E.Message.ToString();
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
         }
     }
 }

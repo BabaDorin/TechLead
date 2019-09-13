@@ -42,9 +42,9 @@ namespace TechLead.Controllers
             }
             catch (Exception)
             {
-                List<string> Error = new List<string>();
-                Error.Add("Error");
-                Error.Add("We couldn't find the exercise specified. ");
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = "We could not find the exercise specified";
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
@@ -61,9 +61,9 @@ namespace TechLead.Controllers
 
             if (file == null)
             {
-                List<string> Error = new List<string>();
-                Error.Add("Error");
-                Error.Add("You did not upload any solution");
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = "You did not upload any solution ):";
                 return View("~/Views/Shared/Error.cshtml",Error);
             }
             //Store the file and send the path to 'Compiling'
@@ -174,9 +174,9 @@ namespace TechLead.Controllers
             }
             catch (Exception E)
             {
-                List<string> Error = new List<string>();
-                Error.Add("Error. Your file could not be compiled properly. Details below");
-                Error.Add(E.ToString());
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = E.Message.ToString();
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
@@ -247,9 +247,9 @@ namespace TechLead.Controllers
             }
             catch (Exception)
             {
-                List<string> Error = new List<string>();
-                Error.Add("Error");
-                Error.Add("We couldn't find the submission specified. ");
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = "We could not find the submission specified. Sorry ):";
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }

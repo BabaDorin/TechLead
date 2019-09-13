@@ -397,6 +397,13 @@ namespace TechLead.Controllers
         {
             try
             {
+                if (imgbase64 == null)
+                {
+                    ErrorViewModel Error = new ErrorViewModel();
+                    Error.Title = "Error";
+                    Error.Description = "There is no image ):";
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
                 byte[] bytes = Convert.FromBase64String(imgbase64.Split(',')[1]);
                 FileStream stream = new FileStream(Server.MapPath("~/Images/" + Guid.NewGuid() + ".png"), FileMode.Create);
                 stream.Write(bytes, 0, bytes.Length);
@@ -431,11 +438,11 @@ namespace TechLead.Controllers
             }
             catch (Exception e)
             {
-                List<string> Error = new List<string>();
-                Error.Add("Error");
-                Error.Add(e.ToString());
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = e.Message.ToString();
                 return View("~/Views/Shared/Error.cshtml", Error);
-            }
+            } 
             
         }
 

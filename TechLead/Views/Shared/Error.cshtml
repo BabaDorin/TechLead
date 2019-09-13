@@ -1,4 +1,4 @@
-﻿@model List<string>
+﻿@model TechLead.Models.ErrorViewModel
 
 @{
     ViewBag.Title = "Error";
@@ -12,18 +12,20 @@
 
 <div class="Content" style="height:80%">
     <div class="ErrorBox">
-
-        <h1>@if (Model[0] != null)
-        {
-            @Model[0]
-        }</h1>
-        <p>
-            @if (Model[1] != null)
+        <div class="ErrorImage">
+            @if (Model.ImagePath != null)
             {
-                @Model[1]
+                <img src="@Model.ImagePath" />
             }
-            </p>
+        </div>
+        <h1>@Model.Title @if (Model.Code != 0)
+        {
+            <span> @Model.Code</span>
+        }
+        </h1>
+        <p>@Model.Description</p>
         <br /><br />
+
         @if (Request.UrlReferrer != null)
         {
             <a class="bottomNav" onclick="history.go(-1); return false;" href="#">Back</a><br />
