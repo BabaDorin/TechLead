@@ -186,7 +186,7 @@ body {
     padding-left: 15%;
     padding-right: 15%;
     background-size: cover;
-    background-image: url(http://hdwpro.com/wp-content/uploads/2018/01/blur-wallpaper-blue-1229x768.jpg);
+    background-image: url("~/ImageResources/jumbotron.jpg");
 }
 
 .jumbotron h1 {
@@ -550,8 +550,8 @@ tr {
 .ProfilePhoto img{
     height:100%; 
     width:100%;
-    max-height:115.5px;
-    max-width:115.5px;
+    max-height:155px;
+    max-width:155px;
     margin-top:10%;
     margin-bottom:10px;
     margin:auto;
@@ -650,4 +650,17 @@ tr {
 
 .columnInfo p{
     padding:4px;
+}
+
+.UploadPhoto input[id="file"] {
+    border: none;
+    outline: none;
+    text-decoration: underline;
+    background: none;
+    color: #636363;
+    font-size: 17px;
+    margin: 0;
+}
+
+.UploadPhoto{
 }

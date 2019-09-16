@@ -3,7 +3,7 @@
     ViewBag.Title = "Manage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
- 
+
 <div class="Content">
 
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
@@ -94,34 +94,19 @@
                             </div>
                         </div>
                     }
+                    <br /><br />
+                    <div class="UploadPhoto">
+                        @using (Html.BeginForm("Profilepic", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <p><strong>Change profile photo</strong></p>
+                            <input id="file" accept="image/*" type="file" style="border:none; outline:none; text-decoration:underline; background:none; font-size:17px; margin:0"><input type="hidden" name="imgbase64" id="imgbase64" style="border:none; outline:none; text-decoration:underline; background:none; font-size:17px; margin:0" />
+                            <br />
+                            <img id="profilepic" style="display:none">
+                            <br />
+                            <input type="submit" id="btnUpload" value="Upload Image" style="display:none" />
+                        }
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="ProfileInformation">
-            <div class="UploadPhoto">
-                @using (Html.BeginForm("Profilepic", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <table>
-                        <tr><td width="10%">Profile image :</td><td><input id="file" accept="image/*" type="file"><input type="hidden" name="imgbase64" id="imgbase64" /></td></tr>
-                        <tr><td></td><td><img id="profilepic" style="display:none"></td></tr>
-                        <tr><td></td><td><input type="submit" id="btnUpload" value="Save" /></td></tr>
-                    </table>
-                }
-                @Html.Raw(TempData["Success"])
-                <script>
-                    $(document).ready(function () {
-                        $("#file").change(function (e) {
-                            var img = e.target.files[0];
-                            document.getElementById("profilepic").style.display = 'block';
-                            if (!iEdit.open(img, true, function (res) {
-                                $("#profilepic").attr("src", res);
-                                document.getElementById("imgbase64").value = res;
-                            })) {
-                                alert("Please check file type !!!");
-                            }
-                        });
-                    });
-                </script>
             </div>
         </div>
     </div>
@@ -139,9 +124,7 @@
                         @Html.ValidationMessage("CustomError")
                         <input type="submit" value="Save" />
                     </div>
-
                 }
-
             }
             else
             {
@@ -155,16 +138,11 @@
                         <input type="submit" value="Save" />
                     </div>
                 }
-
                 <div id="InfoAbout">
                     <span>@Html.DisplayFor(u => u.About)</span>
                 </div>
             }
-        </div>
-        <br />
-        <div class="ExercisesByUser">
-            <p>Exercises created by Andrew:</p>
-            <p>The list is empty</p>
+            <br /><br />
         </div>
     </div>
     <br /><br />
@@ -196,4 +174,20 @@
         }
     }
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#file").change(function (e) {
+            var img = e.target.files[0];
+            document.getElementById("profilepic").style.display = 'block';
+            document.getElementById("btnUpload").style.display = 'block';
+            if (!iEdit.open(img, true, function (res) {
+                $("#profilepic").attr("src", res);
+                document.getElementById("imgbase64").value = res;
+            })) {
+                alert("Please check file type !!!");
+            }
+        });
+    });
 </script>
