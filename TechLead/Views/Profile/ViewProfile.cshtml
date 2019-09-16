@@ -4,5 +4,58 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>ViewProfile</h2>
-
+<div class="Content">
+    <div class="Box">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="ProfilePhoto">
+                    @if (Model.ProfilePhoto == null)
+                    {
+                        <img src="~/ImageResources/undefinedlogo.jpg" />
+                    }
+                    else
+                    {
+                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.ProfilePhoto)" />
+                    }
+                </div>
+                <br />
+            </div>
+            <div class="col-md-10">
+                <div class="ProfileInformation" id="ProfileInformation">
+                    <div class="row">
+                        <div class="columnInfo">
+                            <p><strong>UserName:</strong> @Model.UserName</p>
+                            <p><strong>Email:</strong><span style="color:#ff6a00"> @Model.Email</span></p>
+                            <p>
+                                <strong>Job:</strong> @if (Model.Job == null)
+                                {
+                                    <span> none</span>
+                                }
+                                else
+                                {
+                                    <span>@Model.Job</span>
+                                }
+                            </p>
+                            <div class="ProfileInformation">
+                                <p><input id="buttonOpenInfoEdit" type="button" onclick="openInfoEdit()" value="Edit Info" /></p>
+                            </div>
+                        </div>
+                        <div class="columnInfo">
+                            <p>
+                                <strong>Phone Number:</strong> @if (Model.PhoneNumber == null)
+                                {
+                                    <span> none</span>
+                                }
+                                else
+                                {
+                                    <span>@Model.PhoneNumber</span>
+                                }
+                            </p>
+                            <p><strong>Here since </strong>   @Model.FirstRegistration.ToString("MMM d yyyy")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

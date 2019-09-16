@@ -461,6 +461,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ImageResources\" />
     <Folder Include="Images\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
