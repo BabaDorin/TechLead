@@ -53,6 +53,7 @@
                             </p>
                             <div class="ProfileInformation">
                                 <p><input id="buttonOpenInfoEdit" type="button" onclick="openInfoEdit()" value="Edit Info" /></p>
+                                @Html.ActionLink("View as guest", "ViewProfile", "Profile", new { userId = Model.userID }, null);
                             </div>
                         </div>
                         <div class="columnInfo">

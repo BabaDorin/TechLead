@@ -27,30 +27,31 @@
                             <p><strong>UserName:</strong> @Model.UserName</p>
                             <p><strong>Email:</strong><span style="color:#ff6a00"> @Model.Email</span></p>
                             <p>
-                                <strong>Job:</strong> @if (Model.Job == null)
+                                @if (Model.Job != null)
                                 {
-                                    <span> none</span>
+                                    <strong>Job:</strong> <span>@Model.Job</span>
                                 }
                                 else
                                 {
-                                    <span>@Model.Job</span>
+                                    if (Model.PhoneNumber != null)
+                                    {
+                                        <strong>Phone Number: </strong><span>@Model.PhoneNumber</span>
+                                    }
                                 }
                             </p>
-                            <div class="ProfileInformation">
-                                <p><input id="buttonOpenInfoEdit" type="button" onclick="openInfoEdit()" value="Edit Info" /></p>
-                            </div>
                         </div>
                         <div class="columnInfo">
                             <p>
-                                <strong>Phone Number:</strong> @if (Model.PhoneNumber == null)
+                                @if (Model.Job != null && Model.PhoneNumber!=null)
                                 {
-                                    <span> none</span>
+                                   <strong>Phone Number: </strong><span>@Model.PhoneNumber</span>
                                 }
                                 else
                                 {
-                                    <span>@Model.PhoneNumber</span>
+                                    <span> </span>
                                 }
                             </p>
+                            <p> </p>
                             <p><strong>Here since </strong>   @Model.FirstRegistration.ToString("MMM d yyyy")</p>
                         </div>
                     </div>
