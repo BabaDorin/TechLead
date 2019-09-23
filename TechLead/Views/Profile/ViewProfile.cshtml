@@ -42,9 +42,9 @@
                         </div>
                         <div class="columnInfo">
                             <p>
-                                @if (Model.Job != null && Model.PhoneNumber!=null)
+                                @if (Model.Job != null && Model.PhoneNumber != null)
                                 {
-                                   <strong>Phone Number: </strong><span>@Model.PhoneNumber</span>
+                                    <strong>Phone Number: </strong><span>@Model.PhoneNumber</span>
                                 }
                                 else
                                 {
@@ -57,6 +57,19 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="Box">
+        <div class="About">
+            <p><strong>About</strong></p>
+            @if (Model.About != null)
+            {
+                <div id="InfoAbout">
+                    <span>@Html.DisplayFor(u => u.About)</span>
+                </div>
+            }
+            <br /><br />
         </div>
     </div>
 </div>

@@ -186,7 +186,7 @@ body {
     padding-left: 15%;
     padding-right: 15%;
     background-size: cover;
-    background-image: url("~/ImageResources/jumbotron.jpg");
+    background-image: url("/ImageResources/jumbotron.jpg");
 }
 
 .jumbotron h1 {
@@ -660,7 +660,4 @@ tr {
     color: #636363;
     font-size: 17px;
     margin: 0;
-}
-
-.UploadPhoto{
 }

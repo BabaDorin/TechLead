@@ -11,18 +11,28 @@
 
 <div class="Content">
 
-    <h2>Intermediate</h2>
-    <br />
-    <br />
-    <ul>
-        @foreach (Exercise E in Model)
-        {
-            <li>
-                @Html.ActionLink(E.Name, "Details", "Problem", new { id = E.Id }, null)
-            </li>
-        }
-    </ul>
-    @Html.PagedListPager(Model, page => Url.Action("Intermediatebranch", "Intermediate", new { page }))
+    <div class="TitleBox">
+        <h2>Intermediate</h2>
+    </div>
+    <div class="Box">
+        <br />
+        <br />
+        <ul>
+            @foreach (Exercise E in Model)
+            {
+                <li>
+                    <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
+                        <div class="ProblemToDisplay">
+                            @E.Name
+                            <span class="PointsToDisplay">@E.Points</span>
+                        </div>
+                    </a>
+                </li>
+            }
+        </ul>
+
+        @Html.PagedListPager(Model, page => Url.Action("Beginnerbranch", "Beginner", new { page }))
+    </div>
 </div>
 
 
