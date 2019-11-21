@@ -24,7 +24,7 @@ namespace TechLead.Controllers
             {
                 ErrorViewModel Error = new ErrorViewModel();
                 Error.Title = "Error";
-                Error.Description = "Something went wrong.";
+                Error.Description = "Something went wrong - " + e.Message;
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }

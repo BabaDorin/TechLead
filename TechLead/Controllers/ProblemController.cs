@@ -15,6 +15,7 @@ using PagedList.Mvc;
 using System.Security;
 using System.Security.Policy;
 using System.Security.Permissions;
+using System.Diagnostics;
 
 namespace TechLead.Controllers
 {
@@ -52,135 +53,78 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult Details(HttpPostedFileBase file)
         {
-            //First of all, clear the folder with solutions.
-            System.IO.DirectoryInfo di = new DirectoryInfo(Server.MapPath("~/Solutions/"));
-            foreach (FileInfo fileinfo in di.GetFiles())
-            {
-                fileinfo.Delete();
-            }
-
-            if (file == null)
+            if(file == null)
             {
                 ErrorViewModel Error = new ErrorViewModel();
                 Error.Title = "Error";
                 Error.Description = "You did not upload any solution ):";
-                return View("~/Views/Shared/Error.cshtml",Error);
-            }
-            //Store the file and send the path to 'Compiling'
-            try
-            {
-                if (file.ContentLength > 0&&file.ContentLength< 10000000)
-                {
-                    var fileName = Path.GetFileName(file.FileName);
-                    var path = Path.Combine(Server.MapPath("~/Solutions/"), fileName);
-                    TempData["FileLocation"] = path;
-                    file.SaveAs(path);
-                    ModelState.Clear();
-                }
-                else
-                {
-                    List<string> Error = new List<string>();
-                    Error.Add("Error");
-                    Error.Add("Somethig is wrong with your solution (Maybe it is bigger than 10MB)");
-                    return View("~/Views/Shared/Error.cshtml",Error);
-                }
-            }
-            catch (Exception E)
-            {
-                List<string> Error = new List<string>();
-                Error.Add("Error");
-                Error.Add(E.ToString());
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
-            
-            //When the user submits a solution to a specific problem, he will be redirected to the 'Compiling' page of the
-            //Problem controller.
-            return RedirectToAction("Compiling","Problem");
+
+            try
+            {
+                //We try to extract the source code in a string and pass it to Judge0 API
+                Judge0_SubmissionViewModel submission = new Judge0_SubmissionViewModel();
+                submission.source_code = new StreamReader(file.InputStream).ReadToEnd();
+                submission.language_id = LanguageId(file.FileName);
+                if (submission.language_id == -1)
+                {
+                    //Unsupported language
+                    ErrorViewModel Error = new ErrorViewModel();
+                    Error.Title = "Unsupported language :(";
+                    Error.Description = "Supported languages: C++ (.cpp), C# (.cs), Java (.java), Python (.py), Pascal (.pas)";
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+                return RedirectToAction("Compiling", "Problem", submission);
+
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Oops, something happened :(";
+                Error.Description = e.Message;
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
         }
-
-
-
-
-
-
-
-
-        public ActionResult Compiling()
+        
+        public ActionResult Compiling(Judge0_SubmissionViewModel judge0_submission)
         {
             try
             {
-                //Here we extract the data from TempData and pass it to the view.
-                Exercise E = TempData["Object"] as Exercise;
-
-                //Here we extract the path of the source code (solution).
-                string Path = TempData["FileLocation"].ToString();
-                TempData.Keep();
-
-                Submission SubmissionInstance = new Submission();
-                Compiler.Compiler compiler = new Compiler.Compiler();
-
-                //For the first, we will copy the source code content 
-                var fileStream = new FileStream(Path, FileMode.Open);
-                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8))
-                {
-                    SubmissionInstance.SourceCode = streamReader.ReadToEnd();
-                }
-                fileStream.Close();
-
-                //The list with the scores for each test case.
-                List<int> ScoredPoints = new List<int>();
-                List<int> ExecutionTime = new List<int>();
-                ScoredPoints.Clear();
-
-                //AppDomain
-                //PermissionSet pset = new PermissionSet(PermissionState.None);
-                //pset.AddPermission(new SecurityPermission(SecurityPermissionFlag.Execution));
-                //pset.AddPermission(new FileIOPermission(PermissionState.None));
-                //pset.AddPermission(new ReflectionPermission(PermissionState.None));
-
-                //AppDomainSetup setup = new AppDomainSetup();
-                //setup.ApplicationBase = Server.MapPath("~/Solutions/");
-
-                //AppDomain sandbox = AppDomain.CreateDomain("Submited Code", null, setup, pset);
-
-
-                ScoredPoints = compiler.Compilation(Path, E, out ExecutionTime);
-                TempData["Score"] = null;
-                TempData["Score"] = ScoredPoints;
-                //Insert the submission into the database
-                
-                if (Request.IsAuthenticated)
-                {
-                    SubmissionInstance.User = _context.Users.FirstOrDefault(x => x.Id == User.Identity.GetUserId());
-                }
-
-                int sum = 0;
-                //Count the points
-                for (int i = 0; i < ScoredPoints.Count(); i++)
-                {
-                    sum += ScoredPoints[i];
-                }
-
-                SubmissionInstance.Points = sum;
-                SubmissionInstance.Time = DateTime.Now.ToString("MM/dd/yyyy");
-                SubmissionInstance.Exercise = E.Name;
-                SubmissionInstance.ExerciseId = E.Id;
-                InsertScoresAndExecutionTimesIntoSubmissionInstance(ref SubmissionInstance, ScoredPoints, ExecutionTime);
-
-                //Save data about submission. 
-                _context.Submissions.Add(SubmissionInstance);
-                _context.SaveChanges();
-                return RedirectToAction("Results", "Problem");
+                Exercise e = TempData["Object"] as Exercise;
+                Submission submission = new Submission();
+                submission.SourceCode = judge0_submission.source_code;
+                return View("Home", "Index");
             }
-            catch (Exception E)
+            catch (Exception)
             {
-                ErrorViewModel Error = new ErrorViewModel();
-                Error.Title = "Error";
-                Error.Description = E.Message.ToString();
-                return View("~/Views/Shared/Error.cshtml", Error);
+
+                throw;
             }
         }
+        public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, Submission submission,
+            string stdin, string stdout)
+        {
+            Debug.WriteLine("Going in test 1 >>>");
 
+        }
+        public int LanguageId(string fileName)
+        {
+            switch (Path.GetExtension(fileName))
+            {
+                case ".cs":
+                    return 17;
+                case ".cpp":
+                    return 15;
+                case ".pas":
+                    return 33;
+                case ".java":
+                    return 28;
+                case ".py":
+                    return 36;
+                default: return -1;
+            }
+        }
         private void InsertScoresAndExecutionTimesIntoSubmissionInstance(ref Submission submissionInstance, List<int> scoredPoints, List<int> executionTime)
         {
             int TestNr = scoredPoints.Count();

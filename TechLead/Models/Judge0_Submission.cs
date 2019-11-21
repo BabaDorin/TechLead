@@ -6,9 +6,11 @@ using System.Web;
 
 namespace TechLead.Models
 {
-    public class Judge0_Submission
+    public class Judge0_SubmissionViewModel
     {
         //For more detailed information, follow https://api.judge0.com/#submission-submission-get 
+
+        public int Id { get; set; }
 
         //Program's source code
         [Required]
