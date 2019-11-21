@@ -362,6 +362,7 @@
     <Compile Include="Models\Difficulty.cs" />
     <Compile Include="Models\Exercise.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Judge0_Submission.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProfileViewModels.cs" />
     <Compile Include="Models\SharedViewModels.cs" />
