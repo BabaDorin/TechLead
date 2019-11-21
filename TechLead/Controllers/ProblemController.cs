@@ -16,6 +16,9 @@ using System.Security;
 using System.Security.Policy;
 using System.Security.Permissions;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Net;
+using System.Web.Script.Serialization;
 
 namespace TechLead.Controllers
 {
@@ -75,7 +78,8 @@ namespace TechLead.Controllers
                     Error.Description = "Supported languages: C++ (.cpp), C# (.cs), Java (.java), Python (.py), Pascal (.pas)";
                     return View("~/Views/Shared/Error.cshtml", Error);
                 }
-                return RedirectToAction("Compiling", "Problem", submission);
+                TempData["Judge0_Submission"] = submission;
+                return RedirectToAction("Compiling", "Problem");
 
             }
             catch (Exception e)
@@ -87,25 +91,62 @@ namespace TechLead.Controllers
             }
         }
         
-        public ActionResult Compiling(Judge0_SubmissionViewModel judge0_submission)
+        public ActionResult Compiling()
         {
             try
             {
                 Exercise e = TempData["Object"] as Exercise;
+                Judge0_SubmissionViewModel judge0_submission = TempData["Judge0_Submission"] as Judge0_SubmissionViewModel;
                 Submission submission = new Submission();
                 submission.SourceCode = judge0_submission.source_code;
+                Debug.WriteLine("source code: " + judge0_submission.source_code);
+                ExecuteAndCheck(judge0_submission, ref submission, e);
                 return View("Home", "Index");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Oops, something happened :(";
+                Error.Description = e.Message;
+                return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
-        public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, Submission submission,
-            string stdin, string stdout)
+        public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, ref Submission submission,
+            Exercise E)
         {
+            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=false&wait=false");
+            request.ContentType = "application/json";
+            request.Method = "POST";
             Debug.WriteLine("Going in test 1 >>>");
+            judge0_Submission.stdin = E.TestImput1;
+            judge0_Submission.stdout = E.TestOutput1;
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                string json = "{ \"source_code\" : \"cichi bomba\", \"language_id\" : \"17\", \"stdin\" : \"17\", \"stdout\" : 17 }";
+
+                streamWriter.Write(json);
+                streamWriter.Flush();
+            }
+            //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            //{
+            //    Debug.WriteLine("serialize");
+            //    var json = new JavaScriptSerializer().Serialize(judge0_Submission);
+            //    Debug.WriteLine("write json");
+            //    streamWriter.Write(json);
+            //}
+            Debug.WriteLine("sending etasamaia");
+            var httpResponse = (HttpWebResponse)request.GetResponse();
+            Debug.WriteLine("RASPUNS PRIMIT iobana");
+            var result="";
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                Debug.WriteLine("aolo guci");
+                result = streamReader.ReadToEnd();
+            }
+            Debug.WriteLine("done");
+            Debug.WriteLine(result); 
+            //Now we have the token
+            //Next => get submission detalis using the token si asa mai departe
 
         }
         public int LanguageId(string fileName)
