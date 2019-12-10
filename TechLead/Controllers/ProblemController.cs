@@ -101,7 +101,7 @@ namespace TechLead.Controllers
                 submission.SourceCode = judge0_submission.source_code;
                 Debug.WriteLine("source code: " + judge0_submission.source_code);
                 ExecuteAndCheck(judge0_submission, ref submission, e);
-                return View("Home", "Index");
+                return View("Index", "Home");
             }
             catch (Exception e)
             {
@@ -122,18 +122,11 @@ namespace TechLead.Controllers
             judge0_Submission.stdout = E.TestOutput1;
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
             {
-                string json = "{ \"source_code\" : \"cichi bomba\", \"language_id\" : \"17\", \"stdin\" : \"17\", \"stdout\" : 17 }";
-
+                string json = buildJson(judge0_Submission);
+                Debug.WriteLine(json);
                 streamWriter.Write(json);
                 streamWriter.Flush();
             }
-            //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-            //{
-            //    Debug.WriteLine("serialize");
-            //    var json = new JavaScriptSerializer().Serialize(judge0_Submission);
-            //    Debug.WriteLine("write json");
-            //    streamWriter.Write(json);
-            //}
             Debug.WriteLine("sending etasamaia");
             var httpResponse = (HttpWebResponse)request.GetResponse();
             Debug.WriteLine("RASPUNS PRIMIT iobana");
@@ -149,6 +142,15 @@ namespace TechLead.Controllers
             //Next => get submission detalis using the token si asa mai departe
 
         }
+
+        private static string buildJson(Judge0_SubmissionViewModel judge0)
+        {
+            return "{ \"source_code\" : \"" + judge0.source_code + "\", " +
+                "\"language_id\" : \"" + judge0.language_id +"\", " +
+                "\"stdin\" : \""+judge0.stdin+"\", " +
+                "\"stdout\" :"+judge0.stdout+" }";
+        }
+
         public int LanguageId(string fileName)
         {
             switch (Path.GetExtension(fileName))
