@@ -19,7 +19,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Net;
 using System.Web.Script.Serialization;
-
+using Newtonsoft.Json.Linq;
 namespace TechLead.Controllers
 {
     public class ProblemController : Controller
@@ -114,10 +114,13 @@ namespace TechLead.Controllers
         public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, ref Submission submission,
             Exercise E)
         {
+            //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
+            //After that, having the token, we make another request to get submission details like execution time and so on.
             var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=false&wait=false");
             request.ContentType = "application/json";
             request.Method = "POST";
-            Debug.WriteLine("Going in test 1 >>>");
+            Debug.WriteLine("Going in test >>>");
+
             judge0_Submission.stdin = E.TestImput1;
             judge0_Submission.stdout = E.TestOutput1;
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
@@ -130,16 +133,26 @@ namespace TechLead.Controllers
             Debug.WriteLine("sending etasamaia");
             var httpResponse = (HttpWebResponse)request.GetResponse();
             Debug.WriteLine("RASPUNS PRIMIT iobana");
-            var result="";
+            JObject result;
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
-                Debug.WriteLine("aolo guci");
-                result = streamReader.ReadToEnd();
+                result = JObject.Parse(streamReader.ReadToEnd());
             }
-            Debug.WriteLine("done");
-            Debug.WriteLine(result); 
+            Debug.WriteLine(result.SelectToken("token"));
+            
             //Now we have the token
             //Next => get submission detalis using the token si asa mai departe
+            request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/"+ result.SelectToken("token") + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id");
+            request.ContentType = "application/json";
+            request.Method = "GET";
+            httpResponse = (HttpWebResponse)request.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                result = JObject.Parse(streamReader.ReadToEnd());
+            }
+            //Next => from result ( which is the result json) build a submission_judge0 object, then
+            //from the submission_judge0 object build submission object and that's all.
+            Debug.WriteLine(result);
 
         }
 
@@ -148,7 +161,7 @@ namespace TechLead.Controllers
             return "{ \"source_code\" : \"" + judge0.source_code + "\", " +
                 "\"language_id\" : \"" + judge0.language_id +"\", " +
                 "\"stdin\" : \""+judge0.stdin+"\", " +
-                "\"stdout\" :"+judge0.stdout+" }";
+                "\"stdout\" :\""+judge0.stdout+"\" }";
         }
 
         public int LanguageId(string fileName)
