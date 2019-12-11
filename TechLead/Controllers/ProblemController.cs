@@ -105,7 +105,7 @@ namespace TechLead.Controllers
         {
             //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
             //After that, having the token, we make another request to get submission details like execution time and so on.
-            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=false&wait=false");
+            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
             request.ContentType = "application/json";
             request.Method = "POST";
             Debug.WriteLine("Going in test >>>");
@@ -144,12 +144,18 @@ namespace TechLead.Controllers
             Debug.WriteLine(result);
         }
 
+
         private static string buildJson(Judge0_SubmissionViewModel judge0)
         {
-            return "{ \"source_code\" : \"" + judge0.source_code + "\", " +
+            return "{ \"source_code\" : \"" + Base64Encode(judge0.source_code) + "\", " +
                 "\"language_id\" : \"" + judge0.language_id +"\", " +
-                "\"stdin\" : \""+judge0.stdin+"\", " +
-                "\"stdout\" :\""+judge0.stdout+"\" }";
+                "\"stdin\" : \""+Base64Encode(judge0.stdin) +"\", " +
+                "\"stdout\" :\""+Base64Encode(judge0.stdout)+ "\" }";
+        }
+        public static string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
         }
 
         public int LanguageId(string fileName)
