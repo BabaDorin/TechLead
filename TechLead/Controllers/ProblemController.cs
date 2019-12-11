@@ -1,25 +1,15 @@
-﻿using Microsoft.AspNet.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TechLead.Models;
-using System.Data;
 using System.IO;
-using TechLead.Compiler;
-using System.Dynamic;
-using System.Text;
 using PagedList;
-using PagedList.Mvc;
-using System.Security;
-using System.Security.Policy;
-using System.Security.Permissions;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Net;
-using System.Web.Script.Serialization;
 using Newtonsoft.Json.Linq;
+
 namespace TechLead.Controllers
 {
     public class ProblemController : Controller
@@ -29,9 +19,7 @@ namespace TechLead.Controllers
         {
             _context = new ApplicationDbContext();
         }
-
-        //[Authorize(Roles = "Administrator")]
-        //[Authorize(Roles = "Teacher")]
+        
         // GET: Problem
         [HttpGet]
         public ActionResult Details(int id)
@@ -111,6 +99,7 @@ namespace TechLead.Controllers
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
+
         public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, ref Submission submission,
             Exercise E)
         {
@@ -153,7 +142,6 @@ namespace TechLead.Controllers
             //Next => from result ( which is the result json) build a submission_judge0 object, then
             //from the submission_judge0 object build submission object and that's all.
             Debug.WriteLine(result);
-
         }
 
         private static string buildJson(Judge0_SubmissionViewModel judge0)
@@ -181,6 +169,7 @@ namespace TechLead.Controllers
                 default: return -1;
             }
         }
+
         private void InsertScoresAndExecutionTimesIntoSubmissionInstance(ref Submission submissionInstance, List<int> scoredPoints, List<int> executionTime)
         {
             int TestNr = scoredPoints.Count();
@@ -254,14 +243,6 @@ namespace TechLead.Controllers
             }
         }
 
-
-
-
-
-
-
-
-
         public ActionResult Create()
         {
             var viewModel = new Exercise
@@ -288,28 +269,17 @@ namespace TechLead.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
-
-
-
-
-
-
-
         public ActionResult Submissions(int? page)
         {
-            
             Exercise e = TempData["Object"] as Exercise;
             int ExerciseIdParam = e.Id;
             TempData.Keep();
             List<Submission> SubmissionForASpecificExercise = new List<Submission>();
             foreach (Submission S in _context.Submissions)
-            {
                 if (S.ExerciseId==ExerciseIdParam)
                 {
                     SubmissionForASpecificExercise.Add(S);
                 }
-            }
             SubmissionForASpecificExercise.Reverse();
             return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
         }
