@@ -73,38 +73,40 @@ namespace TechLead.Models
         public string Output5 { get; set; }
 
         //Backend test cases------------------------------------------------
-        [Required(ErrorMessage = "This field is required")]
-        public string TestImput1 { get; set; }
+        //[Required(ErrorMessage = "This field is required")]
+        //public string TestImput1 { get; set; }
 
-        [Required(ErrorMessage = "This field is required")]
-        public string TestImput2 { get; set; }
+        //[Required(ErrorMessage = "This field is required")]
+        //public string TestImput2 { get; set; }
 
-        public string TestImput3 { get; set; }
-        public string TestImput4 { get; set; }
-        public string TestImput5 { get; set; }
-        public string TestImput6 { get; set; }
-        public string TestImput7 { get; set; }
-        public string TestImput8 { get; set; }
-        public string TestImput9 { get; set; }
-        public string TestImput10 { get; set; }
+        //public string TestImput3 { get; set; }
+        //public string TestImput4 { get; set; }
+        //public string TestImput5 { get; set; }
+        //public string TestImput6 { get; set; }
+        //public string TestImput7 { get; set; }
+        //public string TestImput8 { get; set; }
+        //public string TestImput9 { get; set; }
+        //public string TestImput10 { get; set; }
 
-        [Required(ErrorMessage = "This field is required")]
-        public string TestOutput1 { get; set; }
+        //[Required(ErrorMessage = "This field is required")]
+        //public string TestOutput1 { get; set; }
 
-        [Required(ErrorMessage = "This field is required")]
-        public string TestOutput2 { get; set; }
+        //[Required(ErrorMessage = "This field is required")]
+        //public string TestOutput2 { get; set; }
 
 
-        public string TestOutput3 { get; set; }
+        //public string TestOutput3 { get; set; }
 
-        public string TestOutput4 { get; set; }
-        public string TestOutput5 { get; set; }
-        public string TestOutput6 { get; set; }
-        public string TestOutput7 { get; set; }
-        public string TestOutput8 { get; set; }
-        public string TestOutput9 { get; set; }
-        public string TestOutput10 { get; set; }
-
+        //public string TestOutput4 { get; set; }
+        //public string TestOutput5 { get; set; }
+        //public string TestOutput6 { get; set; }
+        //public string TestOutput7 { get; set; }
+        //public string TestOutput8 { get; set; }
+        //public string TestOutput9 { get; set; }
+        //public string TestOutput10 { get; set; }
+        public string InputColection { get; set; }
+        public string OutputColection { get; set; }
+        public int NumberOfTests { get; set; }
         public int Submissions()
         {
             return SubmissionsAbove10Points + SubmissionsUnder10Points;

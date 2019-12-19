@@ -179,6 +179,20 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Migrations\201912191628209_UpdateExerciseModel.cs" />
+    <Compile Include="Migrations\201912191628209_UpdateExerciseModel.Designer.cs">
+      <DependentUpon>201912191628209_UpdateExerciseModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912191638150_UpdateExerciseModelX2.cs" />
+    <Compile Include="Migrations\201912191638150_UpdateExerciseModelX2.Designer.cs">
+      <DependentUpon>201912191638150_UpdateExerciseModelX2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912191730150_UpdateExerciseModelX3.cs" />
+    <Compile Include="Migrations\201912191730150_UpdateExerciseModelX3.Designer.cs">
+      <DependentUpon>201912191730150_UpdateExerciseModelX3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Data.cs" />
+    <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\Compiler.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\CPPCompiler.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\CSharpCompiler.cs" />
@@ -399,6 +413,7 @@
     <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\LICENSE" />
     <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\README.md" />
     <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\src\.DS_Store" />
+    <Content Include="Old but maybe useful stuff\Create.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -600,6 +615,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909102204559_ProfilePhotoToByteStep2.resx">
       <DependentUpon>201909102204559_ProfilePhotoToByteStep2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912191628209_UpdateExerciseModel.resx">
+      <DependentUpon>201912191628209_UpdateExerciseModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912191638150_UpdateExerciseModelX2.resx">
+      <DependentUpon>201912191638150_UpdateExerciseModelX2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912191730150_UpdateExerciseModelX3.resx">
+      <DependentUpon>201912191730150_UpdateExerciseModelX3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

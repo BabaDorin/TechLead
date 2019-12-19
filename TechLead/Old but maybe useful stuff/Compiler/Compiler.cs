@@ -89,62 +89,62 @@ namespace TechLead.Compiler
         //Creating 2 lists. One for Imputs and one for outputs.
         public void CreatingImputOutputLists(Exercise E)
         {
-            Imputs.Clear();
-            Outputs.Clear();
-            //Go througn each test case and insert data in those lists
-            //The first 2 are mandatory. For the rest we should check their existence
-            Imputs.Add(E.TestImput1);
-            Imputs.Add(E.TestImput2);
-            Outputs.Add(E.TestOutput1);
-            Outputs.Add(E.TestOutput2);
+            //Imputs.Clear();
+            //Outputs.Clear();
+            ////Go througn each test case and insert data in those lists
+            ////The first 2 are mandatory. For the rest we should check their existence
+            //Imputs.Add(E.TestImput1);
+            //Imputs.Add(E.TestImput2);
+            //Outputs.Add(E.TestOutput1);
+            //Outputs.Add(E.TestOutput2);
 
-            if (E.TestImput3 != null)
-            {
-                Imputs.Add(E.TestImput3);
-                Outputs.Add(E.TestOutput3);
-            }
+            //if (E.TestImput3 != null)
+            //{
+            //    Imputs.Add(E.TestImput3);
+            //    Outputs.Add(E.TestOutput3);
+            //}
 
-            if (E.TestImput4 != null)
-            {
-                Imputs.Add(E.TestImput4);
-                Outputs.Add(E.TestOutput4);
-            }
+            //if (E.TestImput4 != null)
+            //{
+            //    Imputs.Add(E.TestImput4);
+            //    Outputs.Add(E.TestOutput4);
+            //}
 
-            if (E.TestImput5 != null)
-            {
-                Imputs.Add(E.TestImput5);
-                Outputs.Add(E.TestOutput5);
-            }
+            //if (E.TestImput5 != null)
+            //{
+            //    Imputs.Add(E.TestImput5);
+            //    Outputs.Add(E.TestOutput5);
+            //}
 
-            if (E.TestImput6 != null)
-            {
-                Imputs.Add(E.TestImput6);
-                Outputs.Add(E.TestOutput6);
-            }
+            //if (E.TestImput6 != null)
+            //{
+            //    Imputs.Add(E.TestImput6);
+            //    Outputs.Add(E.TestOutput6);
+            //}
 
-            if (E.TestImput7 != null)
-            {
-                Imputs.Add(E.TestImput7);
-                Outputs.Add(E.TestOutput7);
-            }
+            //if (E.TestImput7 != null)
+            //{
+            //    Imputs.Add(E.TestImput7);
+            //    Outputs.Add(E.TestOutput7);
+            //}
 
-            if (E.TestImput8 != null)
-            {
-                Imputs.Add(E.TestImput8);
-                Outputs.Add(E.TestOutput8);
-            }
+            //if (E.TestImput8 != null)
+            //{
+            //    Imputs.Add(E.TestImput8);
+            //    Outputs.Add(E.TestOutput8);
+            //}
 
-            if (E.TestImput9 != null)
-            {
-                Imputs.Add(E.TestImput9);
-                Outputs.Add(E.TestOutput9);
-            }
+            //if (E.TestImput9 != null)
+            //{
+            //    Imputs.Add(E.TestImput9);
+            //    Outputs.Add(E.TestOutput9);
+            //}
 
-            if (E.TestImput10 != null)
-            {
-                Imputs.Add(E.TestImput10);
-                Outputs.Add(E.TestOutput10);
-            }
+            //if (E.TestImput10 != null)
+            //{
+            //    Imputs.Add(E.TestImput10);
+            //    Outputs.Add(E.TestOutput10);
+            //}
         }
     }
 }
