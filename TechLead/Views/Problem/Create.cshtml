@@ -26,8 +26,8 @@
             </div>
             <br />
             <div class="form-group">
-                @Html.LabelFor(ex => ex.DifficulyId, "Difficulty\n")
-                @Html.DropDownListFor(ex => ex.DifficulyId, new SelectList(Model.Difficulty, "Id", "Name"), new { @class = "form-control" })
+                @Html.LabelFor(ex => ex.DifficultyId, "Difficulty\n")
+                @Html.DropDownListFor(ex => ex.DifficultyId, new SelectList(Model.Difficulty, "Id", "Name"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(ex => ex.Difficulty)
             </div>
             <br />
@@ -55,8 +55,8 @@
 
             <br />
             <div class="form-group">
-                @Html.LabelFor(ex => ex.ImputFormat, "Imput Format: ")
-                @Html.TextAreaFor(ex => ex.ImputFormat, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
+                @Html.LabelFor(ex => ex.InputFormat, "Imput Format: ")
+                @Html.TextAreaFor(ex => ex.InputFormat, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
                 @Html.ValidationMessageFor(ex => ex.Explanation3)
             </div>
 
@@ -85,9 +85,9 @@
                 <br />
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(ex => ex.Imput1, "Imput")
-                        @Html.TextAreaFor(ex => ex.Imput1, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
-                        @Html.ValidationMessageFor(ex => ex.Imput1)
+                        @Html.LabelFor(ex => ex.Input1, "Input")
+                        @Html.TextAreaFor(ex => ex.Input1, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
+                        @Html.ValidationMessageFor(ex => ex.Input1)
                     </div>
                 </div>
 
@@ -113,9 +113,9 @@
                 <br />
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(ex => ex.Imput2, "Imput")
-                        @Html.TextAreaFor(ex => ex.Imput2, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
-                        @Html.ValidationMessageFor(ex => ex.Imput2)
+                        @Html.LabelFor(ex => ex.Input2, "Input")
+                        @Html.TextAreaFor(ex => ex.Input2, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
+                        @Html.ValidationMessageFor(ex => ex.Input2)
                     </div>
                 </div>
 
@@ -141,9 +141,9 @@
                 <br />
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(ex => ex.Imput3, "Imput")
-                        @Html.TextAreaFor(ex => ex.Imput3, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
-                        @Html.ValidationMessageFor(ex => ex.Imput3)
+                        @Html.LabelFor(ex => ex.Input3, "Input")
+                        @Html.TextAreaFor(ex => ex.Input3, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
+                        @Html.ValidationMessageFor(ex => ex.Input3)
                     </div>
                 </div>
 
@@ -169,9 +169,9 @@
                 <br />
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(ex => ex.Imput4, "Imput")
-                        @Html.TextAreaFor(ex => ex.Imput4, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
-                        @Html.ValidationMessageFor(ex => ex.Imput4)
+                        @Html.LabelFor(ex => ex.Input4, "Input")
+                        @Html.TextAreaFor(ex => ex.Input4, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
+                        @Html.ValidationMessageFor(ex => ex.Input4)
                     </div>
                 </div>
 
@@ -197,9 +197,9 @@
                 <br />
                 <div class="col-md-6">
                     <div class="form-group">
-                        @Html.LabelFor(ex => ex.Imput5, "Imput")
-                        @Html.TextAreaFor(ex => ex.Imput5, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
-                        @Html.ValidationMessageFor(ex => ex.Imput5)
+                        @Html.LabelFor(ex => ex.Input5, "Input")
+                        @Html.TextAreaFor(ex => ex.Input5, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
+                        @Html.ValidationMessageFor(ex => ex.Input5)
                     </div>
                 </div>
 
@@ -222,6 +222,7 @@
         <div class="CreateProblem2">
             <p>BackEnd</p>
             <p>Create the test-cases that will score the points for the problem.</p>
+            <p>Please, make sure that the inputs/outputs are in the correct format.</p>
             @for (int i = 0; i < 10; i++)
             {
                 <br />
@@ -231,7 +232,7 @@
                     <br />
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(ex => ex.Test[i].Input, "Imput")
+                            @Html.LabelFor(ex => ex.Test[i].Input, "Input")
                             @Html.TextAreaFor(ex => ex.Test[i].Input, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
                             @Html.ValidationMessageFor(ex => ex.Test[i].Input)
                         </div>

@@ -199,6 +199,10 @@
     <Compile Include="Migrations\201912201012058_CleanDBx2.Designer.cs">
       <DependentUpon>201912201012058_CleanDBx2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912201048275_ExerciseModelSpellingCorrection.cs" />
+    <Compile Include="Migrations\201912201048275_ExerciseModelSpellingCorrection.Designer.cs">
+      <DependentUpon>201912201048275_ExerciseModelSpellingCorrection.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\Compiler.cs" />
@@ -638,6 +642,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912201012058_CleanDBx2.resx">
       <DependentUpon>201912201012058_CleanDBx2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912201048275_ExerciseModelSpellingCorrection.resx">
+      <DependentUpon>201912201048275_ExerciseModelSpellingCorrection.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

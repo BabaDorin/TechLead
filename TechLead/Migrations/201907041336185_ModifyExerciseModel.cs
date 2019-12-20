@@ -7,12 +7,12 @@ namespace TechLead.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Exercises", "DifficulyId", c => c.Int(nullable: false));
+            AddColumn("dbo.Exercises", "DifficultyId", c => c.Int(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.Exercises", "DifficulyId");
+            DropColumn("dbo.Exercises", "DifficultyId");
         }
     }
 }

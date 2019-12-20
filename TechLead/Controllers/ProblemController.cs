@@ -354,12 +354,12 @@ namespace TechLead.Controllers
             e.Condition = ExerciseViewModel.Condition;
             e.Constraints = ExerciseViewModel.Constraints;
             e.Difficulty = ExerciseViewModel.Difficulty;
-            e.DifficulyId = ExerciseViewModel.DifficulyId;
-            e.Imput1 = ExerciseViewModel.Imput1;
-            e.Imput2 = ExerciseViewModel.Imput2;
-            e.Imput3 = ExerciseViewModel.Imput3;
-            e.Imput4 = ExerciseViewModel.Imput4;
-            e.Imput5 = ExerciseViewModel.Imput5;
+            e.DifficultyId = ExerciseViewModel.DifficultyId;
+            e.Input1 = ExerciseViewModel.Input1;
+            e.Input2 = ExerciseViewModel.Input2;
+            e.Input3 = ExerciseViewModel.Input3;
+            e.Input4 = ExerciseViewModel.Input4;
+            e.Input5 = ExerciseViewModel.Input5;
             e.Output1 = ExerciseViewModel.Output1;
             e.Output2 = ExerciseViewModel.Output2;
             e.Output3 = ExerciseViewModel.Output3;
@@ -371,7 +371,7 @@ namespace TechLead.Controllers
             e.Explanation4 = ExerciseViewModel.Explanation4;
             e.Explanation5 = ExerciseViewModel.Explanation5;
             e.OutputFormat = ExerciseViewModel.OutputFormat;
-            e.ImputFormat = ExerciseViewModel.ImputFormat;
+            e.InputFormat = ExerciseViewModel.InputFormat;
 
             //This AuxTests array will contain all the tests, without empty imputs.
             //This is the most safe way and we can be sure 100% that to the database will go only valid data.

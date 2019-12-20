@@ -31,7 +31,7 @@ namespace TechLead.Models
         public ApplicationUser Author { get; set; }
 
         [Required(ErrorMessage = "Please, check a difficulty level for the problem")]
-        public int DifficulyId { get; set; }
+        public int DifficultyId { get; set; }
 
 
         public IEnumerable<Difficulty> Difficulty { get; set; }
@@ -40,7 +40,7 @@ namespace TechLead.Models
         public string Condition { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
-        public string ImputFormat { get; set; }
+        public string InputFormat { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
         public string OutputFormat { get; set; }
@@ -51,21 +51,21 @@ namespace TechLead.Models
 
 
         [Required(ErrorMessage = "This field is required")]
-        public string Imput1 { get; set; }
+        public string Input1 { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
         public string Explanation1 { get; set; }
 
-        public string Imput2 { get; set; }
+        public string Input2 { get; set; }
         public string Explanation2 { get; set; }
 
-        public string Imput3 { get; set; }
+        public string Input3 { get; set; }
         public string Explanation3 { get; set; }
 
-        public string Imput4 { get; set; }
+        public string Input4 { get; set; }
         public string Explanation4 { get; set; }
 
-        public string Imput5 { get; set; }
+        public string Input5 { get; set; }
         public string Explanation5 { get; set; }
 
         [Required(ErrorMessage = "This field is required")]
@@ -80,7 +80,6 @@ namespace TechLead.Models
         public string Output5 { get; set; }
 
         //Backend test cases------------------------------------------------
-        public int NumberOfTests { get; set; }
         public Test[] Test { get; set; }
         public int Submissions()
         {

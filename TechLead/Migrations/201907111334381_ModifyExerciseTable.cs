@@ -7,7 +7,7 @@ namespace TechLead.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.Exercises", "ImputFormat", c => c.String(nullable: false));
+            AddColumn("dbo.Exercises", "InputFormat", c => c.String(nullable: false));
             AddColumn("dbo.Exercises", "OutputFormat", c => c.String(nullable: false));
             AddColumn("dbo.Exercises", "Constraints", c => c.String(nullable: false));
             AddColumn("dbo.Exercises", "Explanation1", c => c.String(nullable: false));
@@ -26,7 +26,7 @@ namespace TechLead.Migrations
             DropColumn("dbo.Exercises", "Explanation1");
             DropColumn("dbo.Exercises", "Constraints");
             DropColumn("dbo.Exercises", "OutputFormat");
-            DropColumn("dbo.Exercises", "ImputFormat");
+            DropColumn("dbo.Exercises", "InputFormat");
         }
     }
 }

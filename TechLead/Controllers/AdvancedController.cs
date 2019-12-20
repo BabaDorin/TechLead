@@ -20,7 +20,7 @@ namespace TechLead.Controllers
                 List<Exercise> AdvancedExercises = new List<Exercise>();
                 foreach (Exercise e in _context.Exercises)
                 {
-                    if (e.DifficulyId == 6)
+                    if (e.DifficultyId == 6)
                     {
                         AdvancedExercises.Add(e);
                     }

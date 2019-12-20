@@ -21,7 +21,7 @@ namespace TechLead.Controllers
                 List<Exercise> BeginnerExercises = new List<Exercise>();
                 foreach (Exercise e in _context.Exercises)
                 {
-                    if (e.DifficulyId == 4)
+                    if (e.DifficultyId == 4)
                     {
                         BeginnerExercises.Add(e);
                     }

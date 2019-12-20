@@ -13,7 +13,7 @@
 
             <div class="col-md-4">
                 <div class="PointsAndDifficultyBox">
-                    @switch (Model.DifficulyId)
+                    @switch (Model.DifficultyId)
                     {
                         case 4:<p>Beginner</p>break;
                         case 5:<p>Intermediate</p>break;
@@ -39,8 +39,8 @@
             <span> @Html.DisplayFor(ex => ex.Condition)</span>
             <br /><br /><br />
 
-            <p><strong>Imput Format</strong></p>
-            <span> @Html.DisplayFor(ex => ex.ImputFormat)</span>
+            <p><strong>Input Format</strong></p>
+            <span> @Html.DisplayFor(ex => ex.InputFormat)</span>
             <br /><br /><br />
 
             <p><strong>Constraints</strong></p>
@@ -56,7 +56,7 @@
                 <br />
                 <div class="col-md-6">
                     <div class="IOContainer">
-                        <span>@Html.DisplayFor(ex => ex.Imput1) </span>
+                        <span>@Html.DisplayFor(ex => ex.Input1) </span>
                     </div>
                 </div>
 
@@ -72,13 +72,13 @@
             <span> @Html.DisplayFor(ex => ex.Explanation1)</span>
             <br /><br /><br />
 
-            @if (Model.Imput2 != null)
+            @if (Model.Input2 != null)
             {
                 <div class="row">
                     <p><strong>Test case</strong></p>
                     <div class="col-md-6">
                         <div class="IOContainer">
-                            <span>@Html.DisplayFor(ex => ex.Imput2) </span>
+                            <span>@Html.DisplayFor(ex => ex.Input2) </span>
                         </div>
                     </div>
 
@@ -96,13 +96,13 @@
 
             }
 
-            @if (Model.Imput3 != null)
+            @if (Model.Input3 != null)
             {
                 <div class="row">
                     <p><strong>Test case</strong></p>
                     <div class="col-md-6">
                         <div class="IOContainer">
-                            <span>@Html.DisplayFor(ex => ex.Imput3) </span>
+                            <span>@Html.DisplayFor(ex => ex.Input3) </span>
                         </div>
                     </div>
 
@@ -119,13 +119,13 @@
                 <br /><br /><br />
             }
 
-            @if (Model.Imput4 != null)
+            @if (Model.Input4 != null)
             {
                 <div class="row">
                     <p><strong>Test case</strong></p>
                     <div class="col-md-6">
                         <div class="IOContainer">
-                            <span> @Html.DisplayFor(ex => ex.Imput4)</span>
+                            <span> @Html.DisplayFor(ex => ex.Input4)</span>
                         </div>
                     </div>
 
@@ -142,13 +142,13 @@
                 <br /><br /><br />
             }
 
-            @if (Model.Imput5 != null)
+            @if (Model.Input5 != null)
             {
                 <div class="row">
                     <p><strong>Test case</strong></p>
                     <div class="col-md-6">
                         <div class="IOContainer">
-                            <span>@Html.DisplayFor(ex => ex.Imput5) </span>
+                            <span>@Html.DisplayFor(ex => ex.Input5) </span>
                         </div>
                     </div>
 

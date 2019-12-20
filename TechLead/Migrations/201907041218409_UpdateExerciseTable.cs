@@ -29,14 +29,14 @@ namespace TechLead.Migrations
             AddColumn("dbo.Exercises", "TestOutput10", c => c.String());
             AlterColumn("dbo.Exercises", "Name", c => c.String(nullable: false));
             AlterColumn("dbo.Exercises", "Condition", c => c.String(nullable: false));
-            AlterColumn("dbo.Exercises", "Imput1", c => c.String(nullable: false));
+            AlterColumn("dbo.Exercises", "Input1", c => c.String(nullable: false));
             AlterColumn("dbo.Exercises", "Output1", c => c.String(nullable: false));
         }
         
         public override void Down()
         {
             AlterColumn("dbo.Exercises", "Output1", c => c.String());
-            AlterColumn("dbo.Exercises", "Imput1", c => c.String());
+            AlterColumn("dbo.Exercises", "Input1", c => c.String());
             AlterColumn("dbo.Exercises", "Condition", c => c.String());
             AlterColumn("dbo.Exercises", "Name", c => c.String());
             DropColumn("dbo.Exercises", "TestOutput10");
