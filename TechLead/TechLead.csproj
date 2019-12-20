@@ -207,6 +207,10 @@
     <Compile Include="Migrations\201912201820390_UpdateSubmissionModel.Designer.cs">
       <DependentUpon>201912201820390_UpdateSubmissionModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912201944162_RepairSubmission.cs" />
+    <Compile Include="Migrations\201912201944162_RepairSubmission.Designer.cs">
+      <DependentUpon>201912201944162_RepairSubmission.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\SubmissionViewModel.cs" />
@@ -654,6 +658,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912201820390_UpdateSubmissionModel.resx">
       <DependentUpon>201912201820390_UpdateSubmissionModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912201944162_RepairSubmission.resx">
+      <DependentUpon>201912201944162_RepairSubmission.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

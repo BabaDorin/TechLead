@@ -13,6 +13,9 @@ namespace TechLead.Models
 
         public string SubmissionAuthorUserName { get; set; }
 
+        //Date when the user submitted the solution.
+        public DateTime Date { get; set; }
+
         public int ExerciseId { get; set; }
 
         //The name of the exercise

@@ -11,6 +11,9 @@ namespace TechLead.Models
 
         public string SubmissionAuthorUserName { get; set; }
 
+        //Date when the user submitted the solution
+        public DateTime Date { get; set; }
+
         public int ExerciseId { get; set; }
 
         //The name of the exercise
@@ -28,24 +31,24 @@ namespace TechLead.Models
         public string SourceCode { get; set; }
 
         //All the inputs for a specific exercise delimited by the techlead delimitator
-        public string InputCollection { get; set; }
+        public string[] Inputs { get; set; }
 
         //All the outputs of the program the user had submitted
-        public string OutputCollection { get; set; }
+        public string[] Outputs { get; set; }
 
         //The collection of correct output for each input
-        public string ExpectedOutput { get; set; }
+        public string[] ExpectedOutputs { get; set; }
 
         //Score for each test case
-        public string PointsPerTestCase { get; set; }
+        public double[] Points { get; set; }
 
         //Execution time in miliseconds for each test case
-        public string ExecutionTimePerTestCase { get; set; }
+        public int[] ExecutionTime { get; set; }
 
         //Compile status for each test case  [Accepted / not accepted / Compilation Error etc]
-        public string StatusPerTestCase { get; set; }
+        public string[] Status { get; set; }
 
         //Error message
-        public string ErrorMessage { get; set; }
+        public string[] ErrorMessage { get; set; }
     }
 }
