@@ -191,6 +191,14 @@
     <Compile Include="Migrations\201912191730150_UpdateExerciseModelX3.Designer.cs">
       <DependentUpon>201912191730150_UpdateExerciseModelX3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912201010334_CleanDB.cs" />
+    <Compile Include="Migrations\201912201010334_CleanDB.Designer.cs">
+      <DependentUpon>201912201010334_CleanDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912201012058_CleanDBx2.cs" />
+    <Compile Include="Migrations\201912201012058_CleanDBx2.Designer.cs">
+      <DependentUpon>201912201012058_CleanDBx2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\Compiler.cs" />
@@ -624,6 +632,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912191730150_UpdateExerciseModelX3.resx">
       <DependentUpon>201912191730150_UpdateExerciseModelX3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912201010334_CleanDB.resx">
+      <DependentUpon>201912201010334_CleanDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912201012058_CleanDBx2.resx">
+      <DependentUpon>201912201012058_CleanDBx2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

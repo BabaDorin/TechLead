@@ -5,7 +5,6 @@
 }
 
 <div class="Content">
-
     @using (Html.BeginForm("Create", "Problem", FormMethod.Post, new { id = "submitForm" }))
     {
         @Html.AntiForgeryToken();
@@ -260,7 +259,7 @@
             Antihack
              Show the view only to Admins and Teachers
 *@
-
+@Html.Raw(TempData["BackEndTestsNeeded"])
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/jquery")

@@ -306,6 +306,20 @@ namespace TechLead.Controllers
                 exerciseViewModel.Difficulty = _context.Difficulty.ToList();
                 return View("Create", exerciseViewModel);
             }
+            int nrOfTests = 0;
+            for(int i=0; i<10; i++)
+            {
+                if(exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                {
+                    nrOfTests++;
+                }
+            }
+            if (nrOfTests == 0)
+            {
+                TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
+                exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                return View("Create", exerciseViewModel);
+            }
 
             //If everything is OK, we copy all the data from ExerciseViewModel to Exercise
 
