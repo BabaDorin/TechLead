@@ -939,3 +939,9 @@ C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrat
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateExerciseModel.resources
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateExerciseModelX2.resources
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateExerciseModelX3.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddProfilePhotoPathToUserModel.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.ProfilePhotoToByte.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.ProfilePhotoToByteStep2.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateExerciseModel.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateExerciseModelX2.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateExerciseModelX3.resources

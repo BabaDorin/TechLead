@@ -188,6 +188,7 @@ namespace TechLead.Controllers
                 "\"stdin\" : \""+Base64Encode(judge0.stdin) +"\", " +
                 "\"stdout\" :\""+Base64Encode(judge0.expected_output)+ "\" }";
         }
+
         public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
@@ -269,6 +270,7 @@ namespace TechLead.Controllers
             TempData.Keep();
             return View(ScoredPoints);
         }
+
         public ActionResult SubmissionDetails(int id)
         {
             try
@@ -327,6 +329,7 @@ namespace TechLead.Controllers
             SubmissionForASpecificExercise.Reverse();
             return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
         }
+
         private static Exercise CopyData(ExerciseViewModel ExerciseViewModel)
         {
             Exercise e = new Exercise();
@@ -355,16 +358,33 @@ namespace TechLead.Controllers
             e.Explanation5 = ExerciseViewModel.Explanation5;
             e.OutputFormat = ExerciseViewModel.OutputFormat;
             e.ImputFormat = ExerciseViewModel.ImputFormat;
-            e.NumberOfTests = ExerciseViewModel.NumberOfTests;
-            
-            for (int i=0; i<10; i++)
-            {
-                e.InputColection += ExerciseViewModel.Test[i].Input;
-                if (i < 9 && ExerciseViewModel.Test[i+1].Input!=null) e.InputColection += data.testCase_Delimitator;
 
-                e.OutputColection += ExerciseViewModel.Test[i].Output;
-                if (i < 9 && ExerciseViewModel.Test[i + 1].Output != null) e.OutputColection += data.testCase_Delimitator;
+            //This AuxTests array will contain all the tests, without empty imputs.
+            //This is the most safe way and we can be sure 100% that to the database will go only valid data.
+            Test[] AuxTests = new Test[10];
+            e.NumberOfTests = 0;
+            for(int i=0; i<10; i++)
+            {
+                if (ExerciseViewModel.Test[i].Input != null && ExerciseViewModel.Test[i].Input != null)
+                {
+                    AuxTests[e.NumberOfTests] = ExerciseViewModel.Test[i];
+                    ++e.NumberOfTests;
+                }
             }
+            
+            for(int i=0; i<e.NumberOfTests; i++)
+            {
+                e.InputColection += AuxTests[i].Input;
+                if (i < e.NumberOfTests-1) e.InputColection += data.testCase_Delimitator;
+
+                e.OutputColection += AuxTests[i].Output;
+                if (i < e.NumberOfTests-1) e.OutputColection += data.testCase_Delimitator;
+            }
+            Debug.WriteLine(e.InputColection);
+            Debug.WriteLine(e.OutputColection);
+            //Note:  Input and Ouput collection properties will contail all the inputs / outputs for the backend
+            //processing having a delimitator between them. Everytime when the list of test will be needed,
+            //it would be accesibile by calling the data.CreateTests and passing the e.InputCollection and e.OutputCollection.
             return e;
         }
     }
