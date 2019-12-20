@@ -213,57 +213,6 @@ namespace TechLead.Controllers
             }
         }
 
-        private void InsertScoresAndExecutionTimesIntoSubmissionInstance(ref Submission submissionInstance, List<int> scoredPoints, List<int> executionTime)
-        {
-            int TestNr = scoredPoints.Count();
-            for (int i = 0; i < TestNr; i++)
-            {
-                switch (i+1)
-                {
-                    case 1:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
-                        break;
-                    case 2:
-                        submissionInstance.Score2 = scoredPoints[i];
-                        submissionInstance.ExecutionTime2 = executionTime[i];
-                        break;
-                    case 3:
-                        submissionInstance.Score3 = scoredPoints[i];
-                        submissionInstance.ExecutionTime3 = executionTime[i];
-                        break;
-                    case 4:
-                        submissionInstance.Score4 = scoredPoints[i];
-                        submissionInstance.ExecutionTime4 = executionTime[i];
-                        break;
-                    case 5:
-                        submissionInstance.Score5 = scoredPoints[i];
-                        submissionInstance.ExecutionTime5 = executionTime[i];
-                        break;
-                    case 6:
-                        submissionInstance.Score6 = scoredPoints[i];
-                        submissionInstance.ExecutionTime6 = executionTime[i];
-                        break;
-                    case 7:
-                        submissionInstance.Score7 = scoredPoints[i];
-                        submissionInstance.ExecutionTime7 = executionTime[i];
-                        break;
-                    case 8:
-                        submissionInstance.Score8 = scoredPoints[i];
-                        submissionInstance.ExecutionTime8 = executionTime[i];
-                        break;
-                    case 9:
-                        submissionInstance.Score9 = scoredPoints[i];
-                        submissionInstance.ExecutionTime9 = executionTime[i];
-                        break;
-                    case 10:
-                        submissionInstance.Score10 = scoredPoints[i];
-                        submissionInstance.ExecutionTime10 = executionTime[i];
-                        break;
-                }
-            }
-        }
-
         public ActionResult Results()
         {
             List<int> ScoredPoints = TempData["Score"] as List<int>;

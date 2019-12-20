@@ -203,8 +203,13 @@
     <Compile Include="Migrations\201912201048275_ExerciseModelSpellingCorrection.Designer.cs">
       <DependentUpon>201912201048275_ExerciseModelSpellingCorrection.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912201820390_UpdateSubmissionModel.cs" />
+    <Compile Include="Migrations\201912201820390_UpdateSubmissionModel.Designer.cs">
+      <DependentUpon>201912201820390_UpdateSubmissionModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
+    <Compile Include="Models\SubmissionViewModel.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\Compiler.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\CPPCompiler.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\CSharpCompiler.cs" />
@@ -394,6 +399,7 @@
     <Compile Include="Models\SharedViewModels.cs" />
     <Compile Include="Models\Submission.cs" />
     <Compile Include="Old but maybe useful stuff\OLD_ProblemController.cs" />
+    <Compile Include="Old but maybe useful stuff\SubmissionSoare.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -645,6 +651,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912201048275_ExerciseModelSpellingCorrection.resx">
       <DependentUpon>201912201048275_ExerciseModelSpellingCorrection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912201820390_UpdateSubmissionModel.resx">
+      <DependentUpon>201912201820390_UpdateSubmissionModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

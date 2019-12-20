@@ -950,3 +950,5 @@ C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debu
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.CleanDB.resources
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.CleanDBx2.resources
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.ExerciseModelSpellingCorrection.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.ExerciseModelSpellingCorrection.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionModel.resources
