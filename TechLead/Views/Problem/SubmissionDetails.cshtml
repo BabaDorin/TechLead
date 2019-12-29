@@ -1,4 +1,4 @@
-﻿@model TechLead.Models.Submission
+﻿@model TechLead.Models.SubmissionViewModel
 @{
     ViewBag.Title = "SubmissionDetails";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -20,13 +20,13 @@
         <div class="InfoSubmission">
             <div class="col-md-4">
                 <p><strong>User</strong></p>
-                @if (Model.User == null)
+                @if (Model.SubmissionAuthorUserName == null)
                 {
                     <p>Anonymous</p>
                 }
                 else
                 {
-                    <p>@Model.User</p>
+                    <p>@Model.SubmissionAuthorUserName</p>
                 }
             </div>
 
@@ -37,14 +37,14 @@
 
             <div class="col-md-4">
                 <p><strong>Date</strong></p>
-                <p>@Model.Time</p>
+                <p>@Model.Date.ToString("yyyy-MM-ddTHH:mm")</p>
             </div>
         </div>
 
         <br /><br />
         <br /><br />
 
-        <table>
+        @*<table>
             <tr>
                 <th>Test</th>
                 <th>Time (Miliseconds)</th>
@@ -185,7 +185,7 @@
                 <td></td>
                 <td>@ScoredPoints</td>
             </tr>
-        </table>
+        </table>*@
         <br />
         @if (Request.UrlReferrer != null)
         {
