@@ -9,35 +9,48 @@ namespace TechLead.Models
 {
     public class Submission
     {
-
-        //Scores and execution time for each test
-        public int Score1 { get; set; } = -1;
-        public int ExecutionTime1 { get; set; } = -1;
-        public int Score2 { get; set; } = -1;
-        public int ExecutionTime2 { get; set; } = -1;
-        public int Score3 { get; set; } = -1;
-        public int ExecutionTime3 { get; set; } = -1;
-        public int Score4 { get; set; } = -1;
-        public int ExecutionTime4 { get; set; } = -1;
-        public int Score5 { get; set; } = -1;
-        public int ExecutionTime5 { get; set; } = -1;
-        public int Score6 { get; set; } = -1;
-        public int ExecutionTime6 { get; set; } = -1;
-        public int Score7 { get; set; } = -1;
-        public int ExecutionTime7 { get; set; } = -1;
-        public int Score8 { get; set; } = -1;
-        public int ExecutionTime8 { get; set; } = -1;
-        public int Score9 { get; set; } = -1;
-        public int ExecutionTime9 { get; set; } = -1;
-        public int Score10 { get; set; } = -1;
-        public int ExecutionTime10 { get; set; } = -1;
-
         public int SubmissionID { get; set; }
-        public ApplicationUser User { get; set; }
-        public string Exercise { get; set; }
+
+        public string SubmissionAuthorUserName { get; set; }
+
+        //Date when the user submitted the solution.
+        public DateTime Date { get; set; }
+
         public int ExerciseId { get; set; }
-        public int Points { get; set; }
-        public string Time { get; set; }
+
+        //The name of the exercise
+        public string Exercise { get; set; }
+
+        //Total points scored by the program
+        public double ScoredPoints { get; set; }
+
+        public int NumberOfTestCases { get; set; }
+
+        //There may be different number of test cases. For example, when the exercise has 100 points and 5 test cases,
+        //each test case will get 20 points.
+        public double DistributedPointsPerTestCase { get; set; }
+
         public string SourceCode { get; set; }
+
+        //All the inputs for a specific exercise delimited by the techlead delimitator
+        public string InputCollection { get; set; }
+
+        //All the outputs of the program the user had submitted
+        public string OutputCollection { get; set; }
+
+        //The collection of correct output for each input
+        public string ExpectedOutput { get; set; }
+
+        //Score for each test case
+        public string PointsPerTestCase { get; set; }
+
+        //Execution time in miliseconds for each test case
+        public string ExecutionTimePerTestCase { get; set; }
+
+        //Compile status for each test case  [Accepted / not accepted / Compilation Error etc]
+        public string StatusPerTestCase { get; set; }
+
+        //Error message
+        public string ErrorMessage { get; set; }
     }
 }

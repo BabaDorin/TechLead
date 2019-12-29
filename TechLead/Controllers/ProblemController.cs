@@ -22,16 +22,14 @@ namespace TechLead.Controllers
             _context = new ApplicationDbContext();
         }
         
-        // GET: Problem
         [HttpGet]
         public ActionResult Details(int id)
         {
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
-
-                //Here we store the object. We will need it later for the 'Compiling' view.
                 TempData["Object"] = e;
+
                 return View(e);
             }
             catch (Exception)
@@ -87,11 +85,16 @@ namespace TechLead.Controllers
             {
                 Exercise e = TempData["Object"] as Exercise;
                 Judge0_SubmissionViewModel judge0_submission = TempData["Judge0_Submission"] as Judge0_SubmissionViewModel;
-                Submission submission = new Submission();
-                submission.SourceCode = judge0_submission.source_code;
-                Debug.WriteLine("source code: " + judge0_submission.source_code);
-                ExecuteAndCheck(judge0_submission, ref submission, e);
-                return View("Index", "Home");
+
+                //CompileAndTest() return the submission containing performance results for each test case
+                //It is being saved to the database.
+                //After that, based on the submission object submissionViewModel is created and passed to the view
+                //so the user will see his results.
+                Submission submission = CompileAndTest(e, judge0_submission);
+                _context.Submissions.Add(submission);
+                _context.SaveChanges();
+                return RedirectToAction("SubmissionDetails", "Problem",submission.SubmissionID);
+                //return View("Index", "Home");
             }
             catch (Exception e)
             {
@@ -102,62 +105,162 @@ namespace TechLead.Controllers
             }
         }
 
+        public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
+        {
+            Submission submission = new Submission();
+
+            //First, we have to insert all the necessary data from Exercise and Judge0 view model
+
+            if (Request.IsAuthenticated)
+            {
+                submission.SubmissionAuthorUserName = HttpContext.User.Identity.Name;
+            }
+            else
+            {
+                submission.SubmissionAuthorUserName = "Anonymous";
+            }
+
+            submission.Date = DateTime.Now;
+            submission.ExerciseId = e.Id;
+            submission.Exercise = e.Name;
+            submission.ScoredPoints = 0;
+            submission.NumberOfTestCases = e.NumberOfTests;
+            submission.DistributedPointsPerTestCase = (double)e.Points / e.NumberOfTests;
+            submission.SourceCode = judge0_Submission.source_code;
+            submission.InputCollection = e.InputColection;
+            submission.ExpectedOutput = e.OutputColection;
+            submission.OutputCollection = string.Empty;
+            submission.PointsPerTestCase = string.Empty;
+            submission.ExecutionTimePerTestCase = string.Empty;
+            submission.StatusPerTestCase = string.Empty;
+            submission.ErrorMessage = string.Empty;
+
+            //Now we have to go through each test case, collect data, analyse and
+            //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
+            //ErrorMessage
+            Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
+
+            for(int i=0; i<TestCases.Length; i++)
+            {
+                double Points = 0;
+                int ExecutionTime = 0;
+                string Status = string.Empty;
+                string Error = string.Empty;
+                GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref Status, ref Error,
+                    judge0_Submission);
+
+                //Now we add the results to submission object
+                submission.PointsPerTestCase += Points.ToString();
+                submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
+                submission.StatusPerTestCase += Status;
+                submission.ErrorMessage += Error;
+
+                if (i < TestCases.Length - 1)
+                {
+                    submission.PointsPerTestCase += data.testCase_Delimitator;
+                    submission.ExecutionTimePerTestCase += data.testCase_Delimitator;
+                    submission.StatusPerTestCase += data.testCase_Delimitator;
+                    submission.ErrorMessage += data.testCase_Delimitator;
+                }
+
+            }
+            
+            return submission;
+        }
+
+        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTime, 
+            ref string Status, ref string Error, Judge0_SubmissionViewModel judge0_Submission)
+        {
+            //Function [GetToken()] returns a json (string formatted) having the token.
+            //It will be parsed to json by using JObject.Parse();
+            JObject token = JObject.Parse(GetToken(test,judge0_Submission));
+
+            //Function
+            JObject Results = JObject.Parse(GetResults(token.SelectToken("token").ToString()));
+                
+
+        }
+
+        public string GetResults(string token)
+        {
+            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id");
+            request.ContentType = "application/json";
+            request.Method = "GET";
+
+            var httpResponse = (HttpWebResponse)request.GetResponse();
+            string result;
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                result = streamReader.ReadToEnd();
+            }
+
+            return result;
+        }
+        public string GetToken(Test test, Judge0_SubmissionViewModel judge0_Submission)
+        {
+            //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
+            //After that, having the token, we make another request to get submission details like execution time and so on.
+            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
+            request.ContentType = "application/json";
+            request.Method = "POST";
+
+            //Building the judge0 submission, which will be sent via request
+            judge0_Submission.stdin = test.Input;
+            judge0_Submission.expected_output = test.Output;
+
+            //Serializing the submission
+            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            {
+                string json = buildJson(judge0_Submission);
+                streamWriter.Write(json);
+                streamWriter.Flush();
+            }
+
+            //Sending the request
+            var httpResponse = (HttpWebResponse)request.GetResponse();
+
+            //Catching the result
+            JObject response;
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                response = JObject.Parse(streamReader.ReadToEnd());
+            }
+            return response.SelectToken("token").ToString();
+        }
+
         public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, ref Submission submission,
             Exercise E)
         {
-            //string[] testImput = new string[10];
-            //string[] testOutput = new string[10];
-            //testImput[0] = E.TestImput1;
-            //testOutput[0] = E.TestOutput1;
-            //testImput[1] = E.TestImput2;
-            //testOutput[1] = E.TestOutput2;
-            //testImput[2] = E.TestImput3;
-            //testOutput[2] = E.TestOutput3;
-            //testImput[3] = E.TestImput4;
-            //testOutput[3] = E.TestOutput4;
-            //testImput[4] = E.TestImput5;
-            //testOutput[4] = E.TestOutput5;
-            //testImput[5] = E.TestImput6;
-            //testOutput[5] = E.TestOutput6;
-            //testImput[6] = E.TestImput7;
-            //testOutput[6] = E.TestOutput7;
-            //testImput[7] = E.TestImput8;
-            //testOutput[7] = E.TestOutput8;
-            //testImput[8] = E.TestImput9;
-            //testOutput[8] = E.TestOutput9;
-            //testImput[9] = E.TestImput10;
-            //testOutput[9] = E.TestOutput10;
-
             int[] Score = new int[10];
             for(int i=0; i<10; i++)
             {
                 //if (testImput[i] != null)
                 //{
-                //    //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
-                //    //After that, having the token, we make another request to get submission details like execution time and so on.
-                //    var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
-                //    request.ContentType = "application/json";
-                //    request.Method = "POST";
-                //    Debug.WriteLine("Going in test >>>");
+                ////The method sends HTTP requests to judge0 API, then, it gets a token as a response.
+                ////After that, having the token, we make another request to get submission details like execution time and so on.
+                //var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
+                //request.ContentType = "application/json";
+                //request.Method = "POST";
+                //Debug.WriteLine("Going in test >>>");
 
-                //    judge0_Submission.stdin = testImput[i];
-                //    judge0_Submission.expected_output = testOutput[i];
-                //    using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-                //    {
-                //        string json = buildJson(judge0_Submission);
-                //        Debug.WriteLine(json);
-                //        streamWriter.Write(json);
-                //        streamWriter.Flush();
-                //    }
-                //    Debug.WriteLine("sending etasamaia");
-                //    var httpResponse = (HttpWebResponse)request.GetResponse();
-                //    Debug.WriteLine("RASPUNS PRIMIT iobana");
-                //    JObject result;
-                //    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                //    {
-                //        result = JObject.Parse(streamReader.ReadToEnd());
-                //    }
-                //    Debug.WriteLine(result.SelectToken("token"));
+                //judge0_Submission.stdin = testImput[i];
+                //judge0_Submission.expected_output = testOutput[i];
+                //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                //{
+                //    string json = buildJson(judge0_Submission);
+                //    Debug.WriteLine(json);
+                //    streamWriter.Write(json);
+                //    streamWriter.Flush();
+                //}
+                //Debug.WriteLine("sending etasamaia");
+                //var httpResponse = (HttpWebResponse)request.GetResponse();
+                //Debug.WriteLine("RASPUNS PRIMIT iobana");
+                //JObject result;
+                //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                //{
+                //    result = JObject.Parse(streamReader.ReadToEnd());
+                //}
+                //Debug.WriteLine(result.SelectToken("token"));
 
                 //    //Now we have the token
                 //    //Next => get submission detalis using the token si asa mai departe
@@ -213,57 +316,6 @@ namespace TechLead.Controllers
             }
         }
 
-        private void InsertScoresAndExecutionTimesIntoSubmissionInstance(ref Submission submissionInstance, List<int> scoredPoints, List<int> executionTime)
-        {
-            int TestNr = scoredPoints.Count();
-            for (int i = 0; i < TestNr; i++)
-            {
-                switch (i+1)
-                {
-                    case 1:
-                        submissionInstance.Score1 = scoredPoints[i];
-                        submissionInstance.ExecutionTime1 = executionTime[i];
-                        break;
-                    case 2:
-                        submissionInstance.Score2 = scoredPoints[i];
-                        submissionInstance.ExecutionTime2 = executionTime[i];
-                        break;
-                    case 3:
-                        submissionInstance.Score3 = scoredPoints[i];
-                        submissionInstance.ExecutionTime3 = executionTime[i];
-                        break;
-                    case 4:
-                        submissionInstance.Score4 = scoredPoints[i];
-                        submissionInstance.ExecutionTime4 = executionTime[i];
-                        break;
-                    case 5:
-                        submissionInstance.Score5 = scoredPoints[i];
-                        submissionInstance.ExecutionTime5 = executionTime[i];
-                        break;
-                    case 6:
-                        submissionInstance.Score6 = scoredPoints[i];
-                        submissionInstance.ExecutionTime6 = executionTime[i];
-                        break;
-                    case 7:
-                        submissionInstance.Score7 = scoredPoints[i];
-                        submissionInstance.ExecutionTime7 = executionTime[i];
-                        break;
-                    case 8:
-                        submissionInstance.Score8 = scoredPoints[i];
-                        submissionInstance.ExecutionTime8 = executionTime[i];
-                        break;
-                    case 9:
-                        submissionInstance.Score9 = scoredPoints[i];
-                        submissionInstance.ExecutionTime9 = executionTime[i];
-                        break;
-                    case 10:
-                        submissionInstance.Score10 = scoredPoints[i];
-                        submissionInstance.ExecutionTime10 = executionTime[i];
-                        break;
-                }
-            }
-        }
-
         public ActionResult Results()
         {
             List<int> ScoredPoints = TempData["Score"] as List<int>;
@@ -276,7 +328,8 @@ namespace TechLead.Controllers
             try
             {
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
-                return View(S);
+                SubmissionViewModel submissionViewModel = SubmissionCopyData(S);
+                return View(submissionViewModel);
             }
             catch (Exception)
             {
@@ -323,7 +376,7 @@ namespace TechLead.Controllers
 
             //If everything is OK, we copy all the data from ExerciseViewModel to Exercise
 
-            Exercise exercise = CopyData(exerciseViewModel);
+            Exercise exercise = ExerciseCopyData(exerciseViewModel);
             _context.Exercises.Add(exercise);
             _context.SaveChanges();
             return RedirectToAction("Index", "Home");
@@ -344,7 +397,7 @@ namespace TechLead.Controllers
             return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
         }
 
-        private static Exercise CopyData(ExerciseViewModel ExerciseViewModel)
+        private static Exercise ExerciseCopyData(ExerciseViewModel ExerciseViewModel)
         {
             Exercise e = new Exercise();
             e.Id = ExerciseViewModel.Id;
@@ -400,6 +453,30 @@ namespace TechLead.Controllers
             //processing having a delimitator between them. Everytime when the list of test will be needed,
             //it would be accesibile by calling the data.CreateTests and passing the e.InputCollection and e.OutputCollection.
             return e;
+        }
+        public static SubmissionViewModel SubmissionCopyData(Submission submission)
+        {
+            SubmissionViewModel Svm = new SubmissionViewModel();
+            Svm.SubmissionAuthorUserName = submission.SubmissionAuthorUserName;
+            Svm.SubmissionID = submission.SubmissionID;
+            Svm.Date = submission.Date;
+            Svm.ExerciseId = submission.ExerciseId;
+            Svm.Exercise = submission.Exercise;
+            Svm.ScoredPoints = submission.ScoredPoints;
+            Svm.NumberOfTestCases = submission.NumberOfTestCases;
+            Svm.DistributedPointsPerTestCase = submission.DistributedPointsPerTestCase;
+            Svm.SourceCode = submission.SourceCode;
+            Svm.Inputs = submission.InputCollection.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
+            Svm.Outputs = submission.OutputCollection.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
+            Svm.ExpectedOutputs = submission.ExpectedOutput.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
+            Svm.Points = Array.ConvertAll(submission.PointsPerTestCase.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None),
+                x => double.Parse(x));
+            Svm.ExecutionTime = Array.ConvertAll(submission.ExecutionTimePerTestCase.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None),
+                x => int.Parse(x));
+            Svm.Status = submission.StatusPerTestCase.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
+            Svm.ErrorMessage = submission.ErrorMessage.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
+
+            return Svm;
         }
     }
 }
