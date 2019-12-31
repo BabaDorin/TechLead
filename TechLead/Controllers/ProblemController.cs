@@ -178,8 +178,10 @@ namespace TechLead.Controllers
             JObject result = JObject.Parse(GetResult(token.SelectToken("token").ToString()));
 
             //Checking if the solution returns what is needed to be returned (Correct / incorrect output, Compilation Error etc).
-
-
+            ExecutionTime = (int)result.SelectToken("time");
+            Status = (string)result.SelectToken("description"); //Accepted or not
+            Error = (string)result.SelectToken("status") + "\n" + (string)result.SelectToken("exception")+"/n" + (string)result.SelectToken("compile_output");
+            Points = (test.Output == (string)result.SelectToken("stdout")) ? 10 : 0;
         }
 
         public string GetResult(string token)
