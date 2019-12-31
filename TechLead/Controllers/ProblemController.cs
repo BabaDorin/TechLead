@@ -174,8 +174,31 @@ namespace TechLead.Controllers
             //It will be parsed to json by using JObject.Parse();
             JObject token = JObject.Parse(GetToken(test));
 
-            //Function 
+            //Function that returns a json (string formatted) containing the result after running the solution
+            JObject result = JObject.Parse(GetResult(token.SelectToken("token").ToString()));
 
+            //Checking if the solution returns what is needed to be returned (Correct / incorrect output, Compilation Error etc).
+
+
+        }
+
+        public string GetResult(string token)
+        {
+            string result;
+
+            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token);
+            request.ContentType = "application/json";
+            request.Method = "GET";
+            
+            //Sending the request and reading the result
+            var httpResponse = (HttpWebResponse)request.GetResponse();
+
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                result = streamReader.ReadToEnd();
+            }
+
+            return result;
         }
 
         public string GetToken(Test test)
