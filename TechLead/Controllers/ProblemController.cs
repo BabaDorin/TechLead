@@ -182,6 +182,12 @@ namespace TechLead.Controllers
             Status = (string)result.SelectToken("description"); //Accepted or not
             Error = (string)result.SelectToken("status") + "\n" + (string)result.SelectToken("exception")+"/n" + (string)result.SelectToken("compile_output");
             Points = (test.Output == (string)result.SelectToken("stdout")) ? 10 : 0;
+            Debug.WriteLine("\n");
+            Debug.WriteLine(ExecutionTime);
+            Debug.WriteLine(Status);
+            Debug.WriteLine(Error);
+            Debug.WriteLine("\n");
+            Debug.WriteLine(test.Output + " = " + (string)result.SelectToken("stdout"));
         }
 
         public string GetResult(string token)
