@@ -54,6 +54,7 @@ namespace TechLead.Controllers
 
             try
             {
+                Debug.WriteLine("Went into HTTP Post Details");
                 //We try to extract the source code in a string and pass it to Judge0 API
                 Judge0_SubmissionViewModel submission = new Judge0_SubmissionViewModel();
                 submission.source_code = new StreamReader(file.InputStream).ReadToEnd();
@@ -67,6 +68,9 @@ namespace TechLead.Controllers
                     return View("~/Views/Shared/Error.cshtml", Error);
                 }
                 TempData["Judge0_Submission"] = submission;
+
+                Debug.WriteLine("Going to compiling action");
+
                 return RedirectToAction("Compiling", "Problem");
 
             }
@@ -83,6 +87,7 @@ namespace TechLead.Controllers
         {
             try
             {
+                Debug.WriteLine("Arieved into compiling action");
                 Exercise e = TempData["Object"] as Exercise;
                 Judge0_SubmissionViewModel judge0_submission = TempData["Judge0_Submission"] as Judge0_SubmissionViewModel;
 
@@ -90,7 +95,10 @@ namespace TechLead.Controllers
                 //It is being saved to the database.
                 //After that, based on the submission object submissionViewModel is created and passed to the view
                 //so the user will see his results.
+
+                Debug.WriteLine("Going to compile and test");
                 Submission submission = CompileAndTest(e, judge0_submission);
+                Debug.WriteLine("Out of compile and test");
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
                 return RedirectToAction("SubmissionDetails", "Problem",submission.SubmissionID);
@@ -107,64 +115,75 @@ namespace TechLead.Controllers
 
         public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
         {
-            Submission submission = new Submission();
-
-            //First, we have to insert all the necessary data from Exercise and Judge0 view model
-
-            if (Request.IsAuthenticated)
+            try
             {
-                submission.SubmissionAuthorUserName = HttpContext.User.Identity.Name;
-            }
-            else
-            {
-                submission.SubmissionAuthorUserName = "Anonymous";
-            }
 
-            submission.Date = DateTime.Now;
-            submission.ExerciseId = e.Id;
-            submission.Exercise = e.Name;
-            submission.ScoredPoints = 0;
-            submission.NumberOfTestCases = e.NumberOfTests;
-            submission.DistributedPointsPerTestCase = (double)e.Points / e.NumberOfTests;
-            submission.SourceCode = judge0_Submission.source_code;
-            submission.InputCollection = e.InputColection;
-            submission.ExpectedOutput = e.OutputColection;
-            submission.OutputCollection = string.Empty;
-            submission.PointsPerTestCase = string.Empty;
-            submission.ExecutionTimePerTestCase = string.Empty;
-            submission.StatusPerTestCase = string.Empty;
-            submission.ErrorMessage = string.Empty;
+                Submission submission = new Submission();
 
-            //Now we have to go through each test case, collect data, analyse and
-            //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
-            //ErrorMessage
-            Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
+                //First, we have to insert all the necessary data from Exercise and Judge0 view model
 
-            for(int i=0; i<TestCases.Length; i++)
-            {
-                double Points = 0;
-                int ExecutionTime = 0;
-                string Status = string.Empty;
-                string Error = string.Empty;
-                GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref Status, ref Error);
-
-                //Now we add the results to submission object
-                submission.PointsPerTestCase += Points.ToString();
-                submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
-                submission.StatusPerTestCase += Status;
-                submission.ErrorMessage += Error;
-
-                if (i < TestCases.Length - 1)
+                if (Request.IsAuthenticated)
                 {
-                    submission.PointsPerTestCase += data.testCase_Delimitator;
-                    submission.ExecutionTimePerTestCase += data.testCase_Delimitator;
-                    submission.StatusPerTestCase += data.testCase_Delimitator;
-                    submission.ErrorMessage += data.testCase_Delimitator;
+                    submission.SubmissionAuthorUserName = HttpContext.User.Identity.Name;
+                }
+                else
+                {
+                    submission.SubmissionAuthorUserName = "Anonymous";
                 }
 
+                submission.Date = DateTime.Now;
+                submission.ExerciseId = e.Id;
+                submission.Exercise = e.Name;
+                submission.ScoredPoints = 0;
+                submission.NumberOfTestCases = e.NumberOfTests;
+                submission.DistributedPointsPerTestCase = (double)e.Points / e.NumberOfTests;
+                submission.SourceCode = judge0_Submission.source_code;
+                submission.InputCollection = e.InputColection;
+                submission.ExpectedOutput = e.OutputColection;
+                submission.OutputCollection = string.Empty;
+                submission.PointsPerTestCase = string.Empty;
+                submission.ExecutionTimePerTestCase = string.Empty;
+                submission.StatusPerTestCase = string.Empty;
+                submission.ErrorMessage = string.Empty;
+
+                //Now we have to go through each test case, collect data, analyse and
+                //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
+                //ErrorMessage
+                Debug.WriteLine("imput = " + e.InputColection);
+
+                Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
+
+                for (int i = 0; i < TestCases.Length; i++)
+                {
+                    double Points = 0;
+                    int ExecutionTime = 0;
+                    string Status = string.Empty;
+                    string Error = string.Empty;
+                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref Status, ref Error);
+
+                    //Now we add the results to submission object
+                    submission.PointsPerTestCase += Points.ToString();
+                    submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
+                    submission.StatusPerTestCase += Status;
+                    submission.ErrorMessage += Error;
+
+                    if (i < TestCases.Length - 1)
+                    {
+                        submission.PointsPerTestCase += data.testCase_Delimitator;
+                        submission.ExecutionTimePerTestCase += data.testCase_Delimitator;
+                        submission.StatusPerTestCase += data.testCase_Delimitator;
+                        submission.ErrorMessage += data.testCase_Delimitator;
+                    }
+
+                }
+
+                return submission;
             }
-            
-            return submission;
+            catch (Exception ess)
+            {
+                Debug.WriteLine(ess);
+                return null;
+            }
         }
 
         public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTime, 
