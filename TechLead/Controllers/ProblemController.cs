@@ -203,11 +203,20 @@ namespace TechLead.Controllers
 
             //Function that returns a json (string formatted) containing the result after running the solution
             Debug.WriteLine("Gonna get the result");
-            JObject result = JObject.Parse(GetResult(token));
-            Debug.WriteLine("Got the result");
-            Debug.WriteLine(result);
+            JObject result;
+            do
+            {
+                result = JObject.Parse(GetResult(token));
+                if (result.SelectToken("status.description").ToString() == "In Queue" ||
+                    result.SelectToken("status.description").ToString() == "Processing")
+                    System.Threading.Thread.Sleep(100);
+                Debug.WriteLine("Description = " + result.SelectToken("status.description"));
+            } while (result.SelectToken("status.description").ToString() == "In Queue" ||
+                result.SelectToken("status.description").ToString() == "Processing");
+
             //Checking if the solution returns what is needed to be returned (Correct / incorrect output, Compilation Error etc).
             Debug.WriteLine("Inserting results alea");
+            Debug.WriteLine(result);
             Debug.WriteLine("Time");
             //if(result.SelectToken("time")!=null)
             //    ExecutionTime = (int)result.SelectToken("time");
