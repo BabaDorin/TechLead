@@ -101,6 +101,7 @@ namespace TechLead.Controllers
                 Debug.WriteLine("Out of compile and test");
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
+                Debug.WriteLine("Submission inserted into database");
                 return RedirectToAction("SubmissionDetails", "Problem",submission.SubmissionID);
                 //return View("Index", "Home");
             }
