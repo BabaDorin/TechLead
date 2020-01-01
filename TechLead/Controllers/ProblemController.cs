@@ -154,13 +154,17 @@ namespace TechLead.Controllers
 
                 Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
 
+                Debug.WriteLine("Out of Create tests");
+
                 for (int i = 0; i < TestCases.Length; i++)
                 {
+                    Debug.WriteLine("Test " + i);
                     double Points = 0;
                     int ExecutionTime = 0;
                     string Status = string.Empty;
                     string Error = string.Empty;
-                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref Status, ref Error);
+                    Debug.WriteLine("Going into go through test case");
+                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
 
                     //Now we add the results to submission object
                     submission.PointsPerTestCase += Points.ToString();
@@ -178,35 +182,44 @@ namespace TechLead.Controllers
 
                 }
 
+                Debug.WriteLine("Returning good submission");
                 return submission;
             }
             catch (Exception ess)
             {
-                Debug.WriteLine(ess);
+                Debug.WriteLine("ETRRRRRRROOOOR " + ess);
                 return null;
             }
         }
 
         public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTime, 
-            ref string Status, ref string Error)
+            ref string Status, ref string Error, int langID, string sourceCode)
         {
             //Function [GetToken()] returns a json (string formatted) having the token.
             //It will be parsed to json by using JObject.Parse();
-            JObject token = JObject.Parse(GetToken(test));
+            Debug.WriteLine("Gonna get the token");
+            string token = GetToken(test, langID, sourceCode);
+            Debug.WriteLine("Got the token");
 
             //Function that returns a json (string formatted) containing the result after running the solution
-            JObject result = JObject.Parse(GetResult(token.SelectToken("token").ToString()));
-
+            Debug.WriteLine("Gonna get the result");
+            JObject result = JObject.Parse(GetResult(token));
+            Debug.WriteLine("Got the result");
+            Debug.WriteLine(result);
             //Checking if the solution returns what is needed to be returned (Correct / incorrect output, Compilation Error etc).
-            ExecutionTime = (int)result.SelectToken("time");
+            Debug.WriteLine("Inserting results alea");
+            Debug.WriteLine("Time");
+            //if(result.SelectToken("time")!=null)
+            //    ExecutionTime = (int)result.SelectToken("time");
+            Debug.WriteLine("Status");
             Status = (string)result.SelectToken("description"); //Accepted or not
-            Error = (string)result.SelectToken("status") + "\n" + (string)result.SelectToken("exception")+"/n" + (string)result.SelectToken("compile_output");
+            Debug.WriteLine("Error");
+            Error = (string)result.SelectToken("exception")+"/n" + (string)result.SelectToken("compile_output");
+            Debug.WriteLine("Points");
             Points = (test.Output == (string)result.SelectToken("stdout")) ? 10 : 0;
-            Debug.WriteLine("\n");
-            Debug.WriteLine(ExecutionTime);
-            Debug.WriteLine(Status);
-            Debug.WriteLine(Error);
-            Debug.WriteLine("\n");
+            Debug.WriteLine("ExecutionTime = " + ExecutionTime);
+            Debug.WriteLine("Status = " + Status);
+            Debug.WriteLine("Error = " + Error);
             Debug.WriteLine(test.Output + " = " + (string)result.SelectToken("stdout"));
         }
 
@@ -214,7 +227,7 @@ namespace TechLead.Controllers
         {
             string result;
 
-            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token);
+            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,expected_output,stdin,message,status");
             request.ContentType = "application/json";
             request.Method = "GET";
             
@@ -229,39 +242,51 @@ namespace TechLead.Controllers
             return result;
         }
 
-        public string GetToken(Test test)
+        public string GetToken(Test test, int langID, string SourceCode)
         {
-            //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
-            //After that, having the token, we make another request to get submission details like execution time and so on.
-            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
-            request.ContentType = "application/json";
-            request.Method = "POST";
-
-            //Building the judge0 submission, which will be sent via request
-            Judge0_SubmissionViewModel judge0_Submission = new Judge0_SubmissionViewModel();
-            judge0_Submission.stdin = test.Input;
-            judge0_Submission.expected_output = test.Output;
-
-
-            //Serializing the submission
-            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            try
             {
-                string json = buildJson(judge0_Submission);
-                streamWriter.Write(json);
-                streamWriter.Flush();
+                //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
+                //After that, having the token, we make another request to get submission details like execution time and so on.
+                var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
+                request.ContentType = "application/json";
+                request.Method = "POST";
+
+                //Building the judge0 submission, which will be sent via request
+                Judge0_SubmissionViewModel judge0_Submission = new Judge0_SubmissionViewModel();
+                judge0_Submission.stdin = test.Input;
+                judge0_Submission.expected_output = test.Output;
+                judge0_Submission.language_id = langID;
+                judge0_Submission.source_code = SourceCode;
+
+
+                //Serializing the submission
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    string json = buildJson(judge0_Submission);
+                    Debug.WriteLine(json);
+                    streamWriter.Write(json);
+                    streamWriter.Flush();
+                }
+
+                //Sending the request
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+
+                //Catching the result
+                JObject response;
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    response = JObject.Parse(streamReader.ReadToEnd());
+                }
+
+                return response.SelectToken("token").ToString();
             }
-
-            //Sending the request
-            var httpResponse = (HttpWebResponse)request.GetResponse();
-
-            //Catching the result
-            JObject response;
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            catch (Exception err)
             {
-                response = JObject.Parse(streamReader.ReadToEnd());
+                Console.WriteLine("Error: " + err);
+                return null;
             }
-
-            return response.SelectToken("token").ToString();
+            
         }
 
         public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, ref Submission submission,
@@ -274,7 +299,7 @@ namespace TechLead.Controllers
                 //{
                 ////The method sends HTTP requests to judge0 API, then, it gets a token as a response.
                 ////After that, having the token, we make another request to get submission details like execution time and so on.
-                //var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
+                //var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=true");
                 //request.ContentType = "application/json";
                 //request.Method = "POST";
                 //Debug.WriteLine("Going in test >>>");
