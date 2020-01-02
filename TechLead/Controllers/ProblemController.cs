@@ -268,6 +268,8 @@ namespace TechLead.Controllers
 
                 var url = "https://api.judge0.com/submissions/?base64_encoded=false&wait=false";
                 string res;
+
+                //Sending the request and storing the data being returned
                 using (var client = new HttpClient())
                 {
                     using (HttpResponseMessage resp = await client.PostAsync(url,data).ConfigureAwait(false))
@@ -278,41 +280,11 @@ namespace TechLead.Controllers
                             Debug.WriteLine(res);
                         }
                     }
-                    //Debug.WriteLine("Aicea");
-                    //var resp = await client.PostAsync(url, data);
-                    //Debug.WriteLine("Aicea iara");
-                    //resp.EnsureSuccessStatusCode();
-                    //Debug.WriteLine("Iacata");
-                    //res = resp.Content.ReadAsStringAsync().Result;
-                    //Debug.WriteLine(res);
                 }
-                Debug.WriteLine("Opana");
                 
-
-
-                //using (HttpClient client = new HttpClient())
-                //{
-                //    Debug.WriteLine("Await si d-alea");
-                //    var response2 = await client.PostAsync(
-                //        "https://api.judge0.com/submissions/?base64_encoded=false&wait=false",
-                //         new StringContent(JsonConvert.SerializeObject(jsonModel), Encoding.UTF8, "application/json"));
-                //    Debug.WriteLine("Asta e raspunsu");
-                //    response = JObject.Parse(response2.Content.ReadAsStringAsync().ToString());
-                //}
-                //Debug.WriteLine("Got it");
-                //var httpResponse = (HttpWebResponse)request.GetResponse();
-
-                //Catching the result
-
-                //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                //{
-                //    response = JObject.Parse(streamReader.ReadToEnd());
-                //}
-
                 response = JObject.Parse(res);
-                Debug.WriteLine("Heloooo " + response.SelectToken("token").ToString());
                 return response.SelectToken("token").ToString();
-                }
+            }
             catch (Exception err)
             {
                 Debug.WriteLine("Error: " + err);
