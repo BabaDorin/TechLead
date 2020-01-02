@@ -198,39 +198,61 @@ namespace TechLead.Controllers
         public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTime,
             ref string Status, ref string Error, int langID, string sourceCode)
         {
-            //Function [GetToken()] returns a json (string formatted) having the token.
-            //It will be parsed to json by using JObject.Parse();
-            Debug.WriteLine("Gonna get the token");
-            string token = GetToken(test, langID, sourceCode).Result;
-            Debug.WriteLine("Got the token " + token);
+            try
+            {
 
-            //Function that returns a json (string formatted) containing the result after running the solution
-            Debug.WriteLine("Gonna get the result");
-            JObject result = JObject.Parse(GetResult(token));
-            Debug.WriteLine("Got the result");
-            Debug.WriteLine(result);
-            //Checking if the solution returns what is needed to be returned (Correct / incorrect output, Compilation Error etc).
-            Debug.WriteLine("Inserting results alea");
-            Debug.WriteLine("Time");
-            //if(result.SelectToken("time")!=null)
-            //    ExecutionTime = (int)result.SelectToken("time");
-            Debug.WriteLine("Status");
-            Status = (string)result.SelectToken("description"); //Accepted or not
-            Debug.WriteLine("Error");
-            Error = (string)result.SelectToken("exception") + "/n" + (string)result.SelectToken("compile_output");
-            Debug.WriteLine("Points");
-            Points = (test.Output == (string)result.SelectToken("stdout")) ? 10 : 0;
-            Debug.WriteLine("ExecutionTime = " + ExecutionTime);
-            Debug.WriteLine("Status = " + Status);
-            Debug.WriteLine("Error = " + Error);
-            Debug.WriteLine(test.Output + " = " + (string)result.SelectToken("stdout"));
+                //Function [GetToken()] returns a json (string formatted) having the token.
+                //It will be parsed to json by using JObject.Parse();
+                Debug.WriteLine("Gonna get the token");
+                string token = GetToken(test, langID, sourceCode).Result;
+                Debug.WriteLine("Got the token -> " + token);
+
+                if (token == null)
+                {
+                    throw new NotImplementedException();
+                }
+
+                //Function that returns a json (string formatted) containing the result after running the solution
+                Debug.WriteLine("Gonna get the result");
+                JObject result;
+                do
+                {
+                    result = JObject.Parse(GetResult(token));
+                    //Checking out if our submitted solution has been processed
+                    if (result.SelectToken("status.description").ToString() == "In Queue" ||
+                            result.SelectToken("status.description").ToString() == "Processing")
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    Debug.WriteLine("Description = " + result.SelectToken("status.description"));
+
+                } while (result.SelectToken("status.description").ToString() == "In Queue" ||
+                              result.SelectToken("status.description").ToString() == "Processing");
+
+
+                //Collecting data
+                if (result.SelectToken("time") != null)
+                    ExecutionTime = (int)result.SelectToken("time");
+                Status = (string)result.SelectToken("status.description"); //Accepted or not
+                Error = (string)result.SelectToken("compile_output");
+                Points = (test.Output == (string)result.SelectToken("stdout")) ? 10 : 0;
+
+                Debug.WriteLine("ExecutionTime = " + ExecutionTime);
+                Debug.WriteLine("Status = " + Status);
+                Debug.WriteLine("Error = " + Error);
+                Debug.WriteLine(test.Output + " = " + (string)result.SelectToken("stdout"));
+            }
+            catch (NotImplementedException)
+            {
+                Debug.WriteLine("The token is null");
+            }
         }
 
         public string GetResult(string token)
         {
             string result;
 
-            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,expected_output,stdin,message,status");
+            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status");
             request.ContentType = "application/json";
             request.Method = "GET";
 
@@ -255,7 +277,7 @@ namespace TechLead.Controllers
                 //Building the judge0 submission, which will be sent via request
                 Judge0JsonModel jsonModel = new Judge0JsonModel();
                 jsonModel.source_code = Base64Encode(SourceCode);
-                jsonModel.stdin = test.Input;
+                jsonModel.stdin = Base64Encode(test.Input);
                 jsonModel.language_id = langID;
 
                 //Sending the request
@@ -266,7 +288,7 @@ namespace TechLead.Controllers
                 var json = JsonConvert.SerializeObject(jsonModel);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var url = "https://api.judge0.com/submissions/?base64_encoded=false&wait=false";
+                var url = "https://api.judge0.com/submissions/?base64_encoded=true&wait=false";
                 string res;
 
                 //Sending the request and storing the data being returned
@@ -543,5 +565,10 @@ namespace TechLead.Controllers
 
             return Svm;
         }
+        public ActionResult RenderError(ErrorViewModel Err)
+        {
+            return View("~/Views/Shared/Error.cshtml", Err);
+        }
     }
+
 }
