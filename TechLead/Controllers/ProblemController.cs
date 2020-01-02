@@ -201,7 +201,7 @@ namespace TechLead.Controllers
             //Function [GetToken()] returns a json (string formatted) having the token.
             //It will be parsed to json by using JObject.Parse();
             Debug.WriteLine("Gonna get the token");
-            string token = GetToken(test, langID, sourceCode).ToString();
+            string token = GetToken(test, langID, sourceCode).Result;
             Debug.WriteLine("Got the token " + token);
 
             //Function that returns a json (string formatted) containing the result after running the solution
@@ -251,40 +251,55 @@ namespace TechLead.Controllers
             {
                 //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
                 //After that, having the token, we make another request to get submission details like execution time and so on.
-                    //var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=false&wait=false");
-                    //request.ContentType = "application/json";
-                    //request.Method = "POST";
 
                 //Building the judge0 submission, which will be sent via request
                 Judge0JsonModel jsonModel = new Judge0JsonModel();
-                jsonModel.source_code = "hellp";
-                jsonModel.stdin = null;
-                jsonModel.language_id = 4;
-                Debug.WriteLine("dddd");
-                //Serializing the submission
-                    //using (StreamWriter streamWriter = new StreamWriter(request.GetRequestStream()))
-                    //{
-                    //    //string json = buildJson(judge0_Submission);
-                    //    string json = JsonConvert.SerializeObject(jsonModel);
-                    //    Debug.WriteLine(json);
-                    //    streamWriter.Write(json);
-                    //    streamWriter.Flush();
-                    //    streamWriter.Close();
-                    //}
+                jsonModel.source_code = Base64Encode(SourceCode);
+                jsonModel.stdin = test.Input;
+                jsonModel.language_id = langID;
 
                 //Sending the request
                 Debug.WriteLine("Sending the request");
                 JObject response;
-                using (HttpClient client = new HttpClient())
+
+
+                var json = JsonConvert.SerializeObject(jsonModel);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var url = "https://api.judge0.com/submissions/?base64_encoded=false&wait=false";
+                string res;
+                using (var client = new HttpClient())
                 {
-                    Debug.WriteLine("Await si d-alea");
-                    var response2 = await client.PostAsync(
-                        "https://api.judge0.com/submissions/?base64_encoded=false&wait=false",
-                         new StringContent(JsonConvert.SerializeObject(jsonModel), Encoding.UTF8, "application/json"));
-                    Debug.WriteLine("Asta e raspunsu");
-                    response = JObject.Parse(response2.Content.ReadAsStringAsync().ToString());
+                    using (HttpResponseMessage resp = await client.PostAsync(url,data).ConfigureAwait(false))
+                    {
+                        using (HttpContent content = resp.Content)
+                        {
+                            res = await content.ReadAsStringAsync().ConfigureAwait(false);
+                            Debug.WriteLine(res);
+                        }
+                    }
+                    //Debug.WriteLine("Aicea");
+                    //var resp = await client.PostAsync(url, data);
+                    //Debug.WriteLine("Aicea iara");
+                    //resp.EnsureSuccessStatusCode();
+                    //Debug.WriteLine("Iacata");
+                    //res = resp.Content.ReadAsStringAsync().Result;
+                    //Debug.WriteLine(res);
                 }
-                Debug.WriteLine("Got it");
+                Debug.WriteLine("Opana");
+                
+
+
+                //using (HttpClient client = new HttpClient())
+                //{
+                //    Debug.WriteLine("Await si d-alea");
+                //    var response2 = await client.PostAsync(
+                //        "https://api.judge0.com/submissions/?base64_encoded=false&wait=false",
+                //         new StringContent(JsonConvert.SerializeObject(jsonModel), Encoding.UTF8, "application/json"));
+                //    Debug.WriteLine("Asta e raspunsu");
+                //    response = JObject.Parse(response2.Content.ReadAsStringAsync().ToString());
+                //}
+                //Debug.WriteLine("Got it");
                 //var httpResponse = (HttpWebResponse)request.GetResponse();
 
                 //Catching the result
@@ -293,6 +308,8 @@ namespace TechLead.Controllers
                 //{
                 //    response = JObject.Parse(streamReader.ReadToEnd());
                 //}
+
+                response = JObject.Parse(res);
                 Debug.WriteLine("Heloooo " + response.SelectToken("token").ToString());
                 return response.SelectToken("token").ToString();
                 }
@@ -379,15 +396,15 @@ namespace TechLead.Controllers
             switch (Path.GetExtension(fileName))
             {
                 case ".cs":
-                    return 17;
+                    return 51;
                 case ".cpp":
-                    return 15;
+                    return 54;
                 case ".pas":
-                    return 33;
+                    return 67;
                 case ".java":
-                    return 28;
+                    return 62;
                 case ".py":
-                    return 36;
+                    return 71;
                 default: return -1;
             }
         }
