@@ -9,7 +9,10 @@ using PagedList;
 using System.Diagnostics;
 using System.Net;
 using Newtonsoft.Json.Linq;
-
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 namespace TechLead.Controllers
 {
     public class ProblemController : Controller
@@ -21,7 +24,7 @@ namespace TechLead.Controllers
         {
             _context = new ApplicationDbContext();
         }
-        
+
         [HttpGet]
         public ActionResult Details(int id)
         {
@@ -44,7 +47,7 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult Details(HttpPostedFileBase file)
         {
-            if(file == null)
+            if (file == null)
             {
                 ErrorViewModel Error = new ErrorViewModel();
                 Error.Title = "Error";
@@ -82,7 +85,7 @@ namespace TechLead.Controllers
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
-        
+
         public ActionResult Compiling()
         {
             try
@@ -102,7 +105,7 @@ namespace TechLead.Controllers
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
                 Debug.WriteLine("Submission inserted into database");
-                return RedirectToAction("SubmissionDetails", "Problem",submission.SubmissionID);
+                return RedirectToAction("SubmissionDetails", "Problem", submission.SubmissionID);
                 //return View("Index", "Home");
             }
             catch (Exception e)
@@ -192,38 +195,29 @@ namespace TechLead.Controllers
             }
         }
 
-        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTime, 
+        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTime,
             ref string Status, ref string Error, int langID, string sourceCode)
         {
             //Function [GetToken()] returns a json (string formatted) having the token.
             //It will be parsed to json by using JObject.Parse();
             Debug.WriteLine("Gonna get the token");
-            string token = GetToken(test, langID, sourceCode);
-            Debug.WriteLine("Got the token");
+            string token = GetToken(test, langID, sourceCode).ToString();
+            Debug.WriteLine("Got the token " + token);
 
             //Function that returns a json (string formatted) containing the result after running the solution
             Debug.WriteLine("Gonna get the result");
-            JObject result;
-            do
-            {
-                result = JObject.Parse(GetResult(token));
-                if (result.SelectToken("status.description").ToString() == "In Queue" ||
-                    result.SelectToken("status.description").ToString() == "Processing")
-                    System.Threading.Thread.Sleep(100);
-                Debug.WriteLine("Description = " + result.SelectToken("status.description"));
-            } while (result.SelectToken("status.description").ToString() == "In Queue" ||
-                result.SelectToken("status.description").ToString() == "Processing");
-
+            JObject result = JObject.Parse(GetResult(token));
+            Debug.WriteLine("Got the result");
+            Debug.WriteLine(result);
             //Checking if the solution returns what is needed to be returned (Correct / incorrect output, Compilation Error etc).
             Debug.WriteLine("Inserting results alea");
-            Debug.WriteLine(result);
             Debug.WriteLine("Time");
             //if(result.SelectToken("time")!=null)
             //    ExecutionTime = (int)result.SelectToken("time");
             Debug.WriteLine("Status");
             Status = (string)result.SelectToken("description"); //Accepted or not
             Debug.WriteLine("Error");
-            Error = (string)result.SelectToken("exception")+"/n" + (string)result.SelectToken("compile_output");
+            Error = (string)result.SelectToken("exception") + "/n" + (string)result.SelectToken("compile_output");
             Debug.WriteLine("Points");
             Points = (test.Output == (string)result.SelectToken("stdout")) ? 10 : 0;
             Debug.WriteLine("ExecutionTime = " + ExecutionTime);
@@ -239,7 +233,7 @@ namespace TechLead.Controllers
             var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,expected_output,stdin,message,status");
             request.ContentType = "application/json";
             request.Method = "GET";
-            
+
             //Sending the request and reading the result
             var httpResponse = (HttpWebResponse)request.GetResponse();
 
@@ -251,58 +245,70 @@ namespace TechLead.Controllers
             return result;
         }
 
-        public string GetToken(Test test, int langID, string SourceCode)
+        async Task<string> GetToken(Test test, int langID, string SourceCode)
         {
             try
             {
                 //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
                 //After that, having the token, we make another request to get submission details like execution time and so on.
-                var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
-                request.ContentType = "application/json";
-                request.Method = "POST";
+                    //var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=false&wait=false");
+                    //request.ContentType = "application/json";
+                    //request.Method = "POST";
 
                 //Building the judge0 submission, which will be sent via request
-                Judge0_SubmissionViewModel judge0_Submission = new Judge0_SubmissionViewModel();
-                judge0_Submission.stdin = test.Input;
-                judge0_Submission.expected_output = test.Output;
-                judge0_Submission.language_id = langID;
-                judge0_Submission.source_code = SourceCode;
-
-
+                Judge0JsonModel jsonModel = new Judge0JsonModel();
+                jsonModel.source_code = "hellp";
+                jsonModel.stdin = null;
+                jsonModel.language_id = 4;
+                Debug.WriteLine("dddd");
                 //Serializing the submission
-                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-                {
-                    string json = buildJson(judge0_Submission);
-                    Debug.WriteLine(json);
-                    streamWriter.Write(json);
-                    streamWriter.Flush();
-                }
+                    //using (StreamWriter streamWriter = new StreamWriter(request.GetRequestStream()))
+                    //{
+                    //    //string json = buildJson(judge0_Submission);
+                    //    string json = JsonConvert.SerializeObject(jsonModel);
+                    //    Debug.WriteLine(json);
+                    //    streamWriter.Write(json);
+                    //    streamWriter.Flush();
+                    //    streamWriter.Close();
+                    //}
 
                 //Sending the request
-                var httpResponse = (HttpWebResponse)request.GetResponse();
+                Debug.WriteLine("Sending the request");
+                JObject response;
+                using (HttpClient client = new HttpClient())
+                {
+                    Debug.WriteLine("Await si d-alea");
+                    var response2 = await client.PostAsync(
+                        "https://api.judge0.com/submissions/?base64_encoded=false&wait=false",
+                         new StringContent(JsonConvert.SerializeObject(jsonModel), Encoding.UTF8, "application/json"));
+                    Debug.WriteLine("Asta e raspunsu");
+                    response = JObject.Parse(response2.Content.ReadAsStringAsync().ToString());
+                }
+                Debug.WriteLine("Got it");
+                //var httpResponse = (HttpWebResponse)request.GetResponse();
 
                 //Catching the result
-                JObject response;
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    response = JObject.Parse(streamReader.ReadToEnd());
-                }
 
+                //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                //{
+                //    response = JObject.Parse(streamReader.ReadToEnd());
+                //}
+                Debug.WriteLine("Heloooo " + response.SelectToken("token").ToString());
                 return response.SelectToken("token").ToString();
-            }
+                }
             catch (Exception err)
             {
-                Console.WriteLine("Error: " + err);
+                Debug.WriteLine("Error: " + err);
                 return null;
             }
-            
+
         }
 
         public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, ref Submission submission,
             Exercise E)
         {
             int[] Score = new int[10];
-            for(int i=0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 //if (testImput[i] != null)
                 //{
@@ -357,9 +363,9 @@ namespace TechLead.Controllers
         private static string buildJson(Judge0_SubmissionViewModel judge0)
         {
             return "{ \"source_code\" : \"" + Base64Encode(judge0.source_code) + "\", " +
-                "\"language_id\" : \"" + judge0.language_id +"\", " +
-                "\"stdin\" : \""+Base64Encode(judge0.stdin) +"\", " +
-                "\"stdout\" :\""+Base64Encode(judge0.expected_output)+ "\" }";
+                "\"language_id\" : \"" + judge0.language_id + "\", " +
+                "\"stdin\" : \"" + Base64Encode(judge0.stdin) + "\", " +
+                "\"stdout\" :\"" + Base64Encode(judge0.expected_output) + "\" }";
         }
 
         public static string Base64Encode(string plainText)
@@ -430,9 +436,9 @@ namespace TechLead.Controllers
                 return View("Create", exerciseViewModel);
             }
             int nrOfTests = 0;
-            for(int i=0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
-                if(exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
                 {
                     nrOfTests++;
                 }
@@ -459,7 +465,7 @@ namespace TechLead.Controllers
             TempData.Keep();
             List<Submission> SubmissionForASpecificExercise = new List<Submission>();
             foreach (Submission S in _context.Submissions)
-                if (S.ExerciseId==ExerciseIdParam)
+                if (S.ExerciseId == ExerciseIdParam)
                 {
                     SubmissionForASpecificExercise.Add(S);
                 }
@@ -500,7 +506,7 @@ namespace TechLead.Controllers
             //This is the most safe way and we can be sure 100% that to the database will go only valid data.
             Test[] AuxTests = new Test[10];
             e.NumberOfTests = 0;
-            for(int i=0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 if (ExerciseViewModel.Test[i].Input != null && ExerciseViewModel.Test[i].Input != null)
                 {
@@ -508,14 +514,14 @@ namespace TechLead.Controllers
                     ++e.NumberOfTests;
                 }
             }
-            
-            for(int i=0; i<e.NumberOfTests; i++)
+
+            for (int i = 0; i < e.NumberOfTests; i++)
             {
                 e.InputColection += AuxTests[i].Input;
-                if (i < e.NumberOfTests-1) e.InputColection += data.testCase_Delimitator;
+                if (i < e.NumberOfTests - 1) e.InputColection += data.testCase_Delimitator;
 
                 e.OutputColection += AuxTests[i].Output;
-                if (i < e.NumberOfTests-1) e.OutputColection += data.testCase_Delimitator;
+                if (i < e.NumberOfTests - 1) e.OutputColection += data.testCase_Delimitator;
             }
             Debug.WriteLine(e.InputColection);
             Debug.WriteLine(e.OutputColection);
