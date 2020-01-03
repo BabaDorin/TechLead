@@ -20,7 +20,6 @@
                 <th>Submission ID</th>
                 <th>User</th>
                 <th>Time</th>
-                <th>Exercise ID</th>
                 <th>Points</th>
                 <th></th>
             </tr>
@@ -28,12 +27,10 @@
             {
                 <tr>
                     <td>@S.SubmissionID</td>
-                    <td>@S.User</td>
-                    <td>@S.Time</td>
-                    <td>@S.ExerciseId</td>
-                    <td>@S.Points</td>
+                    <td>@S.SubmissionAuthorUserName</td>
+                    <td>@S.Date</td>
+                    <td>@S.ScoredPoints</td>
                     <td>@Html.ActionLink("See More", "SubmissionDetails", "Problem", new { id = @S.SubmissionID }, null)</td>
-
                 </tr>
             }
         </table>
