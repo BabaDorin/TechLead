@@ -105,7 +105,7 @@ namespace TechLead.Controllers
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
                 Debug.WriteLine("Submission inserted into database");
-                return RedirectToAction("SubmissionDetails", "Problem", submission.SubmissionID);
+                return RedirectToAction("SubmissionDetails", "Problem", new { id = submission.SubmissionID });
                 //return View("Index", "Home");
             }
             catch (Exception e)
@@ -224,7 +224,6 @@ namespace TechLead.Controllers
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    Debug.WriteLine("Description = " + result.SelectToken("status.description"));
 
                 } while (result.SelectToken("status.description").ToString() == "In Queue" ||
                               result.SelectToken("status.description").ToString() == "Processing");
@@ -236,11 +235,6 @@ namespace TechLead.Controllers
                 Status = (string)result.SelectToken("status.description"); //Accepted or not
                 Error = (string)result.SelectToken("compile_output");
                 Points = (test.Output == (string)result.SelectToken("stdout")) ? 10 : 0;
-
-                Debug.WriteLine("ExecutionTime = " + ExecutionTime);
-                Debug.WriteLine("Status = " + Status);
-                Debug.WriteLine("Error = " + Error);
-                Debug.WriteLine(test.Output + " = " + (string)result.SelectToken("stdout"));
             }
             catch (NotImplementedException)
             {
@@ -253,6 +247,7 @@ namespace TechLead.Controllers
             string result;
 
             var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status");
+            //var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token);
             request.ContentType = "application/json";
             request.Method = "GET";
 
@@ -263,7 +258,6 @@ namespace TechLead.Controllers
             {
                 result = streamReader.ReadToEnd();
             }
-
             return result;
         }
 
@@ -315,62 +309,6 @@ namespace TechLead.Controllers
 
         }
 
-        public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, ref Submission submission,
-            Exercise E)
-        {
-            int[] Score = new int[10];
-            for (int i = 0; i < 10; i++)
-            {
-                //if (testImput[i] != null)
-                //{
-                ////The method sends HTTP requests to judge0 API, then, it gets a token as a response.
-                ////After that, having the token, we make another request to get submission details like execution time and so on.
-                //var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=true");
-                //request.ContentType = "application/json";
-                //request.Method = "POST";
-                //Debug.WriteLine("Going in test >>>");
-
-                //judge0_Submission.stdin = testImput[i];
-                //judge0_Submission.expected_output = testOutput[i];
-                //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-                //{
-                //    string json = buildJson(judge0_Submission);
-                //    Debug.WriteLine(json);
-                //    streamWriter.Write(json);
-                //    streamWriter.Flush();
-                //}
-                //Debug.WriteLine("sending etasamaia");
-                //var httpResponse = (HttpWebResponse)request.GetResponse();
-                //Debug.WriteLine("RASPUNS PRIMIT iobana");
-                //JObject result;
-                //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                //{
-                //    result = JObject.Parse(streamReader.ReadToEnd());
-                //}
-                //Debug.WriteLine(result.SelectToken("token"));
-
-                //    //Now we have the token
-                //    //Next => get submission detalis using the token si asa mai departe
-                //    request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + result.SelectToken("token") + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id");
-                //    request.ContentType = "application/json";
-                //    request.Method = "GET";
-                //    httpResponse = (HttpWebResponse)request.GetResponse();
-                //    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                //    {
-                //        result = JObject.Parse(streamReader.ReadToEnd());
-                //    }
-                //    //Next => from result ( which is the result json) build a submission_judge0 object, then
-                //    //from the submission_judge0 object build submission object and that's all.
-                //    if (result.GetValue("description").ToString()=="Accepted")
-                //    {
-
-                //    }
-                //    Debug.WriteLine(result);
-                //}
-            }
-        }
-
-
         private static string buildJson(Judge0_SubmissionViewModel judge0)
         {
             return "{ \"source_code\" : \"" + Base64Encode(judge0.source_code) + "\", " +
@@ -392,7 +330,7 @@ namespace TechLead.Controllers
                 case ".cs":
                     return 51;
                 case ".cpp":
-                    return 54;
+                    return 53;
                 case ".pas":
                     return 67;
                 case ".java":

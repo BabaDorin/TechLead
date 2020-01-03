@@ -503,6 +503,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="ImageResources\" />
     <Folder Include="Images\" />
+    <Folder Include="Run\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
