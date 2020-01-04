@@ -54,7 +54,6 @@ namespace TechLead.Controllers
                 Error.Description = "You did not upload any solution ):";
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
-
             try
             {
                 Debug.WriteLine("Went into HTTP Post Details");
@@ -70,9 +69,8 @@ namespace TechLead.Controllers
                     Error.Description = "Supported languages: C++ (.cpp), C# (.cs), Java (.java), Python (.py), Pascal (.pas)";
                     return View("~/Views/Shared/Error.cshtml", Error);
                 }
-                TempData["Judge0_Submission"] = submission;
 
-                Debug.WriteLine("Going to compiling action");
+                TempData["Judge0_Submission"] = submission;
 
                 return RedirectToAction("Compiling", "Problem");
 
@@ -90,7 +88,6 @@ namespace TechLead.Controllers
         {
             try
             {
-                Debug.WriteLine("Arieved into compiling action");
                 Exercise e = TempData["Object"] as Exercise;
                 Judge0_SubmissionViewModel judge0_submission = TempData["Judge0_Submission"] as Judge0_SubmissionViewModel;
 
@@ -98,15 +95,12 @@ namespace TechLead.Controllers
                 //It is being saved to the database.
                 //After that, based on the submission object submissionViewModel is created and passed to the view
                 //so the user will see his results.
-
-                Debug.WriteLine("Going to compile and test");
                 Submission submission = CompileAndTest(e, judge0_submission);
-                Debug.WriteLine("Out of compile and test");
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
                 Debug.WriteLine("Submission inserted into database");
+
                 return RedirectToAction("SubmissionDetails", "Problem", new { id = submission.SubmissionID });
-                //return View("Index", "Home");
             }
             catch (Exception e)
             {
@@ -121,11 +115,8 @@ namespace TechLead.Controllers
         {
             try
             {
-
+                //Inserting basic data into submission object
                 Submission submission = new Submission();
-
-                //First, we have to insert all the necessary data from Exercise and Judge0 view model
-
                 if (Request.IsAuthenticated)
                 {
                     submission.SubmissionAuthorUserName = HttpContext.User.Identity.Name;
@@ -134,7 +125,6 @@ namespace TechLead.Controllers
                 {
                     submission.SubmissionAuthorUserName = "Anonymous";
                 }
-
                 submission.Date = DateTime.Now;
                 submission.ExerciseId = e.Id;
                 submission.Exercise = e.Name;
@@ -153,11 +143,8 @@ namespace TechLead.Controllers
                 //Now we have to go through each test case, collect data, analyse and
                 //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
                 //ErrorMessage
-                Debug.WriteLine("imput = " + e.InputColection);
 
                 Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
-
-                Debug.WriteLine("Out of Create tests");
 
                 for (int i = 0; i < TestCases.Length; i++)
                 {
@@ -185,12 +172,11 @@ namespace TechLead.Controllers
 
                 }
 
-                Debug.WriteLine("Returning good submission");
                 return submission;
             }
             catch (Exception ess)
             {
-                Debug.WriteLine("ETRRRRRRROOOOR " + ess);
+                Debug.WriteLine("Error DANGEROUS " + ess);
                 return null;
             }
         }
@@ -203,9 +189,7 @@ namespace TechLead.Controllers
 
                 //Function [GetToken()] returns a json (string formatted) having the token.
                 //It will be parsed to json by using JObject.Parse();
-                Debug.WriteLine("Gonna get the token");
                 string token = GetToken(test, langID, sourceCode).Result;
-                Debug.WriteLine("Got the token -> " + token);
 
                 if (token == null)
                 {
@@ -213,12 +197,18 @@ namespace TechLead.Controllers
                 }
 
                 //Function that returns a json (string formatted) containing the result after running the solution
-                Debug.WriteLine("Gonna get the result");
                 JObject result;
+
+                //It takes time for the API to process the data. This do while stays here to make repetitive calls to the API
+                //Checking everytime the response. If the status is different from 'In Queue' or 'Processing', it means
+                //that the code has been compiled and it returned the response having the results we are looking for.
                 do
                 {
                     result = JObject.Parse(GetResult(token));
+
                     //Checking out if our submitted solution has been processed
+                    //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
+                    //So it waits 100 miliseconds before sending another get request.
                     if (result.SelectToken("status.description").ToString() == "In Queue" ||
                             result.SelectToken("status.description").ToString() == "Processing")
                     {
@@ -228,8 +218,7 @@ namespace TechLead.Controllers
                 } while (result.SelectToken("status.description").ToString() == "In Queue" ||
                               result.SelectToken("status.description").ToString() == "Processing");
 
-
-                //Collecting data
+                //Now we have the result in a json format, so we are able to insert necessary data.
                 if (result.SelectToken("time") != null)
                     ExecutionTime = (int)result.SelectToken("time");
                 Status = (string)result.SelectToken("status.description"); //Accepted or not
@@ -238,6 +227,7 @@ namespace TechLead.Controllers
             }
             catch (NotImplementedException)
             {
+                //This happens when the API has been modified or shut down or whatever.
                 Debug.WriteLine("The token is null");
             }
         }
@@ -246,8 +236,8 @@ namespace TechLead.Controllers
         {
             string result;
 
+            //building the request and passing the parameters we are looking for.
             var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status");
-            //var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token);
             request.ContentType = "application/json";
             request.Method = "GET";
 
@@ -307,14 +297,6 @@ namespace TechLead.Controllers
                 return null;
             }
 
-        }
-
-        private static string buildJson(Judge0_SubmissionViewModel judge0)
-        {
-            return "{ \"source_code\" : \"" + Base64Encode(judge0.source_code) + "\", " +
-                "\"language_id\" : \"" + judge0.language_id + "\", " +
-                "\"stdin\" : \"" + Base64Encode(judge0.stdin) + "\", " +
-                "\"stdout\" :\"" + Base64Encode(judge0.expected_output) + "\" }";
         }
 
         public static string Base64Encode(string plainText)
