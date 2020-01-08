@@ -1,45 +1,22 @@
-﻿
-TO DO LIST
+﻿1) Make at least one test case mandatory into create problem view. 
 
-1) Set the views for Beginer, Intermediate and Advanced.
+2) Enable edit problem only for the administrators and problem creator.
 
-2) Find out how to make 3 lists with problems. 
-	1st list: Beginer problems
-	2nd list: Intermediate problems
-	3rd list: Advance problems.
+2) Error handling and displaying error pages when something happens. 
 
+3) 404 page
 
-3)	 Create a folder in this project "Exercise Data". There will be all the info about the exercises (problems) 
-Insert some problems in those lists. Find out how to create test files and so on.
+4) Count total poins gained per submission.
 
-4)	Find out how to generate a view for every problem. 
-The Problem View will be like
+5) Count total points for each application user.  ==> If one submission gets 20 points, he gets 20 points. If the second submission
+for the same problem gets more than 20, then totalPoints + = max (previous submission result, current submission result);
 
--Problem name
--Condition
--Input-output
--submit a file button
+6) Design !!! (For problem display, submission, profile etc etc etc etc)
 
-Also, the application should track and monitorize so the user won't get repetitive points by submiting the 
-same sollution for many times. 
-Something will be created for tracking this thing like if the user opened that problem, then for that problem, the user will have
-an amount of points. Initially it will be 0 and if he submits somethig that will pass some test, it will increase.
-And, for example if the amount of points is 45 and the next submission will get 80, then, for that problem he will get 45+(80-45);
+7) Implement a hint sistem. Like when the user can not figure out where's the mistake, the are able to press on that hint button
+and will see the last executed input, his program's output and the correct output for the first test that has not been passed;
+For example, if the user's code runs for the first 4 testcases, but for the next 6 the output is wrong, then, when the hint button will 
+be pressed, it will display the input, user's output and the desired output for the test number 5, because that was the first test case
+the user has failed. It won't cost anything. 
 
-4.b) Create a view that will help the user to get to his recent problems. It will be found on Account Main Page, like 'Went through problems'.
-
-5) Find out how to submit a file and to store it temporarely in the "Exercise Data" folder of the project
-
-6) After that, create the Compiler Class that will have a method that finds out the programming language
- and also it will have 4 ramifications
-	1st: Compiler for C#
-	2nd: Compiler for Java
-	3rd: Compiler for C++
-	4th: Compiler for Pascal.
-
-	The Compiler will have a timer so it will measure the compilation time of the program and also it will
-	fight with the infinite loops. 
-	The Compiler should have a solution for forgotten there "Console.ReadLine()" and "cin>>" and so on.
-
-	The Compiler will test the solution and will count the points. 
-	Points will be stored in a 
+8) Calculate the amount of points for each test case, depending on the number of tests and the total points number.
