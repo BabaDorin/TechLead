@@ -211,6 +211,10 @@
     <Compile Include="Migrations\201912201944162_RepairSubmission.Designer.cs">
       <DependentUpon>201912201944162_RepairSubmission.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001082024045_updatingExerciseModel.cs" />
+    <Compile Include="Migrations\202001082024045_updatingExerciseModel.Designer.cs">
+      <DependentUpon>202001082024045_updatingExerciseModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
@@ -498,6 +502,7 @@
     <Content Include="Views\Account\_Login.cshtml" />
     <Content Include="Views\Profile\ViewProfile.cshtml" />
     <Content Include="Views\Manage\Profilepic.cshtml" />
+    <Content Include="Views\Problem\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -663,6 +668,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912201944162_RepairSubmission.resx">
       <DependentUpon>201912201944162_RepairSubmission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001082024045_updatingExerciseModel.resx">
+      <DependentUpon>202001082024045_updatingExerciseModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

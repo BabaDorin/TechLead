@@ -13,6 +13,8 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+
 namespace TechLead.Controllers
 {
     public class ProblemController : Controller
@@ -278,7 +280,7 @@ namespace TechLead.Controllers
                 //Sending the request and storing the data being returned
                 using (var client = new HttpClient())
                 {
-                    using (HttpResponseMessage resp = await client.PostAsync(url,data).ConfigureAwait(false))
+                    using (HttpResponseMessage resp = await client.PostAsync(url, data).ConfigureAwait(false))
                     {
                         using (HttpContent content = resp.Content)
                         {
@@ -287,7 +289,7 @@ namespace TechLead.Controllers
                         }
                     }
                 }
-                
+
                 response = JObject.Parse(res);
                 return response.SelectToken("token").ToString();
             }
@@ -335,7 +337,7 @@ namespace TechLead.Controllers
             try
             {
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
-                SubmissionViewModel submissionViewModel = SubmissionCopyData(S);
+                SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
                 return View(submissionViewModel);
             }
             catch (Exception)
@@ -347,6 +349,7 @@ namespace TechLead.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult Create()
         {
             var viewModel = new ExerciseViewModel
@@ -383,10 +386,79 @@ namespace TechLead.Controllers
 
             //If everything is OK, we copy all the data from ExerciseViewModel to Exercise
 
-            Exercise exercise = ExerciseCopyData(exerciseViewModel);
+            if (Request.IsAuthenticated)
+            {
+                exerciseViewModel.Author = User.Identity.Name;
+            }
+            Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
             _context.Exercises.Add(exercise);
             _context.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Details", new { id = exercise.Id });
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Update(int ID)
+        {
+            try
+            {
+                Exercise E = _context.Exercises.Single(ex => ex.Id == ID);
+                var userId = User.Identity.GetUserId();
+                if (User.Identity.Name == E.Author)
+                {
+                    ExerciseViewModel EVM = ExerciseFromModelToViewModel(E);
+                    return View(EVM);
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel();
+                    Error.Title = "Error 404";
+                    Error.Description = "Page not found :(";
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            catch (Exception)
+            {
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = "Unfortunately, something happened. The problem has not been modified. Try again.";
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(ExerciseViewModel exerciseViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                return View("Update", exerciseViewModel);
+            }
+
+            int nrOfTests = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                {
+                    nrOfTests++;
+                }
+            }
+
+            if (nrOfTests == 0)
+            {
+                TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
+                exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                return View("Update", exerciseViewModel);
+            }
+
+            //If everything is OK, the exercise will get updated
+
+            Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
+            _context.Entry(exercise).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+            return RedirectToAction("Details", new { id = exercise.Id });
+
         }
 
         public ActionResult Submissions(int? page)
@@ -404,7 +476,7 @@ namespace TechLead.Controllers
             return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
         }
 
-        private static Exercise ExerciseCopyData(ExerciseViewModel ExerciseViewModel)
+        private Exercise ExerciseFromViewModelToModel(ExerciseViewModel ExerciseViewModel)
         {
             Exercise e = new Exercise();
             e.Id = ExerciseViewModel.Id;
@@ -461,7 +533,7 @@ namespace TechLead.Controllers
             //it would be accesibile by calling the data.CreateTests and passing the e.InputCollection and e.OutputCollection.
             return e;
         }
-        public static SubmissionViewModel SubmissionCopyData(Submission submission)
+        private SubmissionViewModel SubmissionFromModelToViewModel(Submission submission)
         {
             SubmissionViewModel Svm = new SubmissionViewModel();
             Svm.SubmissionAuthorUserName = submission.SubmissionAuthorUserName;
@@ -484,6 +556,48 @@ namespace TechLead.Controllers
             Svm.ErrorMessage = submission.ErrorMessage.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
 
             return Svm;
+        }
+        public ExerciseViewModel ExerciseFromModelToViewModel(Exercise exercise)
+        {
+            var EVM = new ExerciseViewModel
+            {
+                Difficulty = _context.Difficulty.ToList()
+            };
+            EVM.Id = exercise.Id;
+            EVM.Name = exercise.Name;
+            EVM.Points = exercise.Points;
+            EVM.SubmissionsAbove10Points = exercise.SubmissionsAbove10Points;
+            EVM.SubmissionsUnder10Points = exercise.SubmissionsUnder10Points;
+            EVM.Author = exercise.Author;
+            EVM.DifficultyId = exercise.DifficultyId;
+            EVM.Condition = exercise.Condition;
+            EVM.InputFormat = exercise.InputFormat;
+            EVM.OutputFormat = exercise.OutputFormat;
+            EVM.Constraints = exercise.Constraints;
+            EVM.Input1 = exercise.Input1;
+            EVM.Input2 = exercise.Input2;
+            EVM.Input3 = exercise.Input3;
+            EVM.Input4 = exercise.Input4;
+            EVM.Input5 = exercise.Input5;
+            EVM.Output1 = exercise.Output1;
+            EVM.Output2 = exercise.Output2;
+            EVM.Output3 = exercise.Output3;
+            EVM.Output4 = exercise.Output4;
+            EVM.Output5 = exercise.Output5;
+            EVM.Explanation1 = exercise.Explanation1;
+            EVM.Explanation2 = exercise.Explanation2;
+            EVM.Explanation3 = exercise.Explanation3;
+            EVM.Explanation4 = exercise.Explanation4;
+            EVM.Explanation5 = exercise.Explanation5;
+            EVM.Test = new Test[10];
+            Test[] aux = data.CreateTests(exercise.InputColection, exercise.OutputColection);
+            
+            for(int i=0; i<aux.Length; i++)
+            {
+                EVM.Test[i] = aux[i];
+            }
+
+            return EVM;
         }
         public ActionResult RenderError(ErrorViewModel Err)
         {
