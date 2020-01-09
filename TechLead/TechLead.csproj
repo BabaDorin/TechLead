@@ -505,6 +505,7 @@
     <Content Include="Views\Profile\ViewProfile.cshtml" />
     <Content Include="Views\Manage\Profilepic.cshtml" />
     <Content Include="Views\Problem\Update.cshtml" />
+    <Content Include="Views\Administration\CreateRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -512,7 +513,6 @@
     <Folder Include="Images\" />
     <Folder Include="Run\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Views\Administration\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
