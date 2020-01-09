@@ -179,6 +179,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Migrations\201912191628209_UpdateExerciseModel.cs" />
     <Compile Include="Migrations\201912191628209_UpdateExerciseModel.Designer.cs">
       <DependentUpon>201912191628209_UpdateExerciseModel.cs</DependentUpon>
@@ -215,6 +216,7 @@
     <Compile Include="Migrations\202001082024045_updatingExerciseModel.Designer.cs">
       <DependentUpon>202001082024045_updatingExerciseModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
@@ -510,6 +512,7 @@
     <Folder Include="Images\" />
     <Folder Include="Run\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Views\Administration\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
