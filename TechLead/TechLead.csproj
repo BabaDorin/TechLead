@@ -235,6 +235,7 @@
     </Compile>
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
+    <Compile Include="Models\DisplayExerciseViewModel.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
     <Compile Include="Models\SubmissionViewModel.cs" />

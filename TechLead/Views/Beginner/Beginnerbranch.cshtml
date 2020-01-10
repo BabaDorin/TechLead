@@ -1,6 +1,7 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
 @using TechLead.Models;
+@using Microsoft.AspNet.Identity;
 @model IPagedList<TechLead.Models.Exercise>
 
 @{
@@ -19,6 +20,7 @@
         <ul>
             @foreach (Exercise E in Model)
             {
+                //if(User.Identity.GetUserId == E.AuthorID)
                 <li>
                     <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
                         <div class="ProblemToDisplay">
