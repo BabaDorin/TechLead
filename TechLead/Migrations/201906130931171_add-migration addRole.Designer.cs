@@ -7,9 +7,9 @@ namespace TechLead.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class addmigrationaddRole : IMigrationMetadata
+    public sealed partial class AddmigrationaddRole : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addmigrationaddRole));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddmigrationaddRole));
         
         string IMigrationMetadata.Id
         {

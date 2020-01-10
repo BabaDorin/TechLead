@@ -21,15 +21,19 @@ namespace TechLead
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
             if (!roleManager.RoleExists("User"))
             {
-                var role = new IdentityRole();
-                role.Name = "User";
+                var role = new IdentityRole
+                {
+                    Name = "User"
+                };
                 roleManager.Create(role);
             }
 
             if (!roleManager.RoleExists("Administrator"))
             {
-                var role = new IdentityRole();
-                role.Name = "Administrator";
+                var role = new IdentityRole
+                {
+                    Name = "Administrator"
+                };
                 roleManager.Create(role);
             }
         }
