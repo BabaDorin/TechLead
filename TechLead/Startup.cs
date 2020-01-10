@@ -32,7 +32,6 @@ namespace TechLead
                 role.Name = "Administrator";
                 roleManager.Create(role);
             }
-
         }
     }
 }
