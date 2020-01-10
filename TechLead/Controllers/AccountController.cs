@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TechLead.Models;
+using System.Diagnostics;
 
 namespace TechLead.Controllers
 {
@@ -173,7 +174,7 @@ namespace TechLead.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     //Associate the new user with his role.
-                    await UserManager.AddToRoleAsync(user.Id, model.UserRole);
+                    await UserManager.AddToRoleAsync(user.Id, user.UserRole);
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
@@ -289,6 +290,8 @@ namespace TechLead.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
+            Session["Workaround"] = 0;
+            Debug.WriteLine("ExternalLogin");
             // Request a redirect to the external login provider
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
@@ -298,6 +301,7 @@ namespace TechLead.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
+            Debug.WriteLine("SendCode GET");
             var userId = await SignInManager.GetVerifiedUserIdAsync();
             if (userId == null)
             {
@@ -315,6 +319,7 @@ namespace TechLead.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
+            Debug.WriteLine("SendCode POST");
             if (!ModelState.IsValid)
             {
                 return View();
@@ -333,28 +338,36 @@ namespace TechLead.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
+            Debug.WriteLine("ExernalLoginCallBack");
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
+                Debug.WriteLine("loginInfo is null");
                 return RedirectToAction("Login");
             }
+            Debug.WriteLine("2");
 
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
                 case SignInStatus.Success:
+                    Debug.WriteLine("Success");
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
+                    Debug.WriteLine("Lockout");
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
+                    Debug.WriteLine("RequiresVerification");
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
                 case SignInStatus.Failure:
                 default:
+                    Debug.WriteLine("Failure");
                     // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     ViewBag.Email = loginInfo.Email;
+                    ViewBag.UserRole = "User";
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email, Username=loginInfo.DefaultUserName });
             }
         }
@@ -380,13 +393,17 @@ namespace TechLead.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Username, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, UserRole = "User"};
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
+                    Debug.WriteLine("1st result succeeded");
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+                        Debug.WriteLine("2nd result succeeded");
+                        await UserManager.AddToRoleAsync(user.Id, user.UserRole);
+                        Debug.WriteLine("Nais with roles");
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }
