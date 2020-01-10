@@ -216,6 +216,10 @@
     <Compile Include="Migrations\202001082024045_updatingExerciseModel.Designer.cs">
       <DependentUpon>202001082024045_updatingExerciseModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001101112080_ClearAspNetRoles_Table.cs" />
+    <Compile Include="Migrations\202001101112080_ClearAspNetRoles_Table.Designer.cs">
+      <DependentUpon>202001101112080_ClearAspNetRoles_Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
@@ -674,6 +678,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001082024045_updatingExerciseModel.resx">
       <DependentUpon>202001082024045_updatingExerciseModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001101112080_ClearAspNetRoles_Table.resx">
+      <DependentUpon>202001101112080_ClearAspNetRoles_Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

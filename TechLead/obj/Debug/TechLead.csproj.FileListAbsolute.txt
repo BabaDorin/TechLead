@@ -954,3 +954,4 @@ C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debu
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.UpdateSubmissionModel.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.RepairSubmission.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.updatingExerciseModel.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.ClearAspNetRoles_Table.resources

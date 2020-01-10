@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin;
 using Owin;
+using TechLead.Models;
 
 [assembly: OwinStartupAttribute(typeof(TechLead.Startup))]
 namespace TechLead
@@ -9,6 +10,12 @@ namespace TechLead
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+        }
+
+        private void CreateRoles()
+        {
+            ApplicationDbContext _context = new ApplicationDbContext();
+
         }
     }
 }

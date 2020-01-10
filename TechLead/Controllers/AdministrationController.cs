@@ -12,18 +12,15 @@ namespace TechLead.Controllers
 {
     public class AdministrationController : Controller
     {
-        private readonly RoleManager<IdentityRole> roleManager;
-        
-        public AdministrationController(RoleManager<IdentityRole> roleManager)
+        private RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _context = new ApplicationDbContext();
+        public AdministrationController()
         {
-            this.roleManager = roleManager;
+            _roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
         }
 
         [HttpGet]
-        public ActionResult CreateRole()
-        {
-            return View();
-        }
+        public ActionResult CreateRole() => View();
 
         [HttpPost]
         public async Task<ActionResult> CreateRole(CreateRoleViewModel createRole)
@@ -35,7 +32,7 @@ namespace TechLead.Controllers
                     Name = createRole.RoleName
                 };
 
-                IdentityResult result = await roleManager.CreateAsync(identityRole);
+                IdentityResult result = await _roleManager.CreateAsync(identityRole);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("index", "Home");
@@ -43,7 +40,6 @@ namespace TechLead.Controllers
             }
 
             return View(createRole);
-
         }
     }
 }
