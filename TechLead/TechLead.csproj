@@ -220,6 +220,10 @@
     <Compile Include="Migrations\202001101112080_ClearAspNetRoles_Table.Designer.cs">
       <DependentUpon>202001101112080_ClearAspNetRoles_Table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001101123470_Add_UserRole_PropertyToApplicationUser.cs" />
+    <Compile Include="Migrations\202001101123470_Add_UserRole_PropertyToApplicationUser.Designer.cs">
+      <DependentUpon>202001101123470_Add_UserRole_PropertyToApplicationUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
@@ -681,6 +685,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001101112080_ClearAspNetRoles_Table.resx">
       <DependentUpon>202001101112080_ClearAspNetRoles_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001101123470_Add_UserRole_PropertyToApplicationUser.resx">
+      <DependentUpon>202001101123470_Add_UserRole_PropertyToApplicationUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
