@@ -83,7 +83,7 @@ namespace TechLead.Controllers
                 FirstRegistration = CurrentUser.FirstRegistration,
                 TotalPoints = CurrentUser.TotalPoints,
                 Email = CurrentUser.Email,
-                UserID = CurrentUser.Id,
+                userID = CurrentUser.Id,
                 ProfilePhoto = CurrentUser.ProfilePhoto
             };
             return View(model);

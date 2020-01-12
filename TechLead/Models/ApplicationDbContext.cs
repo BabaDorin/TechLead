@@ -18,4 +18,10 @@ namespace TechLead.Models
             return new ApplicationDbContext();
         }
     }
+    public class MyDbContext : DbContext
+    {
+        public MyDbContext()
+        {
+        }
+    }
 }

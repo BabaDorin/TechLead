@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 @using TechLead.Models;
 @using Microsoft.AspNet.Identity;
-@model IPagedList<TechLead.Models.Exercise>
+@model IPagedList<TechLead.Models.DisplayExerciseGeneralInfoViewModel>
 
 @{
     ViewBag.Title = "Beginner";
@@ -18,7 +18,7 @@
         <br />
         <br />
         <ul>
-            @foreach (Exercise E in Model)
+            @foreach (DisplayExerciseGeneralInfoViewModel E in Model)
             {
                 //if(User.Identity.GetUserId == E.AuthorID)
                 <li>

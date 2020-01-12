@@ -12,18 +12,27 @@ namespace TechLead.Controllers
 {
     public class BeginnerController : Controller
     {
+        ApplicationDbContext _context = new ApplicationDbContext();
         // GET: Branch1
         public ActionResult Beginnerbranch(int? page)
         {
             try
             {
-                ApplicationDbContext _context = new ApplicationDbContext();
-                List<Exercise> BeginnerExercises = new List<Exercise>();
+                List<DisplayExerciseGeneralInfoViewModel> BeginnerExercises = new List<DisplayExerciseGeneralInfoViewModel>();
                 foreach (Exercise e in _context.Exercises)
                 {
                     if (e.DifficultyId == 4)
                     {
-                        BeginnerExercises.Add(e);
+                        DisplayExerciseGeneralInfoViewModel displayExerciseGeneralInfoViewModel = new DisplayExerciseGeneralInfoViewModel
+                        {
+                            Id = e.Id,
+                            Name = e.Name,
+                            Points = e.Points,
+                            DifficultyID = e.DifficultyId,
+                            Author = e.Author,
+                            AuthorID = e.AuthorID
+                        };
+                        BeginnerExercises.Add(displayExerciseGeneralInfoViewModel);
                     }
                 }
                 return View(BeginnerExercises.ToPagedList(page ?? 1, 20));

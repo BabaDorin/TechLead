@@ -22,6 +22,7 @@ namespace TechLead.Models
         public int SubmissionsUnder10Points { get; set; }
 
         public string Author { get; set; }
+        public string AuthorID { get; set; }
 
         [Required(ErrorMessage ="Please, check a difficulty level for the problem")]
         public int DifficultyId { get; set; }

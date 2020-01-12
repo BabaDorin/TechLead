@@ -391,6 +391,7 @@ namespace TechLead.Controllers
                 exerciseViewModel.Author = User.Identity.Name;
             }
             Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
+            exercise.AuthorID = User.Identity.GetUserId();
             _context.Exercises.Add(exercise);
             _context.SaveChanges();
             return RedirectToAction("Details", new { id = exercise.Id });
