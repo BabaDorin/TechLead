@@ -399,11 +399,11 @@ namespace TechLead.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult Update(int ID)
+        public ActionResult Update(int ProblemID)
         {
             try
             {
-                Exercise E = _context.Exercises.Single(ex => ex.Id == ID);
+                Exercise E = _context.Exercises.Single(ex => ex.Id == ProblemID);
                 var userId = User.Identity.GetUserId();
                 if (User.Identity.Name == E.Author)
                 {
