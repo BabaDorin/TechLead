@@ -9,6 +9,8 @@
     @using (Html.BeginForm("Update", "Problem", FormMethod.Post, new { id = "submitForm" }))
     {
         @Html.AntiForgeryToken();
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.AuthorID)
         <div class="CreateProblem">
             <p><strong>Update the exercise</strong></p>
             <br />

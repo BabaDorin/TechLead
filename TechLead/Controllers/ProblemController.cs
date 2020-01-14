@@ -403,11 +403,14 @@ namespace TechLead.Controllers
         {
             try
             {
+                //Display this page only to the creator of that specific problem, or
+                //to an admin
                 Exercise E = _context.Exercises.Single(ex => ex.Id == ProblemID);
                 var userId = User.Identity.GetUserId();
-                if (User.Identity.Name == E.Author)
+                if (userId == E.AuthorID || User.IsInRole("Administrator"))
                 {
                     ExerciseViewModel EVM = ExerciseFromModelToViewModel(E);
+                    EVM.Id = ProblemID;
                     return View(EVM);
                 }
                 else
@@ -482,6 +485,7 @@ namespace TechLead.Controllers
             Exercise e = new Exercise();
             e.Id = ExerciseViewModel.Id;
             e.Author = ExerciseViewModel.Author;
+            e.AuthorID = ExerciseViewModel.AuthorID;
             e.Name = ExerciseViewModel.Name;
             e.Points = ExerciseViewModel.Points;
             e.Condition = ExerciseViewModel.Condition;
@@ -570,6 +574,7 @@ namespace TechLead.Controllers
             EVM.SubmissionsAbove10Points = exercise.SubmissionsAbove10Points;
             EVM.SubmissionsUnder10Points = exercise.SubmissionsUnder10Points;
             EVM.Author = exercise.Author;
+            EVM.AuthorID = exercise.AuthorID;
             EVM.DifficultyId = exercise.DifficultyId;
             EVM.Condition = exercise.Condition;
             EVM.InputFormat = exercise.InputFormat;

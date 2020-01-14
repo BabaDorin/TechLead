@@ -1,4 +1,5 @@
-﻿@model TechLead.Models.Exercise
+﻿@using Microsoft.AspNet.Identity;
+@model TechLead.Models.Exercise
 
 @{
     ViewBag.Title = "Details";
@@ -24,11 +25,17 @@
                 </div>
             </div>
         </div>
+        @if ((User.Identity.IsAuthenticated && User.Identity.GetUserId() == Model.AuthorID) || User.IsInRole("Administrator"))
+        {
+            <p>
+                @Html.ActionLink("Update", "Update", "Problem", new { @ProblemID = Model.Id }, null)
+                   
+                @Html.ActionLink("Delete", "Delete", "Problem", new { @ProblemID = Model.Id }, null)
+            </p>
+        }
     </div>
-    @using (Html.BeginForm("Details",
-                                "Problem",
-                                FormMethod.Post,
-                                new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("Details", "Problem", FormMethod.Post,
+        new { enctype = "multipart/form-data" }))
     {
 
         <div class="Box">
@@ -170,7 +177,7 @@
 
                 <input type="file" name="file" id="real-imput" />
                 <br />
-                <input type="submit" value="Submit"/>
+                <input type="submit" value="Submit" />
             </div>
 
             <hr />
