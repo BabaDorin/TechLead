@@ -358,6 +358,28 @@ pre {
 
 
 /********************************* Beginner / Intermediate / Advanced BranceS ****************************************************************************************/
+.ProblemToDisplayForCreator {
+    align-items: center;
+    background-color: aliceblue;
+    color: #333;
+    padding: 2%;
+    margin: 2px;
+    font-size: large;
+    width: 100%;
+    box-shadow: 15px 20px 20px 0 #361e654f, 0 20px 20px 0 rgba(5, 5, 255, 0);
+    transition: all .2s ease-in-out;
+    text-decoration: none;
+}
+
+.ProblemToDisplayForCreator:hover{
+    position:relative;
+    z-index:1;
+    transform: scale(1.02);
+    background-color: aliceblue;
+    color: #333332;
+    border-color: aliceblue;
+    text-decoration:none;
+}
 
 .ProblemToDisplay {
     align-items: center;

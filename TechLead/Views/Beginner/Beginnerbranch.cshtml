@@ -22,10 +22,10 @@
             {
                 //Display the problem 'In a different way' if the problem was created by the current user
                 <li>
-                    @if (User.Identity.GetUserId() == E.AuthorID)
+                    @if (User.Identity.IsAuthenticated && ( User.Identity.GetUserId() == E.AuthorID ))
                     {
                         <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
-                            <div class="ProblemToDisplayr">
+                            <div class="ProblemToDisplayForCreator">
                                 @E.Name
                                 <span class="PointsToDisplay">@E.Points</span>
                             </div>
