@@ -1,0 +1,27 @@
+﻿@model TechLead.Models.CreateRoleViewModel
+@{
+    ViewBag.Title = "CreateRole";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="Content">
+    @using (Html.BeginForm("CreateRole", "Administration", FormMethod.Post, new { id = "submitForm" }))
+    {
+        @Html.AntiForgeryToken();
+        <div class="CreateProblem">
+            <p><strong>Insert a role</strong></p>
+            <br />
+            <hr />
+
+            <div class="form-group">
+                @Html.LabelFor(ex => ex.RoleName, "Title")
+                @Html.TextBoxFor(ex => ex.RoleName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(ex => ex.RoleName)
+            </div>
+            
+            <br />
+            <button type="submit" class="btn btn-primary">Save Role</button>
+        </div>
+    }
+</div>
+

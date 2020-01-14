@@ -414,26 +414,6 @@ namespace TechLead.Controllers
                 _context.Entry(CurrentUser).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();
                 return RedirectToAction("Index");
-                /*
-                var CurrentUser = _context.Users.Find(User.Identity.GetUserId());
-                byte[] bytes = Convert.FromBase64String(imgbase64.Split(',')[1]);
-                CurrentUser.ProfilePhoto = bytes;
-                TempData["Success"] = "Image uploaded successfully";
-                _context.Entry(CurrentUser).State = System.Data.Entity.EntityState.Modified;
-                _context.SaveChanges();
-                return RedirectToAction("Index");*/
-                /*
-                var CurrentUser = _context.Users.Find(User.Identity.GetUserId());
-                if (photo != null)
-                {
-                    CurrentUser.ProfilePhoto = new byte[photo.ContentLength];
-                    photo.InputStream.Read(CurrentUser.ProfilePhoto, 0, photo.ContentLength);
-                    CurrentUser.UserName = "Done";
-                }
-                _context.Entry(CurrentUser).State = System.Data.Entity.EntityState.Modified;
-                _context.SaveChanges();
-                TempData["Success"] = "Image uploaded successfully";
-                return RedirectToAction("Index");*/
 
             }
             catch (Exception e)

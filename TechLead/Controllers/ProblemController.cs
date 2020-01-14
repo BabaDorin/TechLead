@@ -9,6 +9,11 @@ using PagedList;
 using System.Diagnostics;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace TechLead.Controllers
 {
@@ -21,7 +26,7 @@ namespace TechLead.Controllers
         {
             _context = new ApplicationDbContext();
         }
-        
+
         [HttpGet]
         public ActionResult Details(int id)
         {
@@ -44,16 +49,16 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult Details(HttpPostedFileBase file)
         {
-            if(file == null)
+            if (file == null)
             {
                 ErrorViewModel Error = new ErrorViewModel();
                 Error.Title = "Error";
                 Error.Description = "You did not upload any solution ):";
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
-
             try
             {
+                Debug.WriteLine("Went into HTTP Post Details");
                 //We try to extract the source code in a string and pass it to Judge0 API
                 Judge0_SubmissionViewModel submission = new Judge0_SubmissionViewModel();
                 submission.source_code = new StreamReader(file.InputStream).ReadToEnd();
@@ -66,7 +71,9 @@ namespace TechLead.Controllers
                     Error.Description = "Supported languages: C++ (.cpp), C# (.cs), Java (.java), Python (.py), Pascal (.pas)";
                     return View("~/Views/Shared/Error.cshtml", Error);
                 }
+
                 TempData["Judge0_Submission"] = submission;
+
                 return RedirectToAction("Compiling", "Problem");
 
             }
@@ -78,7 +85,7 @@ namespace TechLead.Controllers
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
-        
+
         public ActionResult Compiling()
         {
             try
@@ -93,8 +100,9 @@ namespace TechLead.Controllers
                 Submission submission = CompileAndTest(e, judge0_submission);
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
-                return RedirectToAction("SubmissionDetails", "Problem",submission.SubmissionID);
-                //return View("Index", "Home");
+                Debug.WriteLine("Submission inserted into database");
+
+                return RedirectToAction("SubmissionDetails", "Problem", new { id = submission.SubmissionID });
             }
             catch (Exception e)
             {
@@ -107,189 +115,190 @@ namespace TechLead.Controllers
 
         public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
         {
-            Submission submission = new Submission();
-
-            //First, we have to insert all the necessary data from Exercise and Judge0 view model
-
-            if (Request.IsAuthenticated)
+            try
             {
-                submission.SubmissionAuthorUserName = HttpContext.User.Identity.Name;
-            }
-            else
-            {
-                submission.SubmissionAuthorUserName = "Anonymous";
-            }
-
-            submission.Date = DateTime.Now;
-            submission.ExerciseId = e.Id;
-            submission.Exercise = e.Name;
-            submission.ScoredPoints = 0;
-            submission.NumberOfTestCases = e.NumberOfTests;
-            submission.DistributedPointsPerTestCase = (double)e.Points / e.NumberOfTests;
-            submission.SourceCode = judge0_Submission.source_code;
-            submission.InputCollection = e.InputColection;
-            submission.ExpectedOutput = e.OutputColection;
-            submission.OutputCollection = string.Empty;
-            submission.PointsPerTestCase = string.Empty;
-            submission.ExecutionTimePerTestCase = string.Empty;
-            submission.StatusPerTestCase = string.Empty;
-            submission.ErrorMessage = string.Empty;
-
-            //Now we have to go through each test case, collect data, analyse and
-            //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
-            //ErrorMessage
-            Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
-
-            for(int i=0; i<TestCases.Length; i++)
-            {
-                double Points = 0;
-                int ExecutionTime = 0;
-                string Status = string.Empty;
-                string Error = string.Empty;
-                GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref Status, ref Error,
-                    judge0_Submission);
-
-                //Now we add the results to submission object
-                submission.PointsPerTestCase += Points.ToString();
-                submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
-                submission.StatusPerTestCase += Status;
-                submission.ErrorMessage += Error;
-
-                if (i < TestCases.Length - 1)
+                //Inserting basic data into submission object
+                Submission submission = new Submission();
+                if (Request.IsAuthenticated)
                 {
-                    submission.PointsPerTestCase += data.testCase_Delimitator;
-                    submission.ExecutionTimePerTestCase += data.testCase_Delimitator;
-                    submission.StatusPerTestCase += data.testCase_Delimitator;
-                    submission.ErrorMessage += data.testCase_Delimitator;
+                    submission.SubmissionAuthorUserName = HttpContext.User.Identity.Name;
+                }
+                else
+                {
+                    submission.SubmissionAuthorUserName = "Anonymous";
+                }
+                submission.Date = DateTime.Now;
+                submission.ExerciseId = e.Id;
+                submission.Exercise = e.Name;
+                submission.ScoredPoints = 0;
+                submission.NumberOfTestCases = e.NumberOfTests;
+                submission.DistributedPointsPerTestCase = (double)e.Points / e.NumberOfTests;
+                submission.SourceCode = judge0_Submission.source_code;
+                submission.InputCollection = e.InputColection;
+                submission.ExpectedOutput = e.OutputColection;
+                submission.OutputCollection = string.Empty;
+                submission.PointsPerTestCase = string.Empty;
+                submission.ExecutionTimePerTestCase = string.Empty;
+                submission.StatusPerTestCase = string.Empty;
+                submission.ErrorMessage = string.Empty;
+
+                //Now we have to go through each test case, collect data, analyse and
+                //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
+                //ErrorMessage
+
+                Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
+
+                for (int i = 0; i < TestCases.Length; i++)
+                {
+                    Debug.WriteLine("Test " + i);
+                    double Points = 0;
+                    int ExecutionTime = 0;
+                    string Status = string.Empty;
+                    string Error = string.Empty;
+                    Debug.WriteLine("Going into go through test case");
+                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
+
+                    //Now we add the results to submission object
+                    submission.PointsPerTestCase += Points.ToString();
+                    submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
+                    submission.StatusPerTestCase += Status;
+                    submission.ErrorMessage += Error;
+
+                    if (i < TestCases.Length - 1)
+                    {
+                        submission.PointsPerTestCase += data.testCase_Delimitator;
+                        submission.ExecutionTimePerTestCase += data.testCase_Delimitator;
+                        submission.StatusPerTestCase += data.testCase_Delimitator;
+                        submission.ErrorMessage += data.testCase_Delimitator;
+                    }
+
                 }
 
+                return submission;
             }
-            
-            return submission;
+            catch (Exception ess)
+            {
+                Debug.WriteLine("Error DANGEROUS " + ess);
+                return null;
+            }
         }
 
-        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTime, 
-            ref string Status, ref string Error, Judge0_SubmissionViewModel judge0_Submission)
+        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTime,
+            ref string Status, ref string Error, int langID, string sourceCode)
         {
-            //Function [GetToken()] returns a json (string formatted) having the token.
-            //It will be parsed to json by using JObject.Parse();
-            JObject token = JObject.Parse(GetToken(test,judge0_Submission));
+            try
+            {
 
-            //Function
-            JObject Results = JObject.Parse(GetResults(token.SelectToken("token").ToString()));
-                
+                //Function [GetToken()] returns a json (string formatted) having the token.
+                //It will be parsed to json by using JObject.Parse();
+                string token = GetToken(test, langID, sourceCode).Result;
 
+                if (token == null)
+                {
+                    throw new NotImplementedException();
+                }
+
+                //Function that returns a json (string formatted) containing the result after running the solution
+                JObject result;
+
+                //It takes time for the API to process the data. This do while stays here to make repetitive calls to the API
+                //Checking everytime the response. If the status is different from 'In Queue' or 'Processing', it means
+                //that the code has been compiled and it returned the response having the results we are looking for.
+                do
+                {
+                    result = JObject.Parse(GetResult(token));
+
+                    //Checking out if our submitted solution has been processed
+                    //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
+                    //So it waits 100 miliseconds before sending another get request.
+                    if (result.SelectToken("status.description").ToString() == "In Queue" ||
+                            result.SelectToken("status.description").ToString() == "Processing")
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+
+                } while (result.SelectToken("status.description").ToString() == "In Queue" ||
+                              result.SelectToken("status.description").ToString() == "Processing");
+
+                //Now we have the result in a json format, so we are able to insert necessary data.
+                if (result.SelectToken("time") != null)
+                    ExecutionTime = (int)result.SelectToken("time");
+                Status = (string)result.SelectToken("status.description"); //Accepted or not
+                Error = (string)result.SelectToken("compile_output");
+                Points = (test.Output == (string)result.SelectToken("stdout")) ? 10 : 0;
+            }
+            catch (NotImplementedException)
+            {
+                //This happens when the API has been modified or shut down or whatever.
+                Debug.WriteLine("The token is null");
+            }
         }
 
-        public string GetResults(string token)
+        public string GetResult(string token)
         {
-            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id");
+            string result;
+
+            //building the request and passing the parameters we are looking for.
+            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status");
             request.ContentType = "application/json";
             request.Method = "GET";
 
+            //Sending the request and reading the result
             var httpResponse = (HttpWebResponse)request.GetResponse();
-            string result;
+
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 result = streamReader.ReadToEnd();
             }
-
             return result;
         }
-        public string GetToken(Test test, Judge0_SubmissionViewModel judge0_Submission)
+
+        async Task<string> GetToken(Test test, int langID, string SourceCode)
         {
-            //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
-            //After that, having the token, we make another request to get submission details like execution time and so on.
-            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
-            request.ContentType = "application/json";
-            request.Method = "POST";
-
-            //Building the judge0 submission, which will be sent via request
-            judge0_Submission.stdin = test.Input;
-            judge0_Submission.expected_output = test.Output;
-
-            //Serializing the submission
-            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+            try
             {
-                string json = buildJson(judge0_Submission);
-                streamWriter.Write(json);
-                streamWriter.Flush();
+                //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
+                //After that, having the token, we make another request to get submission details like execution time and so on.
+
+                //Building the judge0 submission, which will be sent via request
+                Judge0JsonModel jsonModel = new Judge0JsonModel();
+                jsonModel.source_code = Base64Encode(SourceCode);
+                jsonModel.stdin = Base64Encode(test.Input);
+                jsonModel.language_id = langID;
+
+                //Sending the request
+                Debug.WriteLine("Sending the request");
+                JObject response;
+
+
+                var json = JsonConvert.SerializeObject(jsonModel);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var url = "https://api.judge0.com/submissions/?base64_encoded=true&wait=false";
+                string res;
+
+                //Sending the request and storing the data being returned
+                using (var client = new HttpClient())
+                {
+                    using (HttpResponseMessage resp = await client.PostAsync(url, data).ConfigureAwait(false))
+                    {
+                        using (HttpContent content = resp.Content)
+                        {
+                            res = await content.ReadAsStringAsync().ConfigureAwait(false);
+                            Debug.WriteLine(res);
+                        }
+                    }
+                }
+
+                response = JObject.Parse(res);
+                return response.SelectToken("token").ToString();
+            }
+            catch (Exception err)
+            {
+                Debug.WriteLine("Error: " + err);
+                return null;
             }
 
-            //Sending the request
-            var httpResponse = (HttpWebResponse)request.GetResponse();
-
-            //Catching the result
-            JObject response;
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                response = JObject.Parse(streamReader.ReadToEnd());
-            }
-            return response.SelectToken("token").ToString();
-        }
-
-        public void ExecuteAndCheck(Judge0_SubmissionViewModel judge0_Submission, ref Submission submission,
-            Exercise E)
-        {
-            int[] Score = new int[10];
-            for(int i=0; i<10; i++)
-            {
-                //if (testImput[i] != null)
-                //{
-                ////The method sends HTTP requests to judge0 API, then, it gets a token as a response.
-                ////After that, having the token, we make another request to get submission details like execution time and so on.
-                //var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/?base64_encoded=true&wait=false");
-                //request.ContentType = "application/json";
-                //request.Method = "POST";
-                //Debug.WriteLine("Going in test >>>");
-
-                //judge0_Submission.stdin = testImput[i];
-                //judge0_Submission.expected_output = testOutput[i];
-                //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-                //{
-                //    string json = buildJson(judge0_Submission);
-                //    Debug.WriteLine(json);
-                //    streamWriter.Write(json);
-                //    streamWriter.Flush();
-                //}
-                //Debug.WriteLine("sending etasamaia");
-                //var httpResponse = (HttpWebResponse)request.GetResponse();
-                //Debug.WriteLine("RASPUNS PRIMIT iobana");
-                //JObject result;
-                //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                //{
-                //    result = JObject.Parse(streamReader.ReadToEnd());
-                //}
-                //Debug.WriteLine(result.SelectToken("token"));
-
-                //    //Now we have the token
-                //    //Next => get submission detalis using the token si asa mai departe
-                //    request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + result.SelectToken("token") + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id");
-                //    request.ContentType = "application/json";
-                //    request.Method = "GET";
-                //    httpResponse = (HttpWebResponse)request.GetResponse();
-                //    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                //    {
-                //        result = JObject.Parse(streamReader.ReadToEnd());
-                //    }
-                //    //Next => from result ( which is the result json) build a submission_judge0 object, then
-                //    //from the submission_judge0 object build submission object and that's all.
-                //    if (result.GetValue("description").ToString()=="Accepted")
-                //    {
-
-                //    }
-                //    Debug.WriteLine(result);
-                //}
-            }
-        }
-
-
-        private static string buildJson(Judge0_SubmissionViewModel judge0)
-        {
-            return "{ \"source_code\" : \"" + Base64Encode(judge0.source_code) + "\", " +
-                "\"language_id\" : \"" + judge0.language_id +"\", " +
-                "\"stdin\" : \""+Base64Encode(judge0.stdin) +"\", " +
-                "\"stdout\" :\""+Base64Encode(judge0.expected_output)+ "\" }";
         }
 
         public static string Base64Encode(string plainText)
@@ -303,15 +312,15 @@ namespace TechLead.Controllers
             switch (Path.GetExtension(fileName))
             {
                 case ".cs":
-                    return 17;
+                    return 51;
                 case ".cpp":
-                    return 15;
+                    return 53;
                 case ".pas":
-                    return 33;
+                    return 67;
                 case ".java":
-                    return 28;
+                    return 62;
                 case ".py":
-                    return 36;
+                    return 71;
                 default: return -1;
             }
         }
@@ -328,7 +337,7 @@ namespace TechLead.Controllers
             try
             {
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
-                SubmissionViewModel submissionViewModel = SubmissionCopyData(S);
+                SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
                 return View(submissionViewModel);
             }
             catch (Exception)
@@ -340,6 +349,7 @@ namespace TechLead.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult Create()
         {
             var viewModel = new ExerciseViewModel
@@ -360,9 +370,9 @@ namespace TechLead.Controllers
                 return View("Create", exerciseViewModel);
             }
             int nrOfTests = 0;
-            for(int i=0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
-                if(exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
                 {
                     nrOfTests++;
                 }
@@ -376,10 +386,80 @@ namespace TechLead.Controllers
 
             //If everything is OK, we copy all the data from ExerciseViewModel to Exercise
 
-            Exercise exercise = ExerciseCopyData(exerciseViewModel);
+            if (Request.IsAuthenticated)
+            {
+                exerciseViewModel.Author = User.Identity.Name;
+            }
+            Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
+            exercise.AuthorID = User.Identity.GetUserId();
             _context.Exercises.Add(exercise);
             _context.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Details", new { id = exercise.Id });
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Update(int ProblemID)
+        {
+            try
+            {
+                Exercise E = _context.Exercises.Single(ex => ex.Id == ProblemID);
+                var userId = User.Identity.GetUserId();
+                if (User.Identity.Name == E.Author)
+                {
+                    ExerciseViewModel EVM = ExerciseFromModelToViewModel(E);
+                    return View(EVM);
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel();
+                    Error.Title = "Error 404";
+                    Error.Description = "Page not found :(";
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            catch (Exception)
+            {
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = "Unfortunately, something happened. The problem has not been modified. Try again.";
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(ExerciseViewModel exerciseViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                return View("Update", exerciseViewModel);
+            }
+
+            int nrOfTests = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                {
+                    nrOfTests++;
+                }
+            }
+
+            if (nrOfTests == 0)
+            {
+                TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
+                exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                return View("Update", exerciseViewModel);
+            }
+
+            //If everything is OK, the exercise will get updated
+
+            Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
+            _context.Entry(exercise).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+            return RedirectToAction("Details", new { id = exercise.Id });
+
         }
 
         public ActionResult Submissions(int? page)
@@ -389,7 +469,7 @@ namespace TechLead.Controllers
             TempData.Keep();
             List<Submission> SubmissionForASpecificExercise = new List<Submission>();
             foreach (Submission S in _context.Submissions)
-                if (S.ExerciseId==ExerciseIdParam)
+                if (S.ExerciseId == ExerciseIdParam)
                 {
                     SubmissionForASpecificExercise.Add(S);
                 }
@@ -397,7 +477,7 @@ namespace TechLead.Controllers
             return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
         }
 
-        private static Exercise ExerciseCopyData(ExerciseViewModel ExerciseViewModel)
+        private Exercise ExerciseFromViewModelToModel(ExerciseViewModel ExerciseViewModel)
         {
             Exercise e = new Exercise();
             e.Id = ExerciseViewModel.Id;
@@ -430,7 +510,7 @@ namespace TechLead.Controllers
             //This is the most safe way and we can be sure 100% that to the database will go only valid data.
             Test[] AuxTests = new Test[10];
             e.NumberOfTests = 0;
-            for(int i=0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 if (ExerciseViewModel.Test[i].Input != null && ExerciseViewModel.Test[i].Input != null)
                 {
@@ -438,14 +518,14 @@ namespace TechLead.Controllers
                     ++e.NumberOfTests;
                 }
             }
-            
-            for(int i=0; i<e.NumberOfTests; i++)
+
+            for (int i = 0; i < e.NumberOfTests; i++)
             {
                 e.InputColection += AuxTests[i].Input;
-                if (i < e.NumberOfTests-1) e.InputColection += data.testCase_Delimitator;
+                if (i < e.NumberOfTests - 1) e.InputColection += data.testCase_Delimitator;
 
                 e.OutputColection += AuxTests[i].Output;
-                if (i < e.NumberOfTests-1) e.OutputColection += data.testCase_Delimitator;
+                if (i < e.NumberOfTests - 1) e.OutputColection += data.testCase_Delimitator;
             }
             Debug.WriteLine(e.InputColection);
             Debug.WriteLine(e.OutputColection);
@@ -454,7 +534,7 @@ namespace TechLead.Controllers
             //it would be accesibile by calling the data.CreateTests and passing the e.InputCollection and e.OutputCollection.
             return e;
         }
-        public static SubmissionViewModel SubmissionCopyData(Submission submission)
+        private SubmissionViewModel SubmissionFromModelToViewModel(Submission submission)
         {
             SubmissionViewModel Svm = new SubmissionViewModel();
             Svm.SubmissionAuthorUserName = submission.SubmissionAuthorUserName;
@@ -478,5 +558,52 @@ namespace TechLead.Controllers
 
             return Svm;
         }
+        public ExerciseViewModel ExerciseFromModelToViewModel(Exercise exercise)
+        {
+            var EVM = new ExerciseViewModel
+            {
+                Difficulty = _context.Difficulty.ToList()
+            };
+            EVM.Id = exercise.Id;
+            EVM.Name = exercise.Name;
+            EVM.Points = exercise.Points;
+            EVM.SubmissionsAbove10Points = exercise.SubmissionsAbove10Points;
+            EVM.SubmissionsUnder10Points = exercise.SubmissionsUnder10Points;
+            EVM.Author = exercise.Author;
+            EVM.DifficultyId = exercise.DifficultyId;
+            EVM.Condition = exercise.Condition;
+            EVM.InputFormat = exercise.InputFormat;
+            EVM.OutputFormat = exercise.OutputFormat;
+            EVM.Constraints = exercise.Constraints;
+            EVM.Input1 = exercise.Input1;
+            EVM.Input2 = exercise.Input2;
+            EVM.Input3 = exercise.Input3;
+            EVM.Input4 = exercise.Input4;
+            EVM.Input5 = exercise.Input5;
+            EVM.Output1 = exercise.Output1;
+            EVM.Output2 = exercise.Output2;
+            EVM.Output3 = exercise.Output3;
+            EVM.Output4 = exercise.Output4;
+            EVM.Output5 = exercise.Output5;
+            EVM.Explanation1 = exercise.Explanation1;
+            EVM.Explanation2 = exercise.Explanation2;
+            EVM.Explanation3 = exercise.Explanation3;
+            EVM.Explanation4 = exercise.Explanation4;
+            EVM.Explanation5 = exercise.Explanation5;
+            EVM.Test = new Test[10];
+            Test[] aux = data.CreateTests(exercise.InputColection, exercise.OutputColection);
+            
+            for(int i=0; i<aux.Length; i++)
+            {
+                EVM.Test[i] = aux[i];
+            }
+
+            return EVM;
+        }
+        public ActionResult RenderError(ErrorViewModel Err)
+        {
+            return View("~/Views/Shared/Error.cshtml", Err);
+        }
     }
+
 }

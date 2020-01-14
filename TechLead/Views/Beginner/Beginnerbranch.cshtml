@@ -1,7 +1,8 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
 @using TechLead.Models;
-@model IPagedList<TechLead.Models.Exercise>
+@using Microsoft.AspNet.Identity;
+@model IPagedList<TechLead.Models.DisplayExerciseGeneralInfoViewModel>
 
 @{
     ViewBag.Title = "Beginner";
@@ -17,15 +18,28 @@
         <br />
         <br />
         <ul>
-            @foreach (Exercise E in Model)
+            @foreach (DisplayExerciseGeneralInfoViewModel E in Model)
             {
+                //Display the problem 'In a different way' if the problem was created by the current user
                 <li>
-                    <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
-                        <div class="ProblemToDisplay">
-                            @E.Name
-                            <span class="PointsToDisplay">@E.Points</span>
-                        </div>
-                    </a>
+                    @if (User.Identity.GetUserId() == E.AuthorID)
+                    {
+                        <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
+                            <div class="ProblemToDisplayr">
+                                @E.Name
+                                <span class="PointsToDisplay">@E.Points</span>
+                            </div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
+                            <div class="ProblemToDisplay">
+                                @E.Name
+                                <span class="PointsToDisplay">@E.Points</span>
+                            </div>
+                        </a>
+                    }
                 </li>
             }
         </ul>

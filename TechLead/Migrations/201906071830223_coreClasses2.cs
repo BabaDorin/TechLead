@@ -3,7 +3,7 @@ namespace TechLead.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class coreClasses2 : DbMigration
+    public partial class CoreClasses2 : DbMigration
     {
         public override void Up()
         {
