@@ -465,6 +465,26 @@ namespace TechLead.Controllers
 
         }
 
+        [HttpGet]
+        public ActionResult Delete(int ProblemID)
+        {
+            //Redirect the user to another page like => Do you really want to delete this problem?
+            // Yes (Submit type button) and back
+            return View();
+        }
+
+       [HttpPost]
+       public ActionResult Delete()
+        {
+            //Make another table called 'ExerciseTrashCan' which will contain the same info
+            //as the Exercise table. Here will be stored all the problems. Submissions for those specific
+            //will remain in database.
+            //The user will have 2 options - Do delete the problems permamently from the trash can, or 
+            //to restore them. 
+            //The trash can will be accesible from the view profile page.
+            return View();
+        }
+
         public ActionResult Submissions(int? page)
         {
             Exercise e = TempData["Object"] as Exercise;
