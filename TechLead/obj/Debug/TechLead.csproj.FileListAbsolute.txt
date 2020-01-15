@@ -1259,3 +1259,4 @@ C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrat
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.ClearAspNetRoles_Table.resources
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.Add_UserRole_PropertyToApplicationUser.resources
 C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.sincron.resources
+C:\Users\Baba Dorin\Desktop\TechLead\techlead\TechLead\obj\Debug\TechLead.Migrations.AddProblemTrashCan.resources

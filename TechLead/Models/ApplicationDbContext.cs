@@ -8,6 +8,7 @@ namespace TechLead.Models
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Difficulty> Difficulty { get; set; }
         public DbSet<Submission> Submissions { get; set; }
+        public DbSet<ProblemTrashCan> ProblemsTrashCan { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
