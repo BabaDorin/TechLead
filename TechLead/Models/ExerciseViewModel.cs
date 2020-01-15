@@ -17,6 +17,9 @@ namespace TechLead.Models
     {
         public int Id { get; set; }
 
+        //If true, it will be deleted, 'kinda'. Only it's creator will be able to see it.
+        public bool isArchieved { get; set; }
+
         [Required(ErrorMessage = "Please, enter a Name for this exercise")]
         public string Name { get; set; }
 

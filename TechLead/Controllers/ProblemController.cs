@@ -439,7 +439,8 @@ namespace TechLead.Controllers
                 exerciseViewModel.Difficulty = _context.Difficulty.ToList();
                 return View("Update", exerciseViewModel);
             }
-
+            
+            //There must be at least one Back-End test case
             int nrOfTests = 0;
             for (int i = 0; i < 10; i++)
             {
@@ -466,15 +467,37 @@ namespace TechLead.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delete(int ProblemID)
+        [Authorize]
+        public ActionResult Delete(int ProblemID, string returnUrl)
         {
             //Redirect the user to another page like => Do you really want to delete this problem?
             // Yes (Submit type button) and back
-            return View();
+
+            //An extra safety mesure
+            Exercise E = _context.Exercises.Single(x => x.Id == ProblemID);
+            if ((User.Identity.IsAuthenticated && User.Identity.GetUserId() == E.AuthorID) || User.IsInRole("Administrator"))
+            {
+                DeleteProblemViewModel deleteProblemViewModel = new DeleteProblemViewModel
+                {
+                    Id = E.Id,
+                    Name = E.Name
+                };
+                TempData["returnUrl"] = returnUrl;
+                return View(deleteProblemViewModel);
+            }
+
+            //If went gone so far, something is wrong
+            ErrorViewModel error = new ErrorViewModel
+            {
+                Title = "Error",
+                Description = "How do you even get here?"
+            };
+            return View("~/Views/Shared/Error.cshtml", error);
         }
 
        [HttpPost]
-       public ActionResult Delete()
+       [Authorize]
+       public ActionResult Delete(DeleteProblemViewModel deleteProblemViewModel)
         {
             //Make another table called 'ExerciseTrashCan' which will contain the same info
             //as the Exercise table. Here will be stored all the problems. Submissions for those specific
@@ -482,7 +505,16 @@ namespace TechLead.Controllers
             //The user will have 2 options - Do delete the problems permamently from the trash can, or 
             //to restore them. 
             //The trash can will be accesible from the view profile page.
-            return View();
+
+            Exercise E = _context.Exercises.Single(e => e.Id == deleteProblemViewModel.Id);
+
+            ////First, it is inserted into ProblemsTrashCan table
+            //_context.ProblemsTrashCan.Add(E as ProblemTrashCan);
+            _context.Exercises.Remove(E);
+            string returnUrl = TempData["returnUrl"].ToString();
+
+            ViewBag.Info = "The problem has been moved to trash can.";
+            return View(returnUrl);
         }
 
         public ActionResult Submissions(int? page)

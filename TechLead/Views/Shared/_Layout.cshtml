@@ -49,7 +49,7 @@
                 </div>
                 <div class="modal-body">
                     @*
-                    Render partial Register view here.    
+                        Render partial Register view here.
                     *@
                 </div>
                 <div class="modal-footer"></div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="modal-body">
                     @*
-                    Render partial Login view here.    
+                        Render partial Login view here.
                     *@
                 </div>
                 <div class="modal-footer"></div>
@@ -87,5 +87,11 @@
 </html>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    
+    @if (!string.IsNullOrEmpty(ViewBag.Info))
+    {
+        <script type="text/javascript">
+            alert(@ViewBag.Info)
+        </script>
+    }
 }
-

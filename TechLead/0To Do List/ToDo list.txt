@@ -10,6 +10,18 @@
 
 3) 404 page
 
+idk)
+
+
+            //Exercise will have another property, called archieved (Bool).
+            //True => Problem is 'deleted'
+            //ApplicationUser will have 3 more properties: 1) SubmissionsCollection, which will contain 
+            //the ids of his submissions delimited by data.delimitator.
+            //In the same way, the id's of the created problems will be stored.
+            //The third property will contain the ids of the problems that were created
+            //by him and deleted. Only he will be able to see those problem!
+
+
 
 
 4) Count total poins gained per submission.
