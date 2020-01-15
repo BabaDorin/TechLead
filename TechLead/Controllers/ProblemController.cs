@@ -536,6 +536,7 @@ namespace TechLead.Controllers
         {
             Exercise e = new Exercise();
             e.Id = ExerciseViewModel.Id;
+            e.isArchieved = ExerciseViewModel.isArchieved;
             e.Author = ExerciseViewModel.Author;
             e.AuthorID = ExerciseViewModel.AuthorID;
             e.Name = ExerciseViewModel.Name;
@@ -621,6 +622,7 @@ namespace TechLead.Controllers
                 Difficulty = _context.Difficulty.ToList()
             };
             EVM.Id = exercise.Id;
+            EVM.isArchieved = exercise.isArchieved;
             EVM.Name = exercise.Name;
             EVM.Points = exercise.Points;
             EVM.SubmissionsAbove10Points = exercise.SubmissionsAbove10Points;

@@ -21,18 +21,22 @@ namespace TechLead.Controllers
                 List<DisplayExerciseGeneralInfoViewModel> BeginnerExercises = new List<DisplayExerciseGeneralInfoViewModel>();
                 foreach (Exercise e in _context.Exercises)
                 {
-                    if (e.DifficultyId == 4)
+                    //If it's archieved, then it's skiped.
+                    if (!e.isArchieved)
                     {
-                        DisplayExerciseGeneralInfoViewModel displayExerciseGeneralInfoViewModel = new DisplayExerciseGeneralInfoViewModel
+                        if (e.DifficultyId == 4)
                         {
-                            Id = e.Id,
-                            Name = e.Name,
-                            Points = e.Points,
-                            DifficultyID = e.DifficultyId,
-                            Author = e.Author,
-                            AuthorID = e.AuthorID
-                        };
-                        BeginnerExercises.Add(displayExerciseGeneralInfoViewModel);
+                            DisplayExerciseGeneralInfoViewModel displayExerciseGeneralInfoViewModel = new DisplayExerciseGeneralInfoViewModel
+                            {
+                                Id = e.Id,
+                                Name = e.Name,
+                                Points = e.Points,
+                                DifficultyID = e.DifficultyId,
+                                Author = e.Author,
+                                AuthorID = e.AuthorID
+                            };
+                            BeginnerExercises.Add(displayExerciseGeneralInfoViewModel);
+                        }
                     }
                 }
                 return View(BeginnerExercises.ToPagedList(page ?? 1, 20));

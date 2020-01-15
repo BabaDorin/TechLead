@@ -20,9 +20,12 @@ namespace TechLead.Controllers
                 List<Exercise> IntermediateExercises = new List<Exercise>();
                 foreach (Exercise e in _context.Exercises)
                 {
-                    if (e.DifficultyId == 5)
+                    if (!e.isArchieved)
                     {
-                        IntermediateExercises.Add(e);
+                        if (e.DifficultyId == 5)
+                        {
+                            IntermediateExercises.Add(e);
+                        }
                     }
                 }
                 return View(IntermediateExercises.ToPagedList(page ?? 1, 20));
