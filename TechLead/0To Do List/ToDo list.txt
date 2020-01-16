@@ -1,8 +1,23 @@
-﻿1) -------- Make at least one test case mandatory into create problem view. 
+﻿Last things DONE:
+1) 1.16.2019: Delete function has been implemented. 
+
+
+
+
+
+
+	TO DO IMMEDIATELY
+>>>> Design "Delete", "Problem" view.
+
+
+-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+	TO DO
+1) -------- Make at least one test case mandatory into create problem view. 
 
 2.a.01) ----- Implement the roles sistem. (Administrator etc etc etc);
 
-2) Enable edit problem only for the administrators and problem creator.
+2) -------- Enable edit problem only for the administrators and problem creator.
 
 8) Calculate the amount of points for each test case, depending on the number of tests and the total points number.
 
@@ -12,7 +27,7 @@
 
 idk)
 
-
+----- DONE
             //Exercise will have another property, called archieved (Bool).
             //True => Problem is 'deleted'
             //ApplicationUser will have 3 more properties: 1) SubmissionsCollection, which will contain 
@@ -20,7 +35,7 @@ idk)
             //In the same way, the id's of the created problems will be stored.
             //The third property will contain the ids of the problems that were created
             //by him and deleted. Only he will be able to see those problem!
-
+----- DONE
 
 
 
