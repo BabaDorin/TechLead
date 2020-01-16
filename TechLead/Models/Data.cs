@@ -14,7 +14,7 @@ namespace TechLead.Models
 {
     public class Data
     {
-        //Here will be stored various data and constants.
+        //Here will be stored various data like constants, some methods etc.
         public string testCase_Delimitator = ";-;techleadDelimitator;-;-;x;x;x;x;x;x;x;TL'";
         public Test[] CreateTests(string inputCollection, string outputCollection)
         {
@@ -45,6 +45,12 @@ namespace TechLead.Models
             }
             Debug.WriteLine("Going to return array of test cases");
             return tests;
+        }
+
+        public string Base64Encode(string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
         }
     }
 }

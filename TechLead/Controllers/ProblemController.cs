@@ -47,6 +47,7 @@ namespace TechLead.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Details(HttpPostedFileBase file)
         {
             if (file == null)
@@ -58,11 +59,11 @@ namespace TechLead.Controllers
             }
             try
             {
-                Debug.WriteLine("Went into HTTP Post Details");
                 //We try to extract the source code in a string and pass it to Judge0 API
                 Judge0_SubmissionViewModel submission = new Judge0_SubmissionViewModel();
                 submission.source_code = new StreamReader(file.InputStream).ReadToEnd();
                 submission.language_id = LanguageId(file.FileName);
+
                 if (submission.language_id == -1)
                 {
                     //Unsupported language
@@ -100,7 +101,6 @@ namespace TechLead.Controllers
                 Submission submission = CompileAndTest(e, judge0_submission);
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
-                Debug.WriteLine("Submission inserted into database");
 
                 return RedirectToAction("SubmissionDetails", "Problem", new { id = submission.SubmissionID });
             }
@@ -145,7 +145,6 @@ namespace TechLead.Controllers
                 //Now we have to go through each test case, collect data, analyse and
                 //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
                 //ErrorMessage
-
                 Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
 
                 for (int i = 0; i < TestCases.Length; i++)
@@ -178,8 +177,8 @@ namespace TechLead.Controllers
             }
             catch (Exception ess)
             {
-                Debug.WriteLine("Error DANGEROUS " + ess);
-                return null;
+                Debug.WriteLine("Exception in Compile and Test => [Maybe it's from API] => " + ess);
+                throw ess;
             }
         }
 
@@ -188,11 +187,9 @@ namespace TechLead.Controllers
         {
             try
             {
-
                 //Function [GetToken()] returns a json (string formatted) having the token.
                 //It will be parsed to json by using JObject.Parse();
                 string token = GetToken(test, langID, sourceCode).Result;
-
                 if (token == null)
                 {
                     throw new NotImplementedException();
@@ -230,27 +227,41 @@ namespace TechLead.Controllers
             catch (NotImplementedException)
             {
                 //This happens when the API has been modified or shut down or whatever.
-                Debug.WriteLine("The token is null");
+                Debug.WriteLine("Exception in GoThroughTestCase => The token is null");
+                throw new Exception();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("Exception in GoThroughTestCase => " + e);
+                throw e;
             }
         }
 
         public string GetResult(string token)
         {
-            string result;
-
-            //building the request and passing the parameters we are looking for.
-            var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status");
-            request.ContentType = "application/json";
-            request.Method = "GET";
-
-            //Sending the request and reading the result
-            var httpResponse = (HttpWebResponse)request.GetResponse();
-
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            try
             {
-                result = streamReader.ReadToEnd();
+                string result;
+
+                //building the request and passing the parameters we are looking for.
+                var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status");
+                request.ContentType = "application/json";
+                request.Method = "GET";
+
+                //Sending the request and reading the result
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    result = streamReader.ReadToEnd();
+                }
+                return result;
             }
-            return result;
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetResult => " + e);
+                throw e;
+            }
         }
 
         async Task<string> GetToken(Test test, int langID, string SourceCode)
@@ -262,25 +273,23 @@ namespace TechLead.Controllers
 
                 //Building the judge0 submission, which will be sent via request
                 Judge0JsonModel jsonModel = new Judge0JsonModel();
-                jsonModel.source_code = Base64Encode(SourceCode);
-                jsonModel.stdin = Base64Encode(test.Input);
+                jsonModel.source_code =  data.Base64Encode(SourceCode);
+                jsonModel.stdin = data.Base64Encode(test.Input);
                 jsonModel.language_id = langID;
 
                 //Sending the request
                 Debug.WriteLine("Sending the request");
                 JObject response;
-
-
+                
                 var json = JsonConvert.SerializeObject(jsonModel);
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-
+                var dataToSend = new StringContent(json, Encoding.UTF8, "application/json");
                 var url = "https://api.judge0.com/submissions/?base64_encoded=true&wait=false";
                 string res;
 
                 //Sending the request and storing the data being returned
                 using (var client = new HttpClient())
                 {
-                    using (HttpResponseMessage resp = await client.PostAsync(url, data).ConfigureAwait(false))
+                    using (HttpResponseMessage resp = await client.PostAsync(url, dataToSend).ConfigureAwait(false))
                     {
                         using (HttpContent content = resp.Content)
                         {
@@ -293,44 +302,45 @@ namespace TechLead.Controllers
                 response = JObject.Parse(res);
                 return response.SelectToken("token").ToString();
             }
-            catch (Exception err)
+            catch (Exception e)
             {
-                Debug.WriteLine("Error: " + err);
+                Debug.WriteLine("Exception in GetToken => " + e);
                 return null;
             }
-
-        }
-
-        public static string Base64Encode(string plainText)
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
         }
 
         public int LanguageId(string fileName)
         {
-            switch (Path.GetExtension(fileName))
+            try
             {
-                case ".cs":
-                    return 51;
-                case ".cpp":
-                    return 53;
-                case ".pas":
-                    return 67;
-                case ".java":
-                    return 62;
-                case ".py":
-                    return 71;
-                default: return -1;
+                switch (Path.GetExtension(fileName))
+                {
+                    case ".cs":
+                        return 51;
+                    case ".cpp":
+                        return 53;
+                    case ".pas":
+                        return 67;
+                    case ".java":
+                        return 62;
+                    case ".py":
+                        return 71;
+                    default: return -1;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exeption in LanguageId => " + e);
+                throw e;
             }
         }
 
-        public ActionResult Results()
-        {
-            List<int> ScoredPoints = TempData["Score"] as List<int>;
-            TempData.Keep();
-            return View(ScoredPoints);
-        }
+        //public ActionResult Results()
+        //{
+        //    List<int> ScoredPoints = TempData["Score"] as List<int>;
+        //    TempData.Keep();
+        //    return View(ScoredPoints);
+        //}
 
         public ActionResult SubmissionDetails(int id)
         {
@@ -350,51 +360,77 @@ namespace TechLead.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
-            var viewModel = new ExerciseViewModel
+            try
             {
-                Difficulty = _context.Difficulty.ToList()
-            };
-            viewModel.Test = new Test[10];
-            return View(viewModel);
+                var viewModel = new ExerciseViewModel
+                {
+                    Difficulty = _context.Difficulty.ToList()
+                };
+                viewModel.Test = new Test[10];
+                return View(viewModel);
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = e.ToString()
+                };
+                return View("~/Views/Shared/Error.cshtml", error);
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(ExerciseViewModel exerciseViewModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                exerciseViewModel.Difficulty = _context.Difficulty.ToList();
-                return View("Create", exerciseViewModel);
-            }
-            int nrOfTests = 0;
-            for (int i = 0; i < 10; i++)
-            {
-                if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                if (!ModelState.IsValid)
                 {
-                    nrOfTests++;
+                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                    return View("Create", exerciseViewModel);
                 }
-            }
-            if (nrOfTests == 0)
-            {
-                TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
-                exerciseViewModel.Difficulty = _context.Difficulty.ToList();
-                return View("Create", exerciseViewModel);
-            }
+                int nrOfTests = 0;
+                for (int i = 0; i < 10; i++)
+                {
+                    if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                    {
+                        nrOfTests++;
+                    }
+                }
+                if (nrOfTests == 0)
+                {
+                    TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
+                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                    return View("Create", exerciseViewModel);
+                }
 
-            //If everything is OK, we copy all the data from ExerciseViewModel to Exercise
+                //If everything is OK, we copy all the data from ExerciseViewModel to Exercise
 
-            if (Request.IsAuthenticated)
-            {
-                exerciseViewModel.Author = User.Identity.Name;
+                if (Request.IsAuthenticated)
+                {
+                    exerciseViewModel.Author = User.Identity.Name;
+                }
+                Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
+                exercise.AuthorID = User.Identity.GetUserId();
+                _context.Exercises.Add(exercise);
+                _context.SaveChanges();
+                return RedirectToAction("Details", new { id = exercise.Id });
             }
-            Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
-            exercise.AuthorID = User.Identity.GetUserId();
-            _context.Exercises.Add(exercise);
-            _context.SaveChanges();
-            return RedirectToAction("Details", new { id = exercise.Id });
+            catch (Exception e)
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "Something happened. The problem was not saved.\n Details: " + e.ToString()
+                };
+                return View("~/Views/Shared/Error.csthml", error);
+            }
         }
 
         [HttpGet]
@@ -432,38 +468,50 @@ namespace TechLead.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Update(ExerciseViewModel exerciseViewModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                exerciseViewModel.Difficulty = _context.Difficulty.ToList();
-                return View("Update", exerciseViewModel);
-            }
-            
-            //There must be at least one Back-End test case
-            int nrOfTests = 0;
-            for (int i = 0; i < 10; i++)
-            {
-                if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                if (!ModelState.IsValid)
                 {
-                    nrOfTests++;
+                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                    return View("Update", exerciseViewModel);
                 }
-            }
 
-            if (nrOfTests == 0)
+                //There must be at least one Back-End test case
+                int nrOfTests = 0;
+                for (int i = 0; i < 10; i++)
+                {
+                    if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                    {
+                        nrOfTests++;
+                    }
+                }
+
+                if (nrOfTests == 0)
+                {
+                    TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
+                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                    return View("Update", exerciseViewModel);
+                }
+
+                //If everything is OK, the exercise will get updated
+
+                Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
+                _context.Entry(exercise).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Details", new { id = exercise.Id });
+            }
+            catch (Exception e)
             {
-                TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
-                exerciseViewModel.Difficulty = _context.Difficulty.ToList();
-                return View("Update", exerciseViewModel);
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "Your problem has not been modified. \nDetails: " + e.ToString()
+                };
+                return View("~/Views/Shared/Error.cshtml", error);
             }
-
-            //If everything is OK, the exercise will get updated
-
-            Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
-            _context.Entry(exercise).State = System.Data.Entity.EntityState.Modified;
-            _context.SaveChanges();
-            return RedirectToAction("Details", new { id = exercise.Id });
-
         }
 
         [HttpGet]
