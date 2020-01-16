@@ -309,13 +309,20 @@
     <Compile Include="Migrations\202001152105537_AddProblemTrashCan.Designer.cs">
       <DependentUpon>202001152105537_AddProblemTrashCan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001161818505_CheckIfItsOK.cs" />
+    <Compile Include="Migrations\202001161818505_CheckIfItsOK.Designer.cs">
+      <DependentUpon>202001161818505_CheckIfItsOK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001161820444_DropTable_ProblemTrashCan.cs" />
+    <Compile Include="Migrations\202001161820444_DropTable_ProblemTrashCan.Designer.cs">
+      <DependentUpon>202001161820444_DropTable_ProblemTrashCan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\DeleteProblemViewModel.cs" />
     <Compile Include="Models\DisplayExerciseViewModel.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
-    <Compile Include="Models\ProblemTrashCan.cs" />
     <Compile Include="Models\SubmissionViewModel.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\Compiler.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\CPPCompiler.cs" />
@@ -868,6 +875,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001152105537_AddProblemTrashCan.resx">
       <DependentUpon>202001152105537_AddProblemTrashCan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001161818505_CheckIfItsOK.resx">
+      <DependentUpon>202001161818505_CheckIfItsOK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001161820444_DropTable_ProblemTrashCan.resx">
+      <DependentUpon>202001161820444_DropTable_ProblemTrashCan.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
