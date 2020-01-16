@@ -516,13 +516,13 @@ namespace TechLead.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult Delete(int ProblemID, string returnUrl)
+        public ActionResult Delete(int ProblemID)
         {
             //Redirect the user to another page like => Do you really want to delete this problem?
             // Yes (Submit type button) and back
 
             //An extra safety mesure
-            Exercise E = _context.Exercises.Single(x => x.Id == ProblemID);
+            Exercise E = _context.Exercises.Single(e => e.Id == ProblemID);
             if ((User.Identity.IsAuthenticated && User.Identity.GetUserId() == E.AuthorID) || User.IsInRole("Administrator"))
             {
                 DeleteProblemViewModel deleteProblemViewModel = new DeleteProblemViewModel
@@ -530,11 +530,10 @@ namespace TechLead.Controllers
                     Id = E.Id,
                     Name = E.Name
                 };
-                TempData["returnUrl"] = returnUrl;
                 return View(deleteProblemViewModel);
             }
 
-            //If went gone so far, something is wrong
+            //If gone so far, something is wrong
             ErrorViewModel error = new ErrorViewModel
             {
                 Title = "Error",
@@ -544,7 +543,6 @@ namespace TechLead.Controllers
         }
 
        [HttpPost]
-       [Authorize]
        public ActionResult Delete(DeleteProblemViewModel deleteProblemViewModel)
         {
             //Make another table called 'ExerciseTrashCan' which will contain the same info
@@ -559,10 +557,10 @@ namespace TechLead.Controllers
             ////First, it is inserted into ProblemsTrashCan table
             //_context.ProblemsTrashCan.Add(E as ProblemTrashCan);
             _context.Exercises.Remove(E);
-            string returnUrl = TempData["returnUrl"].ToString();
+            _context.SaveChanges();
 
             ViewBag.Info = "The problem has been moved to trash can.";
-            return View(returnUrl);
+            return View("~/Views/Home/Index.cshtml");
         }
 
         public ActionResult Submissions(int? page)

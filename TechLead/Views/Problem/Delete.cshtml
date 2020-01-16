@@ -1,8 +1,30 @@
-﻿
+﻿@model TechLead.Models.DeleteProblemViewModel
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<div class="Container">
+    <div class="Box">
+        @using (Html.BeginForm("Delete", "Problem", FormMethod.Post, new { id = "submitForm" }))
+        {
+            @Html.AntiForgeryToken();
+            @Html.HiddenFor(model => model.Id);
+            @Html.HiddenFor(model => model.Name);
+            <div style="text-align:center">
+                <h2>Are you sure you want to delete this problem?</h2>
+                <p style="text-align:center">@Model.Name | ID @Model.Id </p>
+                <button type="submit">Yes, I am sure</button>
+                @if (Request.UrlReferrer != null)
+                {
+                    <button onclick="history.go(-1); return false;" href="#">No, go back</button><br />
+                }
+                else
+                {
+                    <botton onclick="~/Views/Home/Index.cshtml">No, go back</botton>
+                }
+            </div>
+        }
+    </div>
+</div>
 
