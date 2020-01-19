@@ -317,6 +317,10 @@
     <Compile Include="Migrations\202001161820444_DropTable_ProblemTrashCan.Designer.cs">
       <DependentUpon>202001161820444_DropTable_ProblemTrashCan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001191720376_SetAdmin.cs" />
+    <Compile Include="Migrations\202001191720376_SetAdmin.Designer.cs">
+      <DependentUpon>202001191720376_SetAdmin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\DeleteProblemViewModel.cs" />
@@ -881,6 +885,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001161820444_DropTable_ProblemTrashCan.resx">
       <DependentUpon>202001161820444_DropTable_ProblemTrashCan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001191720376_SetAdmin.resx">
+      <DependentUpon>202001191720376_SetAdmin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

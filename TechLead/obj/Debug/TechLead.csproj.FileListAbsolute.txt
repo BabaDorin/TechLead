@@ -1578,3 +1578,4 @@ C:\Users\Baba Dorin\Desktop\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.D
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddProblemTrashCan.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.CheckIfItsOK.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.DropTable_ProblemTrashCan.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.SetAdmin.resources
