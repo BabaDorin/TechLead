@@ -7,13 +7,13 @@ namespace TechLead.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class SetAdmin : IMigrationMetadata
+    public sealed partial class Adding_MakeSourceCodePublic : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SetAdmin));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Adding_MakeSourceCodePublic));
         
         string IMigrationMetadata.Id
         {
-            get { return "202001191720376_SetAdmin"; }
+            get { return "202001212218566_Adding_MakeSourceCodePublic"; }
         }
         
         string IMigrationMetadata.Source

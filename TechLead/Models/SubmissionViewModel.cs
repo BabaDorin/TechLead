@@ -29,6 +29,7 @@ namespace TechLead.Models
         public double DistributedPointsPerTestCase { get; set; }
 
         public string SourceCode { get; set; }
+        public bool MakeSourceCodePublic { get; set; }
 
         //All the inputs for a specific exercise delimited by the techlead delimitator
         public string[] Inputs { get; set; }

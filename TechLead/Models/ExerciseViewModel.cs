@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
@@ -33,7 +34,11 @@ namespace TechLead.Models
 
         public string Author { get; set; }
 
+        [DisplayName("Make your source code public?")]
+        public bool MakeSourceCodePublic { get; set; }
+
         public string AuthorID { get; set; }
+
         [Required(ErrorMessage = "Please, check a difficulty level for the problem")]
         public int DifficultyId { get; set; }
 

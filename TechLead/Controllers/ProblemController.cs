@@ -33,9 +33,11 @@ namespace TechLead.Controllers
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
-                TempData["Object"] = e;
+                ExerciseViewModel EVM = ExerciseFromModelToViewModel(e);
+                EVM.MakeSourceCodePublic = true;
+                TempData["Object"] = e; 
 
-                return View(e);
+                return View(EVM);
             }
             catch (Exception)
             {
@@ -48,7 +50,7 @@ namespace TechLead.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Details(HttpPostedFileBase file)
+        public ActionResult Details(HttpPostedFileBase file, ExerciseViewModel EVM)
         {
             if (file == null)
             {
@@ -59,6 +61,7 @@ namespace TechLead.Controllers
             }
             try
             {
+                Debug.WriteLine("EVM HERE! " + EVM.MakeSourceCodePublic);
                 //We try to extract the source code in a string and pass it to Judge0 API
                 Judge0_SubmissionViewModel submission = new Judge0_SubmissionViewModel();
                 submission.source_code = new StreamReader(file.InputStream).ReadToEnd();
@@ -75,7 +78,7 @@ namespace TechLead.Controllers
 
                 TempData["Judge0_Submission"] = submission;
 
-                return RedirectToAction("Compiling", "Problem");
+                return RedirectToAction("Compiling", "Problem", new { EVM.MakeSourceCodePublic });
 
             }
             catch (Exception e)
@@ -87,7 +90,7 @@ namespace TechLead.Controllers
             }
         }
 
-        public ActionResult Compiling()
+        public ActionResult Compiling(bool MakeSourceCodePublic)
         {
             try
             {
@@ -99,6 +102,7 @@ namespace TechLead.Controllers
                 //After that, based on the submission object submissionViewModel is created and passed to the view
                 //so the user will see his results.
                 Submission submission = CompileAndTest(e, judge0_submission);
+                submission.MakeSourceCodePublic = MakeSourceCodePublic;
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
 
@@ -158,6 +162,10 @@ namespace TechLead.Controllers
                     GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
 
                     //Now we add the results to submission object
+
+                    //Check if Point == 1 it means that the solutition returned the corect answer, so the points are given
+                    //Otherwise, Point == 0 => Something is wrong with the solution submitted.
+                    submission.PointsPerTestCase += (Points == 1) ? submission.DistributedPointsPerTestCase.ToString() : "0";
                     submission.PointsPerTestCase += Points.ToString();
                     submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
                     submission.StatusPerTestCase += Status;
@@ -222,7 +230,7 @@ namespace TechLead.Controllers
                     ExecutionTime = (int)result.SelectToken("time");
                 Status = (string)result.SelectToken("status.description"); //Accepted or not
                 Error = (string)result.SelectToken("compile_output");
-                Points = (test.Output == (string)result.SelectToken("stdout")) ? 10 : 0;
+                Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
             }
             catch (NotImplementedException)
             {
@@ -646,7 +654,7 @@ namespace TechLead.Controllers
             Svm.ExerciseId = submission.ExerciseId;
             Svm.Exercise = submission.Exercise;
             Svm.ScoredPoints = submission.ScoredPoints;
-            Svm.NumberOfTestCases = submission.NumberOfTestCases;
+            //Svm.NumberOfTestCases = submission.NumberOfTestCases;
             Svm.DistributedPointsPerTestCase = submission.DistributedPointsPerTestCase;
             Svm.SourceCode = submission.SourceCode;
             Svm.Inputs = submission.InputCollection.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
@@ -658,7 +666,8 @@ namespace TechLead.Controllers
                 x => int.Parse(x));
             Svm.Status = submission.StatusPerTestCase.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
             Svm.ErrorMessage = submission.ErrorMessage.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
-
+            Svm.NumberOfTestCases = Svm.Points.Length;
+            Svm.MakeSourceCodePublic = submission.MakeSourceCodePublic;
             return Svm;
         }
         public ExerciseViewModel ExerciseFromModelToViewModel(Exercise exercise)

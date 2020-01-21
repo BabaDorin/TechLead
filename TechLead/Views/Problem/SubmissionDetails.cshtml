@@ -11,7 +11,10 @@
 
     <div class="TitleBox">
         <h2>Submission ID @Model.SubmissionID</h2>
-        <button type="button" class="btn btn-info btn-lg" data-target="#SourceCode" data-toggle="modal">See the code</button>
+        @if (Model.MakeSourceCodePublic)
+        {
+            <button type="button" class="btn btn-info btn-lg" data-target="#SourceCode" data-toggle="modal">See the code</button>
+        }
     </div>
 
     <div class="Box">

@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity;
-@model TechLead.Models.Exercise
+@model TechLead.Models.ExerciseViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -29,7 +29,7 @@
         {
             <p>
                 @Html.ActionLink("Update", "Update", "Problem", new { @ProblemID = Model.Id }, null)
-                   
+
                 @Html.ActionLink("Delete", "Delete", "Problem", new { @ProblemID = Model.Id }, null)
             </p>
         }
@@ -178,6 +178,10 @@
 
                 <input type="file" name="file" id="real-imput" />
                 <br />
+                    @Html.CheckBoxFor(m=>m.MakeSourceCodePublic)
+                    @Html.LabelFor(m => m.MakeSourceCodePublic)
+                    @*@Html.DisplayTextFor(m => m.MakeSourceCodePublic)*@
+                <br />  
                 <input type="submit" value="Submit" />
             </div>
 
