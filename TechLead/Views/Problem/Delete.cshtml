@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="Container">
+<div class="Content">
     <div class="Box">
         @using (Html.BeginForm("Delete", "Problem", FormMethod.Post, new { id = "submitForm" }))
         {
@@ -24,6 +24,7 @@
                     <botton onclick="~/Views/Home/Index.cshtml">No, go back</botton>
                 }
             </div>
+            <br />
         }
     </div>
 </div>

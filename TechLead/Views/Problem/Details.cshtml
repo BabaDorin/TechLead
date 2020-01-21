@@ -33,6 +33,7 @@
                 @Html.ActionLink("Delete", "Delete", "Problem", new { @ProblemID = Model.Id }, null)
             </p>
         }
+        <p>Author: @Model.Author</p>
     </div>
     @using (Html.BeginForm("Details", "Problem", FormMethod.Post,
         new { enctype = "multipart/form-data" }))
