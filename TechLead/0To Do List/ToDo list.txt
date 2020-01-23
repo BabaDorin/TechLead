@@ -7,7 +7,8 @@
 
 
 	TO DO IMMEDIATELY
->>>> Implement the system with check box for 'Make your source code public'
+>>>> Do not send the Exercise view model having backend tests to 'Details page'.
+Is should be sent only on 'Update' view. 
 
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -60,3 +61,5 @@ idk)
 ----- DONE
 
 Design for 'delete problem' view
+
+>>>> Implement the system with check box for 'Make your source code public'

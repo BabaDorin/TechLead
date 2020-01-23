@@ -473,17 +473,47 @@ tr {
 /********************************************************* Submission Page ****************************************************************************************/
 
 .Box .successTestContainer {
+    background-color: aliceblue;
     padding: 20px;
-    -webkit-box-shadow: 0 9px 20px 0 rgba(0, 255, 55, 0.15);
-    -moz-box-shadow: 0 9px 20px 0 rgba(0, 255, 55, 0.15);
-    box-shadow: 0 9px 20px 0 rgba(0, 255, 55, 0.15);
+    -webkit-box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
+    -moz-box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
+    box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
 }
 
-.Box .NotsuccessTestContainer {
+button.NotsuccessTestContainer {
+    width: 100%;
+    background-color: aliceblue;
     padding: 20px;
-    -webkit-box-shadow: 0 9px 20px 0 rgba(255, 0, 0, 0.15);
-    -moz-box-shadow: 0 9px 20px 0 rgba(255, 0, 0, 0.15);
-    box-shadow: 0 9px 20px 0 rgba(255, 0, 0, 0.15);
+    -webkit-box-shadow: -3px 5px 20px 0 rgba(255, 65, 0, 0.46);
+    -moz-box-shadow: -3px 5px 20px 0 rgba(255, 65, 0, 0.46);
+    box-shadow: -3px 5px 20px 0 rgba(255, 65, 0, 0.46);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: #f54242;
+    transition: 0.3s;
+}
+
+button.NotsuccessTestContainer:hover {
+    background-color: #ffd1d1;
+}
+
+button.NotsuccessTestContainer:active{
+    background-color: #ffd1d1;
+}
+
+.showError{
+    padding:2%;
+    overflow:hidden;
+    opacity:0;
+    max-height:0;
+    transition:0.3s;
+}
+
+.showError.show{
+    opacity:1;
+    max-height:none;
+    transition:0.3s;
 }
 
 .InfoSubmission {
