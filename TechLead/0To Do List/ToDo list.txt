@@ -10,6 +10,14 @@
 >>>> Do not send the Exercise view model having backend tests to 'Details page'.
 Is should be sent only on 'Update' view. 
 
+>>>> Find a way to calculate the points a user has got for a specifici problem. For example,
+if the best submission for the problem ID 25 has 50 points, then it will be stored somewhere.. you got it.
+
+>>>> The user who creates a problem can assign will have to assign points for each backend testcase.
+for example, an easy test case may be scored with 10 points, a harder one - with 30 points.
+
+>>>> Admins are able to see submission's code => Solve the problems with those admins features that do not work 
+
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	TO DO
@@ -63,3 +71,8 @@ idk)
 Design for 'delete problem' view
 
 >>>> Implement the system with check box for 'Make your source code public'
+
+
+>>>> Smth is wrong with error messages => Those are not always displayed / not displayed properly.
+
+>>>> Smth is wrong with the points gained. Need to fix it

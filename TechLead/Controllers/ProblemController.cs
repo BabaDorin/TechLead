@@ -146,6 +146,8 @@ namespace TechLead.Controllers
                 submission.StatusPerTestCase = string.Empty;
                 submission.ErrorMessage = string.Empty;
 
+                Debug.WriteLine("The problem has {0} tests, {1} points per test case ", 
+                    submission.NumberOfTestCases, submission.DistributedPointsPerTestCase);
                 //Now we have to go through each test case, collect data, analyse and
                 //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
                 //ErrorMessage
@@ -166,7 +168,6 @@ namespace TechLead.Controllers
                     //Check if Point == 1 it means that the solutition returned the corect answer, so the points are given
                     //Otherwise, Point == 0 => Something is wrong with the solution submitted.
                     submission.PointsPerTestCase += (Points == 1) ? submission.DistributedPointsPerTestCase.ToString() : "0";
-                    submission.PointsPerTestCase += Points.ToString();
                     submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
                     submission.StatusPerTestCase += Status;
                     submission.ErrorMessage += Error;
@@ -229,8 +230,17 @@ namespace TechLead.Controllers
                 if (result.SelectToken("time") != null)
                     ExecutionTime = (int)result.SelectToken("time");
                 Status = (string)result.SelectToken("status.description"); //Accepted or not
-                Error = (string)result.SelectToken("compile_output");
                 Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
+
+                //If compile does not return any error, but it has earned no points, it means that 
+                //the users's source code returned an incorrect output.
+                Error = "";
+                Error += (string)result.SelectToken("compile_output");
+                if(Points==0 && Error.Length < 3)
+                {
+                    Error = "Incorrect output";
+                }
+                Debug.WriteLine("Error = " + Error);
             }
             catch (NotImplementedException)
             {
