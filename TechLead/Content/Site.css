@@ -132,20 +132,19 @@ body {
 .navbar-inverse {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: white;
-
     /* Gradient */
     background: #B2FEFA;
-    background: -webkit-linear-gradient(to left, #636363, #3a3a3a);
-    background: linear-gradient(to left, #636363, #3a3a3a);
-    background: -moz-linear-gradient(to left, #636363, #3a3a3a);
-    background: -o-linear-gradient(to left, #636363, #3a3a3a);
-    background: -webkit-gradient(to left, #636363, #3a3a3a);
-    border:none;
+    background: -webkit-linear-gradient(to left, #3a3a3a, #3a3a3a);
+    background: linear-gradient(to left, #3a3a3a, #3a3a3a);
+    background: -moz-linear-gradient(to left, #3a3a3a, #3a3a3a);
+    background: -o-linear-gradient(to left, #3a3a3a, #3a3a3a);
+    background: -webkit-gradient(to left, #3a3a3a, #3a3a3a);
+    border: none;
 }
 
-    .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-        border-color: #101010;
-    }
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #101010;
+}
 
 .Content {
     width: auto;
@@ -187,13 +186,18 @@ body {
     padding-right: 15%;
     background-size: cover;
     background-image: url("/ImageResources/jumbotron.jpg");
+    transition:0.5s;
+}
+
+.txt-type{
+    border-right:2px solid;
 }
 
 .jumbotron h1 {
     font: 70px 'Arial Narrow', sans-serif;
     text-transform: uppercase;
     letter-spacing: -4px;
-    text-align:center;
+    text-align: center;
 }
 
 .option {
