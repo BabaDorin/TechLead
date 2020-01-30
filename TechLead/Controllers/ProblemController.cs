@@ -167,6 +167,7 @@ namespace TechLead.Controllers
 
                     //Check if Point == 1 it means that the solutition returned the corect answer, so the points are given
                     //Otherwise, Point == 0 => Something is wrong with the solution submitted.
+                    submission.ScoredPoints += Points*submission.DistributedPointsPerTestCase;
                     submission.PointsPerTestCase += (Points == 1) ? submission.DistributedPointsPerTestCase.ToString() : "0";
                     submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
                     submission.StatusPerTestCase += Status;
