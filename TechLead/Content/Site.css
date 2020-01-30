@@ -85,6 +85,7 @@ body {
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
+    background-color: #40404b;
 }
 
 
@@ -140,6 +141,10 @@ body {
     background: -o-linear-gradient(to left, #3a3a3a, #3a3a3a);
     background: -webkit-gradient(to left, #3a3a3a, #3a3a3a);
     border: none;
+    position: fixed; /* Make it stick/fixed */
+    top: 0; /* Stay on top */
+    width: 100%; /* Full width */
+    transition: top 0.3s; /* it will take 0.3 seconds to hide itself*/
 }
 
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
