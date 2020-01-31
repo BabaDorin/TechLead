@@ -33,7 +33,7 @@ namespace TechLead.Controllers
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
-                ExerciseViewModel EVM = ExerciseFromModelToViewModel(e);
+                ExerciseViewModel EVM = ExerciseFromModelToViewModel(e,false);
                 EVM.MakeSourceCodePublic = true;
                 TempData["Object"] = e; 
 
@@ -464,7 +464,7 @@ namespace TechLead.Controllers
                 var userId = User.Identity.GetUserId();
                 if (userId == E.AuthorID || User.IsInRole("Administrator"))
                 {
-                    ExerciseViewModel EVM = ExerciseFromModelToViewModel(E);
+                    ExerciseViewModel EVM = ExerciseFromModelToViewModel(E,true);
                     EVM.Id = ProblemID;
                     return View(EVM);
                 }
@@ -681,7 +681,7 @@ namespace TechLead.Controllers
             Svm.MakeSourceCodePublic = submission.MakeSourceCodePublic;
             return Svm;
         }
-        public ExerciseViewModel ExerciseFromModelToViewModel(Exercise exercise)
+        public ExerciseViewModel ExerciseFromModelToViewModel(Exercise exercise, bool CopyBackendTests)
         {
             var EVM = new ExerciseViewModel
             {
@@ -716,11 +716,16 @@ namespace TechLead.Controllers
             EVM.Explanation4 = exercise.Explanation4;
             EVM.Explanation5 = exercise.Explanation5;
             EVM.Test = new Test[10];
-            Test[] aux = data.CreateTests(exercise.InputColection, exercise.OutputColection);
-            
-            for(int i=0; i<aux.Length; i++)
+
+            //There is no need to send these "secret" tests to "Details" view.
+            if (CopyBackendTests == true)
             {
-                EVM.Test[i] = aux[i];
+                Test[] aux = data.CreateTests(exercise.InputColection, exercise.OutputColection);
+
+                for (int i = 0; i < aux.Length; i++)
+                {
+                    EVM.Test[i] = aux[i];
+                }
             }
 
             return EVM;
