@@ -317,9 +317,9 @@
     <Compile Include="Migrations\202001161820444_DropTable_ProblemTrashCan.Designer.cs">
       <DependentUpon>202001161820444_DropTable_ProblemTrashCan.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202001191720376_SetAdmin.cs" />
-    <Compile Include="Migrations\202001191720376_SetAdmin.Designer.cs">
-      <DependentUpon>202001191720376_SetAdmin.cs</DependentUpon>
+    <Compile Include="Migrations\202001212218566_Adding_MakeSourceCodePublic.cs" />
+    <Compile Include="Migrations\202001212218566_Adding_MakeSourceCodePublic.Designer.cs">
+      <DependentUpon>202001212218566_Adding_MakeSourceCodePublic.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
@@ -579,6 +579,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\MyJavascript\LayoutJs.js" />
+    <Content Include="Scripts\MyJavascript\TypeEffect.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
@@ -886,8 +888,8 @@
     <EmbeddedResource Include="Migrations\202001161820444_DropTable_ProblemTrashCan.resx">
       <DependentUpon>202001161820444_DropTable_ProblemTrashCan.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202001191720376_SetAdmin.resx">
-      <DependentUpon>202001191720376_SetAdmin.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202001212218566_Adding_MakeSourceCodePublic.resx">
+      <DependentUpon>202001212218566_Adding_MakeSourceCodePublic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -7,37 +7,26 @@
 
 
 	TO DO IMMEDIATELY
->>>> Design "Delete", "Problem" view.
+>>>> Do not send the Exercise view model having backend tests to 'Details page'.
+Is should be sent only on 'Update' view. 
 
+>>>> Find a way to calculate the points a user has got for a specifici problem. For example,
+if the best submission for the problem ID 25 has 50 points, then it will be stored somewhere.. you got it.
+
+>>>> The user who creates a problem can assign will have to assign points for each backend testcase.
+for example, an easy test case may be scored with 10 points, a harder one - with 30 points.
+ 
+>>>> Admins are able to see submission's code => Solve the problems with those admins features that do not work 
 
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	TO DO
-1) -------- Make at least one test case mandatory into create problem view. 
-
-2.a.01) ----- Implement the roles sistem. (Administrator etc etc etc);
-
-2) -------- Enable edit problem only for the administrators and problem creator.
 
 8) Calculate the amount of points for each test case, depending on the number of tests and the total points number.
 
 2) Error handling and displaying error pages when something happens. 
 
 3) 404 page
-
-idk)
-
------ DONE
-            //Exercise will have another property, called archieved (Bool).
-            //True => Problem is 'deleted'
-            //ApplicationUser will have 3 more properties: 1) SubmissionsCollection, which will contain 
-            //the ids of his submissions delimited by data.delimitator.
-            //In the same way, the id's of the created problems will be stored.
-            //The third property will contain the ids of the problems that were created
-            //by him and deleted. Only he will be able to see those problem!
------ DONE
-
-
 
 4) Count total poins gained per submission.
 
@@ -55,3 +44,35 @@ the user has failed. It won't cost anything.
 
 2.a) Update username everywhere when the user updates his username <3
 3) Make a page for admins only where they can assign roles to other users
+
+
+
+
+>>>>>>>>>>>>>>>>>> DONE <<<<<<<<<<<<<<<<<<<<<,
+
+1) -------- Make at least one test case mandatory into create problem view. 
+
+2.a.01) ----- Implement the roles sistem. (Administrator etc etc etc);
+
+2) -------- Enable edit problem only for the administrators and problem creator.
+
+idk)
+
+----- DONE
+            //Exercise will have another property, called archieved (Bool).
+            //True => Problem is 'deleted'
+            //ApplicationUser will have 3 more properties: 1) SubmissionsCollection, which will contain 
+            //the ids of his submissions delimited by data.delimitator.
+            //In the same way, the id's of the created problems will be stored.
+            //The third property will contain the ids of the problems that were created
+            //by him and deleted. Only he will be able to see those problem!
+----- DONE
+
+Design for 'delete problem' view
+
+>>>> Implement the system with check box for 'Make your source code public'
+
+
+>>>> Smth is wrong with error messages => Those are not always displayed / not displayed properly.
+
+>>>> Smth is wrong with the points gained. Need to fix it

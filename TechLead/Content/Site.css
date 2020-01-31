@@ -85,6 +85,7 @@ body {
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
+    background-color: #40404b;
 }
 
 
@@ -132,20 +133,23 @@ body {
 .navbar-inverse {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: white;
-
     /* Gradient */
     background: #B2FEFA;
-    background: -webkit-linear-gradient(to left, #636363, #3a3a3a);
-    background: linear-gradient(to left, #636363, #3a3a3a);
-    background: -moz-linear-gradient(to left, #636363, #3a3a3a);
-    background: -o-linear-gradient(to left, #636363, #3a3a3a);
-    background: -webkit-gradient(to left, #636363, #3a3a3a);
-    border:none;
+    background: -webkit-linear-gradient(to left, #3a3a3a, #3a3a3a);
+    background: linear-gradient(to left, #3a3a3a, #3a3a3a);
+    background: -moz-linear-gradient(to left, #3a3a3a, #3a3a3a);
+    background: -o-linear-gradient(to left, #3a3a3a, #3a3a3a);
+    background: -webkit-gradient(to left, #3a3a3a, #3a3a3a);
+    border: none;
+    position: fixed; /* Make it stick/fixed */
+    top: 0; /* Stay on top */
+    width: 100%; /* Full width */
+    transition: top 0.3s; /* it will take 0.3 seconds to hide itself*/
 }
 
-    .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-        border-color: #101010;
-    }
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #101010;
+}
 
 .Content {
     width: auto;
@@ -187,13 +191,18 @@ body {
     padding-right: 15%;
     background-size: cover;
     background-image: url("/ImageResources/jumbotron.jpg");
+    transition:0.5s;
+}
+
+.txt-type{
+    border-right:2px solid;
 }
 
 .jumbotron h1 {
     font: 70px 'Arial Narrow', sans-serif;
     text-transform: uppercase;
     letter-spacing: -4px;
-    text-align:center;
+    text-align: center;
 }
 
 .option {
@@ -473,17 +482,47 @@ tr {
 /********************************************************* Submission Page ****************************************************************************************/
 
 .Box .successTestContainer {
+    background-color: aliceblue;
     padding: 20px;
-    -webkit-box-shadow: 0 9px 20px 0 rgba(0, 255, 55, 0.15);
-    -moz-box-shadow: 0 9px 20px 0 rgba(0, 255, 55, 0.15);
-    box-shadow: 0 9px 20px 0 rgba(0, 255, 55, 0.15);
+    -webkit-box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
+    -moz-box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
+    box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
 }
 
-.Box .NotsuccessTestContainer {
+button.NotsuccessTestContainer {
+    width: 100%;
+    background-color: aliceblue;
     padding: 20px;
-    -webkit-box-shadow: 0 9px 20px 0 rgba(255, 0, 0, 0.15);
-    -moz-box-shadow: 0 9px 20px 0 rgba(255, 0, 0, 0.15);
-    box-shadow: 0 9px 20px 0 rgba(255, 0, 0, 0.15);
+    -webkit-box-shadow: -3px 5px 20px 0 rgba(255, 65, 0, 0.46);
+    -moz-box-shadow: -3px 5px 20px 0 rgba(255, 65, 0, 0.46);
+    box-shadow: -3px 5px 20px 0 rgba(255, 65, 0, 0.46);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: #f54242;
+    transition: 0.3s;
+}
+
+button.NotsuccessTestContainer:hover {
+    background-color: #ffd1d1;
+}
+
+button.NotsuccessTestContainer:active{
+    background-color: #ffd1d1;
+}
+
+.showError{
+    padding:2%;
+    overflow:hidden;
+    opacity:0;
+    max-height:0;
+    transition:0.3s;
+}
+
+.showError.show{
+    opacity:1;
+    max-height:none;
+    transition:0.3s;
 }
 
 .InfoSubmission {

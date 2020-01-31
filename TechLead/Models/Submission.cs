@@ -30,7 +30,12 @@ namespace TechLead.Models
         //each test case will get 20 points.
         public double DistributedPointsPerTestCase { get; set; }
 
+        //Source code submitted by the user
         public string SourceCode { get; set; }
+
+        //The user choose to make his source public or not.
+        //If it's public, then it can be seen on 'Submission details' page.
+        public bool MakeSourceCodePublic { get; set; }
 
         //All the inputs for a specific exercise delimited by the techlead delimitator
         public string InputCollection { get; set; }

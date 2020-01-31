@@ -1,6 +1,6 @@
 ﻿@model TechLead.Models.SubmissionViewModel
 @{
-    ViewBag.Title = "SubmissionDetails";
+    ViewBag.Title = "Submission Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,7 +11,10 @@
 
     <div class="TitleBox">
         <h2>Submission ID @Model.SubmissionID</h2>
-        <button type="button" class="btn btn-info btn-lg" data-target="#SourceCode" data-toggle="modal">See the code</button>
+        @if (Model.MakeSourceCodePublic)
+        {
+            <button type="button" class="btn btn-info btn-lg" data-target="#SourceCode" data-toggle="modal">See the code</button>
+        }
     </div>
 
     <div class="Box">
@@ -57,8 +60,14 @@
             else
             {
                 <p>Test @(i + 1)</p>
-                <div class="NotsuccessTestContainer">
+                <button class="NotsuccessTestContainer">
                     <p>@Model.Points[i]</p>
+                </button>
+                <div class="showError">
+                    <div class="alert alert-danger" role="alert">
+                        <br />
+                        @Model.ErrorMessage[i]
+                    </div>
                 </div>
             }
 
@@ -87,3 +96,14 @@
 
 </div>
 
+<script type="text/javascript">
+
+    var accordions = document.querySelectorAll("button.NotsuccessTestContainer");
+    for (var i = 0; i < accordions.length; i++) {
+        accordions[i].onclick = function () {
+            this.classList.toggle("active");
+            this.nextElementSibling.classList.toggle("show");
+        }
+    }
+
+</script>
