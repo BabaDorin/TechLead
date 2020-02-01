@@ -10,6 +10,7 @@ namespace TechLead.Models
         public int Id;
         public string Name;
         public int Points;
+        public int MaxScoredPoints;
         public int DifficultyID;
         public string Author;
         public string AuthorID;

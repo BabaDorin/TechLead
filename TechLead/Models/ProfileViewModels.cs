@@ -3,6 +3,14 @@ using System.ComponentModel.DataAnnotations;
 using System;
 namespace TechLead.Models
 {
+    public struct BestSubmission
+    {
+        public int ExerciseID;
+        public string ExerciseName;
+        public int SubmissionID;
+        public double TotalPoints;
+        public double MaxScoredPoints;
+    }
     public class ProfileViewModel
     {
         public byte[] ProfilePhoto { get; set; }
@@ -13,6 +21,7 @@ namespace TechLead.Models
         public DateTime FirstRegistration { get; set; }
         public string Job { get; set; }
         public string Email { get; set; }
+        public BestSubmission[] bestSubmissions;
         public ProfileViewModel(string UserName, string PhoneNumber, string About, double TotalPoints,
             DateTime FirstRegistration, string Job, string Email, byte[] ProfilePhoto)
         {

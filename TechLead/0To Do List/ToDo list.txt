@@ -3,11 +3,11 @@
 
 >>>> Find a way to calculate the points a user has got for a specifici problem. For example,
 	if the best submission for the problem ID 25 has 50 points, then it will be stored somewhere.. you got it.
-	>> Add a string property called - BestSubmissions - to the Exercise model. It will have the next format:
+	>> Add a string property called - BestSubmissions - to the ApplicationUser model. It will have the next format:
 		>> [delimitator]ExerciseID[delimitator]ExerciseName[delimitator]SubmissionId[delimitator]TotalPointsForExercise[delimitator]MaxScoredPoints
 			>>DO NOT INSERT DELIMITATOR AT THE BEGINNING IF IT IS THE FIRST OBJECT IN THE STRING.
 
-	>>Add a BestSubmissions[] property to the ProblemViewModel
+	>>Add a BestSubmissions[] property to the ProfileViewController
 		>> int ExerciseId, string name, int submissionId, doubleTotalPoints, double MaxScoredPoints
 	
 	>> Every time a user submits something, there are 2 cases:

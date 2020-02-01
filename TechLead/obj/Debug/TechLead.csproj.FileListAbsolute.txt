@@ -1580,3 +1580,4 @@ C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debu
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.DropTable_ProblemTrashCan.resources
 C:\Users\Baba Dorin\Desktop\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.Adding_MakeSourceCodePublic.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.Adding_MakeSourceCodePublic.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddBestSubmissiontToApplicationUserTable.resources

@@ -321,6 +321,10 @@
     <Compile Include="Migrations\202001212218566_Adding_MakeSourceCodePublic.Designer.cs">
       <DependentUpon>202001212218566_Adding_MakeSourceCodePublic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002011111173_AddBestSubmissiontToApplicationUserTable.cs" />
+    <Compile Include="Migrations\202002011111173_AddBestSubmissiontToApplicationUserTable.Designer.cs">
+      <DependentUpon>202002011111173_AddBestSubmissiontToApplicationUserTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\DeleteProblemViewModel.cs" />
@@ -890,6 +894,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001212218566_Adding_MakeSourceCodePublic.resx">
       <DependentUpon>202001212218566_Adding_MakeSourceCodePublic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002011111173_AddBestSubmissiontToApplicationUserTable.resx">
+      <DependentUpon>202002011111173_AddBestSubmissiontToApplicationUserTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
