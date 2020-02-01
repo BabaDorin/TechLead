@@ -1,0 +1,9 @@
+﻿
+//Get users properties
+
+string userId = User.Identity.GetUserId();
+string usersBestSubmissions = _context.Users.Find(userId).BestSubmisions;
+
+//Update users properties
+_context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+_context.SaveChanges();

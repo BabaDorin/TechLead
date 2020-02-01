@@ -15,11 +15,11 @@ namespace TechLead.Models
     public class Data
     {
         //Here will be stored various data like constants, some methods etc.
-        public string testCase_Delimitator = ";-;techleadDelimitator;-;-;x;x;x;x;x;x;x;TL'";
+        public string Delimitator = ";-;techleadDelimitator;-;-;x;x;x;x;x;x;x;TL'";
         public Test[] CreateTests(string inputCollection, string outputCollection)
         {
-            string[] inputs = inputCollection.Split(new string[] { testCase_Delimitator }, StringSplitOptions.None);
-            string[] outputs = outputCollection.Split(new string[] { testCase_Delimitator }, StringSplitOptions.None);
+            string[] inputs = inputCollection.Split(new string[] { Delimitator }, StringSplitOptions.None);
+            string[] outputs = outputCollection.Split(new string[] { Delimitator }, StringSplitOptions.None);
             Debug.WriteLine("Initialising");
             Test[] tests = new Test[inputs.Length];
 

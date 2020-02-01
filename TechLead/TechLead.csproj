@@ -528,6 +528,7 @@
   <ItemGroup>
     <Content Include=".Tutorials\Adding migrations.txt" />
     <Content Include=".Tutorials\Push to github issues.txt" />
+    <Content Include=".Tutorials\Get User%27s properties.txt" />
     <Content Include="0To Do List\TextFile1.txt" />
     <Content Include="0To Do List\ToDo list.txt" />
     <Content Include="Content\bootstrap-theme.css" />

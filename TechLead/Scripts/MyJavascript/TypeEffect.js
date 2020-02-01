@@ -7,6 +7,7 @@
         this.wait = parseInt(wait, 10);
         this.type();
         this.IsDeleting = false;
+        console.log("cf");
     }
 
     type() {
@@ -31,7 +32,7 @@
         if (this.isDeleting) {
             typespeed /= 2;
         }
-
+        console.log("ffff");
         //if word is complete
         if (!this.isDeleting && this.txt === fullTxt) {
             //Make a pause at end and set is deleteing to true
@@ -46,7 +47,7 @@
             typespeed = 80;
         }
 
-        if (this.wordIndex === this.words.length-1) {
+        if (current == 4) {
             typespeed = 35;
         }
 
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', init);
 
 //Init App
 function init() {
+    console.log("hi");
     const txtElement = document.querySelector('.txt-type');
     const word = JSON.parse(txtElement.getAttribute('data-words'));
     const wait = txtElement.getAttribute('data-wait');

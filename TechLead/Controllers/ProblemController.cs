@@ -17,9 +17,18 @@ using Microsoft.AspNet.Identity;
 
 namespace TechLead.Controllers
 {
+
     public class ProblemController : Controller
     {
-        private static Data data = new Data();
+        public struct BestSubmission
+        {
+            public int ExerciseID;
+            public string ExerciseName;
+            public int SubmissionID;
+            public double TotalPoints;
+            public double MaxScoredPoints;
+        }
+        public static Data data = new Data();
         private ApplicationDbContext _context;
 
         public ProblemController()
@@ -90,10 +99,16 @@ namespace TechLead.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult Compiling(bool MakeSourceCodePublic)
         {
             try
             {
+                string userId = User.Identity.GetUserId();
+                ApplicationUser user = _context.Users.Find(userId);
+                string usersBestSubmissions = user.BestSubmisions;
+                BestSubmission[] bestSubmission = ConvertBestSubmissionFromStringToArray(usersBestSubmissions);
+
                 Exercise e = TempData["Object"] as Exercise;
                 Judge0_SubmissionViewModel judge0_submission = TempData["Judge0_Submission"] as Judge0_SubmissionViewModel;
 
@@ -106,6 +121,24 @@ namespace TechLead.Controllers
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
 
+                double PointsToAddToUsersTotalPoints = 0;
+                string ModifiedUsersBestSubmissions;
+                if (SubmissionIsInserted(e.Id, bestSubmission))
+                {
+                    UpdateBestSubmission(ref bestSubmission, submission, ref PointsToAddToUsersTotalPoints);
+                    ModifiedUsersBestSubmissions = ConvertBestSubmissionFromArrayToString(bestSubmission);
+                }
+                else
+                {
+                    InsertBestSubmission(ref usersBestSubmissions, submission, e.Points, ref PointsToAddToUsersTotalPoints);
+                    ModifiedUsersBestSubmissions = usersBestSubmissions;
+                }
+
+                //Store the new value of totalPoints and BestSubmission;
+                user.TotalPoints += PointsToAddToUsersTotalPoints;
+                user.BestSubmisions = ModifiedUsersBestSubmissions;
+                _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
                 return RedirectToAction("SubmissionDetails", "Problem", new { id = submission.SubmissionID });
             }
             catch (Exception e)
@@ -116,7 +149,7 @@ namespace TechLead.Controllers
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
-
+        
         public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
         {
             try
@@ -175,10 +208,10 @@ namespace TechLead.Controllers
 
                     if (i < TestCases.Length - 1)
                     {
-                        submission.PointsPerTestCase += data.testCase_Delimitator;
-                        submission.ExecutionTimePerTestCase += data.testCase_Delimitator;
-                        submission.StatusPerTestCase += data.testCase_Delimitator;
-                        submission.ErrorMessage += data.testCase_Delimitator;
+                        submission.PointsPerTestCase += data.Delimitator;
+                        submission.ExecutionTimePerTestCase += data.Delimitator;
+                        submission.StatusPerTestCase += data.Delimitator;
+                        submission.ErrorMessage += data.Delimitator;
                     }
 
                 }
@@ -353,13 +386,6 @@ namespace TechLead.Controllers
                 throw e;
             }
         }
-
-        //public ActionResult Results()
-        //{
-        //    List<int> ScoredPoints = TempData["Score"] as List<int>;
-        //    TempData.Keep();
-        //    return View(ScoredPoints);
-        //}
 
         public ActionResult SubmissionDetails(int id)
         {
@@ -564,21 +590,10 @@ namespace TechLead.Controllers
        [HttpPost]
        public ActionResult Delete(DeleteProblemViewModel deleteProblemViewModel)
         {
-            //Make another table called 'ExerciseTrashCan' which will contain the same info
-            //as the Exercise table. Here will be stored all the problems. Submissions for those specific
-            //will remain in database.
-            //The user will have 2 options - Do delete the problems permamently from the trash can, or 
-            //to restore them. 
-            //The trash can will be accesible from the view profile page.
-
+            //Deleting an exercise means setting the IsArchieved property to true.
             Exercise E = _context.Exercises.Single(e => e.Id == deleteProblemViewModel.Id);
-
-            ////First, it is inserted into ProblemsTrashCan table
-            //_context.ProblemsTrashCan.Add(E as ProblemTrashCan);
             _context.Exercises.Remove(E);
             _context.SaveChanges();
-
-            ViewBag.Info = "The problem has been moved to trash can.";
             return View("~/Views/Home/Index.cshtml");
         }
 
@@ -644,10 +659,10 @@ namespace TechLead.Controllers
             for (int i = 0; i < e.NumberOfTests; i++)
             {
                 e.InputColection += AuxTests[i].Input;
-                if (i < e.NumberOfTests - 1) e.InputColection += data.testCase_Delimitator;
+                if (i < e.NumberOfTests - 1) e.InputColection += data.Delimitator;
 
                 e.OutputColection += AuxTests[i].Output;
-                if (i < e.NumberOfTests - 1) e.OutputColection += data.testCase_Delimitator;
+                if (i < e.NumberOfTests - 1) e.OutputColection += data.Delimitator;
             }
             Debug.WriteLine(e.InputColection);
             Debug.WriteLine(e.OutputColection);
@@ -668,15 +683,15 @@ namespace TechLead.Controllers
             //Svm.NumberOfTestCases = submission.NumberOfTestCases;
             Svm.DistributedPointsPerTestCase = submission.DistributedPointsPerTestCase;
             Svm.SourceCode = submission.SourceCode;
-            Svm.Inputs = submission.InputCollection.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
-            Svm.Outputs = submission.OutputCollection.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
-            Svm.ExpectedOutputs = submission.ExpectedOutput.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
-            Svm.Points = Array.ConvertAll(submission.PointsPerTestCase.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None),
+            Svm.Inputs = submission.InputCollection.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+            Svm.Outputs = submission.OutputCollection.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+            Svm.ExpectedOutputs = submission.ExpectedOutput.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+            Svm.Points = Array.ConvertAll(submission.PointsPerTestCase.Split(new string[] { data.Delimitator }, StringSplitOptions.None),
                 x => double.Parse(x));
-            Svm.ExecutionTime = Array.ConvertAll(submission.ExecutionTimePerTestCase.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None),
+            Svm.ExecutionTime = Array.ConvertAll(submission.ExecutionTimePerTestCase.Split(new string[] { data.Delimitator }, StringSplitOptions.None),
                 x => int.Parse(x));
-            Svm.Status = submission.StatusPerTestCase.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
-            Svm.ErrorMessage = submission.ErrorMessage.Split(new string[] { data.testCase_Delimitator }, StringSplitOptions.None);
+            Svm.Status = submission.StatusPerTestCase.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+            Svm.ErrorMessage = submission.ErrorMessage.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
             Svm.NumberOfTestCases = Svm.Points.Length;
             Svm.MakeSourceCodePublic = submission.MakeSourceCodePublic;
             return Svm;
@@ -734,6 +749,87 @@ namespace TechLead.Controllers
         {
             return View("~/Views/Shared/Error.cshtml", Err);
         }
+
+        public void InsertBestSubmission(ref string bestsubmission, Submission submission, double TotalPoints, ref double AddToUsersTotalPoints)
+        {
+            string LastSubmission = submission.ExerciseId + data.Delimitator + submission.Exercise + data.Delimitator + submission.SubmissionID + data.Delimitator +
+                +TotalPoints + data.Delimitator + submission.ScoredPoints;
+            AddToUsersTotalPoints = submission.ScoredPoints;
+
+            //This string should not begin with a delimitator.
+            if (bestsubmission.Length>0)
+            {
+                bestsubmission += data.Delimitator;
+            }
+
+            bestsubmission += LastSubmission;
+        }
+
+        public bool SubmissionIsInserted(int exerciseID, BestSubmission[] bestSubmissions)
+        {
+            for(int i=0; i<bestSubmissions.Length; i++)
+            {
+                if (bestSubmissions[i].ExerciseID == exerciseID) return true;
+            }
+            return false;
+        }
+
+        public void UpdateBestSubmission(ref BestSubmission[] bestSubmissions, Submission submission, ref double AddToUsersTotalPoints)
+        {
+            //Look for the last best submission for a specific problem, check if the last submission has less points than the current submission, 
+            //if current submission has more points, then update the points value.
+            for(int i=0; i<bestSubmissions.Length; i++)
+            {
+                if(bestSubmissions[i].ExerciseID == submission.ExerciseId)
+                {
+                    if (bestSubmissions[i].MaxScoredPoints < submission.ScoredPoints)
+                    {
+                        AddToUsersTotalPoints = submission.ScoredPoints - bestSubmissions[i].MaxScoredPoints;
+                        bestSubmissions[i].MaxScoredPoints = submission.ScoredPoints;
+                        
+                    }
+                }
+            }
+        }
+
+        public string ConvertBestSubmissionFromArrayToString(BestSubmission[] bestSubmission)
+        {
+            string result = "";
+            for(int i=0; i<bestSubmission.Length; i++)
+            {
+                if (i != 0)
+                {
+                    result += data.Delimitator;
+                }
+                result += bestSubmission[i].ExerciseID + data.Delimitator + bestSubmission[i].ExerciseName + data.Delimitator +
+                    +bestSubmission[i].SubmissionID + data.Delimitator + bestSubmission[i].TotalPoints + data.Delimitator + bestSubmission[i].MaxScoredPoints;
+            }
+
+            return result;
+        }
+
+        public BestSubmission[] ConvertBestSubmissionFromStringToArray(string usersBestSubmissions)
+        {
+            string[] submissionsData = usersBestSubmissions.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+            BestSubmission[] bestSubmissions = new BestSubmission[submissionsData.Length / 5];
+            if (bestSubmissions.Length > 0)
+            {
+                int submissionsDataIndex = 0;
+                for(int i=0; i<bestSubmissions.Length; i++)
+                {
+                    bestSubmissions[i] = new BestSubmission
+                    {
+                        ExerciseID = int.Parse(submissionsData[submissionsDataIndex++]),
+                        ExerciseName = submissionsData[submissionsDataIndex++],
+                        SubmissionID = int.Parse(submissionsData[submissionsDataIndex++]),
+                        TotalPoints = double.Parse(submissionsData[submissionsDataIndex++]),
+                        MaxScoredPoints = double.Parse(submissionsData[submissionsDataIndex++])
+                    };
+                }
+            }
+            return bestSubmissions;
+        }
+
     }
 
 }
