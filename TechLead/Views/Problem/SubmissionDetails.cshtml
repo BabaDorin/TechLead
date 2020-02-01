@@ -54,14 +54,14 @@
             {
                 <p>Test @(i + 1)</p>
                 <div class="successTestContainer">
-                    <p>@Model.Points[i]</p>
+                    <p>Accepted - @Model.DistributedPointsPerTestCase</p>
                 </div>
             }
             else
             {
                 <p>Test @(i + 1)</p>
                 <button class="NotsuccessTestContainer">
-                    <p>@Model.Points[i]</p>
+                    <p>Declined</p>
                 </button>
                 <div class="showError">
                     <div class="alert alert-danger" role="alert">

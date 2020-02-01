@@ -135,11 +135,11 @@ body {
     color: white;
     /* Gradient */
     background: #B2FEFA;
-    background: -webkit-linear-gradient(to left, #3a3a3a, #3a3a3a);
-    background: linear-gradient(to left, #3a3a3a, #3a3a3a);
-    background: -moz-linear-gradient(to left, #3a3a3a, #3a3a3a);
-    background: -o-linear-gradient(to left, #3a3a3a, #3a3a3a);
-    background: -webkit-gradient(to left, #3a3a3a, #3a3a3a);
+    background: -webkit-linear-gradient(to right, #40404b, #4e4e4e);
+    background: linear-gradient(to right, #40404b, #4e4e4e);
+    background: -moz-linear-gradient(to right, #40404b, #4e4e4e);
+    background: -o-linear-gradient(to right, #40404b, #4e4e4e);
+    background: -webkit-gradient(to right, #40404b, #4e4e4e);
     border: none;
     position: fixed; /* Make it stick/fixed */
     top: 0; /* Stay on top */
@@ -159,7 +159,7 @@ body {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     color: #e2e8f6;
     /* Gradient */
-    background-color: #40404b;
+    background: linear-gradient(110deg, #40404b 60%, #4e4e4e 60%);
     /* background: -webkit-linear-gradient(to left, #0ED2F7, #B2FEFA);
     background: linear-gradient(to left, #21d9fb, #0061a5);
     background: -moz-linear-gradient(to left, #21d9fb, #0061a5);
@@ -487,6 +487,7 @@ tr {
     -webkit-box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
     -moz-box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
     box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
+    text-align:center;
 }
 
 button.NotsuccessTestContainer {
