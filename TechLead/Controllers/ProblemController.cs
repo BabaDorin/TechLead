@@ -104,10 +104,14 @@ namespace TechLead.Controllers
         {
             try
             {
+                Debug.WriteLine("Getting data about user");
                 string userId = User.Identity.GetUserId();
                 ApplicationUser user = _context.Users.Find(userId);
                 string usersBestSubmissions = user.BestSubmisions;
+                Debug.WriteLine("Done");
+                Debug.WriteLine("From string to array");
                 BestSubmission[] bestSubmission = ConvertBestSubmissionFromStringToArray(usersBestSubmissions);
+                Debug.WriteLine("Done");
 
                 Exercise e = TempData["Object"] as Exercise;
                 Judge0_SubmissionViewModel judge0_submission = TempData["Judge0_Submission"] as Judge0_SubmissionViewModel;
@@ -121,6 +125,7 @@ namespace TechLead.Controllers
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
 
+                Debug.WriteLine("Data");
                 double PointsToAddToUsersTotalPoints = 0;
                 string ModifiedUsersBestSubmissions;
                 if (SubmissionIsInserted(e.Id, bestSubmission))
@@ -133,16 +138,19 @@ namespace TechLead.Controllers
                     InsertBestSubmission(ref usersBestSubmissions, submission, e.Points, ref PointsToAddToUsersTotalPoints);
                     ModifiedUsersBestSubmissions = usersBestSubmissions;
                 }
-
+                Debug.WriteLine("Done");
                 //Store the new value of totalPoints and BestSubmission;
+                Debug.WriteLine("update data in db");
                 user.TotalPoints += PointsToAddToUsersTotalPoints;
                 user.BestSubmisions = ModifiedUsersBestSubmissions;
                 _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();
+                Debug.WriteLine("done");
                 return RedirectToAction("SubmissionDetails", "Problem", new { id = submission.SubmissionID });
             }
             catch (Exception e)
             {
+                //throw;
                 ErrorViewModel Error = new ErrorViewModel();
                 Error.Title = "Oops, something happened :(";
                 Error.Description = e.Message;
@@ -752,6 +760,7 @@ namespace TechLead.Controllers
 
         public void InsertBestSubmission(ref string bestsubmission, Submission submission, double TotalPoints, ref double AddToUsersTotalPoints)
         {
+            if (bestsubmission == null) bestsubmission = "";
             string LastSubmission = submission.ExerciseId + data.Delimitator + submission.Exercise + data.Delimitator + submission.SubmissionID + data.Delimitator +
                 +TotalPoints + data.Delimitator + submission.ScoredPoints;
             AddToUsersTotalPoints = submission.ScoredPoints;
@@ -767,6 +776,7 @@ namespace TechLead.Controllers
 
         public bool SubmissionIsInserted(int exerciseID, BestSubmission[] bestSubmissions)
         {
+            if (bestSubmissions == null) return false;
             for(int i=0; i<bestSubmissions.Length; i++)
             {
                 if (bestSubmissions[i].ExerciseID == exerciseID) return true;
@@ -810,6 +820,7 @@ namespace TechLead.Controllers
 
         public BestSubmission[] ConvertBestSubmissionFromStringToArray(string usersBestSubmissions)
         {
+            if (usersBestSubmissions == null) return null;
             string[] submissionsData = usersBestSubmissions.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
             BestSubmission[] bestSubmissions = new BestSubmission[submissionsData.Length / 5];
             if (bestSubmissions.Length > 0)
