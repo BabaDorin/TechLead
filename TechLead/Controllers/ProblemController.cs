@@ -102,7 +102,7 @@ namespace TechLead.Controllers
                 string usersBestSubmissions = user.BestSubmisions;
                 Debug.WriteLine("Done");
                 Debug.WriteLine("From string to array");
-                BestSubmission[] bestSubmission = ConvertBestSubmissionFromStringToArray(usersBestSubmissions);
+                BestSubmission[] bestSubmission = data.ConvertBestSubmissionFromStringToArray(usersBestSubmissions);
                 Debug.WriteLine("Done");
 
                 Exercise e = TempData["Object"] as Exercise;
@@ -123,7 +123,7 @@ namespace TechLead.Controllers
                 if (SubmissionIsInserted(e.Id, bestSubmission))
                 {
                     UpdateBestSubmission(ref bestSubmission, submission, ref PointsToAddToUsersTotalPoints);
-                    ModifiedUsersBestSubmissions = ConvertBestSubmissionFromArrayToString(bestSubmission);
+                    ModifiedUsersBestSubmissions = data.ConvertBestSubmissionFromArrayToString(bestSubmission);
                 }
                 else
                 {
@@ -771,7 +771,7 @@ namespace TechLead.Controllers
             if (bestSubmissions == null) return false;
             for(int i=0; i<bestSubmissions.Length; i++)
             {
-                if (bestSubmissions[i].ExerciseID == exerciseID) return true;
+                if (bestSubmissions[i].ProblemID == exerciseID) return true;
             }
             return false;
         }
@@ -782,7 +782,7 @@ namespace TechLead.Controllers
             //if current submission has more points, then update the points value.
             for(int i=0; i<bestSubmissions.Length; i++)
             {
-                if(bestSubmissions[i].ExerciseID == submission.ExerciseId)
+                if(bestSubmissions[i].ProblemID == submission.ExerciseId)
                 {
                     if (bestSubmissions[i].MaxScoredPoints < submission.ScoredPoints)
                     {
@@ -792,45 +792,6 @@ namespace TechLead.Controllers
                     }
                 }
             }
-        }
-
-        public string ConvertBestSubmissionFromArrayToString(BestSubmission[] bestSubmission)
-        {
-            string result = "";
-            for(int i=0; i<bestSubmission.Length; i++)
-            {
-                if (i != 0)
-                {
-                    result += data.Delimitator;
-                }
-                result += bestSubmission[i].ExerciseID + data.Delimitator + bestSubmission[i].ExerciseName + data.Delimitator +
-                    +bestSubmission[i].SubmissionID + data.Delimitator + bestSubmission[i].TotalPoints + data.Delimitator + bestSubmission[i].MaxScoredPoints;
-            }
-
-            return result;
-        }
-
-        public BestSubmission[] ConvertBestSubmissionFromStringToArray(string usersBestSubmissions)
-        {
-            if (usersBestSubmissions == null) return null;
-            string[] submissionsData = usersBestSubmissions.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
-            BestSubmission[] bestSubmissions = new BestSubmission[submissionsData.Length / 5];
-            if (bestSubmissions.Length > 0)
-            {
-                int submissionsDataIndex = 0;
-                for(int i=0; i<bestSubmissions.Length; i++)
-                {
-                    bestSubmissions[i] = new BestSubmission
-                    {
-                        ExerciseID = int.Parse(submissionsData[submissionsDataIndex++]),
-                        ExerciseName = submissionsData[submissionsDataIndex++],
-                        SubmissionID = int.Parse(submissionsData[submissionsDataIndex++]),
-                        TotalPoints = double.Parse(submissionsData[submissionsDataIndex++]),
-                        MaxScoredPoints = double.Parse(submissionsData[submissionsDataIndex++])
-                    };
-                }
-            }
-            return bestSubmissions;
         }
 
     }

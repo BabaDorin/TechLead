@@ -52,5 +52,44 @@ namespace TechLead.Models
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
+
+        public BestSubmission[] ConvertBestSubmissionFromStringToArray(string usersBestSubmissions)
+        {
+            if (usersBestSubmissions == null) return null;
+            string[] submissionsData = usersBestSubmissions.Split(new string[] { Delimitator }, StringSplitOptions.None);
+            BestSubmission[] bestSubmissions = new BestSubmission[submissionsData.Length / 5];
+            if (bestSubmissions.Length > 0)
+            {
+                int submissionsDataIndex = 0;
+                for (int i = 0; i < bestSubmissions.Length; i++)
+                {
+                    bestSubmissions[i] = new BestSubmission
+                    {
+                        ProblemID = int.Parse(submissionsData[submissionsDataIndex++]),
+                        ProblemName = submissionsData[submissionsDataIndex++],
+                        SubmissionID = int.Parse(submissionsData[submissionsDataIndex++]),
+                        TotalPoints = double.Parse(submissionsData[submissionsDataIndex++]),
+                        MaxScoredPoints = double.Parse(submissionsData[submissionsDataIndex++])
+                    };
+                }
+            }
+            return bestSubmissions;
+        }
+
+        public string ConvertBestSubmissionFromArrayToString(BestSubmission[] bestSubmission)
+        {
+            string result = "";
+            for (int i = 0; i < bestSubmission.Length; i++)
+            {
+                if (i != 0)
+                {
+                    result += Delimitator;
+                }
+                result += bestSubmission[i].ProblemID + Delimitator + bestSubmission[i].ProblemName + Delimitator +
+                    +bestSubmission[i].SubmissionID + Delimitator + bestSubmission[i].TotalPoints + Delimitator + bestSubmission[i].MaxScoredPoints;
+            }
+
+            return result;
+        }
     }
 }

@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechLead", "TechLead\TechLead.csproj", "{B7066EA0-D484-4BF8-807B-D65D1BC86A2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly", "Assembly\Assembly.csproj", "{F7583A72-C968-4D90-9532-20B02215D248}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{B7066EA0-D484-4BF8-807B-D65D1BC86A2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7066EA0-D484-4BF8-807B-D65D1BC86A2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7066EA0-D484-4BF8-807B-D65D1BC86A2F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7583A72-C968-4D90-9532-20B02215D248}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7583A72-C968-4D90-9532-20B02215D248}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7583A72-C968-4D90-9532-20B02215D248}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7583A72-C968-4D90-9532-20B02215D248}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
