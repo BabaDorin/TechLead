@@ -18,6 +18,7 @@ namespace TechLead.Controllers
         private ApplicationDbContext _context;
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        Data data = new Data();
 
         public ManageController()
         {
@@ -84,7 +85,8 @@ namespace TechLead.Controllers
                 TotalPoints = CurrentUser.TotalPoints,
                 Email = CurrentUser.Email,
                 userID = CurrentUser.Id,
-                ProfilePhoto = CurrentUser.ProfilePhoto
+                ProfilePhoto = CurrentUser.ProfilePhoto,
+                bestSubmissions = data.ConvertBestSubmissionFromStringToArray(CurrentUser.BestSubmisions)
             };
             return View(model);
         }

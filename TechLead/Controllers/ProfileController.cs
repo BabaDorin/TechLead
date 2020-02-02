@@ -4,15 +4,16 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TechLead.Models;
+using System.Diagnostics;
 
 namespace TechLead.Controllers
 {
     public class ProfileController : Controller
     {
         ApplicationDbContext _context = new ApplicationDbContext();
+        Data data = new Data();
         public ActionResult ViewProfile(string userID)
         {
-            Data data = new Data();
             try
             {
                 ProfileViewModel viewModel;
@@ -22,6 +23,13 @@ namespace TechLead.Controllers
 
                 //Inserting best submissions into profile view model
                 viewModel.bestSubmissions = data.ConvertBestSubmissionFromStringToArray(User.BestSubmisions);
+
+                Debug.WriteLine("Last submissions: ");
+                for(int i=0; i<viewModel.bestSubmissions.Length; i++)
+                {
+                    Debug.WriteLine(viewModel.bestSubmissions[i].ProblemName + " " + viewModel.bestSubmissions[i].MaxScoredPoints);
+                }
+                
                 return View(viewModel);
             }
             catch (Exception e)
