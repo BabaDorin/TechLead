@@ -1,22 +1,6 @@
 ﻿
 	TO DO IMMEDIATELY
 
->>>> Find a way to calculate the points a user has got for a specifici problem. For example,
-	if the best submission for the problem ID 25 has 50 points, then it will be stored somewhere.. you got it.
-	>> Add a string property called - BestSubmissions - to the ApplicationUser model. It will have the next format:
-		>> [delimitator]ExerciseID[delimitator]ExerciseName[delimitator]SubmissionId[delimitator]TotalPointsForExercise[delimitator]MaxScoredPoints
-			>> DO NOT INSERT DELIMITATOR AT THE BEGINNING IF IT IS THE FIRST OBJECT IN THE STRING.
-
-	>>Add a BestSubmissions[] property to the ProfileViewController
-		>> int ExerciseId, string name, int submissionId, doubleTotalPoints, double MaxScoredPoints
-	
-	>> Every time a user submits something, there are 2 cases:
-		>>1) The user submits a solutiong for a specific problem for the first time, in this case the data is inserted into the BestSubmissions property
-		>>2) It is not the first submission for that specific problem, in this case, the BestSubmission string is transformed into an array of BestSubmissions[], look for the
-		object having the property ExerciseID the same as the last problem, then check if the last amount of points the user has scored is bigger than the value that 
-		has been already there, then update it and add the difference between scored points of the last submission and the current one to the user's totalPoints
-		property. Otherwise, skip and go to the next step.
-
 >>>> The user who creates a problem can assign will have to assign points for each backend testcase.
 for example, an easy test case may be scored with 10 points, a harder one - with 30 points.
  
@@ -79,3 +63,19 @@ the user has failed. It won't cost anything.
 
 >>>> Do not send the Exercise view model having backend tests to 'Details page'.
 Is should be sent only on 'Update' view. 
+
+>>>> Find a way to calculate the points a user has got for a specifici problem. For example,
+	if the best submission for the problem ID 25 has 50 points, then it will be stored somewhere.. you got it.
+	>> Add a string property called - BestSubmissions - to the ApplicationUser model. It will have the next format:
+		>> [delimitator]ExerciseID[delimitator]ExerciseName[delimitator]SubmissionId[delimitator]TotalPointsForExercise[delimitator]MaxScoredPoints
+			>> DO NOT INSERT DELIMITATOR AT THE BEGINNING IF IT IS THE FIRST OBJECT IN THE STRING.
+
+	>>Add a BestSubmissions[] property to the ProfileViewController
+		>> int ExerciseId, string name, int submissionId, doubleTotalPoints, double MaxScoredPoints
+	
+	>> Every time a user submits something, there are 2 cases:
+		>>1) The user submits a solutiong for a specific problem for the first time, in this case the data is inserted into the BestSubmissions property
+		>>2) It is not the first submission for that specific problem, in this case, the BestSubmission string is transformed into an array of BestSubmissions[], look for the
+		object having the property ExerciseID the same as the last problem, then check if the last amount of points the user has scored is bigger than the value that 
+		has been already there, then update it and add the difference between scored points of the last submission and the current one to the user's totalPoints
+		property. Otherwise, skip and go to the next step.
