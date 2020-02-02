@@ -12,13 +12,17 @@ namespace TechLead.Controllers
         ApplicationDbContext _context = new ApplicationDbContext();
         public ActionResult ViewProfile(string userID)
         {
+            Data data = new Data();
             try
             {
-                ProfileViewModel model;
+                ProfileViewModel viewModel;
                 ApplicationUser User = _context.Users.Find(userID);
-                model = new ProfileViewModel(User.UserName, User.PhoneNumber, User.About,
+                viewModel = new ProfileViewModel(User.UserName, User.PhoneNumber, User.About,
                     User.TotalPoints, User.FirstRegistration, User.Job, User.Email, User.ProfilePhoto);
-                return View(model);
+
+                //Inserting best submissions into profile view model
+                viewModel.bestSubmissions = data.ConvertBestSubmissionFromStringToArray(User.BestSubmisions);
+                return View(viewModel);
             }
             catch (Exception e)
             {
