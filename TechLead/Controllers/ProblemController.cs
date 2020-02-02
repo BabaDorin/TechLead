@@ -20,14 +20,6 @@ namespace TechLead.Controllers
 
     public class ProblemController : Controller
     {
-        public struct BestSubmission
-        {
-            public int ExerciseID;
-            public string ExerciseName;
-            public int SubmissionID;
-            public double TotalPoints;
-            public double MaxScoredPoints;
-        }
         public static Data data = new Data();
         private ApplicationDbContext _context;
 

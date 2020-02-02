@@ -325,6 +325,7 @@
     <Compile Include="Migrations\202002011111173_AddBestSubmissiontToApplicationUserTable.Designer.cs">
       <DependentUpon>202002011111173_AddBestSubmissiontToApplicationUserTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\DeleteProblemViewModel.cs" />
