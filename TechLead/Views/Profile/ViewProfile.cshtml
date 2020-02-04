@@ -68,22 +68,30 @@
                     <span>@Html.DisplayFor(u => u.About)</span>
                 </div>
             }
-            <br /><br />
-            @if (Model.bestSubmissions != null)
-            {
-                <p>User's last best submissions</p>
-                for(int i=0; i<Model.bestSubmissions.Length; i++)
-                {
-                    if (i > 20)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        <p>@Model.bestSubmissions[i].ProblemName @Model.bestSubmissions[i].MaxScoredPoints</p>
-                    }
-                }
+            else {
+                <p>@Model.UserName doesn't want to tell us about himself :(</p>
             }
         </div>
+        <br /><br /><br />
+        @if (Model.bestSubmissions != null)
+        {
+            <p style="text-align:center">User's last best submissions</p>
+            for (int i = 0; i < Model.bestSubmissions.Length; i++)
+            {
+                if (i > 20)
+                {
+                    break;
+                }
+                else
+                {
+                    <a href="@Url.Action("SubmissionDetails", "Problem", new { id = Model.bestSubmissions[i].SubmissionID })">
+                        <div class="ProblemToDisplay">
+                            @Model.bestSubmissions[i].ProblemName
+                            <span class="PointsToDisplay">@Model.bestSubmissions[i].MaxScoredPoints out of @Model.bestSubmissions[i].TotalPoints</span>
+                        </div>
+                    </a>
+                }
+            }
+        }
     </div>
 </div>
