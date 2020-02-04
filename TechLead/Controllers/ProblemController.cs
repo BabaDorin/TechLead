@@ -23,7 +23,7 @@ namespace TechLead.Controllers
     {
         public static Data data = new Data();
         private static ApplicationDbContext _context;
-        UserManager<ApplicationUser> _userManager;
+        private static UserManager<ApplicationUser> _userManager;
 
         public ProblemController()
         {
@@ -547,6 +547,8 @@ namespace TechLead.Controllers
                 //If everything is OK, the exercise will get updated
 
                 Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
+                exercise.AuthorID = HttpContext.User.Identity.GetUserId();
+                exercise.Author = HttpContext.User.Identity.Name;
                 _context.Entry(exercise).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();
                 return RedirectToAction("Details", new { id = exercise.Id });

@@ -43,18 +43,8 @@ namespace TechLead
 
             //Setting the administrators
             ApplicationUser user1, user2;
-            try
-            {
-                user1 = userManager.FindByEmail("bvd.dorin@gmail.com");
-                user1.UserRole = "Administrator";
-                userManager.AddToRoleAsync(user1.Id, user1.UserRole);
-                _context.Entry(user1).State = System.Data.Entity.EntityState.Modified;
-                _context.SaveChanges();
-            }
-            catch (System.Exception)
-            {
-                Debug.WriteLine("'bvd.dorin@gmail.com was not found. No Administration role was assigned to this user");
-            }
+
+
             try
             {
                 user2 = userManager.FindByEmail("mickellogin17@gmail.com");
@@ -67,6 +57,20 @@ namespace TechLead
             {
                 Debug.WriteLine("mickellogin17@gmail.com was not found. No Administration role was assigned to this user");
             }
+
+            try
+            {
+                user1 = userManager.FindByEmail("bvd.dorin@gmail.com");
+                user1.UserRole = "Administrator";
+                userManager.AddToRoleAsync(user1.Id, user1.UserRole);
+                _context.Entry(user1).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+            }
+            catch (System.Exception)
+            {
+                Debug.WriteLine("'bvd.dorin@gmail.com was not found. No Administration role was assigned to this user");
+            }
+
         }
     }
 }
