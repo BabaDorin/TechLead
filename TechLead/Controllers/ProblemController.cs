@@ -784,11 +784,11 @@ namespace TechLead.Controllers
             {
                 if(bestSubmissions[i].ProblemID == submission.ExerciseId)
                 {
-                    if (bestSubmissions[i].MaxScoredPoints < submission.ScoredPoints)
+                    if (bestSubmissions[i].MaxScoredPoints <= submission.ScoredPoints)
                     {
                         AddToUsersTotalPoints = submission.ScoredPoints - bestSubmissions[i].MaxScoredPoints;
                         bestSubmissions[i].MaxScoredPoints = submission.ScoredPoints;
-                        
+                        bestSubmissions[i].SubmissionID = submission.SubmissionID;
                     }
                 }
             }
