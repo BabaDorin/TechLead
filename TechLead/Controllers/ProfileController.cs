@@ -23,13 +23,7 @@ namespace TechLead.Controllers
 
                 //Inserting best submissions into profile view model
                 viewModel.bestSubmissions = data.ConvertBestSubmissionFromStringToArray(User.BestSubmisions);
-
-                Debug.WriteLine("Last submissions: ");
-                for(int i=0; i<viewModel.bestSubmissions.Length; i++)
-                {
-                    Debug.WriteLine(viewModel.bestSubmissions[i].ProblemName + " " + viewModel.bestSubmissions[i].MaxScoredPoints);
-                }
-                
+                viewModel.bestSubmissions.Reverse();
                 return View(viewModel);
             }
             catch (Exception e)

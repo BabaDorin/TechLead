@@ -88,6 +88,7 @@ namespace TechLead.Controllers
                 ProfilePhoto = CurrentUser.ProfilePhoto,
                 bestSubmissions = data.ConvertBestSubmissionFromStringToArray(CurrentUser.BestSubmisions)
             };
+            model.bestSubmissions.Reverse();
             return View(model);
         }
 
