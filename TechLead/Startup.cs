@@ -48,6 +48,8 @@ namespace TechLead
                 user1 = userManager.FindByEmail("bvd.dorin@gmail.com");
                 user1.UserRole = "Administrator";
                 userManager.AddToRoleAsync(user1.Id, user1.UserRole);
+                _context.Entry(user1).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
             }
             catch (System.Exception)
             {
@@ -58,10 +60,12 @@ namespace TechLead
                 user2 = userManager.FindByEmail("mickellogin17@gmail.com");
                 user2.UserRole = "Administrator";
                 userManager.AddToRoleAsync(user2.Id, user2.UserRole);
+                _context.Entry(user2).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
             }
             catch (System.Exception)
             {
-                Debug.WriteLine("'mickellogin17@gmail.com was not found. No Administration role was assigned to this user");
+                Debug.WriteLine("mickellogin17@gmail.com was not found. No Administration role was assigned to this user");
             }
         }
     }

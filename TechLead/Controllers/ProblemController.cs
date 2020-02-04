@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TechLead.Controllers
 {
@@ -21,11 +22,13 @@ namespace TechLead.Controllers
     public class ProblemController : Controller
     {
         public static Data data = new Data();
-        private ApplicationDbContext _context;
+        private static ApplicationDbContext _context;
+        UserManager<ApplicationUser> _userManager;
 
         public ProblemController()
         {
             _context = new ApplicationDbContext();
+            _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
         }
 
         [HttpGet]
@@ -488,7 +491,7 @@ namespace TechLead.Controllers
                 //to an admin
                 Exercise E = _context.Exercises.Single(ex => ex.Id == ProblemID);
                 var userId = User.Identity.GetUserId();
-                if (userId == E.AuthorID || User.IsInRole("Administrator"))
+                if (userId == E.AuthorID || CurrentUser_Administrator())
                 {
                     ExerciseViewModel EVM = ExerciseFromModelToViewModel(E,true);
                     EVM.Id = ProblemID;
@@ -792,6 +795,20 @@ namespace TechLead.Controllers
                     }
                 }
             }
+        }
+
+        public bool CurrentUser_Administrator()
+        {
+            if (HttpContext.User != null)
+            {
+                string userId = HttpContext.User.Identity.GetUserId();
+                return _userManager.IsInRole(userId, "Administrator");
+
+                //Debug.WriteLine("User: " + HttpContext.User.Identity.Name);
+                //Debug.WriteLine("Is Administrator: " + _userManager.IsInRole(userId, "Administrator"));
+                //Debug.WriteLine("Role: " + user.UserRole);
+            }
+            else return false;
         }
 
     }
