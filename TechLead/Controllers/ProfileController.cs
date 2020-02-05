@@ -23,7 +23,9 @@ namespace TechLead.Controllers
 
                 //Inserting best submissions into profile view model
                 viewModel.bestSubmissions = data.ConvertBestSubmissionFromStringToArray(User.BestSubmisions);
-                viewModel.bestSubmissions.Reverse();
+                if(viewModel.bestSubmissions!=null)
+                    viewModel.bestSubmissions.Reverse();
+
                 return View(viewModel);
             }
             catch (Exception e)

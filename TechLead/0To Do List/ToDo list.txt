@@ -6,6 +6,8 @@ for example, an easy test case may be scored with 10 points, a harder one - with
  
 >>>> Admins are able to see submission's code => Solve the problems with those admins features that do not work 
 
+>>>> Treat the http 400 response
+
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	TO DO

@@ -88,7 +88,8 @@ namespace TechLead.Controllers
                 ProfilePhoto = CurrentUser.ProfilePhoto,
                 bestSubmissions = data.ConvertBestSubmissionFromStringToArray(CurrentUser.BestSubmisions)
             };
-            model.bestSubmissions.Reverse();
+            if(model.bestSubmissions!=null)
+             model.bestSubmissions.Reverse();
             return View(model);
         }
 
@@ -96,7 +97,6 @@ namespace TechLead.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult IndexUpdateInfo(IndexViewModel model)
         {
-            
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("CustomError", "An error occured. Please, make sure there are no brackets or pieces of code in your text.");
