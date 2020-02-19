@@ -195,11 +195,11 @@ namespace TechLead.Controllers
                     Debug.WriteLine("Test " + i);
                     double Points = 0;
                     int ExecutionTime = 0;
-                    int MemoryLimit = 0;
+                    int Memory = 0;
                     string Status = string.Empty;
                     string Error = string.Empty;
                     Debug.WriteLine("Going into go through test case");
-                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref MemoryLimit, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
+                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, e.ExecutionTime, ref Memory, e.MemoryLimit, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
 
                     //Now we add the results to submission object
 
@@ -230,7 +230,7 @@ namespace TechLead.Controllers
             }
         }
 
-        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTimeMs, ref int MemoryLimitKb,
+        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
             ref string Status, ref string Error, int langID, string sourceCode)
         {
             try
@@ -266,23 +266,60 @@ namespace TechLead.Controllers
                               result.SelectToken("status.description").ToString() == "Processing");
 
                 //Now we have the result in a json format, so we are able to insert necessary data.
+                // --- 
+                //Execution time (json contains a float valus (seconds) but it is being parsed to miliseconds)
                 if (result.SelectToken("time") != null)
-                    ExecutionTimeMs = (int)result.SelectToken("time");
+                    ExecutionTimeMs = (int)((double)result.SelectToken("time")*1000);
 
-                //Check if the execution time is less than or equal to time limit
+                //Status (Accepted, denied etc.)
+                Status = (string)result.SelectToken("status.description");
 
-                Status = (string)result.SelectToken("status.description"); //Accepted or not
-                Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
+                //Memory used (in kylobites)
+                MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
 
-                //If compile does not return any error, but it has earned no points, it means that 
-                //the users's source code returned an incorrect output.
-                Error = "";
-                Error += (string)result.SelectToken("compile_output");
-                if(Points==0 && Error.Length < 3)
+                //Now we check if the program used the right amount of memory (Less or equal to memory limit)
+                //For the first we check if the current exercise has some time and memory constrains.
+                int MemoryLimitLocal = (MemoryLimit == 0) ? int.MaxValue : MemoryLimit;
+                int ExecutionTimeLimitLocal = (ExecutionTimeLimit == 0) ? int.MaxValue : ExecutionTimeLimit;
+
+                if (MemoryUsed > MemoryLimitLocal)
                 {
-                    Error = "Incorrect output";
+                    //if the program used too much memory
+                    bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
+                    Error = "Your program had used too much memory :(";
+
+                    if (ExecutionTimeMs > ExecutionTimeLimitLocal)
+                        Error += "\nand it needs too much time to run :(";
+
+                    if (correctOutput) Error += "\nBut the output was correct :)";
+                    Points = 0;
+                    return;
                 }
-                Debug.WriteLine("Error = " + Error);
+                else
+                {
+                    if (ExecutionTimeMs > ExecutionTimeLimitLocal)
+                    {
+                        //if program's execution needed too much time
+                        Error = "Your program needs too much time to run :(";
+                        bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
+                        if (correctOutput) Error += "\nBut the output was correct :)";
+                        Points = 0;
+                        return;
+                    }
+
+                    //If we are here, it means that everything is OK with execution time and used memory
+                    //This situation occurs when the was not executed, was executed but with errors,
+                    //was executed but the result was incorrect or it was executed and the output is correct.
+                    Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
+                    Error = (string)result.SelectToken("compile_output");
+
+                    //If the current output does not match with the correct one, it means that Points = 0 and
+                    //there is no Error message inserted into that variable called Error
+                    if (Points==0 && Error.Length < 3)
+                    {
+                        Error = "Incorrect Output";
+                    }
+                }
             }
             catch (NotImplementedException)
             {
@@ -304,7 +341,7 @@ namespace TechLead.Controllers
                 string result;
 
                 //building the request and passing the parameters we are looking for.
-                var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status");
+                var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status,time,memory");
                 request.ContentType = "application/json";
                 request.Method = "GET";
 
