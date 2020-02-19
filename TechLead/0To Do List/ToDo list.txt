@@ -2,7 +2,8 @@
 	TO DO IMMEDIATELY
 
 
->>>> Score solutions based on execution time and required memory.
+-> >>>> Score solutions based on execution time and required memory.
+
 >>>> Treat httpresponse 400
 >>>> Let the user to chose the compiler via a drop-down menu
 >>>> Commentary for each problem

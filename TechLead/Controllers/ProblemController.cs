@@ -141,6 +141,7 @@ namespace TechLead.Controllers
                 _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();
                 Debug.WriteLine("done");
+
                 return RedirectToAction("SubmissionDetails", "Problem", new { id = submission.SubmissionID });
             }
             catch (Exception e)
@@ -194,10 +195,11 @@ namespace TechLead.Controllers
                     Debug.WriteLine("Test " + i);
                     double Points = 0;
                     int ExecutionTime = 0;
+                    int MemoryLimit = 0;
                     string Status = string.Empty;
                     string Error = string.Empty;
                     Debug.WriteLine("Going into go through test case");
-                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
+                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, ref MemoryLimit, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
 
                     //Now we add the results to submission object
 
@@ -228,7 +230,7 @@ namespace TechLead.Controllers
             }
         }
 
-        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTime,
+        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTimeMs, ref int MemoryLimitKb,
             ref string Status, ref string Error, int langID, string sourceCode)
         {
             try
@@ -265,7 +267,10 @@ namespace TechLead.Controllers
 
                 //Now we have the result in a json format, so we are able to insert necessary data.
                 if (result.SelectToken("time") != null)
-                    ExecutionTime = (int)result.SelectToken("time");
+                    ExecutionTimeMs = (int)result.SelectToken("time");
+
+                //Check if the execution time is less than or equal to time limit
+
                 Status = (string)result.SelectToken("status.description"); //Accepted or not
                 Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
 
