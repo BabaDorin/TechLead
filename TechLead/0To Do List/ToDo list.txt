@@ -1,12 +1,16 @@
 ﻿
 	TO DO IMMEDIATELY
 
+
+>>>> Score solutions based on execution time and required memory.
+>>>> Treat httpresponse 400
+>>>> Let the user to chose the compiler via a drop-down menu
+>>>> Commentary for each problem
+>>>> Forum
+>>>> *Dynamic number or back-end problems
 >>>> The user who creates a problem can assign will have to assign points for each backend testcase.
 for example, an easy test case may be scored with 10 points, a harder one - with 30 points.
- 
 >>>> Admins are able to see submission's code => Solve the problems with those admins features that do not work 
-
->>>> Treat the http 400 response
 
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
