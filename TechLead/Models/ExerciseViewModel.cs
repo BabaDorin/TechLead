@@ -28,6 +28,16 @@ namespace TechLead.Models
         [Range(10, 400, ErrorMessage = "Range for the points property is 10-400. Insert a number between 10 and 400")]
         public int Points { get; set; }
 
+        //Execution time, in miliseconds
+        [Required]
+        [Range(0, 9999999, ErrorMessage = "Please, enter a valid value or leave it 0 if you do not want to set any time limit")]
+        public int ExecutionTime { get; set; }
+
+        //Memory limit, in kb
+        [Required]
+        [Range(0, 9999999, ErrorMessage = "Please, enter a valid value or leave it 0 if you do not want to set any memory limit")]
+        public int MemoryLimit { get; set; }
+
         public int SubmissionsAbove10Points { get; set; }
 
         public int SubmissionsUnder10Points { get; set; }

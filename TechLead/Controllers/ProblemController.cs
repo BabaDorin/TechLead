@@ -279,8 +279,8 @@ namespace TechLead.Controllers
 
                 //Now we check if the program used the right amount of memory (Less or equal to memory limit)
                 //For the first we check if the current exercise has some time and memory constrains.
-                int MemoryLimitLocal = (MemoryLimit == 0) ? int.MaxValue : MemoryLimit;
-                int ExecutionTimeLimitLocal = (ExecutionTimeLimit == 0) ? int.MaxValue : ExecutionTimeLimit;
+                int MemoryLimitLocal = (MemoryLimit <= 0) ? int.MaxValue : MemoryLimit;
+                int ExecutionTimeLimitLocal = (ExecutionTimeLimit <= 0) ? int.MaxValue : ExecutionTimeLimit;
 
                 if (MemoryUsed > MemoryLimitLocal)
                 {

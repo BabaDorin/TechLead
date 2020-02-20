@@ -47,6 +47,24 @@
             </div>
             <br />
             <div class="form-group">
+                <div class="alert alert-info">
+                    <strong>Info!</strong> If you do not want to set any runtime limit for this problem, leave the field blank.
+                </div>
+                    @Html.LabelFor(ex => ex.ExecutionTime, "Runtime limit (in miliseconds)")
+                    @Html.TextBoxFor(ex => ex.ExecutionTime, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(ex => ex.ExecutionTime)
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="alert alert-info">
+                    <strong>Info!</strong> If you do not want to set any memory limit for this problem, leave the field blank.
+                </div>
+                    @Html.LabelFor(ex => ex.MemoryLimit, "Memory limit (in kilobytes)")
+                    @Html.TextBoxFor(ex => ex.MemoryLimit, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(ex => ex.MemoryLimit)
+            </div>
+            <br />
+            <div class="form-group">
                 @Html.LabelFor(ex => ex.Condition)
                 @Html.TextAreaFor(ex => ex.Condition, new { @class = "form-control", @rows = "6", @style = "width:100%; overflow:auto; max-width:100%;" })
                 @Html.ValidationMessageFor(ex => ex.Condition)
