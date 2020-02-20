@@ -233,8 +233,8 @@ namespace TechLead.Controllers
         public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
             ref string Status, ref string Error, int langID, string sourceCode)
         {
-            try
-            {
+            //try
+            //{
                 //Function [GetToken()] returns a json (string formatted) having the token.
                 //It will be parsed to json by using JObject.Parse();
                 string token = GetToken(test, langID, sourceCode).Result;
@@ -252,7 +252,7 @@ namespace TechLead.Controllers
                 do
                 {
                     result = JObject.Parse(GetResult(token));
-
+                Debug.WriteLine("STATUS: " + result.SelectToken("status.description").ToString());
                     //Checking out if our submitted solution has been processed
                     //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
                     //So it waits 100 miliseconds before sending another get request.
@@ -320,7 +320,7 @@ namespace TechLead.Controllers
                         Error = "Incorrect Output";
                     }
                 }
-            }
+            /*}
             catch (NotImplementedException)
             {
                 //This happens when the API has been modified or shut down or whatever.
@@ -331,7 +331,7 @@ namespace TechLead.Controllers
             {
                 Debug.WriteLine("Exception in GoThroughTestCase => " + e);
                 throw e;
-            }
+            }*/
         }
 
         public string GetResult(string token)
