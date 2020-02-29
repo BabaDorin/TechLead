@@ -42,9 +42,9 @@ namespace TechLead.Controllers
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
-                ExerciseViewModel EVM = ExerciseFromModelToViewModel(e,false);
+                ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
                 EVM.MakeSourceCodePublic = true;
-                TempData["Object"] = e; 
+                TempData["Object"] = e;
 
                 return View(EVM);
             }
@@ -396,7 +396,7 @@ namespace TechLead.Controllers
         //-------------------------------------------------------------------------------------------
         //------------------------- Compilation and judging stuff -----------------------------------
         //-------------------------------------------------------------------------------------------
-        
+
 
         public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
         {
@@ -427,7 +427,7 @@ namespace TechLead.Controllers
                 submission.StatusPerTestCase = string.Empty;
                 submission.ErrorMessage = string.Empty;
 
-                Debug.WriteLine("The problem has {0} tests, {1} points per test case ", 
+                Debug.WriteLine("The problem has {0} tests, {1} points per test case ",
                     submission.NumberOfTestCases, submission.DistributedPointsPerTestCase);
                 //Now we have to go through each test case, collect data, analyse and
                 //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
@@ -449,7 +449,7 @@ namespace TechLead.Controllers
 
                     //Check if Point == 1 it means that the solutition returned the corect answer, so the points are given
                     //Otherwise, Point == 0 => Something is wrong with the solution submitted.
-                    submission.ScoredPoints += Points*submission.DistributedPointsPerTestCase;
+                    submission.ScoredPoints += Points * submission.DistributedPointsPerTestCase;
                     submission.PointsPerTestCase += (Points == 1) ? submission.DistributedPointsPerTestCase.ToString() : "0";
                     submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
                     submission.StatusPerTestCase += Status;
@@ -479,91 +479,105 @@ namespace TechLead.Controllers
         {
             //try
             //{
-                //Function [GetToken()] returns a json (string formatted) having the token.
-                //It will be parsed to json by using JObject.Parse();
-                string token = GetToken(test, langID, sourceCode).Result;
-                if (token == null)
+            //Function [GetToken()] returns a json (string formatted) having the token.
+            //It will be parsed to json by using JObject.Parse();
+            string token = GetToken(test, langID, sourceCode).Result;
+            if (token == null)
+            {
+                Debug.WriteLine("WARNING! No token returned from judge0");
+                throw new NotImplementedException();
+            }
+
+            //Function that returns a json (string formatted) containing the result after running the solution
+            JObject result;
+
+            //It takes time for the API to process the data. This [do while] stays here to make repetitive calls to the API
+            //The possible statusses are:
+            // In Queue
+            // Processing
+            // Accepted
+            // Wrong Answer
+            // Time Limit Exceeded
+            // Compilation Error
+            // Runtime Error (SIGSEGV)
+            // Runtime Error (SIGXFSZ)
+            // Runtime Error (SIGFPE)
+            // Runtime Error (SIGABRT)
+            // Runtime Error (NZEC)
+            // Runtime Error (Other)
+            // Internal Error
+            // Exec Format Error
+            do
+            {
+                result = JObject.Parse(GetResult(token));
+                Debug.WriteLine("STATUS: " + result.SelectToken("status.description").ToString());
+                //Checking out if our submitted solution has been processed
+                //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
+                //So it waits 100 miliseconds before sending another get request.
+                if (result.SelectToken("status.description").ToString() == "In Queue" ||
+                        result.SelectToken("status.description").ToString() == "Processing")
                 {
-                    throw new NotImplementedException();
+                    System.Threading.Thread.Sleep(100);
                 }
 
-                //Function that returns a json (string formatted) containing the result after running the solution
-                JObject result;
+            } while (result.SelectToken("status.description").ToString() == "In Queue" ||
+                          result.SelectToken("status.description").ToString() == "Processing");
 
-                //It takes time for the API to process the data. This do while stays here to make repetitive calls to the API
-                //Checking everytime the response. If the status is different from 'In Queue' or 'Processing', it means
-                //that the code has been compiled and it returned the response having the results we are looking for.
-                do
+            //Now we have the result in a json format, so we are able to insert necessary data.
+            // --- 
+            //Execution time (json contains a float valus (seconds) but it is being parsed to miliseconds)
+            if (result.SelectToken("time") != null)
+                ExecutionTimeMs = (int)((double)result.SelectToken("time") * 1000);
+
+            //Status (Accepted, denied etc.)
+            Status = (string)result.SelectToken("status.description");
+
+            //Memory used (in kylobites)
+            MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
+
+            //Now we check if the program used the right amount of memory (Less or equal to memory limit)
+            //For the first we check if the current exercise has some time and memory constrains.
+            int MemoryLimitLocal = (MemoryLimit <= 0) ? int.MaxValue : MemoryLimit;
+            int ExecutionTimeLimitLocal = (ExecutionTimeLimit <= 0) ? int.MaxValue : ExecutionTimeLimit;
+
+            if (MemoryUsed > MemoryLimitLocal)
+            {
+                //if the program used too much memory
+                bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
+                Error = "Your program had used too much memory :(";
+
+                if (ExecutionTimeMs > ExecutionTimeLimitLocal)
+                    Error += "\nand it needs too much time to run :(";
+
+                if (correctOutput) Error += "\nBut the output was correct :)";
+                Points = 0;
+                return;
+            }
+            else
+            {
+                if (ExecutionTimeMs > ExecutionTimeLimitLocal)
                 {
-                    result = JObject.Parse(GetResult(token));
-                Debug.WriteLine("STATUS: " + result.SelectToken("status.description").ToString());
-                    //Checking out if our submitted solution has been processed
-                    //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
-                    //So it waits 100 miliseconds before sending another get request.
-                    if (result.SelectToken("status.description").ToString() == "In Queue" ||
-                            result.SelectToken("status.description").ToString() == "Processing")
-                    {
-                        System.Threading.Thread.Sleep(100);
-                    }
-
-                } while (result.SelectToken("status.description").ToString() == "In Queue" ||
-                              result.SelectToken("status.description").ToString() == "Processing");
-
-                //Now we have the result in a json format, so we are able to insert necessary data.
-                // --- 
-                //Execution time (json contains a float valus (seconds) but it is being parsed to miliseconds)
-                if (result.SelectToken("time") != null)
-                    ExecutionTimeMs = (int)((double)result.SelectToken("time")*1000);
-
-                //Status (Accepted, denied etc.)
-                Status = (string)result.SelectToken("status.description");
-
-                //Memory used (in kylobites)
-                MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
-
-                //Now we check if the program used the right amount of memory (Less or equal to memory limit)
-                //For the first we check if the current exercise has some time and memory constrains.
-                int MemoryLimitLocal = (MemoryLimit <= 0) ? int.MaxValue : MemoryLimit;
-                int ExecutionTimeLimitLocal = (ExecutionTimeLimit <= 0) ? int.MaxValue : ExecutionTimeLimit;
-
-                if (MemoryUsed > MemoryLimitLocal)
-                {
-                    //if the program used too much memory
+                    //if program's execution needed too much time
+                    Error = "Your program needs too much time to run :(";
                     bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
-                    Error = "Your program had used too much memory :(";
-
-                    if (ExecutionTimeMs > ExecutionTimeLimitLocal)
-                        Error += "\nand it needs too much time to run :(";
-
                     if (correctOutput) Error += "\nBut the output was correct :)";
                     Points = 0;
                     return;
                 }
-                else
+
+                //If we are here, it means that everything is OK with execution time and used memory
+                //This situation occurs when the was not executed, was executed but with errors,
+                //was executed but the result was incorrect or it was executed and the output is correct.
+                Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
+                Error = (string)result.SelectToken("compile_output");
+
+                //If the current output does not match with the correct one, it means that Points = 0 and
+                //there is no Error message inserted into that variable called Error
+                if (Points == 0 && Error.Length < 3)
                 {
-                    if (ExecutionTimeMs > ExecutionTimeLimitLocal)
-                    {
-                        //if program's execution needed too much time
-                        Error = "Your program needs too much time to run :(";
-                        bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
-                        if (correctOutput) Error += "\nBut the output was correct :)";
-                        Points = 0;
-                        return;
-                    }
-
-                    //If we are here, it means that everything is OK with execution time and used memory
-                    //This situation occurs when the was not executed, was executed but with errors,
-                    //was executed but the result was incorrect or it was executed and the output is correct.
-                    Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
-                    Error = (string)result.SelectToken("compile_output");
-
-                    //If the current output does not match with the correct one, it means that Points = 0 and
-                    //there is no Error message inserted into that variable called Error
-                    if (Points==0 && Error.Length < 3)
-                    {
-                        Error = "Incorrect Output";
-                    }
+                    Error = "Incorrect Output";
                 }
+            }
             /*}
             catch (NotImplementedException)
             {
@@ -614,14 +628,14 @@ namespace TechLead.Controllers
 
                 //Building the judge0 submission, which will be sent via request
                 Judge0JsonModel jsonModel = new Judge0JsonModel();
-                jsonModel.source_code =  data.Base64Encode(SourceCode);
+                jsonModel.source_code = data.Base64Encode(SourceCode);
                 jsonModel.stdin = data.Base64Encode(test.Input);
                 jsonModel.language_id = langID;
 
                 //Sending the request
                 Debug.WriteLine("Sending the request");
                 JObject response;
-                
+
                 var json = JsonConvert.SerializeObject(jsonModel);
                 var dataToSend = new StringContent(json, Encoding.UTF8, "application/json");
                 var url = "https://api.judge0.com/submissions/?base64_encoded=true&wait=false";
@@ -825,7 +839,7 @@ namespace TechLead.Controllers
             AddToUsersTotalPoints = submission.ScoredPoints;
 
             //This string should not begin with a delimitator.
-            if (bestsubmission.Length>0)
+            if (bestsubmission.Length > 0)
             {
                 bestsubmission += data.Delimitator;
             }
@@ -836,7 +850,7 @@ namespace TechLead.Controllers
         public bool SubmissionIsInserted(int exerciseID, BestSubmission[] bestSubmissions)
         {
             if (bestSubmissions == null) return false;
-            for(int i=0; i<bestSubmissions.Length; i++)
+            for (int i = 0; i < bestSubmissions.Length; i++)
             {
                 if (bestSubmissions[i].ProblemID == exerciseID) return true;
             }
@@ -847,9 +861,9 @@ namespace TechLead.Controllers
         {
             //Look for the last best submission for a specific problem, check if the last submission has less points than the current submission, 
             //if current submission has more points, then update the points value.
-            for(int i=0; i<bestSubmissions.Length; i++)
+            for (int i = 0; i < bestSubmissions.Length; i++)
             {
-                if(bestSubmissions[i].ProblemID == submission.ExerciseId)
+                if (bestSubmissions[i].ProblemID == submission.ExerciseId)
                 {
                     if (bestSubmissions[i].MaxScoredPoints <= submission.ScoredPoints)
                     {
