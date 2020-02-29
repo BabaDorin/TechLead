@@ -1584,3 +1584,5 @@ C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debu
 C:\Users\Baba Dorin\Desktop\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.AddBestSubmissiontToApplicationUserTable.resources
 C:\Users\Baba Dorin\Desktop\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.DeleteUselessProblems.resources
 C:\Users\Baba Dorin\Desktop\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.ExecutionTimeAndMemoryLimitForExerciseModel.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.DeleteUselessProblems.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.ExecutionTimeAndMemoryLimitForExerciseModel.resources

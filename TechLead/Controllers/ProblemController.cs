@@ -553,41 +553,41 @@ namespace TechLead.Controllers
                         "causes of a segmentation fault are : Using uninitialized pointers, dereference of NULL pointers, accessing memory that " +
                         "the program doesn’t own.";
 
-                    CompilationError("Runtime Error (SIGSEGV)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    CompilationError("Runtime Error (SIGSEGV): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (SIGXFSZ)":
                     ErrorDescription = "Exceeded file size - Your program is outputting too much values, that the output file generated is " +
                         "having a size larger than that is allowable.";
 
-                    CompilationError("Runtime Error (SIGXFSZ)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    CompilationError("Runtime Error (SIGXFSZ): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (SIGFPE)":
                     ErrorDescription = "SIGFPE may occur due to \n\tDivision by zero \n\tModulo operation by zero \n\tInteger overflow(when the value" +
                         " you are trying to store exceeds the range) - trying using a bigger data type like long.";
 
-                    CompilationError("Runtime Error (SIGFPE)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    CompilationError("Runtime Error (SIGFPE): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (SIGABRT)":
                     ErrorDescription = "SIGABRT errors are caused by your program aborting due to a fatal error. In C++, this is normally due to an " +
                         "assert statement in C++ not returning true, but some STL elements can generate this if they try to store too much memory.";
 
-                    CompilationError("Runtime Error (SIGABRT)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    CompilationError("Runtime Error (SIGABRT): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (NZEC)":
                     ErrorDescription = " NZEC stands for Non Zero Exit Code. For C users, this will be generated if your main method does not have a " +
                         "return 0; statement. Other languages like Java/C++ could generate this error if they throw an exception.";
 
-                    CompilationError("Runtime Error (SIGABRT)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    CompilationError("Runtime Error (NZEC): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (Other)":
                     ErrorDescription = "";
 
-                    CompilationError("Runtime Error (SIGABRT)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    CompilationError("Runtime Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Internal Error":
@@ -626,22 +626,23 @@ namespace TechLead.Controllers
             //Execution time (json contains a float valus (seconds) but it is being parsed to miliseconds)
             if (result.SelectToken("time") != null)
                 ExecutionTimeMs = (int)((double)result.SelectToken("time") * 1000);
-
+            Debug.WriteLine("Debug point 1");
             //Status (Accepted, denied etc.)
             Status = (string)result.SelectToken("status.description");
-
+            Debug.WriteLine("Debug point 2");
             //Memory used (in kylobites)
             MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
-
+            Debug.WriteLine("Debug point 3");
             //Now we check if the program used the right amount of memory (Less or equal to memory limit)
             //For the first we check if the current exercise has some time and memory constrains.
             int MemoryLimitLocal = (MemoryLimit <= 0) ? int.MaxValue : MemoryLimit;
             int ExecutionTimeLimitLocal = (ExecutionTimeLimit <= 0) ? int.MaxValue : ExecutionTimeLimit;
-
+            Debug.WriteLine("Debug point 4");
             if (MemoryUsed > MemoryLimitLocal)
             {
                 //if the program used too much memory
                 bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
+                Debug.WriteLine("Debug point 5");
                 Error = "Your program had used too much memory :(";
 
                 if (ExecutionTimeMs > ExecutionTimeLimitLocal)
@@ -658,6 +659,7 @@ namespace TechLead.Controllers
                     //if program's execution needed too much time
                     Error = "Your program needs too much time to run :(";
                     bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
+                    Debug.WriteLine("Debug point 6");
                     if (correctOutput) Error += "\nBut the output was correct :)";
                     Points = 0;
                     return;
@@ -667,11 +669,13 @@ namespace TechLead.Controllers
                 //This situation occurs when the was not executed, was executed but with errors,
                 //was executed but the result was incorrect or it was executed and the output is correct.
                 Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
+                Debug.WriteLine("Debug point 7");
                 Error = (string)result.SelectToken("compile_output");
+                Debug.WriteLine("Debug point 8");
 
                 //If the current output does not match with the correct one, it means that Points = 0 and
                 //there is no Error message inserted into that variable called Error
-                if (Points == 0 && Error.Length < 3)
+                if (Points == 0 && (Error == null || Error.Length < 3))
                 {
                     Error = "Incorrect Output";
                 }
