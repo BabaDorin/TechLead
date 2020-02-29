@@ -31,6 +31,11 @@ namespace TechLead.Controllers
             _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
         }
 
+
+        //-------------------------------------------------------------------------------------------
+        //------------------------- Action Results - Get and Post -----------------------------------
+        //-------------------------------------------------------------------------------------------
+
         [HttpGet]
         public ActionResult Details(int id)
         {
@@ -153,7 +158,246 @@ namespace TechLead.Controllers
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
+
+        public ActionResult SubmissionDetails(int id)
+        {
+            try
+            {
+                Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
+                SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
+                return View(submissionViewModel);
+            }
+            catch (Exception)
+            {
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = "We could not find the submission specified. Sorry ):";
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Create()
+        {
+            try
+            {
+                var viewModel = new ExerciseViewModel
+                {
+                    Difficulty = _context.Difficulty.ToList()
+                };
+                viewModel.Test = new Test[10];
+                return View(viewModel);
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = e.ToString()
+                };
+                return View("~/Views/Shared/Error.cshtml", error);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Create(ExerciseViewModel exerciseViewModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                    return View("Create", exerciseViewModel);
+                }
+                int nrOfTests = 0;
+                for (int i = 0; i < 10; i++)
+                {
+                    if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                    {
+                        nrOfTests++;
+                    }
+                }
+                if (nrOfTests == 0)
+                {
+                    TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
+                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                    return View("Create", exerciseViewModel);
+                }
+
+                //If everything is OK, we copy all the data from ExerciseViewModel to Exercise
+
+                if (Request.IsAuthenticated)
+                {
+                    exerciseViewModel.Author = User.Identity.Name;
+                }
+                Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
+                exercise.AuthorID = User.Identity.GetUserId();
+                _context.Exercises.Add(exercise);
+                _context.SaveChanges();
+                return RedirectToAction("Details", new { id = exercise.Id });
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "Something happened. The problem was not saved.\n Details: " + e.ToString()
+                };
+                return View("~/Views/Shared/Error.csthml", error);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Update(int ProblemID)
+        {
+            try
+            {
+                //Display this page only to the creator of that specific problem, or
+                //to an admin
+                Exercise E = _context.Exercises.Single(ex => ex.Id == ProblemID);
+                var userId = User.Identity.GetUserId();
+                if (userId == E.AuthorID || isAdministrator())
+                {
+                    ExerciseViewModel EVM = ExerciseFromModelToViewModel(E, true);
+                    EVM.Id = ProblemID;
+                    return View(EVM);
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel();
+                    Error.Title = "Error 404";
+                    Error.Description = "Page not found :(";
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            catch (Exception)
+            {
+                ErrorViewModel Error = new ErrorViewModel();
+                Error.Title = "Error";
+                Error.Description = "Unfortunately, something happened. The problem has not been modified. Try again.";
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Update(ExerciseViewModel exerciseViewModel)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                    return View("Update", exerciseViewModel);
+                }
+
+                //There must be at least one Back-End test case
+                int nrOfTests = 0;
+                for (int i = 0; i < 10; i++)
+                {
+                    if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
+                    {
+                        nrOfTests++;
+                    }
+                }
+
+                if (nrOfTests == 0)
+                {
+                    TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
+                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
+                    return View("Update", exerciseViewModel);
+                }
+
+                //If everything is OK, the exercise will get updated
+
+                Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
+                exercise.AuthorID = HttpContext.User.Identity.GetUserId();
+                exercise.Author = HttpContext.User.Identity.Name;
+                _context.Entry(exercise).State = System.Data.Entity.EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Details", new { id = exercise.Id });
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "Your problem has not been modified. \nDetails: " + e.ToString()
+                };
+                return View("~/Views/Shared/Error.cshtml", error);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Delete(int ProblemID)
+        {
+            //Redirect the user to another page like => Do you really want to delete this problem?
+            // Yes (Submit type button) and back
+
+            //An extra safety mesure
+            Exercise E = _context.Exercises.Single(e => e.Id == ProblemID);
+            if ((User.Identity.IsAuthenticated && User.Identity.GetUserId() == E.AuthorID) || User.IsInRole("Administrator"))
+            {
+                DeleteProblemViewModel deleteProblemViewModel = new DeleteProblemViewModel
+                {
+                    Id = E.Id,
+                    Name = E.Name
+                };
+                return View(deleteProblemViewModel);
+            }
+
+            //If gone so far, something is wrong
+            ErrorViewModel error = new ErrorViewModel
+            {
+                Title = "Error",
+                Description = "How did you even get here?"
+            };
+            return View("~/Views/Shared/Error.cshtml", error);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(DeleteProblemViewModel deleteProblemViewModel)
+        {
+            //Deleting an exercise means setting the IsArchieved property to true.
+            Exercise E = _context.Exercises.Single(e => e.Id == deleteProblemViewModel.Id);
+            _context.Exercises.Remove(E);
+            _context.SaveChanges();
+            return View("~/Views/Home/Index.cshtml");
+        }
+
+        public ActionResult Submissions(int? page)
+        {
+            Exercise e = TempData["Object"] as Exercise;
+            int ExerciseIdParam = e.Id;
+            TempData.Keep();
+            List<Submission> SubmissionForASpecificExercise = new List<Submission>();
+            foreach (Submission S in _context.Submissions)
+                if (S.ExerciseId == ExerciseIdParam)
+                {
+                    SubmissionForASpecificExercise.Add(S);
+                }
+            SubmissionForASpecificExercise.Reverse();
+            return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
+        }
+
+        public ActionResult RenderError(ErrorViewModel Err)
+        {
+            return View("~/Views/Shared/Error.cshtml", Err);
+        }
+
+
+
+        //-------------------------------------------------------------------------------------------
+        //------------------------- Compilation and judging stuff -----------------------------------
+        //-------------------------------------------------------------------------------------------
         
+
         public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
         {
             try
@@ -432,232 +676,12 @@ namespace TechLead.Controllers
             }
         }
 
-        public ActionResult SubmissionDetails(int id)
-        {
-            try
-            {
-                Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
-                SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
-                return View(submissionViewModel);
-            }
-            catch (Exception)
-            {
-                ErrorViewModel Error = new ErrorViewModel();
-                Error.Title = "Error";
-                Error.Description = "We could not find the submission specified. Sorry ):";
-                return View("~/Views/Shared/Error.cshtml", Error);
-            }
-        }
 
-        [HttpGet]
-        [Authorize]
-        public ActionResult Create()
-        {
-            try
-            {
-                var viewModel = new ExerciseViewModel
-                {
-                    Difficulty = _context.Difficulty.ToList()
-                };
-                viewModel.Test = new Test[10];
-                return View(viewModel);
-            }
-            catch (Exception e)
-            {
-                ErrorViewModel error = new ErrorViewModel
-                {
-                    Title = "Error",
-                    Description = e.ToString()
-                };
-                return View("~/Views/Shared/Error.cshtml", error);
-            }
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public ActionResult Create(ExerciseViewModel exerciseViewModel)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
-                    return View("Create", exerciseViewModel);
-                }
-                int nrOfTests = 0;
-                for (int i = 0; i < 10; i++)
-                {
-                    if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
-                    {
-                        nrOfTests++;
-                    }
-                }
-                if (nrOfTests == 0)
-                {
-                    TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
-                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
-                    return View("Create", exerciseViewModel);
-                }
+        //-------------------------------------------------------------------------------------------
+        //------------------------- Other methods ---------------------------------------------------
+        //-------------------------------------------------------------------------------------------
 
-                //If everything is OK, we copy all the data from ExerciseViewModel to Exercise
-
-                if (Request.IsAuthenticated)
-                {
-                    exerciseViewModel.Author = User.Identity.Name;
-                }
-                Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
-                exercise.AuthorID = User.Identity.GetUserId();
-                _context.Exercises.Add(exercise);
-                _context.SaveChanges();
-                return RedirectToAction("Details", new { id = exercise.Id });
-            }
-            catch (Exception e)
-            {
-                ErrorViewModel error = new ErrorViewModel
-                {
-                    Title = "Error",
-                    Description = "Something happened. The problem was not saved.\n Details: " + e.ToString()
-                };
-                return View("~/Views/Shared/Error.csthml", error);
-            }
-        }
-
-        [HttpGet]
-        [Authorize]
-        public ActionResult Update(int ProblemID)
-        {
-            try
-            {
-                //Display this page only to the creator of that specific problem, or
-                //to an admin
-                Exercise E = _context.Exercises.Single(ex => ex.Id == ProblemID);
-                var userId = User.Identity.GetUserId();
-                if (userId == E.AuthorID || CurrentUser_Administrator())
-                {
-                    ExerciseViewModel EVM = ExerciseFromModelToViewModel(E,true);
-                    EVM.Id = ProblemID;
-                    return View(EVM);
-                }
-                else
-                {
-                    ErrorViewModel Error = new ErrorViewModel();
-                    Error.Title = "Error 404";
-                    Error.Description = "Page not found :(";
-                    return View("~/Views/Shared/Error.cshtml", Error);
-                }
-            }
-            catch (Exception)
-            {
-                ErrorViewModel Error = new ErrorViewModel();
-                Error.Title = "Error";
-                Error.Description = "Unfortunately, something happened. The problem has not been modified. Try again.";
-                return View("~/Views/Shared/Error.cshtml", Error);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public ActionResult Update(ExerciseViewModel exerciseViewModel)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
-                    return View("Update", exerciseViewModel);
-                }
-
-                //There must be at least one Back-End test case
-                int nrOfTests = 0;
-                for (int i = 0; i < 10; i++)
-                {
-                    if (exerciseViewModel.Test[i].Input != null && exerciseViewModel.Test[i].Input != null)
-                    {
-                        nrOfTests++;
-                    }
-                }
-
-                if (nrOfTests == 0)
-                {
-                    TempData["BackEndTestsNeeded"] = "<script>alert('At leas one backend test case needed');</script>";
-                    exerciseViewModel.Difficulty = _context.Difficulty.ToList();
-                    return View("Update", exerciseViewModel);
-                }
-
-                //If everything is OK, the exercise will get updated
-
-                Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
-                exercise.AuthorID = HttpContext.User.Identity.GetUserId();
-                exercise.Author = HttpContext.User.Identity.Name;
-                _context.Entry(exercise).State = System.Data.Entity.EntityState.Modified;
-                _context.SaveChanges();
-                return RedirectToAction("Details", new { id = exercise.Id });
-            }
-            catch (Exception e)
-            {
-                ErrorViewModel error = new ErrorViewModel
-                {
-                    Title = "Error",
-                    Description = "Your problem has not been modified. \nDetails: " + e.ToString()
-                };
-                return View("~/Views/Shared/Error.cshtml", error);
-            }
-        }
-
-        [HttpGet]
-        [Authorize]
-        public ActionResult Delete(int ProblemID)
-        {
-            //Redirect the user to another page like => Do you really want to delete this problem?
-            // Yes (Submit type button) and back
-
-            //An extra safety mesure
-            Exercise E = _context.Exercises.Single(e => e.Id == ProblemID);
-            if ((User.Identity.IsAuthenticated && User.Identity.GetUserId() == E.AuthorID) || User.IsInRole("Administrator"))
-            {
-                DeleteProblemViewModel deleteProblemViewModel = new DeleteProblemViewModel
-                {
-                    Id = E.Id,
-                    Name = E.Name
-                };
-                return View(deleteProblemViewModel);
-            }
-
-            //If gone so far, something is wrong
-            ErrorViewModel error = new ErrorViewModel
-            {
-                Title = "Error",
-                Description = "How do you even get here?"
-            };
-            return View("~/Views/Shared/Error.cshtml", error);
-        }
-
-       [HttpPost]
-       public ActionResult Delete(DeleteProblemViewModel deleteProblemViewModel)
-        {
-            //Deleting an exercise means setting the IsArchieved property to true.
-            Exercise E = _context.Exercises.Single(e => e.Id == deleteProblemViewModel.Id);
-            _context.Exercises.Remove(E);
-            _context.SaveChanges();
-            return View("~/Views/Home/Index.cshtml");
-        }
-
-        public ActionResult Submissions(int? page)
-        {
-            Exercise e = TempData["Object"] as Exercise;
-            int ExerciseIdParam = e.Id;
-            TempData.Keep();
-            List<Submission> SubmissionForASpecificExercise = new List<Submission>();
-            foreach (Submission S in _context.Submissions)
-                if (S.ExerciseId == ExerciseIdParam)
-                {
-                    SubmissionForASpecificExercise.Add(S);
-                }
-            SubmissionForASpecificExercise.Reverse();
-            return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
-        }
 
         private Exercise ExerciseFromViewModelToModel(ExerciseViewModel ExerciseViewModel)
         {
@@ -792,10 +816,6 @@ namespace TechLead.Controllers
 
             return EVM;
         }
-        public ActionResult RenderError(ErrorViewModel Err)
-        {
-            return View("~/Views/Shared/Error.cshtml", Err);
-        }
 
         public void InsertBestSubmission(ref string bestsubmission, Submission submission, double TotalPoints, ref double AddToUsersTotalPoints)
         {
@@ -841,7 +861,7 @@ namespace TechLead.Controllers
             }
         }
 
-        public bool CurrentUser_Administrator()
+        public bool isAdministrator()
         {
             if (HttpContext.User != null)
             {
