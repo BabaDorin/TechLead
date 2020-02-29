@@ -526,6 +526,7 @@ namespace TechLead.Controllers
 
 
             //Treat all the possible statuses
+            string ErrorDescription;
             switch (result.SelectToken("status.description").ToString())
             {
                 case "Accepted":
@@ -543,41 +544,63 @@ namespace TechLead.Controllers
                     break;
 
                 case "Compilation Error":
-
+                    CompilationError("", "", ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (SIGSEGV)":
+                    ErrorDescription = "A SIGSEGV is an error(signal) caused by an invalid memory reference or a segmentation fault. " +
+                        "You are probably trying to access an array element out of bounds or trying to use too much memory. Some of the other " +
+                        "causes of a segmentation fault are : Using uninitialized pointers, dereference of NULL pointers, accessing memory that " +
+                        "the program doesn’t own.";
 
+                    CompilationError("Runtime Error (SIGSEGV)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (SIGXFSZ)":
+                    ErrorDescription = "Exceeded file size - Your program is outputting too much values, that the output file generated is " +
+                        "having a size larger than that is allowable.";
 
+                    CompilationError("Runtime Error (SIGXFSZ)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (SIGFPE)":
+                    ErrorDescription = "SIGFPE may occur due to \n\tDivision by zero \n\tModulo operation by zero \n\tInteger overflow(when the value" +
+                        " you are trying to store exceeds the range) - trying using a bigger data type like long.";
 
+                    CompilationError("Runtime Error (SIGFPE)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (SIGABRT)":
+                    ErrorDescription = "SIGABRT errors are caused by your program aborting due to a fatal error. In C++, this is normally due to an " +
+                        "assert statement in C++ not returning true, but some STL elements can generate this if they try to store too much memory.";
 
+                    CompilationError("Runtime Error (SIGABRT)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (NZEC)":
+                    ErrorDescription = " NZEC stands for Non Zero Exit Code. For C users, this will be generated if your main method does not have a " +
+                        "return 0; statement. Other languages like Java/C++ could generate this error if they throw an exception.";
 
+                    CompilationError("Runtime Error (SIGABRT)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Runtime Error (Other)":
+                    ErrorDescription = "";
 
+                    CompilationError("Runtime Error (SIGABRT)", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Internal Error":
+                    ErrorDescription = "";
 
+                    CompilationError("Internal Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
 
                 case "Exec Format Error":
+                    ErrorDescription = "";
 
+                    CompilationError("Internal Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
                     break;
-
             }
            
             /*}
@@ -597,6 +620,7 @@ namespace TechLead.Controllers
         public void Accepted(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
             ref string Status, ref string Error, int langID, string sourceCode, JObject result)
         {
+            Debug.WriteLine("Accepted called");
             //Now we have the result in a json format, so we are able to insert necessary data.
             // --- 
             //Execution time (json contains a float valus (seconds) but it is being parsed to miliseconds)
@@ -654,8 +678,10 @@ namespace TechLead.Controllers
             }
         }
 
-        public void TimeLimitExceeded(Test test, ref string Error, ref double Points, ref int ExecutionTimeMs, ref int MemoryUsed, ref string Status, JObject result)
+        public void TimeLimitExceeded(Test test, ref string Error, ref double Points, ref int ExecutionTimeMs, ref int MemoryUsed, 
+            ref string Status, JObject result)
         {
+            Debug.WriteLine("TimeLimitExceeded called");
             Error = "Your program needs too much time to run :( ";
             if (test.Output == (string)result.SelectToken("stdout"))
                 Error += "\nBut the output was correct :)";
@@ -664,6 +690,27 @@ namespace TechLead.Controllers
                 ExecutionTimeMs = (int)((double)result.SelectToken("time") * 1000);
             MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
             Status = (string)result.SelectToken("status.description");
+        }
+
+        public void CompilationError(string ErrorName, string ErrorDescription, ref string Error, ref double Points, ref int ExecutionTimeMs, 
+            ref int MemoryUsed, ref string Status, JObject result)
+        {
+            Debug.WriteLine("CompilationError called");
+            Error = "";
+            if (ErrorName != "")
+            {
+                Error += ErrorName + "\n";
+            }
+            if (ErrorDescription != "")
+            {
+                Error += ErrorDescription + "\n";
+            }
+
+            Error += (string)result.SelectToken("compile_output");
+            Points = 0;
+            ExecutionTimeMs = 0;
+            MemoryUsed = 0;
+            Status = "";
         }
 
         public string GetResult(string token)
