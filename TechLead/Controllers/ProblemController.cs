@@ -511,6 +511,7 @@ namespace TechLead.Controllers
             {
                 result = JObject.Parse(GetResult(token));
                 Debug.WriteLine("STATUS: " + result.SelectToken("status.description").ToString());
+
                 //Checking out if our submitted solution has been processed
                 //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
                 //So it waits 100 miliseconds before sending another get request.
@@ -523,6 +524,79 @@ namespace TechLead.Controllers
             } while (result.SelectToken("status.description").ToString() == "In Queue" ||
                           result.SelectToken("status.description").ToString() == "Processing");
 
+
+            //Treat all the possible statuses
+            switch (result.SelectToken("status.description").ToString())
+            {
+                case "Accepted":
+                    Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
+                        ref Error, langID, sourceCode, result);
+                    break;
+
+                case "Wrong Answer":
+                    Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
+                       ref Error, langID, sourceCode, result);
+                    break;
+
+                case "Time Limit Exceeded":
+                    TimeLimitExceeded(test, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Compilation Error":
+
+                    break;
+
+                case "Runtime Error (SIGSEGV)":
+
+                    break;
+
+                case "Runtime Error (SIGXFSZ)":
+
+                    break;
+
+                case "Runtime Error (SIGFPE)":
+
+                    break;
+
+                case "Runtime Error (SIGABRT)":
+
+                    break;
+
+                case "Runtime Error (NZEC)":
+
+                    break;
+
+                case "Runtime Error (Other)":
+
+                    break;
+
+                case "Internal Error":
+
+                    break;
+
+                case "Exec Format Error":
+
+                    break;
+
+            }
+           
+            /*}
+            catch (NotImplementedException)
+            {
+                //This happens when the API has been modified or shut down or whatever.
+                Debug.WriteLine("Exception in GoThroughTestCase => The token is null");
+                throw new Exception();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("Exception in GoThroughTestCase => " + e);
+                throw e;
+            }*/
+        }
+
+        public void Accepted(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
+            ref string Status, ref string Error, int langID, string sourceCode, JObject result)
+        {
             //Now we have the result in a json format, so we are able to insert necessary data.
             // --- 
             //Execution time (json contains a float valus (seconds) but it is being parsed to miliseconds)
@@ -578,18 +652,18 @@ namespace TechLead.Controllers
                     Error = "Incorrect Output";
                 }
             }
-            /*}
-            catch (NotImplementedException)
-            {
-                //This happens when the API has been modified or shut down or whatever.
-                Debug.WriteLine("Exception in GoThroughTestCase => The token is null");
-                throw new Exception();
-            }
-            catch(Exception e)
-            {
-                Debug.WriteLine("Exception in GoThroughTestCase => " + e);
-                throw e;
-            }*/
+        }
+
+        public void TimeLimitExceeded(Test test, ref string Error, ref double Points, ref int ExecutionTimeMs, ref int MemoryUsed, ref string Status, JObject result)
+        {
+            Error = "Your program needs too much time to run :( ";
+            if (test.Output == (string)result.SelectToken("stdout"))
+                Error += "\nBut the output was correct :)";
+            Points = 0;
+            if (result.SelectToken("time") != null)
+                ExecutionTimeMs = (int)((double)result.SelectToken("time") * 1000);
+            MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
+            Status = (string)result.SelectToken("status.description");
         }
 
         public string GetResult(string token)
