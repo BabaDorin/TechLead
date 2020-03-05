@@ -21,6 +21,11 @@ namespace TechLead.Models
         //If true, it will be deleted, 'kinda'. Only it's creator will be able to see it.
         public bool isArchieved { get; set; }
 
+        //When restricted mode is on, the user will be able to see only his submissions.
+        //The author of the problem and the admins will be able to see all the submissions
+        //Inputs and outputs won't be shown to the user (On submission details page)
+        public bool RestrictedMode { get; set; }
+
         [Required(ErrorMessage = "Please, enter a Name for this exercise")]
         public string Name { get; set; }
 

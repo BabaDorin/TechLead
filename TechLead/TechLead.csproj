@@ -335,6 +335,10 @@
     <Compile Include="Migrations\202002192104189_ExecutionTimeAndMemoryLimitForExerciseModel.Designer.cs">
       <DependentUpon>202002192104189_ExecutionTimeAndMemoryLimitForExerciseModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003052337078_Add_RestrictedMode_Property_Exercise.cs" />
+    <Compile Include="Migrations\202003052337078_Add_RestrictedMode_Property_Exercise.Designer.cs">
+      <DependentUpon>202003052337078_Add_RestrictedMode_Property_Exercise.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
@@ -917,6 +921,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002192104189_ExecutionTimeAndMemoryLimitForExerciseModel.resx">
       <DependentUpon>202002192104189_ExecutionTimeAndMemoryLimitForExerciseModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003052337078_Add_RestrictedMode_Property_Exercise.resx">
+      <DependentUpon>202003052337078_Add_RestrictedMode_Property_Exercise.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

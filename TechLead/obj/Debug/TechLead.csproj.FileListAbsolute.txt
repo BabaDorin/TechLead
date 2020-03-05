@@ -1905,3 +1905,4 @@ C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.csp
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.csproj.CopyComplete
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.dll
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.pdb
+C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.Add_RestrictedMode_Property_Exercise.resources
