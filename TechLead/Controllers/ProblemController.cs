@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using TechLead.Custom_Exceptions;
 
 namespace TechLead.Controllers
 {
@@ -412,6 +413,7 @@ namespace TechLead.Controllers
                 {
                     submission.SubmissionAuthorUserName = "Anonymous";
                 }
+
                 submission.Date = DateTime.Now;
                 submission.ExerciseId = e.Id;
                 submission.Exercise = e.Name;
@@ -467,154 +469,217 @@ namespace TechLead.Controllers
 
                 return submission;
             }
-            catch (Exception ess)
+            catch (InvalidSourceCodeException exception)
             {
-                Debug.WriteLine("Exception in Compile and Test => [Maybe it's from API] => " + ess);
-                throw ess;
+                Debug.WriteLine("Exception caught due to non 200 http response.\n" + exception + "\n");
+                
+                //This method will artificially build the solution model and will score the test cases with
+                //0 points due to Compilation error. (The judge0 API returns non 200 response when the source code
+                //submitted by the user has something wrong in it (still figuring out what) so the json is not build
+                //properly (Maybe, I'm not sure if this is the reason) so the API can not read it.
+                //This Exception is thrown when the app sends a get request to the API after getting the token from
+                //the post request.
+                return Non200Response(e, judge0_Submission.source_code);
+            }
+            catch (JudgeZeroException exception)
+            {
+                Debug.WriteLine("\n" + exception + "\n");
+                throw exception;
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine("Exception in Compile and Test => [Maybe it's from API] => " + exception);
+                throw exception;
             }
         }
 
+        public Submission Non200Response(Exercise e, string sourceCode)
+        {
+            //Building the solution in an artificial way.
+
+            Debug.WriteLine("Got you, boi");
+            Submission submission = new Submission
+            {
+                Date = DateTime.Now,
+                ExerciseId = e.Id,
+                Exercise = e.Name,
+                ScoredPoints = 0,
+                NumberOfTestCases = e.NumberOfTests,
+                SourceCode = sourceCode,
+                InputCollection = e.InputColection,
+                ExpectedOutput = e.OutputColection,
+                OutputCollection = string.Empty,
+                PointsPerTestCase = string.Empty,
+                DistributedPointsPerTestCase = (double)e.Points / e.NumberOfTests,
+                ExecutionTimePerTestCase = string.Empty,
+                StatusPerTestCase = string.Empty,
+                ErrorMessage = string.Empty,
+
+            };
+
+            Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
+
+            for (int i = 0; i < TestCases.Length; i++)
+            {
+                Debug.WriteLine("Test " + i);
+                submission.ScoredPoints += 0;
+                submission.PointsPerTestCase += "0";
+                submission.ExecutionTimePerTestCase += "0";
+                submission.StatusPerTestCase += "Declined";
+                submission.ErrorMessage += "Unable to run the code. Try again.  Also, if this error is repeating, please remove" +
+                    " the strange characters (ex. Diacritics) and submit the source code again.";
+
+                if (i < TestCases.Length - 1)
+                {
+                    submission.PointsPerTestCase += data.Delimitator;
+                    submission.ExecutionTimePerTestCase += data.Delimitator;
+                    submission.StatusPerTestCase += data.Delimitator;
+                    submission.ErrorMessage += data.Delimitator;
+                }
+            }
+
+            return submission;
+        }
         public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
             ref string Status, ref string Error, int langID, string sourceCode)
         {
-            //try
-            //{
-            //Function [GetToken()] returns a json (string formatted) having the token.
-            //It will be parsed to json by using JObject.Parse();
-            string token = GetToken(test, langID, sourceCode).Result;
-            if (token == null)
+            try
             {
-                Debug.WriteLine("WARNING! No token returned from judge0");
-                throw new NotImplementedException();
-            }
-
-            //Function that returns a json (string formatted) containing the result after running the solution
-            JObject result;
-
-            //It takes time for the API to process the data. This [do while] stays here to make repetitive calls to the API
-            //The possible statusses are:
-            // In Queue
-            // Processing
-            // Accepted
-            // Wrong Answer
-            // Time Limit Exceeded
-            // Compilation Error
-            // Runtime Error (SIGSEGV)
-            // Runtime Error (SIGXFSZ)
-            // Runtime Error (SIGFPE)
-            // Runtime Error (SIGABRT)
-            // Runtime Error (NZEC)
-            // Runtime Error (Other)
-            // Internal Error
-            // Exec Format Error
-            do
-            {
-                result = JObject.Parse(GetResult(token));
-                Debug.WriteLine("STATUS: " + result.SelectToken("status.description").ToString());
-
-                //Checking out if our submitted solution has been processed
-                //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
-                //So it waits 100 miliseconds before sending another get request.
-                if (result.SelectToken("status.description").ToString() == "In Queue" ||
-                        result.SelectToken("status.description").ToString() == "Processing")
+                //Function [GetToken()] returns a json (string formatted) having the token.
+                //It will be parsed to json by using JObject.Parse();
+                string token = GetToken(test, langID, sourceCode).Result;
+                if (token == null)
                 {
-                    System.Threading.Thread.Sleep(100);
+                    Debug.WriteLine("WARNING! No token returned from judge0");
+                    throw new JudgeZeroException();
                 }
 
-            } while (result.SelectToken("status.description").ToString() == "In Queue" ||
-                          result.SelectToken("status.description").ToString() == "Processing");
+                //Function that returns a json (string formatted) containing the result after running the solution
+                JObject result;
+
+                //It takes time for the API to process the data. This [do while] stays here to make repetitive calls to the API
+                //The possible statusses are:
+                // In Queue
+                // Processing
+                // Accepted
+                // Wrong Answer
+                // Time Limit Exceeded
+                // Compilation Error
+                // Runtime Error (SIGSEGV)
+                // Runtime Error (SIGXFSZ)
+                // Runtime Error (SIGFPE)
+                // Runtime Error (SIGABRT)
+                // Runtime Error (NZEC)
+                // Runtime Error (Other)
+                // Internal Error
+                // Exec Format Error
+                do
+                {
+                    result = JObject.Parse(GetResult(token));
+                    Debug.WriteLine("STATUS: " + result.SelectToken("status.description").ToString());
+
+                    //Checking out if our submitted solution has been processed
+                    //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
+                    //So it waits 100 miliseconds before sending another get request.
+                    if (result.SelectToken("status.description").ToString() == "In Queue" ||
+                            result.SelectToken("status.description").ToString() == "Processing")
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
+
+                } while (result.SelectToken("status.description").ToString() == "In Queue" ||
+                              result.SelectToken("status.description").ToString() == "Processing");
 
 
-            //Treat all the possible statuses
-            string ErrorDescription;
-            switch (result.SelectToken("status.description").ToString())
-            {
-                case "Accepted":
-                    Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
-                        ref Error, langID, sourceCode, result);
-                    break;
+                //Treat all the possible statuses
+                string ErrorDescription;
+                switch (result.SelectToken("status.description").ToString())
+                {
+                    case "Accepted":
+                        Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
+                            ref Error, langID, sourceCode, result);
+                        break;
 
-                case "Wrong Answer":
-                    Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
-                       ref Error, langID, sourceCode, result);
-                    break;
+                    case "Wrong Answer":
+                        Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
+                           ref Error, langID, sourceCode, result);
+                        break;
 
-                case "Time Limit Exceeded":
-                    TimeLimitExceeded(test, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                    case "Time Limit Exceeded":
+                        TimeLimitExceeded(test, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
 
-                case "Compilation Error":
-                    CompilationError("", "", ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                    case "Compilation Error":
+                        CompilationError("", "", ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
 
-                case "Runtime Error (SIGSEGV)":
-                    ErrorDescription = "A SIGSEGV is an error(signal) caused by an invalid memory reference or a segmentation fault. " +
-                        "You are probably trying to access an array element out of bounds or trying to use too much memory. Some of the other " +
-                        "causes of a segmentation fault are : Using uninitialized pointers, dereference of NULL pointers, accessing memory that " +
-                        "the program doesn’t own.";
+                    case "Runtime Error (SIGSEGV)":
+                        ErrorDescription = "A SIGSEGV is an error(signal) caused by an invalid memory reference or a segmentation fault. " +
+                            "You are probably trying to access an array element out of bounds or trying to use too much memory. Some of the other " +
+                            "causes of a segmentation fault are : Using uninitialized pointers, dereference of NULL pointers, accessing memory that " +
+                            "the program doesn’t own.";
 
-                    CompilationError("Runtime Error (SIGSEGV): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                        CompilationError("Runtime Error (SIGSEGV): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
 
-                case "Runtime Error (SIGXFSZ)":
-                    ErrorDescription = "Exceeded file size - Your program is outputting too much values, that the output file generated is " +
-                        "having a size larger than that is allowable.";
+                    case "Runtime Error (SIGXFSZ)":
+                        ErrorDescription = "Exceeded file size - Your program is outputting too much values, that the output file generated is " +
+                            "having a size larger than that is allowable.";
 
-                    CompilationError("Runtime Error (SIGXFSZ): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                        CompilationError("Runtime Error (SIGXFSZ): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
 
-                case "Runtime Error (SIGFPE)":
-                    ErrorDescription = "SIGFPE may occur due to \n\tDivision by zero \n\tModulo operation by zero \n\tInteger overflow(when the value" +
-                        " you are trying to store exceeds the range) - trying using a bigger data type like long.";
+                    case "Runtime Error (SIGFPE)":
+                        ErrorDescription = "SIGFPE may occur due to \n\tDivision by zero \n\tModulo operation by zero \n\tInteger overflow(when the value" +
+                            " you are trying to store exceeds the range) - trying using a bigger data type like long.";
 
-                    CompilationError("Runtime Error (SIGFPE): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                        CompilationError("Runtime Error (SIGFPE): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
 
-                case "Runtime Error (SIGABRT)":
-                    ErrorDescription = "SIGABRT errors are caused by your program aborting due to a fatal error. In C++, this is normally due to an " +
-                        "assert statement in C++ not returning true, but some STL elements can generate this if they try to store too much memory.";
+                    case "Runtime Error (SIGABRT)":
+                        ErrorDescription = "SIGABRT errors are caused by your program aborting due to a fatal error. In C++, this is normally due to an " +
+                            "assert statement in C++ not returning true, but some STL elements can generate this if they try to store too much memory.";
 
-                    CompilationError("Runtime Error (SIGABRT): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                        CompilationError("Runtime Error (SIGABRT): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
 
-                case "Runtime Error (NZEC)":
-                    ErrorDescription = " NZEC stands for Non Zero Exit Code. For C users, this will be generated if your main method does not have a " +
-                        "return 0; statement. Other languages like Java/C++ could generate this error if they throw an exception.";
+                    case "Runtime Error (NZEC)":
+                        ErrorDescription = " NZEC stands for Non Zero Exit Code. For C users, this will be generated if your main method does not have a " +
+                            "return 0; statement. Other languages like Java/C++ could generate this error if they throw an exception.";
 
-                    CompilationError("Runtime Error (NZEC): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                        CompilationError("Runtime Error (NZEC): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
 
-                case "Runtime Error (Other)":
-                    ErrorDescription = "";
+                    case "Runtime Error (Other)":
+                        ErrorDescription = "";
 
-                    CompilationError("Runtime Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                        CompilationError("Runtime Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
 
-                case "Internal Error":
-                    ErrorDescription = "";
+                    case "Internal Error":
+                        ErrorDescription = "";
 
-                    CompilationError("Internal Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                        CompilationError("Internal Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
 
-                case "Exec Format Error":
-                    ErrorDescription = "";
+                    case "Exec Format Error":
+                        ErrorDescription = "";
 
-                    CompilationError("Internal Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
-                    break;
+                        CompilationError("Internal Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                        break;
+                }
             }
-           
-            /*}
-            catch (NotImplementedException)
+            catch (JudgeZeroException)
             {
                 //This happens when the API has been modified or shut down or whatever.
                 Debug.WriteLine("Exception in GoThroughTestCase => The token is null");
-                throw new Exception();
+                throw new JudgeZeroException();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine("Exception in GoThroughTestCase => " + e);
-                throw e;
-            }*/
+                throw new InvalidSourceCodeException();
+            }
         }
 
         public void Accepted(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,

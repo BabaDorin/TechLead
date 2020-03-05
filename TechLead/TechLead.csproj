@@ -257,6 +257,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Custom Exceptions\InvalidSourceCodeException.cs" />
+    <Compile Include="Custom Exceptions\JudgeZeroException.cs" />
     <Compile Include="Migrations\201912191628209_UpdateExerciseModel.cs" />
     <Compile Include="Migrations\201912191628209_UpdateExerciseModel.Designer.cs">
       <DependentUpon>201912191628209_UpdateExerciseModel.cs</DependentUpon>
