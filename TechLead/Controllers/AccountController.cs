@@ -393,7 +393,7 @@ namespace TechLead.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, UserRole = "User"};
+                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, FirstRegistration = DateTime.Now, UserRole = "User"};
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

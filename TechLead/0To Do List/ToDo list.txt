@@ -1,13 +1,9 @@
 ﻿
 	TO DO IMMEDIATELY
 
->>TREAT HTTP 400 RESOPONSE AS "Compilation error" and suggest the user to remove all the illegal characters
+
 >>Solve the problem with datetame parsing after external authentification
 
--> >>>> Score solutions based on execution time and required memory
-	-> >>>> Treat RuntimeError and other statuses that judge0 is returning.
-
->>>> Treat httpresponse 400
 >>>> Let the user to chose the compiler via a drop-down menu
 >>>> Commentary for each problem
 >>>> Forum
@@ -48,6 +44,10 @@ the user has failed. It won't cost anything.
 
 >>>>>>>>>>>>>>>>>> DONE <<<<<<<<<<<<<<<<<<<<<,
 
+-> >>>> Score solutions based on execution time and required memory
+	-> >>>> Treat RuntimeError and other statuses that judge0 is returning.
+
+>>TREAT HTTP 400 RESOPONSE AS "Compilation error" and suggest the user to remove all the illegal characters
 >>>>  Make at least one test case mandatory into create problem view. 
 
 >>>>  Implement the roles sistem. (Administrator etc etc etc);
