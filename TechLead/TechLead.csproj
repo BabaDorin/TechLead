@@ -735,6 +735,7 @@
     <Folder Include="ImageResources\" />
     <Folder Include="Images\" />
     <Folder Include="Run\" />
+    <Folder Include="Tests SourceCode\" />
     <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>

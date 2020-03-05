@@ -1,6 +1,8 @@
 ﻿
 	TO DO IMMEDIATELY
 
+>>TREAT HTTP 400 RESOPONSE AS "Compilation error" and suggest the user to remove all the illegal characters
+>>Solve the problem with datetame parsing after external authentification
 
 -> >>>> Score solutions based on execution time and required memory
 	-> >>>> Treat RuntimeError and other statuses that judge0 is returning.
