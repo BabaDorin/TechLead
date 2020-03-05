@@ -31,15 +31,20 @@ namespace TechLead.Controllers
             _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
         }
 
+
+        //-------------------------------------------------------------------------------------------
+        //------------------------- Action Results - Get and Post -----------------------------------
+        //-------------------------------------------------------------------------------------------
+
         [HttpGet]
         public ActionResult Details(int id)
         {
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
-                ExerciseViewModel EVM = ExerciseFromModelToViewModel(e,false);
+                ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
                 EVM.MakeSourceCodePublic = true;
-                TempData["Object"] = e; 
+                TempData["Object"] = e;
 
                 return View(EVM);
             }
@@ -153,284 +158,6 @@ namespace TechLead.Controllers
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
-        
-        public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
-        {
-            try
-            {
-                //Inserting basic data into submission object
-                Submission submission = new Submission();
-                if (Request.IsAuthenticated)
-                {
-                    submission.SubmissionAuthorUserName = HttpContext.User.Identity.Name;
-                }
-                else
-                {
-                    submission.SubmissionAuthorUserName = "Anonymous";
-                }
-                submission.Date = DateTime.Now;
-                submission.ExerciseId = e.Id;
-                submission.Exercise = e.Name;
-                submission.ScoredPoints = 0;
-                submission.NumberOfTestCases = e.NumberOfTests;
-                submission.DistributedPointsPerTestCase = (double)e.Points / e.NumberOfTests;
-                submission.SourceCode = judge0_Submission.source_code;
-                submission.InputCollection = e.InputColection;
-                submission.ExpectedOutput = e.OutputColection;
-                submission.OutputCollection = string.Empty;
-                submission.PointsPerTestCase = string.Empty;
-                submission.ExecutionTimePerTestCase = string.Empty;
-                submission.StatusPerTestCase = string.Empty;
-                submission.ErrorMessage = string.Empty;
-
-                Debug.WriteLine("The problem has {0} tests, {1} points per test case ", 
-                    submission.NumberOfTestCases, submission.DistributedPointsPerTestCase);
-                //Now we have to go through each test case, collect data, analyse and
-                //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
-                //ErrorMessage
-                Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
-
-                for (int i = 0; i < TestCases.Length; i++)
-                {
-                    Debug.WriteLine("Test " + i);
-                    double Points = 0;
-                    int ExecutionTime = 0;
-                    int Memory = 0;
-                    string Status = string.Empty;
-                    string Error = string.Empty;
-                    Debug.WriteLine("Going into go through test case");
-                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, e.ExecutionTime, ref Memory, e.MemoryLimit, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
-
-                    //Now we add the results to submission object
-
-                    //Check if Point == 1 it means that the solutition returned the corect answer, so the points are given
-                    //Otherwise, Point == 0 => Something is wrong with the solution submitted.
-                    submission.ScoredPoints += Points*submission.DistributedPointsPerTestCase;
-                    submission.PointsPerTestCase += (Points == 1) ? submission.DistributedPointsPerTestCase.ToString() : "0";
-                    submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
-                    submission.StatusPerTestCase += Status;
-                    submission.ErrorMessage += Error;
-
-                    if (i < TestCases.Length - 1)
-                    {
-                        submission.PointsPerTestCase += data.Delimitator;
-                        submission.ExecutionTimePerTestCase += data.Delimitator;
-                        submission.StatusPerTestCase += data.Delimitator;
-                        submission.ErrorMessage += data.Delimitator;
-                    }
-
-                }
-
-                return submission;
-            }
-            catch (Exception ess)
-            {
-                Debug.WriteLine("Exception in Compile and Test => [Maybe it's from API] => " + ess);
-                throw ess;
-            }
-        }
-
-        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
-            ref string Status, ref string Error, int langID, string sourceCode)
-        {
-            //try
-            //{
-                //Function [GetToken()] returns a json (string formatted) having the token.
-                //It will be parsed to json by using JObject.Parse();
-                string token = GetToken(test, langID, sourceCode).Result;
-                if (token == null)
-                {
-                    throw new NotImplementedException();
-                }
-
-                //Function that returns a json (string formatted) containing the result after running the solution
-                JObject result;
-
-                //It takes time for the API to process the data. This do while stays here to make repetitive calls to the API
-                //Checking everytime the response. If the status is different from 'In Queue' or 'Processing', it means
-                //that the code has been compiled and it returned the response having the results we are looking for.
-                do
-                {
-                    result = JObject.Parse(GetResult(token));
-                Debug.WriteLine("STATUS: " + result.SelectToken("status.description").ToString());
-                    //Checking out if our submitted solution has been processed
-                    //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
-                    //So it waits 100 miliseconds before sending another get request.
-                    if (result.SelectToken("status.description").ToString() == "In Queue" ||
-                            result.SelectToken("status.description").ToString() == "Processing")
-                    {
-                        System.Threading.Thread.Sleep(100);
-                    }
-
-                } while (result.SelectToken("status.description").ToString() == "In Queue" ||
-                              result.SelectToken("status.description").ToString() == "Processing");
-
-                //Now we have the result in a json format, so we are able to insert necessary data.
-                // --- 
-                //Execution time (json contains a float valus (seconds) but it is being parsed to miliseconds)
-                if (result.SelectToken("time") != null)
-                    ExecutionTimeMs = (int)((double)result.SelectToken("time")*1000);
-
-                //Status (Accepted, denied etc.)
-                Status = (string)result.SelectToken("status.description");
-
-                //Memory used (in kylobites)
-                MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
-
-                //Now we check if the program used the right amount of memory (Less or equal to memory limit)
-                //For the first we check if the current exercise has some time and memory constrains.
-                int MemoryLimitLocal = (MemoryLimit <= 0) ? int.MaxValue : MemoryLimit;
-                int ExecutionTimeLimitLocal = (ExecutionTimeLimit <= 0) ? int.MaxValue : ExecutionTimeLimit;
-
-                if (MemoryUsed > MemoryLimitLocal)
-                {
-                    //if the program used too much memory
-                    bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
-                    Error = "Your program had used too much memory :(";
-
-                    if (ExecutionTimeMs > ExecutionTimeLimitLocal)
-                        Error += "\nand it needs too much time to run :(";
-
-                    if (correctOutput) Error += "\nBut the output was correct :)";
-                    Points = 0;
-                    return;
-                }
-                else
-                {
-                    if (ExecutionTimeMs > ExecutionTimeLimitLocal)
-                    {
-                        //if program's execution needed too much time
-                        Error = "Your program needs too much time to run :(";
-                        bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
-                        if (correctOutput) Error += "\nBut the output was correct :)";
-                        Points = 0;
-                        return;
-                    }
-
-                    //If we are here, it means that everything is OK with execution time and used memory
-                    //This situation occurs when the was not executed, was executed but with errors,
-                    //was executed but the result was incorrect or it was executed and the output is correct.
-                    Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
-                    Error = (string)result.SelectToken("compile_output");
-
-                    //If the current output does not match with the correct one, it means that Points = 0 and
-                    //there is no Error message inserted into that variable called Error
-                    if (Points==0 && Error.Length < 3)
-                    {
-                        Error = "Incorrect Output";
-                    }
-                }
-            /*}
-            catch (NotImplementedException)
-            {
-                //This happens when the API has been modified or shut down or whatever.
-                Debug.WriteLine("Exception in GoThroughTestCase => The token is null");
-                throw new Exception();
-            }
-            catch(Exception e)
-            {
-                Debug.WriteLine("Exception in GoThroughTestCase => " + e);
-                throw e;
-            }*/
-        }
-
-        public string GetResult(string token)
-        {
-            try
-            {
-                string result;
-
-                //building the request and passing the parameters we are looking for.
-                var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status,time,memory");
-                request.ContentType = "application/json";
-                request.Method = "GET";
-
-                //Sending the request and reading the result
-                var httpResponse = (HttpWebResponse)request.GetResponse();
-
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    result = streamReader.ReadToEnd();
-                }
-                return result;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Exception in GetResult => " + e);
-                throw e;
-            }
-        }
-
-        async Task<string> GetToken(Test test, int langID, string SourceCode)
-        {
-            try
-            {
-                //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
-                //After that, having the token, we make another request to get submission details like execution time and so on.
-
-                //Building the judge0 submission, which will be sent via request
-                Judge0JsonModel jsonModel = new Judge0JsonModel();
-                jsonModel.source_code =  data.Base64Encode(SourceCode);
-                jsonModel.stdin = data.Base64Encode(test.Input);
-                jsonModel.language_id = langID;
-
-                //Sending the request
-                Debug.WriteLine("Sending the request");
-                JObject response;
-                
-                var json = JsonConvert.SerializeObject(jsonModel);
-                var dataToSend = new StringContent(json, Encoding.UTF8, "application/json");
-                var url = "https://api.judge0.com/submissions/?base64_encoded=true&wait=false";
-                string res;
-
-                //Sending the request and storing the data being returned
-                using (var client = new HttpClient())
-                {
-                    using (HttpResponseMessage resp = await client.PostAsync(url, dataToSend).ConfigureAwait(false))
-                    {
-                        using (HttpContent content = resp.Content)
-                        {
-                            res = await content.ReadAsStringAsync().ConfigureAwait(false);
-                            Debug.WriteLine(res);
-                        }
-                    }
-                }
-
-                response = JObject.Parse(res);
-                return response.SelectToken("token").ToString();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Exception in GetToken => " + e);
-                return null;
-            }
-        }
-
-        public int LanguageId(string fileName)
-        {
-            try
-            {
-                switch (Path.GetExtension(fileName))
-                {
-                    case ".cs":
-                        return 51;
-                    case ".cpp":
-                        return 53;
-                    case ".pas":
-                        return 67;
-                    case ".java":
-                        return 62;
-                    case ".py":
-                        return 71;
-                    default: return -1;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Exeption in LanguageId => " + e);
-                throw e;
-            }
-        }
 
         public ActionResult SubmissionDetails(int id)
         {
@@ -533,9 +260,9 @@ namespace TechLead.Controllers
                 //to an admin
                 Exercise E = _context.Exercises.Single(ex => ex.Id == ProblemID);
                 var userId = User.Identity.GetUserId();
-                if (userId == E.AuthorID || CurrentUser_Administrator())
+                if (userId == E.AuthorID || isAdministrator())
                 {
-                    ExerciseViewModel EVM = ExerciseFromModelToViewModel(E,true);
+                    ExerciseViewModel EVM = ExerciseFromModelToViewModel(E, true);
                     EVM.Id = ProblemID;
                     return View(EVM);
                 }
@@ -629,13 +356,13 @@ namespace TechLead.Controllers
             ErrorViewModel error = new ErrorViewModel
             {
                 Title = "Error",
-                Description = "How do you even get here?"
+                Description = "How did you even get here?"
             };
             return View("~/Views/Shared/Error.cshtml", error);
         }
 
-       [HttpPost]
-       public ActionResult Delete(DeleteProblemViewModel deleteProblemViewModel)
+        [HttpPost]
+        public ActionResult Delete(DeleteProblemViewModel deleteProblemViewModel)
         {
             //Deleting an exercise means setting the IsArchieved property to true.
             Exercise E = _context.Exercises.Single(e => e.Id == deleteProblemViewModel.Id);
@@ -658,6 +385,442 @@ namespace TechLead.Controllers
             SubmissionForASpecificExercise.Reverse();
             return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
         }
+
+        public ActionResult RenderError(ErrorViewModel Err)
+        {
+            return View("~/Views/Shared/Error.cshtml", Err);
+        }
+
+
+
+        //-------------------------------------------------------------------------------------------
+        //------------------------- Compilation and judging stuff -----------------------------------
+        //-------------------------------------------------------------------------------------------
+
+
+        public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
+        {
+            try
+            {
+                //Inserting basic data into submission object
+                Submission submission = new Submission();
+                if (Request.IsAuthenticated)
+                {
+                    submission.SubmissionAuthorUserName = HttpContext.User.Identity.Name;
+                }
+                else
+                {
+                    submission.SubmissionAuthorUserName = "Anonymous";
+                }
+                submission.Date = DateTime.Now;
+                submission.ExerciseId = e.Id;
+                submission.Exercise = e.Name;
+                submission.ScoredPoints = 0;
+                submission.NumberOfTestCases = e.NumberOfTests;
+                submission.DistributedPointsPerTestCase = (double)e.Points / e.NumberOfTests;
+                submission.SourceCode = judge0_Submission.source_code;
+                submission.InputCollection = e.InputColection;
+                submission.ExpectedOutput = e.OutputColection;
+                submission.OutputCollection = string.Empty;
+                submission.PointsPerTestCase = string.Empty;
+                submission.ExecutionTimePerTestCase = string.Empty;
+                submission.StatusPerTestCase = string.Empty;
+                submission.ErrorMessage = string.Empty;
+
+                Debug.WriteLine("The problem has {0} tests, {1} points per test case ",
+                    submission.NumberOfTestCases, submission.DistributedPointsPerTestCase);
+                //Now we have to go through each test case, collect data, analyse and
+                //build step by step PoinsPerTestCase, ExecutionTimePerTestCase, StatusPerTestCase,
+                //ErrorMessage
+                Test[] TestCases = data.CreateTests(e.InputColection, e.OutputColection);
+
+                for (int i = 0; i < TestCases.Length; i++)
+                {
+                    Debug.WriteLine("Test " + i);
+                    double Points = 0;
+                    int ExecutionTime = 0;
+                    int Memory = 0;
+                    string Status = string.Empty;
+                    string Error = string.Empty;
+                    Debug.WriteLine("Going into go through test case");
+                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, e.ExecutionTime, ref Memory, e.MemoryLimit, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
+
+                    //Now we add the results to submission object
+
+                    //Check if Point == 1 it means that the solutition returned the corect answer, so the points are given
+                    //Otherwise, Point == 0 => Something is wrong with the solution submitted.
+                    submission.ScoredPoints += Points * submission.DistributedPointsPerTestCase;
+                    submission.PointsPerTestCase += (Points == 1) ? submission.DistributedPointsPerTestCase.ToString() : "0";
+                    submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
+                    submission.StatusPerTestCase += Status;
+                    submission.ErrorMessage += Error;
+
+                    if (i < TestCases.Length - 1)
+                    {
+                        submission.PointsPerTestCase += data.Delimitator;
+                        submission.ExecutionTimePerTestCase += data.Delimitator;
+                        submission.StatusPerTestCase += data.Delimitator;
+                        submission.ErrorMessage += data.Delimitator;
+                    }
+
+                }
+
+                return submission;
+            }
+            catch (Exception ess)
+            {
+                Debug.WriteLine("Exception in Compile and Test => [Maybe it's from API] => " + ess);
+                throw ess;
+            }
+        }
+
+        public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
+            ref string Status, ref string Error, int langID, string sourceCode)
+        {
+            //try
+            //{
+            //Function [GetToken()] returns a json (string formatted) having the token.
+            //It will be parsed to json by using JObject.Parse();
+            string token = GetToken(test, langID, sourceCode).Result;
+            if (token == null)
+            {
+                Debug.WriteLine("WARNING! No token returned from judge0");
+                throw new NotImplementedException();
+            }
+
+            //Function that returns a json (string formatted) containing the result after running the solution
+            JObject result;
+
+            //It takes time for the API to process the data. This [do while] stays here to make repetitive calls to the API
+            //The possible statusses are:
+            // In Queue
+            // Processing
+            // Accepted
+            // Wrong Answer
+            // Time Limit Exceeded
+            // Compilation Error
+            // Runtime Error (SIGSEGV)
+            // Runtime Error (SIGXFSZ)
+            // Runtime Error (SIGFPE)
+            // Runtime Error (SIGABRT)
+            // Runtime Error (NZEC)
+            // Runtime Error (Other)
+            // Internal Error
+            // Exec Format Error
+            do
+            {
+                result = JObject.Parse(GetResult(token));
+                Debug.WriteLine("STATUS: " + result.SelectToken("status.description").ToString());
+
+                //Checking out if our submitted solution has been processed
+                //To not overload the API and to make multiple calls in vain, we use thread.Sleep,
+                //So it waits 100 miliseconds before sending another get request.
+                if (result.SelectToken("status.description").ToString() == "In Queue" ||
+                        result.SelectToken("status.description").ToString() == "Processing")
+                {
+                    System.Threading.Thread.Sleep(100);
+                }
+
+            } while (result.SelectToken("status.description").ToString() == "In Queue" ||
+                          result.SelectToken("status.description").ToString() == "Processing");
+
+
+            //Treat all the possible statuses
+            string ErrorDescription;
+            switch (result.SelectToken("status.description").ToString())
+            {
+                case "Accepted":
+                    Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
+                        ref Error, langID, sourceCode, result);
+                    break;
+
+                case "Wrong Answer":
+                    Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
+                       ref Error, langID, sourceCode, result);
+                    break;
+
+                case "Time Limit Exceeded":
+                    TimeLimitExceeded(test, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Compilation Error":
+                    CompilationError("", "", ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Runtime Error (SIGSEGV)":
+                    ErrorDescription = "A SIGSEGV is an error(signal) caused by an invalid memory reference or a segmentation fault. " +
+                        "You are probably trying to access an array element out of bounds or trying to use too much memory. Some of the other " +
+                        "causes of a segmentation fault are : Using uninitialized pointers, dereference of NULL pointers, accessing memory that " +
+                        "the program doesn’t own.";
+
+                    CompilationError("Runtime Error (SIGSEGV): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Runtime Error (SIGXFSZ)":
+                    ErrorDescription = "Exceeded file size - Your program is outputting too much values, that the output file generated is " +
+                        "having a size larger than that is allowable.";
+
+                    CompilationError("Runtime Error (SIGXFSZ): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Runtime Error (SIGFPE)":
+                    ErrorDescription = "SIGFPE may occur due to \n\tDivision by zero \n\tModulo operation by zero \n\tInteger overflow(when the value" +
+                        " you are trying to store exceeds the range) - trying using a bigger data type like long.";
+
+                    CompilationError("Runtime Error (SIGFPE): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Runtime Error (SIGABRT)":
+                    ErrorDescription = "SIGABRT errors are caused by your program aborting due to a fatal error. In C++, this is normally due to an " +
+                        "assert statement in C++ not returning true, but some STL elements can generate this if they try to store too much memory.";
+
+                    CompilationError("Runtime Error (SIGABRT): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Runtime Error (NZEC)":
+                    ErrorDescription = " NZEC stands for Non Zero Exit Code. For C users, this will be generated if your main method does not have a " +
+                        "return 0; statement. Other languages like Java/C++ could generate this error if they throw an exception.";
+
+                    CompilationError("Runtime Error (NZEC): ", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Runtime Error (Other)":
+                    ErrorDescription = "";
+
+                    CompilationError("Runtime Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Internal Error":
+                    ErrorDescription = "";
+
+                    CompilationError("Internal Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+
+                case "Exec Format Error":
+                    ErrorDescription = "";
+
+                    CompilationError("Internal Error", ErrorDescription, ref Error, ref Points, ref ExecutionTimeMs, ref MemoryUsed, ref Status, result);
+                    break;
+            }
+           
+            /*}
+            catch (NotImplementedException)
+            {
+                //This happens when the API has been modified or shut down or whatever.
+                Debug.WriteLine("Exception in GoThroughTestCase => The token is null");
+                throw new Exception();
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine("Exception in GoThroughTestCase => " + e);
+                throw e;
+            }*/
+        }
+
+        public void Accepted(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
+            ref string Status, ref string Error, int langID, string sourceCode, JObject result)
+        {
+            Debug.WriteLine("Accepted called");
+            //Now we have the result in a json format, so we are able to insert necessary data.
+            // --- 
+            //Execution time (json contains a float valus (seconds) but it is being parsed to miliseconds)
+            if (result.SelectToken("time") != null)
+                ExecutionTimeMs = (int)((double)result.SelectToken("time") * 1000);
+            Debug.WriteLine("Debug point 1");
+            //Status (Accepted, denied etc.)
+            Status = (string)result.SelectToken("status.description");
+            Debug.WriteLine("Debug point 2");
+            //Memory used (in kylobites)
+            MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
+            Debug.WriteLine("Debug point 3");
+            //Now we check if the program used the right amount of memory (Less or equal to memory limit)
+            //For the first we check if the current exercise has some time and memory constrains.
+            int MemoryLimitLocal = (MemoryLimit <= 0) ? int.MaxValue : MemoryLimit;
+            int ExecutionTimeLimitLocal = (ExecutionTimeLimit <= 0) ? int.MaxValue : ExecutionTimeLimit;
+            Debug.WriteLine("Debug point 4");
+            if (MemoryUsed > MemoryLimitLocal)
+            {
+                //if the program used too much memory
+                bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
+                Debug.WriteLine("Debug point 5");
+                Error = "Your program had used too much memory :(";
+
+                if (ExecutionTimeMs > ExecutionTimeLimitLocal)
+                    Error += "\nand it needs too much time to run :(";
+
+                if (correctOutput) Error += "\nBut the output was correct :)";
+                Points = 0;
+                return;
+            }
+            else
+            {
+                if (ExecutionTimeMs > ExecutionTimeLimitLocal)
+                {
+                    //if program's execution needed too much time
+                    Error = "Your program needs too much time to run :(";
+                    bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
+                    Debug.WriteLine("Debug point 6");
+                    if (correctOutput) Error += "\nBut the output was correct :)";
+                    Points = 0;
+                    return;
+                }
+
+                //If we are here, it means that everything is OK with execution time and used memory
+                //This situation occurs when the was not executed, was executed but with errors,
+                //was executed but the result was incorrect or it was executed and the output is correct.
+                Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
+                Debug.WriteLine("Debug point 7");
+                Error = (string)result.SelectToken("compile_output");
+                Debug.WriteLine("Debug point 8");
+
+                //If the current output does not match with the correct one, it means that Points = 0 and
+                //there is no Error message inserted into that variable called Error
+                if (Points == 0 && (Error == null || Error.Length < 3))
+                {
+                    Error = "Incorrect Output";
+                }
+            }
+        }
+
+        public void TimeLimitExceeded(Test test, ref string Error, ref double Points, ref int ExecutionTimeMs, ref int MemoryUsed, 
+            ref string Status, JObject result)
+        {
+            Debug.WriteLine("TimeLimitExceeded called");
+            Error = "Your program needs too much time to run :( ";
+            if (test.Output == (string)result.SelectToken("stdout"))
+                Error += "\nBut the output was correct :)";
+            Points = 0;
+            if (result.SelectToken("time") != null)
+                ExecutionTimeMs = (int)((double)result.SelectToken("time") * 1000);
+            MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
+            Status = (string)result.SelectToken("status.description");
+        }
+
+        public void CompilationError(string ErrorName, string ErrorDescription, ref string Error, ref double Points, ref int ExecutionTimeMs, 
+            ref int MemoryUsed, ref string Status, JObject result)
+        {
+            Debug.WriteLine("CompilationError called");
+            Error = "";
+            if (ErrorName != "")
+            {
+                Error += ErrorName + "\n";
+            }
+            if (ErrorDescription != "")
+            {
+                Error += ErrorDescription + "\n";
+            }
+
+            Error += (string)result.SelectToken("compile_output");
+            Points = 0;
+            ExecutionTimeMs = 0;
+            MemoryUsed = 0;
+            Status = "";
+        }
+
+        public string GetResult(string token)
+        {
+            try
+            {
+                string result;
+
+                //building the request and passing the parameters we are looking for.
+                var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status,time,memory");
+                request.ContentType = "application/json";
+                request.Method = "GET";
+
+                //Sending the request and reading the result
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    result = streamReader.ReadToEnd();
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetResult => " + e);
+                throw e;
+            }
+        }
+
+        async Task<string> GetToken(Test test, int langID, string SourceCode)
+        {
+            try
+            {
+                //The method sends HTTP requests to judge0 API, then, it gets a token as a response.
+                //After that, having the token, we make another request to get submission details like execution time and so on.
+
+                //Building the judge0 submission, which will be sent via request
+                Judge0JsonModel jsonModel = new Judge0JsonModel();
+                jsonModel.source_code = data.Base64Encode(SourceCode);
+                jsonModel.stdin = data.Base64Encode(test.Input);
+                jsonModel.language_id = langID;
+
+                //Sending the request
+                Debug.WriteLine("Sending the request");
+                JObject response;
+
+                var json = JsonConvert.SerializeObject(jsonModel);
+                var dataToSend = new StringContent(json, Encoding.UTF8, "application/json");
+                var url = "https://api.judge0.com/submissions/?base64_encoded=true&wait=false";
+                string res;
+
+                //Sending the request and storing the data being returned
+                using (var client = new HttpClient())
+                {
+                    using (HttpResponseMessage resp = await client.PostAsync(url, dataToSend).ConfigureAwait(false))
+                    {
+                        using (HttpContent content = resp.Content)
+                        {
+                            res = await content.ReadAsStringAsync().ConfigureAwait(false);
+                            Debug.WriteLine(res);
+                        }
+                    }
+                }
+
+                response = JObject.Parse(res);
+                return response.SelectToken("token").ToString();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetToken => " + e);
+                return null;
+            }
+        }
+
+        public int LanguageId(string fileName)
+        {
+            try
+            {
+                switch (Path.GetExtension(fileName))
+                {
+                    case ".cs":
+                        return 51;
+                    case ".cpp":
+                        return 53;
+                    case ".pas":
+                        return 67;
+                    case ".java":
+                        return 62;
+                    case ".py":
+                        return 71;
+                    default: return -1;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exeption in LanguageId => " + e);
+                throw e;
+            }
+        }
+
+
+
+        //-------------------------------------------------------------------------------------------
+        //------------------------- Other methods ---------------------------------------------------
+        //-------------------------------------------------------------------------------------------
+
 
         private Exercise ExerciseFromViewModelToModel(ExerciseViewModel ExerciseViewModel)
         {
@@ -792,10 +955,6 @@ namespace TechLead.Controllers
 
             return EVM;
         }
-        public ActionResult RenderError(ErrorViewModel Err)
-        {
-            return View("~/Views/Shared/Error.cshtml", Err);
-        }
 
         public void InsertBestSubmission(ref string bestsubmission, Submission submission, double TotalPoints, ref double AddToUsersTotalPoints)
         {
@@ -805,7 +964,7 @@ namespace TechLead.Controllers
             AddToUsersTotalPoints = submission.ScoredPoints;
 
             //This string should not begin with a delimitator.
-            if (bestsubmission.Length>0)
+            if (bestsubmission.Length > 0)
             {
                 bestsubmission += data.Delimitator;
             }
@@ -816,7 +975,7 @@ namespace TechLead.Controllers
         public bool SubmissionIsInserted(int exerciseID, BestSubmission[] bestSubmissions)
         {
             if (bestSubmissions == null) return false;
-            for(int i=0; i<bestSubmissions.Length; i++)
+            for (int i = 0; i < bestSubmissions.Length; i++)
             {
                 if (bestSubmissions[i].ProblemID == exerciseID) return true;
             }
@@ -827,9 +986,9 @@ namespace TechLead.Controllers
         {
             //Look for the last best submission for a specific problem, check if the last submission has less points than the current submission, 
             //if current submission has more points, then update the points value.
-            for(int i=0; i<bestSubmissions.Length; i++)
+            for (int i = 0; i < bestSubmissions.Length; i++)
             {
-                if(bestSubmissions[i].ProblemID == submission.ExerciseId)
+                if (bestSubmissions[i].ProblemID == submission.ExerciseId)
                 {
                     if (bestSubmissions[i].MaxScoredPoints <= submission.ScoredPoints)
                     {
@@ -841,7 +1000,7 @@ namespace TechLead.Controllers
             }
         }
 
-        public bool CurrentUser_Administrator()
+        public bool isAdministrator()
         {
             if (HttpContext.User != null)
             {

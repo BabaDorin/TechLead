@@ -1,0 +1,14 @@
+Runtime Error (SIGSEGV) - A SIGSEGV is an error(signal) caused by an invalid memory reference or a segmentation fault. You are probably trying to access an array element out of bounds or trying to use too much memory. Some of the other causes of a segmentation fault are : Using uninitialized pointers, dereference of NULL pointers, accessing memory that the program doesn’t own.
+
+Runtime Error (SIGXFSZ) -  (exceeded file size) - Your program is outputting too much values, that the output file generated is having a size larger than that is allowable.
+
+Runtime Error (SIGFPE) - SIGFPE may occur due to 
+division by zero
+modulo operation by zero
+integer overflow (when the value you are trying to store exceeds the range) - trying using a bigger data type like long.
+
+Runtime Error (SIGABRT) - SIGABRT errors are caused by your program aborting due to a fatal error. In C++, this is normally due to an assert statement in C++ not returning true, but some STL elements can generate this if they try to store too much memory.
+
+Runtime Error (NZEC) - NZEC stands for Non Zero Exit Code. For C users, this will be generated if your main method does not have a return 0; statement. Other languages like Java/C++ could generate this error if they throw an exception.
+
+s
