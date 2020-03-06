@@ -109,8 +109,6 @@ namespace TechLead.Controllers
                 string userId = User.Identity.GetUserId();
                 ApplicationUser user = _context.Users.Find(userId);
                 string usersBestSubmissions = user.BestSubmisions;
-                Debug.WriteLine("Done");
-                Debug.WriteLine("From string to array");
                 BestSubmission[] bestSubmission = data.ConvertBestSubmissionFromStringToArray(usersBestSubmissions);
                 Debug.WriteLine("Done");
 
@@ -126,7 +124,6 @@ namespace TechLead.Controllers
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
 
-                Debug.WriteLine("Data");
                 double PointsToAddToUsersTotalPoints = 0;
                 string ModifiedUsersBestSubmissions;
                 if (SubmissionIsInserted(e.Id, bestSubmission))
@@ -139,14 +136,14 @@ namespace TechLead.Controllers
                     InsertBestSubmission(ref usersBestSubmissions, submission, e.Points, ref PointsToAddToUsersTotalPoints);
                     ModifiedUsersBestSubmissions = usersBestSubmissions;
                 }
-                Debug.WriteLine("Done");
+
                 //Store the new value of totalPoints and BestSubmission;
                 Debug.WriteLine("update data in db");
                 user.TotalPoints += PointsToAddToUsersTotalPoints;
                 user.BestSubmisions = ModifiedUsersBestSubmissions;
                 _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();
-                Debug.WriteLine("done");
+                Debug.WriteLine("Done");
 
                 return RedirectToAction("SubmissionDetails", "Problem", new { id = submission.SubmissionID });
             }
@@ -444,7 +441,7 @@ namespace TechLead.Controllers
                     int Memory = 0;
                     string Status = string.Empty;
                     string Error = string.Empty;
-                    Debug.WriteLine("Going into go through test case");
+                    //Debug.WriteLine("Going into go through test case");
                     GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, e.ExecutionTime, ref Memory, e.MemoryLimit, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
 
                     //Now we add the results to submission object
@@ -496,8 +493,6 @@ namespace TechLead.Controllers
         public Submission Non200Response(Exercise e, string sourceCode)
         {
             //Building the solution in an artificial way.
-
-            Debug.WriteLine("Got you, boi");
             Submission submission = new Submission
             {
                 Date = DateTime.Now,
@@ -691,23 +686,18 @@ namespace TechLead.Controllers
             //Execution time (json contains a float valus (seconds) but it is being parsed to miliseconds)
             if (result.SelectToken("time") != null)
                 ExecutionTimeMs = (int)((double)result.SelectToken("time") * 1000);
-            Debug.WriteLine("Debug point 1");
             //Status (Accepted, denied etc.)
             Status = (string)result.SelectToken("status.description");
-            Debug.WriteLine("Debug point 2");
             //Memory used (in kylobites)
             MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
-            Debug.WriteLine("Debug point 3");
             //Now we check if the program used the right amount of memory (Less or equal to memory limit)
             //For the first we check if the current exercise has some time and memory constrains.
             int MemoryLimitLocal = (MemoryLimit <= 0) ? int.MaxValue : MemoryLimit;
             int ExecutionTimeLimitLocal = (ExecutionTimeLimit <= 0) ? int.MaxValue : ExecutionTimeLimit;
-            Debug.WriteLine("Debug point 4");
             if (MemoryUsed > MemoryLimitLocal)
             {
                 //if the program used too much memory
                 bool correctOutput = (test.Output == (string)result.SelectToken("stdout"));
-                Debug.WriteLine("Debug point 5");
                 Error = "Your program had used too much memory :(";
 
                 if (ExecutionTimeMs > ExecutionTimeLimitLocal)
@@ -734,9 +724,7 @@ namespace TechLead.Controllers
                 //This situation occurs when the was not executed, was executed but with errors,
                 //was executed but the result was incorrect or it was executed and the output is correct.
                 Points = (test.Output == (string)result.SelectToken("stdout")) ? 1 : 0;
-                Debug.WriteLine("Debug point 7");
                 Error = (string)result.SelectToken("compile_output");
-                Debug.WriteLine("Debug point 8");
 
                 //If the current output does not match with the correct one, it means that Points = 0 and
                 //there is no Error message inserted into that variable called Error
@@ -939,8 +927,6 @@ namespace TechLead.Controllers
                 e.OutputColection += AuxTests[i].Output;
                 if (i < e.NumberOfTests - 1) e.OutputColection += data.Delimitator;
             }
-            Debug.WriteLine(e.InputColection);
-            Debug.WriteLine(e.OutputColection);
             //Note:  Input and Ouput collection properties will contail all the inputs / outputs for the backend
             //processing having a delimitator between them. Everytime when the list of test will be needed,
             //it would be accesibile by calling the data.CreateTests and passing the e.InputCollection and e.OutputCollection.

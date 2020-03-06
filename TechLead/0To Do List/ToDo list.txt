@@ -1,6 +1,8 @@
 ﻿
 	TO DO IMMEDIATELY
 
+>>	display test cases and expected output
+>>	Implement the system with restricted and normal mode
 
 >>Solve the problem with datetame parsing after external authentification
 
