@@ -25,6 +25,7 @@ namespace TechLead.Models
         //The author of the problem and the admins will be able to see all the submissions
         //Inputs and outputs won't be shown to the user (On submission details page)
         public bool RestrictedMode { get; set; }
+        public bool NormalMode { get; set; }
 
         [Required(ErrorMessage = "Please, enter a Name for this exercise")]
         public string Name { get; set; }

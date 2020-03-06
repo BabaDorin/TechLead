@@ -16,7 +16,45 @@
                 <p>FrontEnd</p>
             </div>
             <p>Write down the information that will be displayed to the user</p>
-            <br /><br />
+            <br />
+                  <div class="form-group">
+                      <br />
+                      <div class="alert alert-info">
+                          <p>
+                              Please, select the type of the problem
+                          </p>
+                      </div>
+                      <br />
+                      <div class="row">
+                          <div class="col-md-6" style="position:relative">
+                              <div class="kindaButton" style="text-align:center">
+                                  @Html.RadioButtonFor(m => m.RestrictedMode, false)
+                                  <b>Normal</b>
+                              </div>
+                              <div class="alert alert-info">
+                                  <p style="text-align:center;">
+                                      The <b>friendly</b> mode. The user will be able to see other people's
+                                      source codes and their submission details. Also, he will be able to see the input and the expected
+                                      output for the back-end test cases if his output is incorrect.
+                                  </p>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="kindaButton" style="text-align:center">
+                                  @Html.RadioButtonFor(m => m.RestrictedMode, true)
+                                  <b>Restricted</b>
+                              </div>
+                              <div class="alert alert-info">
+                                  <p style="text-align:center;">
+                                      The <b>restricted</b> mode. The user will be able to see only his submissions, while the author of
+                                      the problem will see all of them. Also, he won't get hints along the way (Inputs and expected outputs
+                                      will not be shown)
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
 
 
             <div class="form-group">
@@ -50,18 +88,18 @@
                 <div class="alert alert-info">
                     <strong>Info!</strong> If you do not want to set any runtime limit for this problem, leave the field blank.
                 </div>
-                    @Html.LabelFor(ex => ex.ExecutionTime, "Runtime limit (in miliseconds)")
-                    @Html.TextBoxFor(ex => ex.ExecutionTime, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(ex => ex.ExecutionTime)
+                @Html.LabelFor(ex => ex.ExecutionTime, "Runtime limit (in miliseconds)")
+                @Html.TextBoxFor(ex => ex.ExecutionTime, new { @class = "form-control" })
+                @Html.ValidationMessageFor(ex => ex.ExecutionTime)
             </div>
             <br />
             <div class="form-group">
                 <div class="alert alert-info">
                     <strong>Info!</strong> If you do not want to set any memory limit for this problem, leave the field blank.
                 </div>
-                    @Html.LabelFor(ex => ex.MemoryLimit, "Memory limit (in kilobytes)")
-                    @Html.TextBoxFor(ex => ex.MemoryLimit, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(ex => ex.MemoryLimit)
+                @Html.LabelFor(ex => ex.MemoryLimit, "Memory limit (in kilobytes)")
+                @Html.TextBoxFor(ex => ex.MemoryLimit, new { @class = "form-control" })
+                @Html.ValidationMessageFor(ex => ex.MemoryLimit)
             </div>
             <br />
             <div class="form-group">
