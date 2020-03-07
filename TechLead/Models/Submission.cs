@@ -10,6 +10,7 @@ namespace TechLead.Models
     public class Submission
     {
         public int SubmissionID { get; set; }
+        public string SubmissionAuthorId { get; set; }
 
         public string SubmissionAuthorUserName { get; set; }
 

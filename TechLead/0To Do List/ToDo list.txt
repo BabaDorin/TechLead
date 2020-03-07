@@ -3,8 +3,7 @@
 
 >>	display test cases and expected output
 >>	Implement the system with restricted and normal mode
-
->>Solve the problem with datetame parsing after external authentification
+>> On update page, restricted is always set to true
 
 >>>> Let the user to chose the compiler via a drop-down menu
 >>>> Commentary for each problem
@@ -13,6 +12,7 @@
 >>>> The user who creates a problem can assign will have to assign points for each backend testcase.
 for example, an easy test case may be scored with 10 points, a harder one - with 30 points.
 >>>> Admins are able to see submission's code => Solve the problems with those admins features that do not work 
+>>>> Use less tempdata
 
 -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
@@ -45,6 +45,9 @@ the user has failed. It won't cost anything.
 
 
 >>>>>>>>>>>>>>>>>> DONE <<<<<<<<<<<<<<<<<<<<<,
+
+
+>>	Solve the problem with datetame parsing after external authentification
 
 -> >>>> Score solutions based on execution time and required memory
 	-> >>>> Treat RuntimeError and other statuses that judge0 is returning.

@@ -198,7 +198,7 @@
         </div>
     }
     <div class="TitleBox">
-        <a href="@Url.Action("Submissions", "Problem", null)" class="elements">Submissions</a>
+        <a href="@Url.Action("Submissions", "Problem", new { exerciseId = Model.Id, restrictedMode = Model.RestrictedMode })" class="elements">Submissions</a>
     </div>
 
 </div>

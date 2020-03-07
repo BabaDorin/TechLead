@@ -369,19 +369,64 @@ namespace TechLead.Controllers
             return View("~/Views/Home/Index.cshtml");
         }
 
-        public ActionResult Submissions(int? page)
+        public ActionResult Submissions(int? page, int exerciseId, bool restrictedMode)
         {
-            Exercise e = TempData["Object"] as Exercise;
-            int ExerciseIdParam = e.Id;
-            TempData.Keep();
-            List<Submission> SubmissionForASpecificExercise = new List<Submission>();
-            foreach (Submission S in _context.Submissions)
-                if (S.ExerciseId == ExerciseIdParam)
-                {
-                    SubmissionForASpecificExercise.Add(S);
-                }
-            SubmissionForASpecificExercise.Reverse();
+
+            //If the exercise has restricted mode, then display only the current user's submissions. (And inform the user that this problem
+            //has restricted mode).
+            //Otherwise, display all of them
+            List<SubmissionToDisplayViewModel> SubmissionForASpecificExercise = new List<SubmissionToDisplayViewModel>();
+            if (restrictedMode)
+            {
+                //Pick up only the user's submissions
+                //var data = _context.Submissions.Join()
+                SubmissionForASpecificExercise = (from submission in _context.Submissions
+                                      where submission.ExerciseId == exerciseId
+                                      select new SubmissionToDisplayViewModel
+                                      {
+                                          SubmissionID = submission.SubmissionID,
+                                          SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
+                                          Date = submission.Date,
+                                          ExerciseId = submission.ExerciseId,
+                                          Exercise = submission.Exercise,
+                                          ScoredPoints = submission.ScoredPoints,
+
+                                      }
+                                      ).ToList();
+
+                //foreach (Submission S in _context.Submissions)
+                //    if (S.ExerciseId == ExerciseIdParam)
+                //    {
+                //        SubmissionForASpecificExercise.Add(S);
+                //    }
+                SubmissionForASpecificExercise.Reverse();
+                
+            }
+            else
+            {
+                SubmissionForASpecificExercise = (from submission in _context.Submissions
+                                    where submission.ExerciseId == exerciseId
+                                    select new SubmissionToDisplayViewModel
+                                    {
+                                        SubmissionID = submission.SubmissionID,
+                                        SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
+                                        Date = submission.Date,
+                                        ExerciseId = submission.ExerciseId,
+                                        Exercise = submission.Exercise,
+                                        ScoredPoints = submission.ScoredPoints,
+
+                                    }
+                                    ).ToList();
+                //foreach (Submission S in _context.Submissions)
+                //    if (S.ExerciseId == ExerciseIdParam)
+                //    {
+                //        SubmissionForASpecificExercise.Add(S);
+                //    }
+                SubmissionForASpecificExercise.Reverse();
+            }
+
             return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
+
         }
 
         public ActionResult RenderError(ErrorViewModel Err)
@@ -884,6 +929,7 @@ namespace TechLead.Controllers
             e.AuthorID = ExerciseViewModel.AuthorID;
             e.Name = ExerciseViewModel.Name;
             e.Points = ExerciseViewModel.Points;
+            e.RestrictedMode = ExerciseViewModel.RestrictedMode;
             e.Condition = ExerciseViewModel.Condition;
             e.Constraints = ExerciseViewModel.Constraints;
             e.Difficulty = ExerciseViewModel.Difficulty;
@@ -967,6 +1013,7 @@ namespace TechLead.Controllers
             EVM.isArchieved = exercise.isArchieved;
             EVM.Name = exercise.Name;
             EVM.Points = exercise.Points;
+            EVM.RestrictedMode = exercise.RestrictedMode;
             EVM.SubmissionsAbove10Points = exercise.SubmissionsAbove10Points;
             EVM.SubmissionsUnder10Points = exercise.SubmissionsUnder10Points;
             EVM.Author = exercise.Author;

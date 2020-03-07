@@ -1,11 +1,13 @@
 ﻿@using TechLead.Models;
 @using PagedList;
 @using PagedList.Mvc;
-@model IPagedList<TechLead.Models.Submission>
+@model IPagedList<TechLead.Models.SubmissionToDisplayViewModel>
 
 @{
     ViewBag.Title = "Submissions";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int eId = 0;
+    bool restricted = false;
 }
 
 <div class="Content">
@@ -23,8 +25,10 @@
                 <th>Points</th>
                 <th></th>
             </tr>
-            @foreach (Submission S in Model)
+            @foreach (SubmissionToDisplayViewModel S in Model)
             {
+                eId = S.ExerciseId;
+                restricted = S.RestrictedMode;
                 <tr>
                     <td>@S.SubmissionID</td>
                     <td>@S.SubmissionAuthorUserName</td>
@@ -34,7 +38,7 @@
                 </tr>
             }
         </table>
-        @Html.PagedListPager(Model, page => Url.Action("Submissions","Problem", new { page }))
+        @Html.PagedListPager(Model, page => Url.Action("Submissions","Problem", new { page , exerciseId = eId, restrictedMode = restricted }))
         <br />
         @if (Request.UrlReferrer != null)
         {

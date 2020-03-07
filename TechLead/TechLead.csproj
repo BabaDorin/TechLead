@@ -339,6 +339,10 @@
     <Compile Include="Migrations\202003052337078_Add_RestrictedMode_Property_Exercise.Designer.cs">
       <DependentUpon>202003052337078_Add_RestrictedMode_Property_Exercise.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003071146508_AddSubmissionAuthorId_Submission.cs" />
+    <Compile Include="Migrations\202003071146508_AddSubmissionAuthorId_Submission.Designer.cs">
+      <DependentUpon>202003071146508_AddSubmissionAuthorId_Submission.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
@@ -346,6 +350,7 @@
     <Compile Include="Models\DisplayExerciseViewModel.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
+    <Compile Include="Models\SubmissionToDisplayViewModel.cs" />
     <Compile Include="Models\SubmissionViewModel.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\Compiler.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\CPPCompiler.cs" />
@@ -924,6 +929,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003052337078_Add_RestrictedMode_Property_Exercise.resx">
       <DependentUpon>202003052337078_Add_RestrictedMode_Property_Exercise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003071146508_AddSubmissionAuthorId_Submission.resx">
+      <DependentUpon>202003071146508_AddSubmissionAuthorId_Submission.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
