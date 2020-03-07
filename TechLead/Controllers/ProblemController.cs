@@ -1049,8 +1049,23 @@ namespace TechLead.Controllers
             Svm.DistributedPointsPerTestCase = submission.DistributedPointsPerTestCase;
             Svm.SourceCode = submission.SourceCode;
             Svm.Inputs = submission.InputCollection.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+            for(int i=0; i<Svm.Inputs.Length; i++)
+            {
+                if (Svm.Inputs[i].Length > 1500) Svm.Inputs[i] = "TooBigTestCaseBoi";
+            }
+
             Svm.Outputs = submission.OutputCollection.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+            for (int i = 0; i < Svm.Inputs.Length; i++)
+            {
+                if (Svm.Outputs[i].Length > 1500) Svm.Outputs[i] = "TooBigTestCaseBoi";
+            }
+
             Svm.ExpectedOutputs = submission.ExpectedOutput.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+            for (int i = 0; i < Svm.ExpectedOutputs.Length; i++)
+            {
+                if (Svm.ExpectedOutputs[i].Length > 1500) Svm.ExpectedOutputs[i] = "TooBigTestCaseBoi";
+            }
+
             Svm.Points = Array.ConvertAll(submission.PointsPerTestCase.Split(new string[] { data.Delimitator }, StringSplitOptions.None),
                 x => double.Parse(x));
             Svm.ExecutionTime = Array.ConvertAll(submission.ExecutionTimePerTestCase.Split(new string[] { data.Delimitator }, StringSplitOptions.None),
