@@ -58,6 +58,40 @@ namespace TechLead.Controllers
             }
         }
 
+        //This will be called when the input / output is too large to display on the page
+        public string SeeData(int problemId, int submissionId, int index, string what)
+        {
+            //If problemID == -1, is means that we are looking to display a specific output
+            //of the user's solution.
+            //I submissionId == -1, it means that we are going to display the input of the expected
+            //output for the problem having id = problemId.
+            //The "what" variable will tell us what do we want to display, the input or the expected output
+
+            string result="";
+            if (problemId != -1)
+            {
+                //Display input or output
+                if (what == "input")
+                {
+                    result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).InputColection;
+                    result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
+                    return result;
+                }
+                else
+                {
+                    result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).OutputColection;
+                    result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
+                    return result;
+                }
+            }
+            else
+            {
+                //display user's solution output
+                result = _context.Submissions.SingleOrDefault(mytable => mytable.SubmissionID == problemId).OutputCollection;
+                result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
+                return result;
+            }
+        }
         [HttpPost]
         [Authorize]
         public ActionResult Details(HttpPostedFileBase file, ExerciseViewModel EVM)

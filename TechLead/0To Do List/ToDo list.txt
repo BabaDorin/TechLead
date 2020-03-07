@@ -2,11 +2,16 @@
 	TO DO IMMEDIATELY
 
 >>	display test cases and expected output
->>	Implement the system with restricted and normal mode
+	- Check the number of characters for each test case.
+	if the number is over 1500, then it's text will be "TooBigTestCaseBoi"
+	- if the input or output is too big, then put a button there
+	the button will redirect to a controller. That controller will need problem
+	id and test's pozition in the array to display make a db query and display input/output. 
+	The same method will be used to display user's solution output.
 
->> On profile page, show the submissions with restricted mode only to the user who owns that profile
->> if(restricted and currentUser != author id != classCreatorId != ExerciseCreaterId) dont show the submission (Submission details)
->> Admins and problem author will see all of the submissions.
+
+>> the table which displays submissions "Submissions" "Problem" is not responsive
+>> 
 
 >>>> Let the user to chose the compiler via a drop-down menu
 >>>> Commentary for each problem
@@ -52,6 +57,11 @@ the user has failed. It won't cost anything.
 
 
 >>>>>>>>>>>>>>>>>> DONE <<<<<<<<<<<<<<<<<<<<<,
+
+>>	Implement the system with restricted and normal mode
+
+>> if(restricted and currentUser != author id != classCreatorId != ExerciseCreaterId !is) dont show the submission (Submission details)
+>> Admins and problem author will see all of the submissions.
 
 >> On update page, restricted is always set to true
 >> And updating restriction mode on does not seem to have any effect
