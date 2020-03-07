@@ -542,8 +542,9 @@ namespace TechLead.Controllers
                     int Memory = 0;
                     string Status = string.Empty;
                     string Error = string.Empty;
+                    string Output = " ";
                     //Debug.WriteLine("Going into go through test case");
-                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, e.ExecutionTime, ref Memory, e.MemoryLimit, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code);
+                    GoThroughTestCase(TestCases[i], ref Points, ref ExecutionTime, e.ExecutionTime, ref Memory, e.MemoryLimit, ref Status, ref Error, judge0_Submission.language_id, judge0_Submission.source_code, ref Output);
 
                     //Now we add the results to submission object
 
@@ -554,6 +555,7 @@ namespace TechLead.Controllers
                     submission.ExecutionTimePerTestCase += ExecutionTime.ToString();
                     submission.StatusPerTestCase += Status;
                     submission.ErrorMessage += Error;
+                    submission.OutputCollection += Output;
 
                     if (i < TestCases.Length - 1)
                     {
@@ -561,6 +563,7 @@ namespace TechLead.Controllers
                         submission.ExecutionTimePerTestCase += data.Delimitator;
                         submission.StatusPerTestCase += data.Delimitator;
                         submission.ErrorMessage += data.Delimitator;
+                        submission.OutputCollection += data.Delimitator;
                     }
 
                 }
@@ -637,7 +640,7 @@ namespace TechLead.Controllers
             return submission;
         }
         public void GoThroughTestCase(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
-            ref string Status, ref string Error, int langID, string sourceCode)
+            ref string Status, ref string Error, int langID, string sourceCode, ref string Output)
         {
             try
             {
@@ -686,19 +689,19 @@ namespace TechLead.Controllers
                 } while (result.SelectToken("status.description").ToString() == "In Queue" ||
                               result.SelectToken("status.description").ToString() == "Processing");
 
-
+                Debug.WriteLine(result);
                 //Treat all the possible statuses
                 string ErrorDescription;
                 switch (result.SelectToken("status.description").ToString())
                 {
                     case "Accepted":
                         Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
-                            ref Error, langID, sourceCode, result);
+                            ref Error, langID, sourceCode, result, ref Output);
                         break;
 
                     case "Wrong Answer":
                         Accepted(test, ref Points, ref ExecutionTimeMs, ExecutionTimeLimit, ref MemoryUsed, MemoryLimit, ref Status,
-                           ref Error, langID, sourceCode, result);
+                           ref Error, langID, sourceCode, result, ref Output);
                         break;
 
                     case "Time Limit Exceeded":
@@ -779,7 +782,7 @@ namespace TechLead.Controllers
         }
 
         public void Accepted(Test test, ref double Points, ref int ExecutionTimeMs, int ExecutionTimeLimit, ref int MemoryUsed, int MemoryLimit,
-            ref string Status, ref string Error, int langID, string sourceCode, JObject result)
+            ref string Status, ref string Error, int langID, string sourceCode, JObject result, ref string Output)
         {
             Debug.WriteLine("Accepted called");
             //Now we have the result in a json format, so we are able to insert necessary data.
@@ -789,6 +792,8 @@ namespace TechLead.Controllers
                 ExecutionTimeMs = (int)((double)result.SelectToken("time") * 1000);
             //Status (Accepted, denied etc.)
             Status = (string)result.SelectToken("status.description");
+            if ((string)result.SelectToken("stdout") != null)
+                Output = (string)result.SelectToken("stdout");
             //Memory used (in kylobites)
             MemoryUsed = int.Parse(result.SelectToken("memory").ToString());
             //Now we check if the program used the right amount of memory (Less or equal to memory limit)
@@ -1055,7 +1060,7 @@ namespace TechLead.Controllers
             }
 
             Svm.Outputs = submission.OutputCollection.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
-            for (int i = 0; i < Svm.Inputs.Length; i++)
+            for (int i = 0; i < Svm.Outputs.Length; i++)
             {
                 if (Svm.Outputs[i].Length > 1500) Svm.Outputs[i] = "TooBigTestCaseBoi";
             }
