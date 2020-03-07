@@ -17,6 +17,14 @@
     </div>
 
     <div class="Box">
+        @if (ViewBag.Restricted != null)
+        {
+            <h2>@ViewBag.Restricted</h2>
+        }
+        @if(ViewBag.NotAuthenticated != null)
+        {
+            <h3>@ViewBag.NotAuthenticated</h3>
+        }
         <table>
             <tr>
                 <th>Submission ID</th>

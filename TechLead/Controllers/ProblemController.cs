@@ -375,57 +375,107 @@ namespace TechLead.Controllers
             //If the exercise has restricted mode, then display only the current user's submissions. (And inform the user that this problem
             //has restricted mode).
             //Otherwise, display all of them
+
+            ViewBag.NotAuthenticated = null;
+            ViewBag.Restricted = null;
             List<SubmissionToDisplayViewModel> SubmissionForASpecificExercise = new List<SubmissionToDisplayViewModel>();
+
             if (restrictedMode)
             {
-                //Pick up only the user's submissions
-                //var data = _context.Submissions.Join()
-                SubmissionForASpecificExercise = (from submission in _context.Submissions
-                                      where submission.ExerciseId == exerciseId
-                                      select new SubmissionToDisplayViewModel
-                                      {
-                                          SubmissionID = submission.SubmissionID,
-                                          SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
-                                          Date = submission.Date,
-                                          ExerciseId = submission.ExerciseId,
-                                          Exercise = submission.Exercise,
-                                          ScoredPoints = submission.ScoredPoints,
+                ViewBag.Restricted = "This problem is set with restricted mode. You can see only your submissions.";
+                if (User.Identity.IsAuthenticated)
+                {
+                    //do stuff, viewbag for restricted
+                    string UserId = User.Identity.GetUserId();
+                    SubmissionForASpecificExercise = 
+                        (
+                        from submission in _context.Submissions
+                        where submission.ExerciseId == exerciseId
+                        select new SubmissionToDisplayViewModel
+                        {
+                            SubmissionID = submission.SubmissionID,
+                            SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
+                            Date = submission.Date,
+                            ExerciseId = submission.ExerciseId,
+                            Exercise = submission.Exercise,
+                            ScoredPoints = submission.ScoredPoints,
 
-                                      }
-                                      ).ToList();
+                        }
+                        ).ToList();
 
-                //foreach (Submission S in _context.Submissions)
-                //    if (S.ExerciseId == ExerciseIdParam)
-                //    {
-                //        SubmissionForASpecificExercise.Add(S);
-                //    }
-                SubmissionForASpecificExercise.Reverse();
-                
+                    SubmissionForASpecificExercise.Reverse();
+                }
+                else
+                {
+                    ViewBag.NotAuthenticated = "You are not authenticated";
+                }
             }
             else
             {
-                SubmissionForASpecificExercise = (from submission in _context.Submissions
-                                    where submission.ExerciseId == exerciseId
-                                    select new SubmissionToDisplayViewModel
-                                    {
-                                        SubmissionID = submission.SubmissionID,
-                                        SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
-                                        Date = submission.Date,
-                                        ExerciseId = submission.ExerciseId,
-                                        Exercise = submission.Exercise,
-                                        ScoredPoints = submission.ScoredPoints,
+                SubmissionForASpecificExercise =
+                        (
+                        from submission in _context.Submissions
+                        where submission.ExerciseId == exerciseId
+                        select new SubmissionToDisplayViewModel
+                        {
+                            SubmissionID = submission.SubmissionID,
+                            SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
+                            Date = submission.Date,
+                            ExerciseId = submission.ExerciseId,
+                            Exercise = submission.Exercise,
+                            ScoredPoints = submission.ScoredPoints,
 
-                                    }
-                                    ).ToList();
-                //foreach (Submission S in _context.Submissions)
-                //    if (S.ExerciseId == ExerciseIdParam)
-                //    {
-                //        SubmissionForASpecificExercise.Add(S);
-                //    }
+                        }
+                        ).ToList();
                 SubmissionForASpecificExercise.Reverse();
             }
 
             return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
+            /*
+            if (User.Identity.IsAuthenticated)
+            {
+                string UserId = User.Identity.GetUserId();
+                if (restrictedMode)
+                {
+                    ViewBag.Restricted = "This problem is set with restricted mode. You can see only your submissions.";
+
+                    //Pick up only the user's submissions
+                    //var data = _context.Submissions.Join()
+                    
+                }
+                else
+                {
+                    SubmissionForASpecificExercise = (from submission in _context.Submissions
+                                                      where submission.ExerciseId == exerciseId
+                                                      select new SubmissionToDisplayViewModel
+                                                      {
+                                                          SubmissionID = submission.SubmissionID,
+                                                          SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
+                                                          Date = submission.Date,
+                                                          ExerciseId = submission.ExerciseId,
+                                                          Exercise = submission.Exercise,
+                                                          ScoredPoints = submission.ScoredPoints,
+
+                                                      }
+                                        ).ToList();
+                    //foreach (Submission S in _context.Submissions)
+                    //    if (S.ExerciseId == ExerciseIdParam)
+                    //    {
+                    //        SubmissionForASpecificExercise.Add(S);
+                    //    }
+                    SubmissionForASpecificExercise.Reverse();
+                }
+            }
+            else
+            {
+                //If the user is not authenticated then he won't see any submisions. The list is empty
+                if (restrictedMode)
+                {
+                    ViewBag.Restricted = "This problem is set with restricted mode. You can see only your submissions.";
+                }
+                ViewBag.NotAuthenticated = "You are not authenticated";
+            }
+            */
 
         }
 
