@@ -3,8 +3,10 @@
 
 >>	display test cases and expected output
 >>	Implement the system with restricted and normal mode
->> On update page, restricted is always set to true
->> And updating restriction mode on does not seem to have any effect
+
+>> On profile page, show the submissions with restricted mode only to the user who owns that profile
+>> if(restricted and currentUser != author id) dont show the submission (Submission details)
+>> Admins and problem author will see all of the submissions.
 
 >>>> Let the user to chose the compiler via a drop-down menu
 >>>> Commentary for each problem
@@ -47,6 +49,8 @@ the user has failed. It won't cost anything.
 
 >>>>>>>>>>>>>>>>>> DONE <<<<<<<<<<<<<<<<<<<<<,
 
+>> On update page, restricted is always set to true
+>> And updating restriction mode on does not seem to have any effect
 
 >>	Solve the problem with datetame parsing after external authentification
 

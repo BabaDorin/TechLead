@@ -119,7 +119,9 @@ namespace TechLead.Controllers
                 //It is being saved to the database.
                 //After that, based on the submission object submissionViewModel is created and passed to the view
                 //so the user will see his results.
+                string AuthorId = User.Identity.GetUserId();
                 Submission submission = CompileAndTest(e, judge0_submission);
+                submission.SubmissionAuthorId = AuthorId;
                 submission.MakeSourceCodePublic = MakeSourceCodePublic;
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
@@ -386,12 +388,12 @@ namespace TechLead.Controllers
                 ViewBag.Restricted = "This problem is set with restricted mode. You can see only your submissions.";
                 if (User.Identity.IsAuthenticated)
                 {
-                    //do stuff, viewbag for restricted
                     string UserId = User.Identity.GetUserId();
                     SubmissionForASpecificExercise = 
                         (
                         from submission in _context.Submissions
                         where submission.ExerciseId == exerciseId
+                        && submission.SubmissionAuthorId == UserId
                         select new SubmissionToDisplayViewModel
                         {
                             SubmissionID = submission.SubmissionID,
@@ -413,6 +415,7 @@ namespace TechLead.Controllers
             }
             else
             {
+                //There is no restriction.
                 SubmissionForASpecificExercise =
                         (
                         from submission in _context.Submissions
@@ -432,52 +435,6 @@ namespace TechLead.Controllers
             }
 
             return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
-            /*
-            if (User.Identity.IsAuthenticated)
-            {
-                string UserId = User.Identity.GetUserId();
-                if (restrictedMode)
-                {
-                    ViewBag.Restricted = "This problem is set with restricted mode. You can see only your submissions.";
-
-                    //Pick up only the user's submissions
-                    //var data = _context.Submissions.Join()
-                    
-                }
-                else
-                {
-                    SubmissionForASpecificExercise = (from submission in _context.Submissions
-                                                      where submission.ExerciseId == exerciseId
-                                                      select new SubmissionToDisplayViewModel
-                                                      {
-                                                          SubmissionID = submission.SubmissionID,
-                                                          SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
-                                                          Date = submission.Date,
-                                                          ExerciseId = submission.ExerciseId,
-                                                          Exercise = submission.Exercise,
-                                                          ScoredPoints = submission.ScoredPoints,
-
-                                                      }
-                                        ).ToList();
-                    //foreach (Submission S in _context.Submissions)
-                    //    if (S.ExerciseId == ExerciseIdParam)
-                    //    {
-                    //        SubmissionForASpecificExercise.Add(S);
-                    //    }
-                    SubmissionForASpecificExercise.Reverse();
-                }
-            }
-            else
-            {
-                //If the user is not authenticated then he won't see any submisions. The list is empty
-                if (restrictedMode)
-                {
-                    ViewBag.Restricted = "This problem is set with restricted mode. You can see only your submissions.";
-                }
-                ViewBag.NotAuthenticated = "You are not authenticated";
-            }
-            */
-
         }
 
         public ActionResult RenderError(ErrorViewModel Err)
@@ -1032,6 +989,7 @@ namespace TechLead.Controllers
         private SubmissionViewModel SubmissionFromModelToViewModel(Submission submission)
         {
             SubmissionViewModel Svm = new SubmissionViewModel();
+            Svm.SubmissionAuthorId = submission.SubmissionAuthorId;
             Svm.SubmissionAuthorUserName = submission.SubmissionAuthorUserName;
             Svm.SubmissionID = submission.SubmissionID;
             Svm.Date = submission.Date;
