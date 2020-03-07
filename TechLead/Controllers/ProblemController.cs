@@ -122,6 +122,7 @@ namespace TechLead.Controllers
                 string AuthorId = User.Identity.GetUserId();
                 Submission submission = CompileAndTest(e, judge0_submission);
                 submission.SubmissionAuthorId = AuthorId;
+                submission.ExerciseAuthorId = e.AuthorID;
                 submission.MakeSourceCodePublic = MakeSourceCodePublic;
                 _context.Submissions.Add(submission);
                 _context.SaveChanges();
@@ -164,8 +165,20 @@ namespace TechLead.Controllers
             try
             {
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
-                SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
-                return View(submissionViewModel);
+                //The page with submission details won't be accesible for other people, except 
+                if (S.RestrictedMode && (!User.Identity.IsAuthenticated || User.Identity.GetUserId() != S.SubmissionAuthorId))
+                {
+                    ErrorViewModel Error = new ErrorViewModel();
+                    Error.Title = "Sorry, you can not see this submission";
+                    Error.Description = "This submission was made under a problem with restricted mode. Only the " +
+                        "person who made this submission can see it.";
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+                else
+                {
+                    SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
+                    return View(submissionViewModel);
+                }
             }
             catch (Exception)
             {
@@ -981,6 +994,7 @@ namespace TechLead.Controllers
                 e.OutputColection += AuxTests[i].Output;
                 if (i < e.NumberOfTests - 1) e.OutputColection += data.Delimitator;
             }
+
             //Note:  Input and Ouput collection properties will contail all the inputs / outputs for the backend
             //processing having a delimitator between them. Everytime when the list of test will be needed,
             //it would be accesibile by calling the data.CreateTests and passing the e.InputCollection and e.OutputCollection.

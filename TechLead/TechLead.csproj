@@ -343,6 +343,14 @@
     <Compile Include="Migrations\202003071146508_AddSubmissionAuthorId_Submission.Designer.cs">
       <DependentUpon>202003071146508_AddSubmissionAuthorId_Submission.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003071408078_AddRestrictedMode_Submission.cs" />
+    <Compile Include="Migrations\202003071408078_AddRestrictedMode_Submission.Designer.cs">
+      <DependentUpon>202003071408078_AddRestrictedMode_Submission.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003071426588_AddExerciseAuthorId_Submission.cs" />
+    <Compile Include="Migrations\202003071426588_AddExerciseAuthorId_Submission.Designer.cs">
+      <DependentUpon>202003071426588_AddExerciseAuthorId_Submission.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
@@ -932,6 +940,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003071146508_AddSubmissionAuthorId_Submission.resx">
       <DependentUpon>202003071146508_AddSubmissionAuthorId_Submission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003071408078_AddRestrictedMode_Submission.resx">
+      <DependentUpon>202003071408078_AddRestrictedMode_Submission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003071426588_AddExerciseAuthorId_Submission.resx">
+      <DependentUpon>202003071426588_AddExerciseAuthorId_Submission.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

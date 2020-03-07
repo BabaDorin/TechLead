@@ -5,12 +5,16 @@
 >>	Implement the system with restricted and normal mode
 
 >> On profile page, show the submissions with restricted mode only to the user who owns that profile
->> if(restricted and currentUser != author id) dont show the submission (Submission details)
+>> if(restricted and currentUser != author id != classCreatorId != ExerciseCreaterId) dont show the submission (Submission details)
 >> Admins and problem author will see all of the submissions.
 
 >>>> Let the user to chose the compiler via a drop-down menu
 >>>> Commentary for each problem
 >>>> Forum
+
+>>>> Store everywhere only the authorID, get rid of authorName because the last one can be modified over time.
+So, to deal with this, store the ID and make a request to the database to get the name.
+
 >>>> *Dynamic number or back-end problems
 >>>> The user who creates a problem can assign will have to assign points for each backend testcase.
 for example, an easy test case may be scored with 10 points, a harder one - with 30 points.

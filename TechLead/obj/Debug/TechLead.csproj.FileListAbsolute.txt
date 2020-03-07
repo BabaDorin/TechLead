@@ -1908,3 +1908,5 @@ C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.pdb
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.Add_RestrictedMode_Property_Exercise.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.Add_RestrictedMode_Property_Exercise.resources
 C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddSubmissionAuthorId_Submission.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddRestrictedMode_Submission.resources
+C:\Users\Maria Baba\Desktop\Новая папка (3)\techlead\TechLead\obj\Debug\TechLead.Migrations.AddExerciseAuthorId_Submission.resources
