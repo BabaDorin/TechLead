@@ -4,6 +4,7 @@
 >>	display test cases and expected output
 >>	Implement the system with restricted and normal mode
 >> On update page, restricted is always set to true
+>> And updating restriction mode on does not seem to have any effect
 
 >>>> Let the user to chose the compiler via a drop-down menu
 >>>> Commentary for each problem

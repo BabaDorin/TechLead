@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-md-6" style="position:relative">
                     <div class="kindaButton" style="text-align:center">
-                        @Html.RadioButtonFor(m => m.RestrictedMode, Model.RestrictedMode)
+                        @Html.RadioButtonFor(m => m.RestrictedMode, false)
                         <b>Normal</b>
                     </div>
                     <div class="alert alert-info">
@@ -47,7 +47,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="kindaButton" style="text-align:center">
-                        @Html.RadioButtonFor(m => m.RestrictedMode, Model.RestrictedMode)
+                        @Html.RadioButtonFor(m => m.RestrictedMode, true)
                         <b>Restricted</b>
                     </div>
                     <div class="alert alert-info">
