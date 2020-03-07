@@ -122,6 +122,7 @@ namespace TechLead.Controllers
                 string AuthorId = User.Identity.GetUserId();
                 Submission submission = CompileAndTest(e, judge0_submission);
                 submission.SubmissionAuthorId = AuthorId;
+                submission.RestrictedMode = e.RestrictedMode;
                 submission.ExerciseAuthorId = e.AuthorID;
                 submission.MakeSourceCodePublic = MakeSourceCodePublic;
                 _context.Submissions.Add(submission);
@@ -166,19 +167,19 @@ namespace TechLead.Controllers
             {
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
                 //The page with submission details won't be accesible for other people, except 
-                if (S.RestrictedMode && (!User.Identity.IsAuthenticated || User.Identity.GetUserId() != S.SubmissionAuthorId))
-                {
-                    ErrorViewModel Error = new ErrorViewModel();
-                    Error.Title = "Sorry, you can not see this submission";
-                    Error.Description = "This submission was made under a problem with restricted mode. Only the " +
-                        "person who made this submission can see it.";
-                    return View("~/Views/Shared/Error.cshtml", Error);
-                }
-                else
-                {
-                    SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
-                    return View(submissionViewModel);
-                }
+                if(!isAdministrator())
+                    if (S.RestrictedMode && (User.Identity.IsAuthenticated == false || (User.Identity.GetUserId() != S.SubmissionAuthorId && User.Identity.GetUserId() != S.ExerciseAuthorId)))
+                    {
+                    
+                        ErrorViewModel Error = new ErrorViewModel();
+                        Error.Title = "Sorry, you can not see this submission";
+                        Error.Description = "This submission was made under a problem with restricted mode. Only the " +
+                            "person who made this submission can see it.";
+                        return View("~/Views/Shared/Error.cshtml", Error);
+                    }
+
+                SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
+                return View(submissionViewModel);
             }
             catch (Exception)
             {
@@ -1125,6 +1126,7 @@ namespace TechLead.Controllers
         {
             if (HttpContext.User != null)
             {
+                if (!User.Identity.IsAuthenticated) return false;
                 string userId = HttpContext.User.Identity.GetUserId();
                 return _userManager.IsInRole(userId, "Administrator");
 
