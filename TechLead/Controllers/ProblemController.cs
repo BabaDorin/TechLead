@@ -245,7 +245,7 @@ namespace TechLead.Controllers
                     }
 
                 //Do not send test-cases if the problem under which this solution was sent is restricted
-                if (S.RestrictedMode)
+                if (restrictedMode)
                 {
                     S.InputCollection = "";
                     S.OutputCollection = "";
@@ -402,7 +402,7 @@ namespace TechLead.Controllers
                     return View("Update", exerciseViewModel);
                 }
 
-                //If everything is OK, the exercise will get updated
+                //If everything is OK, the exercise will get updated, but first we store the previous restriction
 
                 Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
                 exercise.AuthorID = HttpContext.User.Identity.GetUserId();
