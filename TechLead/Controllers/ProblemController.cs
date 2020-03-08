@@ -67,30 +67,59 @@ namespace TechLead.Controllers
             //output for the problem having id = problemId.
             //The "what" variable will tell us what do we want to display, the input or the expected output
 
-            string result="";
-            if (problemId != -1)
+            try
             {
-                //Display input or output
-                if (what == "input")
+                string result = "";
+                if (problemId != -1)
                 {
-                    result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).InputColection;
-                    result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
-                    return result;
+                    //check if the problem is restricted or not.
+                    //If it is restricted, then do not show the input.
+                    string restricted = (from e in _context.Exercises
+                                         where e.Id == problemId
+                                         select e.RestrictedMode.ToString()).FirstOrDefault();
+
+                    Debug.WriteLine("restricted = " + restricted);
+                    if (restricted == "True")
+                    {
+                        return ":)";
+                    }
+
+                    //Display input or output
+                    if (what == "input")
+                    {
+                        result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).InputColection;
+                        result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
+                        return result;
+                    }
+                    else
+                    {
+                        result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).OutputColection;
+                        result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
+                        return result;
+                    }
                 }
                 else
                 {
-                    result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).OutputColection;
+                    //display user's solution output, but only if the problem is not restricted
+                    string restricted = (from e in _context.Exercises
+                                         where e.Id == int.Parse((from s in _context.Submissions
+                                                                  where s.SubmissionID == submissionId
+                                                                  select s.ExerciseId).ToString())
+                                         select e.RestrictedMode.ToString()).FirstOrDefault();
+                    if (restricted == "True")
+                    {
+                        return ":)";
+                    }
+
+                    result = _context.Submissions.SingleOrDefault(mytable => mytable.SubmissionID == problemId).OutputCollection;
                     result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
                     return result;
                 }
-            }
-            else
+            } catch (Exception)
             {
-                //display user's solution output
-                result = _context.Submissions.SingleOrDefault(mytable => mytable.SubmissionID == problemId).OutputCollection;
-                result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
-                return result;
+                return "Error";
             }
+            
         }
         [HttpPost]
         [Authorize]
