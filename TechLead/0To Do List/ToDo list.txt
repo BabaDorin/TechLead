@@ -1,11 +1,17 @@
 ﻿
 	TO DO IMMEDIATELY
+
+>> Do not send parameters via link!!! Especially on restricted mode feature.
+
 >>	if the problem has restriction mode, do not show submissionDetails page to everyone. Show it only to:
 	Admins
 	SubmissionaAuthor
 	Later - ClassAuthor
 >>	Id a problem restriction mode is changed, then make a query to the db and update the restrictionMode property
 for all of the submissions.
+
+>>	Get rid of Submission.RestrictedMode or make something so it won't get outdated (An option will be to update all 
+submisions (Update query) when the restriction mode of a problem is changed)
 
 >>  if the problem is restricted, the submissionviewModel shouldn't have inputs and outputs in it.
 
