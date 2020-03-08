@@ -229,9 +229,12 @@ namespace TechLead.Controllers
             try
             {
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
+                bool restrictedMode = (from e in _context.Exercises
+                                       where e.Id == S.ExerciseId
+                                       select e.RestrictedMode).FirstOrDefault();
                 //The page with submission details won't be accesible for other people, except 
                 if(!isAdministrator())
-                    if (S.RestrictedMode && (User.Identity.IsAuthenticated == false || (User.Identity.GetUserId() != S.SubmissionAuthorId && User.Identity.GetUserId() != S.ExerciseAuthorId)))
+                    if (restrictedMode && (User.Identity.IsAuthenticated == false || (User.Identity.GetUserId() != S.SubmissionAuthorId && User.Identity.GetUserId() != S.ExerciseAuthorId)))
                     {
                     
                         ErrorViewModel Error = new ErrorViewModel();
@@ -240,7 +243,6 @@ namespace TechLead.Controllers
                             "person who made this submission can see it.";
                         return View("~/Views/Shared/Error.cshtml", Error);
                     }
-
 
                 //Do not send test-cases if the problem under which this solution was sent is restricted
                 if (S.RestrictedMode)

@@ -4,6 +4,9 @@
 	Admins
 	SubmissionaAuthor
 	Later - ClassAuthor
+>>	Id a problem restriction mode is changed, then make a query to the db and update the restrictionMode property
+for all of the submissions.
+
 >>  if the problem is restricted, the submissionviewModel shouldn't have inputs and outputs in it.
 
 >> lilbit of styling for displying input/output
