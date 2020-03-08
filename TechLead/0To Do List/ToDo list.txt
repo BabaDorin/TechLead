@@ -1,12 +1,11 @@
 ﻿
 	TO DO IMMEDIATELY
-
-
-
->>  do not allow users to see inputs / outputs for restricted problems (they can acces it via LINK)
-		if(restricted) do not show. Admins will be able to see the back-end tests via update.
-
+>>	if the problem has restriction mode, do not show submissionDetails page to everyone. Show it only to:
+	Admins
+	SubmissionaAuthor
+	Later - ClassAuthor
 >>  if the problem is restricted, the submissionviewModel shouldn't have inputs and outputs in it.
+
 >> lilbit of styling for displying input/output
 
 >> the table which displays submissions "Submissions" "Problem" is not responsive
@@ -56,6 +55,9 @@ the user has failed. It won't cost anything.
 
 
 >>>>>>>>>>>>>>>>>> DONE <<<<<<<<<<<<<<<<<<<<<,
+
+>>  do not allow users to see inputs / outputs for restricted problems (they can acces it via LINK)
+		if(restricted) do not show. Admins will be able to see the back-end tests via update.
 
 >>	display test cases and expected output
 	- Check the number of characters for each test case.

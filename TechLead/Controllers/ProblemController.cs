@@ -241,6 +241,15 @@ namespace TechLead.Controllers
                         return View("~/Views/Shared/Error.cshtml", Error);
                     }
 
+
+                //Do not send test-cases if the problem under which this solution was sent is restricted
+                if (S.RestrictedMode)
+                {
+                    S.InputCollection = "";
+                    S.OutputCollection = "";
+                    S.ExpectedOutput = "";
+                }
+
                 SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
                 return View(submissionViewModel);
             }
@@ -1073,6 +1082,7 @@ namespace TechLead.Controllers
         {
             SubmissionViewModel Svm = new SubmissionViewModel();
             Svm.SubmissionAuthorId = submission.SubmissionAuthorId;
+            Svm.RestrictedMode = submission.RestrictedMode;
             Svm.SubmissionAuthorUserName = submission.SubmissionAuthorUserName;
             Svm.SubmissionID = submission.SubmissionID;
             Svm.Date = submission.Date;
