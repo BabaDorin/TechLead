@@ -1914,3 +1914,4 @@ C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Mig
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.AddRestrictedMode_Submission.resources
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.AddExerciseAuthorId_Submission.resources
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingClassModelWithItsRelationships.resources
+C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.ApplicationDbConetxtSync.resources

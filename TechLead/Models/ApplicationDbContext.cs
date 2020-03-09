@@ -17,6 +17,8 @@ namespace TechLead.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<TechLead.Models.Class> Classes { get; set; }
     }
     public class MyDbContext : DbContext
     {

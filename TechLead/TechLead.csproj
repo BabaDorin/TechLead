@@ -257,6 +257,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AdministrationController.cs" />
+    <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Custom Exceptions\InvalidSourceCodeException.cs" />
     <Compile Include="Custom Exceptions\JudgeZeroException.cs" />
     <Compile Include="Migrations\201912191628209_UpdateExerciseModel.cs" />
@@ -355,8 +356,13 @@
     <Compile Include="Migrations\202003090834528_AddingClassModelWithItsRelationships.Designer.cs">
       <DependentUpon>202003090834528_AddingClassModelWithItsRelationships.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003090908565_ApplicationDbConetxtSync.cs" />
+    <Compile Include="Migrations\202003090908565_ApplicationDbConetxtSync.Designer.cs">
+      <DependentUpon>202003090908565_ApplicationDbConetxtSync.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\Class.cs" />
+    <Compile Include="Models\ClassViewModel.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\DeleteProblemViewModel.cs" />
@@ -753,6 +759,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Problem\Delete.cshtml" />
+    <Content Include="Views\Class\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -954,6 +961,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003090834528_AddingClassModelWithItsRelationships.resx">
       <DependentUpon>202003090834528_AddingClassModelWithItsRelationships.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003090908565_ApplicationDbConetxtSync.resx">
+      <DependentUpon>202003090908565_ApplicationDbConetxtSync.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
