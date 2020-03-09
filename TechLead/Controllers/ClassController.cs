@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using TechLead.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Net.Http;
+
 namespace TechLead.Controllers
 {
     public class ClassController : Controller
@@ -27,12 +29,14 @@ namespace TechLead.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(ClassViewModel classViewModel)
         {
             try
@@ -74,6 +78,100 @@ namespace TechLead.Controllers
             }
         }
 
+        //Will display data about the class, such as exercises within it and members (And join requests, only
+        //for the class creator
+        [Authorize]
+        public ActionResult Details(int id)
+        {
+            try
+            {
+                // - if the user is administrator or classCreator then display the data, if not
+                // - check if the user is a member of the class.
+                Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
+
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+                {
+                    return RedirectToAction("Manage", new { id });
+                }
+                else
+                {
+                    //Check if user is a member of the class
+                    if (@class.Members.Any(m => m.Id == User.Identity.GetUserId()))
+                    {
+                        ClassViewModel classViewModel = ClassFromModelToViewModel(@class);
+                        return View(classViewModel);
+                    }
+                    else
+                    {
+                        ErrorViewModel Error = new ErrorViewModel
+                        {
+                            Title = "Nope.",
+                            Description = "You don't have acces to this page"
+                        };
+                        return View("~/Views/Shared/Error.cshtml", Error);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "Invalid request. Details: " + e.Message
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+            
+        }
+
+        [Authorize]
+        public ActionResult Manage(int id)
+        {
+            try
+            {
+                Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+                {
+                    ClassViewModel classViewModel = ClassFromModelToViewModel(@class);
+                    return View(classViewModel);
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Nope.",
+                        Description = "You don't have acces to this page"
+                    };
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            } catch(Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "Invalid request. Details: " + e.Message
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
+        [Authorize]
+        public ActionResult ImportExercise(int classID)
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult CreateExercise(int classId)
+        {
+            return View();
+        }
+
+        public ActionResult SeeMembers()
+        {
+            return View();
+        }
+
         public string GenerateRandom6CharCode()
         {
             Random rnd = new Random();
@@ -91,5 +189,37 @@ namespace TechLead.Controllers
 
             return @class;
         }
-    } 
+        public ClassViewModel ClassFromModelToViewModel(Class @class)
+        {
+            ClassViewModel classViewModel = new ClassViewModel
+            {
+                ClassCreatorID = @class.ClassCreatorID,
+                ClassInfo = @class.ClassInfo,
+                ClassName = @class.ClassName,
+                ClassInvittionCode = @class.ClassInvitationCode,
+                ClassID = @class.ClassID,
+                CreationDate = @class.CreationDate,
+                Exercises = @class.Exercises.ToList(),
+                Members = @class.Members.ToList()
+            };
+
+            return classViewModel;
+        }
+
+        public bool isAdministrator()
+        {
+            if (HttpContext.User != null)
+            {
+                if (!User.Identity.IsAuthenticated) return false;
+                string userId = HttpContext.User.Identity.GetUserId();
+                return _userManager.IsInRole(userId, "Administrator");
+
+                //Debug.WriteLine("User: " + HttpContext.User.Identity.Name);
+                //Debug.WriteLine("Is Administrator: " + _userManager.IsInRole(userId, "Administrator"));
+                //Debug.WriteLine("Role: " + user.UserRole);
+            }
+            else return false;
+        }
+
+    }
 }

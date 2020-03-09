@@ -9,12 +9,20 @@ using PagedList;
 using System.Diagnostics;
 using System.Net;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using TechLead.Custom_Exceptions;
 
 namespace TechLead.Models
 {
     public class Data
     {
         //Here will be stored various data like constants, some methods etc.
+        public static Data data = new Data();
         public string Delimitator = ";-;techleadDelimitator;-;-;x;x;x;x;x;x;x;TL'";
         public Test[] CreateTests(string inputCollection, string outputCollection)
         {
@@ -46,7 +54,7 @@ namespace TechLead.Models
             Debug.WriteLine("Going to return array of test cases");
             return tests;
         }
-
+        
         public string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);

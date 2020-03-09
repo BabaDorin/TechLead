@@ -20,5 +20,8 @@ namespace TechLead.Models
 
         //A unique 6 characters string randomly generated via Guid
         public string ClassInvittionCode { get; set; }
+
+        public List<Exercise> Exercises { get; set; }
+        public List<ApplicationUser> Members { get; set; }
     }
 }

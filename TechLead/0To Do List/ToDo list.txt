@@ -1,5 +1,7 @@
 ﻿
 	TO DO IMMEDIATELY
+>> Add the "My classes" feature. It will display all classes of which the current user is a member or creator.
+>> If the current user is the creator of a class, then allow him to delete or update data about it.
 
 
 
