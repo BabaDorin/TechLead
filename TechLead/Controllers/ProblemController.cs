@@ -464,58 +464,73 @@ namespace TechLead.Controllers
         
         public ActionResult Submissions(int? page, int exerciseId)
         {
-
-            //If the exercise has restricted mode, then display only the current user's submissions. (And inform the user that this problem
-            //has restricted mode).
-            //Otherwise, display all of them
-
-            //1) Checks if the current user is admin or exercises's author. In this case, no restrictions
-            //2) If the user is not an admin or exercise's author, then check if the current problem has
-            //any restriction.
-            //if it does - Display only user's submissions
-            //if it doesn't - Display all of the submissions.
-
-            string exerciseAuthorId = (from e in _context.Exercises
-                                       where e.Id == exerciseId
-                                       select e.AuthorID).Single();
-
-            ViewBag.NotAuthenticated = null;
-            ViewBag.Restricted = null;
-            List<SubmissionToDisplayViewModel> SubmissionForASpecificExercise = new List<SubmissionToDisplayViewModel>();
-           
-            if(isAdministrator() || (User.Identity.IsAuthenticated && User.Identity.GetUserId() == exerciseAuthorId))
+            try
             {
-                //No restriction for these
-                SubmissionForASpecificExercise = NoRestriction(exerciseId);
-            }
-            else
-            {
-                //Average users
-               
-                //Check if the problem is restricted
-                bool restrictedMode = (from e in _context.Exercises
-                                       where e.Id == exerciseId
-                                       select e.RestrictedMode).Single();
-                if (restrictedMode)
+                //If the exercise has restricted mode, then display only the current user's submissions. (And inform the user that this problem
+                //has restricted mode).
+                //Otherwise, display all of them
+
+                //1) Checks if the current user is admin or exercises's author. In this case, no restrictions
+                //2) If the user is not an admin or exercise's author, then check if the current problem has
+                //any restriction.
+                //if it does - Display only user's submissions
+                //if it doesn't - Display all of the submissions.
+
+                string exerciseAuthorId = (from e in _context.Exercises
+                                           where e.Id == exerciseId
+                                           select e.AuthorID).Single();
+                Debug.WriteLine("ExerciseAuthorId - " + exerciseAuthorId);
+                if (exerciseAuthorId == null)
+                    Debug.WriteLine("Null");
+
+                ViewBag.NotAuthenticated = null;
+                ViewBag.Restricted = null;
+                List<SubmissionToDisplayViewModel> SubmissionForASpecificExercise = new List<SubmissionToDisplayViewModel>();
+
+                if (isAdministrator() || (User.Identity.IsAuthenticated && User.Identity.GetUserId() == exerciseAuthorId))
                 {
-                    //Average user, the problem is restricted, Show only their own submissions
-                    ViewBag.Restricted = "This problem is set with restricted mode. You can see only your submissions.";
-                    if (User.Identity.IsAuthenticated)
-                    {
-                        SubmissionForASpecificExercise = WithRestriction(exerciseId);
-                    }
-                    else
-                    {
-                        ViewBag.NotAuthenticated = "You are not authenticated";
-                    }
+                    //No restriction for these
+                    SubmissionForASpecificExercise = NoRestriction(exerciseId);
                 }
                 else
                 {
-                    //Average user, no restriction, show all of the submissions
-                    SubmissionForASpecificExercise = NoRestriction(exerciseId);
+                    //Average users
+
+                    //Check if the problem is restricted
+                    bool restrictedMode = (from e in _context.Exercises
+                                           where e.Id == exerciseId
+                                           select e.RestrictedMode).Single();
+                    if (restrictedMode)
+                    {
+                        //Average user, the problem is restricted, Show only their own submissions
+                        ViewBag.Restricted = "This problem is set with restricted mode. You can see only your submissions.";
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            SubmissionForASpecificExercise = WithRestriction(exerciseId);
+                        }
+                        else
+                        {
+                            ViewBag.NotAuthenticated = "You are not authenticated";
+                        }
+                    }
+                    else
+                    {
+                        //Average user, no restriction, show all of the submissions
+                        SubmissionForASpecificExercise = NoRestriction(exerciseId);
+                    }
                 }
+                return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
             }
-            return View(SubmissionForASpecificExercise.ToList().ToPagedList(page ?? 1, 40));
+            catch (Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = e.Message,
+                };
+
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
         }
 
         public List<SubmissionToDisplayViewModel> NoRestriction(int exerciseId)

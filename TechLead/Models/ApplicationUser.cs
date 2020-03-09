@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 using System;
 
 namespace TechLead.Models
@@ -9,6 +10,11 @@ namespace TechLead.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
+        public ApplicationUser()
+        {
+            this.Classes = new HashSet<Class>();       
+        }
+
         public byte[] ProfilePhoto { get; set; }
         public string About { get; set; }
         public override string UserName { get => base.UserName; set => base.UserName = value; }
@@ -17,6 +23,8 @@ namespace TechLead.Models
         public double TotalPoints { get; set; }
         public string UserRole { get; set; }
         public string BestSubmisions { get; set; }
+        
+        public ICollection<Class> Classes { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

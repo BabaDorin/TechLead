@@ -351,7 +351,12 @@
     <Compile Include="Migrations\202003071426588_AddExerciseAuthorId_Submission.Designer.cs">
       <DependentUpon>202003071426588_AddExerciseAuthorId_Submission.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003090834528_AddingClassModelWithItsRelationships.cs" />
+    <Compile Include="Migrations\202003090834528_AddingClassModelWithItsRelationships.Designer.cs">
+      <DependentUpon>202003090834528_AddingClassModelWithItsRelationships.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
+    <Compile Include="Models\Class.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\DeleteProblemViewModel.cs" />
@@ -946,6 +951,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003071426588_AddExerciseAuthorId_Submission.resx">
       <DependentUpon>202003071426588_AddExerciseAuthorId_Submission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003090834528_AddingClassModelWithItsRelationships.resx">
+      <DependentUpon>202003090834528_AddingClassModelWithItsRelationships.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

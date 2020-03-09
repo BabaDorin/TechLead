@@ -8,6 +8,11 @@ namespace TechLead.Models
 {
     public class Exercise
     {
+        public Exercise()
+        {
+            this.Classes = new HashSet<Class>();
+        }
+
         public int Id { get; set; }
 
         //If true, it will be deleted, 'kinda'. Only it's creator will be able to see it.
@@ -89,6 +94,8 @@ namespace TechLead.Models
         public string InputColection { get; set; }
         public string OutputColection { get; set; }
         public int NumberOfTests { get; set; }
+        
+        public ICollection<Class> Classes { get; set; }
         public int Submissions()
         {
             return SubmissionsAbove10Points + SubmissionsUnder10Points;

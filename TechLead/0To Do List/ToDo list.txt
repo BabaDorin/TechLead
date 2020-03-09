@@ -18,6 +18,7 @@ So, to deal with this, store the ID and make a request to the database to get th
 
 	TO DO on 2nd
 
+>> Try catch on newly implemented / modificated Controllers.
 >>>> Use less tempdata
 
 >>>> *Dynamic number or back-end problems
