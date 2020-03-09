@@ -28,10 +28,10 @@ namespace TechLead.Models
         public string ClassInvitationCode { get; set; }
 
         //The members of the class
-        public ICollection<ApplicationUser> Members { get; set; }
+        public virtual ICollection<ApplicationUser> Members { get; set; }
 
         //The collection of exercises within the class
-        public ICollection<Exercise> Exercises { get; set; }
+        public virtual ICollection<Exercise> Exercises { get; set; }
 
 
     }

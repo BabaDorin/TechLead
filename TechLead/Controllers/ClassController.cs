@@ -51,10 +51,11 @@ namespace TechLead.Controllers
                 @class.ClassInvitationCode = Guid.NewGuid().ToString();
 
                 string random = GenerateRandom6CharCode();
-                while(_context.Classes.Any(cl => cl.ClassInvitationCode == random)){
+                while (_context.Classes.Any(cl => cl.ClassInvitationCode == random))
+                {
                     random = GenerateRandom6CharCode();
                 }
-                
+
                 //Now, we are sure that the newly generated invitation code doesn't exists in our db.
                 //It's a small chance of duplicates apearring, but however.
                 @class.ClassInvitationCode = random;
@@ -123,58 +124,19 @@ namespace TechLead.Controllers
                 };
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
-            
+
         }
 
         [Authorize]
         public ActionResult Manage(int id)
         {
-            try
-            {
+            //try
+            //{
                 Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
                 if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
                 {
                     ClassViewModel classViewModel = ClassFromModelToViewModel(@class);
                     return View(classViewModel);
-                }
-                else
-                {
-                    ErrorViewModel Error = new ErrorViewModel
-                    {
-                        Title = "Nope.",
-                        Description = "You don't have acces to this page"
-                    };
-                    return View("~/Views/Shared/Error.cshtml", Error);
-                }
-            } catch(Exception e)
-            {
-                ErrorViewModel Error = new ErrorViewModel
-                {
-                    Title = "Error",
-                    Description = "Invalid request. Details: " + e.Message
-                };
-                return View("~/Views/Shared/Error.cshtml", Error);
-            }
-        }
-
-        [Authorize]
-        public ActionResult ImportExercise(int classID)
-        {
-            // Check if user is admin or class creator
-            // display a textbox where the user will have to introduce the id of the problem
-            // down below show a picture of where to find the problem id.
-
-            // On post method check if model is valid, if the problem specified actually exists
-            // and make a connection between the problem and the class
-            //try
-            //{
-                Class @class = _context.Classes.Where(c => c.ClassID == classID).FirstOrDefault();
-
-                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
-                {
-                    ImportExerciseViewModel ievm = new ImportExerciseViewModel();
-                    ievm.ClassId = @class.ClassID;
-                    return View(ievm);
                 }
                 else
                 {
@@ -191,19 +153,59 @@ namespace TechLead.Controllers
             //    ErrorViewModel Error = new ErrorViewModel
             //    {
             //        Title = "Error",
-            //        Description = e.Message
+            //        Description = "Invalid request. Details: " + e.Message
             //    };
             //    return View("~/Views/Shared/Error.cshtml", Error);
             //}
-            
+        }
+
+        [Authorize]
+        public ActionResult ImportExercise(int classID)
+        {
+            // Check if user is admin or class creator
+            // display a textbox where the user will have to introduce the id of the problem
+            // down below show a picture of where to find the problem id.
+
+            // On post method check if model is valid, if the problem specified actually exists
+            // and make a connection between the problem and the class
+            try
+            {
+                Class @class = _context.Classes.Where(c => c.ClassID == classID).FirstOrDefault();
+
+            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            {
+                ImportExerciseViewModel ievm = new ImportExerciseViewModel();
+                ievm.ClassId = @class.ClassID;
+                return View(ievm);
+            }
+            else
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Nope.",
+                    Description = "You don't have acces to this page"
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = e.Message
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+
         }
 
         [Authorize]
         [HttpPost]
         public ActionResult ImportExercise(ImportExerciseViewModel ievm)
         {
-            //try
-           // {
+            try
+            {
                 if (!ModelState.IsValid)
                 {
                     return View(ievm);
@@ -214,8 +216,8 @@ namespace TechLead.Controllers
                     Exercise e = _context.Exercises.Where(ex => ex.Id == ievm.ExerciseId).FirstOrDefault();
                     if (e == null)
                     {
-                    //The id provided is incorrect - The problem does not exist
-                    //throw new Exception();
+                        //The id provided is incorrect - The problem does not exist
+                        //throw new Exception();
                         ErrorViewModel Error = new ErrorViewModel
                         {
                             Title = "Error",
@@ -231,23 +233,19 @@ namespace TechLead.Controllers
                         _context.Classes.Include("Exercises").FirstOrDefault(x => x.ClassID == ievm.ClassId).Exercises.Add(e);
                         //_context.Entry(@class).State = System.Data.Entity.EntityState.Modified;
                         _context.SaveChanges();
-                        Class cls = _context.Classes.Where(c => c.ClassID == ievm.ClassId).FirstOrDefault();
-                    Debug.WriteLine("ievm class id = " + ievm.ClassId);
-                        Debug.WriteLine("Exercise => class => inserted");
-                    Debug.WriteLine("The class has " + cls.Exercises.Count() + " exercises");
-                        return RedirectToAction("Manage", new { id = cls.ClassID });
+                        return RedirectToAction("Manage", new { id = ievm.ClassId });
                     }
                 }
-            //}
-            //catch(Exception e)
-            //{
-            //    ErrorViewModel Error = new ErrorViewModel
-            //    {
-            //        Title = "Error. The exercise could not be imported. Please, try again",
-            //        Description = e.Message
-            //    };
-            //    return View("~/Views/Shared/Error.cshtml", Error);
-            //}
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error. The exercise could not be imported. Please, try again",
+                    Description = e.Message
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
         }
 
         [Authorize]
@@ -288,9 +286,24 @@ namespace TechLead.Controllers
                 ClassInvittionCode = @class.ClassInvitationCode,
                 ClassID = @class.ClassID,
                 CreationDate = @class.CreationDate,
-                Exercises = @class.Exercises.ToList(),
-                Members = @class.Members.ToList()
             };
+
+            //Optimize this, extract only what's needed.
+            List<Exercise> exercises = @class.Exercises.ToList();
+            Debug.WriteLine("THE LIST HAS " + exercises.Count() + " ITEMS");
+            classViewModel.Exercises = new List<DisplayExerciseGeneralInfoViewModel>();
+            foreach(Exercise e in exercises)
+            {
+                classViewModel.Exercises.Add(new DisplayExerciseGeneralInfoViewModel
+                {
+                    Author = e.Author,
+                    DifficultyID = e.DifficultyId,
+                    AuthorID = e.AuthorID,
+                    Id = e.Id,
+                    Name = e.Name,
+                    Points = e.Points
+                });
+            }
 
             return classViewModel;
         }

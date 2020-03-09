@@ -374,6 +374,7 @@
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\DeleteProblemViewModel.cs" />
+    <Compile Include="Models\DisplayApplicationUserViewModel.cs" />
     <Compile Include="Models\DisplayExerciseViewModel.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\ImportExerciseViewModel.cs" />
