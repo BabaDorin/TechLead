@@ -1916,3 +1916,4 @@ C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Mig
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingClassModelWithItsRelationships.resources
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.ApplicationDbConetxtSync.resources
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.RenamingClassInvitationProperty.resources
+C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.AddAvaialableOnlyForTheClassPropertyForExerciseModel.resources

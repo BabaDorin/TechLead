@@ -22,6 +22,11 @@ namespace TechLead.Models
         //The author of the problem and the admins will be able to see all the submissions
         //Inputs and outputs won't be shown to the user (On submission details page)
         public bool RestrictedMode { get; set; }
+        
+        //When an exercise is created within a class, then it won't be displayed in the beginner
+        // / Advanced / Intermediate branch. The class creator will decide if the exercise will go
+        //public or not.
+        public bool AvailableOnlyForTheClass { get; set; }
 
         [Required(ErrorMessage ="Please, enter a Name for your problem")]
         public string Name { get; set; }

@@ -364,6 +364,10 @@
     <Compile Include="Migrations\202003090931412_RenamingClassInvitationProperty.Designer.cs">
       <DependentUpon>202003090931412_RenamingClassInvitationProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003091944174_AddAvaialableOnlyForTheClassPropertyForExerciseModel.cs" />
+    <Compile Include="Migrations\202003091944174_AddAvaialableOnlyForTheClassPropertyForExerciseModel.Designer.cs">
+      <DependentUpon>202003091944174_AddAvaialableOnlyForTheClassPropertyForExerciseModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\ClassViewModel.cs" />
@@ -971,6 +975,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003090931412_RenamingClassInvitationProperty.resx">
       <DependentUpon>202003090931412_RenamingClassInvitationProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003091944174_AddAvaialableOnlyForTheClassPropertyForExerciseModel.resx">
+      <DependentUpon>202003091944174_AddAvaialableOnlyForTheClassPropertyForExerciseModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
