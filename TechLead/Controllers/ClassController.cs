@@ -158,6 +158,12 @@ namespace TechLead.Controllers
         [Authorize]
         public ActionResult ImportExercise(int classID)
         {
+            // Check if user is admin or class creator
+            // display a textbox where the user will have to introduce the id of the problem
+            // down below show a picture of where to find the problem id.
+
+            // On post method check if model is valid, if the problem specified actually exists
+            // and make a connection between the problem and the class
             return View();
         }
 

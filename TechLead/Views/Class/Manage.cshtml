@@ -10,10 +10,12 @@
         <h2>@Model.ClassName</h2>
         <h3>@Model.ClassInfo</h3>
         <p class="InvitationCode">Invitation code: @Model.ClassInvittionCode</p>
-    </div>
-    <div class="Box">
-        <button type="button" class="btn-primary">Import an existing exercise</button>
-        <button type="button" class="btn-primary">Create an exercise</button>
+        <a href='@Url.Action("ImportExercise", "Class", new { id = Model.ClassID })'>
+            <input type='button' class="btn btn-info" value='Import a problem' />
+        </a>
+        <a href='@Url.Action("CreateExercise", "Class", new { id = Model.ClassID })'>
+            <input type='button' class="btn btn-light" value='Create a problem' />
+        </a>
     </div>
     <div class="Box">
         <!--Display the problems here-->
@@ -28,5 +30,4 @@
         }
     </div>
 </div>
-<h2>Details</h2>
 
