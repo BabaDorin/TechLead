@@ -25,7 +25,7 @@ namespace TechLead.Models
         public string ClassCreatorID { get; set; }
 
         //A unique 6 characters string randomly generated via Guid
-        public string ClassInvittionCode { get; set; }
+        public string ClassInvitationCode { get; set; }
 
         //The members of the class
         public ICollection<ApplicationUser> Members { get; set; }

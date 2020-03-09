@@ -360,6 +360,10 @@
     <Compile Include="Migrations\202003090908565_ApplicationDbConetxtSync.Designer.cs">
       <DependentUpon>202003090908565_ApplicationDbConetxtSync.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003090931412_RenamingClassInvitationProperty.cs" />
+    <Compile Include="Migrations\202003090931412_RenamingClassInvitationProperty.Designer.cs">
+      <DependentUpon>202003090931412_RenamingClassInvitationProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\ClassViewModel.cs" />
@@ -964,6 +968,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003090908565_ApplicationDbConetxtSync.resx">
       <DependentUpon>202003090908565_ApplicationDbConetxtSync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003090931412_RenamingClassInvitationProperty.resx">
+      <DependentUpon>202003090931412_RenamingClassInvitationProperty.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
