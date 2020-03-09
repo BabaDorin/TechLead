@@ -88,6 +88,7 @@ namespace TechLead.Controllers
                 // - if the user is administrator or classCreator then display the data, if not
                 // - check if the user is a member of the class.
                 Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
+                TempData["Class"] = @class;
 
                 if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
                 {
@@ -164,7 +165,78 @@ namespace TechLead.Controllers
 
             // On post method check if model is valid, if the problem specified actually exists
             // and make a connection between the problem and the class
-            return View();
+            try
+            {
+                Class @class = (Class)TempData["Class"];
+
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+                {
+                    ImportExerciseViewModel ievm = new ImportExerciseViewModel();
+                    ievm.ClassId = @class.ClassID;
+                    return View(ievm);
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Nope.",
+                        Description = "You don't have acces to this page"
+                    };
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = e.Message
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+            
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ImportExercise(ImportExerciseViewModel ievm)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(ievm);
+                }
+                else
+                {
+                    //Insert the problem into class colection of problems.
+                    Exercise e = _context.Exercises.Where(ex => ex.Id == ievm.ExerciseId).FirstOrDefault();
+                    if (e == null)
+                    {
+                        //The id provided is incorrect - The problem does not exist
+                        throw new Exception();
+                    }
+                    else
+                    {
+                        //The problem exists
+                        Class @class = (Class)TempData["Class"];
+                        @class.Exercises.Add(e);
+                        _context.Entry(@class).State = System.Data.Entity.EntityState.Modified;
+                        _context.SaveChanges();
+
+                        return RedirectToAction("Manage", new { @class.ClassID });
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error. The exercise could not be imported. Please, try again",
+                    Description = e.Message
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
         }
 
         [Authorize]

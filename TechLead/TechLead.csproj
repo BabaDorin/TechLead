@@ -376,6 +376,7 @@
     <Compile Include="Models\DeleteProblemViewModel.cs" />
     <Compile Include="Models\DisplayExerciseViewModel.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
+    <Compile Include="Models\ImportExerciseViewModel.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
     <Compile Include="Models\SubmissionToDisplayViewModel.cs" />
     <Compile Include="Models\SubmissionViewModel.cs" />
