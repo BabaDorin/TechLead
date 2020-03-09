@@ -10,10 +10,10 @@
         <h2>@Model.ClassName</h2>
         <h3>@Model.ClassInfo</h3>
         <p class="InvitationCode">Invitation code: @Model.ClassInvittionCode</p>
-        <a href='@Url.Action("ImportExercise", "Class", new { id = Model.ClassID })'>
+        <a href='@Url.Action("ImportExercise", "Class", new { classID = Model.ClassID })'>
             <input type='button' class="btn btn-info" value='Import a problem' />
         </a>
-        <a href='@Url.Action("CreateExercise", "Class", new { id = Model.ClassID })'>
+        <a href='@Url.Action("CreateExercise", "Class", new { classID = Model.ClassID })'>
             <input type='button' class="btn btn-light" value='Create a problem' />
         </a>
     </div>

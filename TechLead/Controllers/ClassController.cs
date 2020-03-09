@@ -7,6 +7,7 @@ using TechLead.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net.Http;
+using System.Diagnostics;
 
 namespace TechLead.Controllers
 {
@@ -165,9 +166,9 @@ namespace TechLead.Controllers
 
             // On post method check if model is valid, if the problem specified actually exists
             // and make a connection between the problem and the class
-            try
-            {
-                Class @class = (Class)TempData["Class"];
+            //try
+            //{
+                Class @class = _context.Classes.Where(c => c.ClassID == classID).FirstOrDefault();
 
                 if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
                 {
@@ -184,16 +185,16 @@ namespace TechLead.Controllers
                     };
                     return View("~/Views/Shared/Error.cshtml", Error);
                 }
-            }
-            catch (Exception e)
-            {
-                ErrorViewModel Error = new ErrorViewModel
-                {
-                    Title = "Error",
-                    Description = e.Message
-                };
-                return View("~/Views/Shared/Error.cshtml", Error);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    ErrorViewModel Error = new ErrorViewModel
+            //    {
+            //        Title = "Error",
+            //        Description = e.Message
+            //    };
+            //    return View("~/Views/Shared/Error.cshtml", Error);
+            //}
             
         }
 
@@ -201,8 +202,8 @@ namespace TechLead.Controllers
         [HttpPost]
         public ActionResult ImportExercise(ImportExerciseViewModel ievm)
         {
-            try
-            {
+            //try
+           // {
                 if (!ModelState.IsValid)
                 {
                     return View(ievm);
@@ -213,30 +214,40 @@ namespace TechLead.Controllers
                     Exercise e = _context.Exercises.Where(ex => ex.Id == ievm.ExerciseId).FirstOrDefault();
                     if (e == null)
                     {
-                        //The id provided is incorrect - The problem does not exist
-                        throw new Exception();
+                    //The id provided is incorrect - The problem does not exist
+                    //throw new Exception();
+                        ErrorViewModel Error = new ErrorViewModel
+                        {
+                            Title = "Error",
+                            Description = "We couldn't find any problem having the id specified"
+                        };
+                        return View("~/Views/Shared/Error.cshtml", Error);
                     }
                     else
                     {
                         //The problem exists
-                        Class @class = (Class)TempData["Class"];
-                        @class.Exercises.Add(e);
-                        _context.Entry(@class).State = System.Data.Entity.EntityState.Modified;
+                        //Class cls  = _context.Classes.Where(c => c.ClassID == ievm.ClassId).FirstOrDefault();
+                        //cls.Exercises.Add(e);
+                        _context.Classes.Include("Exercises").FirstOrDefault(x => x.ClassID == ievm.ClassId).Exercises.Add(e);
+                        //_context.Entry(@class).State = System.Data.Entity.EntityState.Modified;
                         _context.SaveChanges();
-
-                        return RedirectToAction("Manage", new { @class.ClassID });
+                        Class cls = _context.Classes.Where(c => c.ClassID == ievm.ClassId).FirstOrDefault();
+                    Debug.WriteLine("ievm class id = " + ievm.ClassId);
+                        Debug.WriteLine("Exercise => class => inserted");
+                    Debug.WriteLine("The class has " + cls.Exercises.Count() + " exercises");
+                        return RedirectToAction("Manage", new { id = cls.ClassID });
                     }
                 }
-            }
-            catch(Exception e)
-            {
-                ErrorViewModel Error = new ErrorViewModel
-                {
-                    Title = "Error. The exercise could not be imported. Please, try again",
-                    Description = e.Message
-                };
-                return View("~/Views/Shared/Error.cshtml", Error);
-            }
+            //}
+            //catch(Exception e)
+            //{
+            //    ErrorViewModel Error = new ErrorViewModel
+            //    {
+            //        Title = "Error. The exercise could not be imported. Please, try again",
+            //        Description = e.Message
+            //    };
+            //    return View("~/Views/Shared/Error.cshtml", Error);
+            //}
         }
 
         [Authorize]

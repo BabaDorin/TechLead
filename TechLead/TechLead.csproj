@@ -771,6 +771,7 @@
     <Content Include="Views\Class\Create.cshtml" />
     <Content Include="Views\Class\Details.cshtml" />
     <Content Include="Views\Class\Manage.cshtml" />
+    <Content Include="Views\Class\ImportExercise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
