@@ -4,12 +4,23 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TechLead.Models;
-
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 namespace TechLead.Controllers
 {
     public class ClassController : Controller
     {
+        public static Data data = new Data();
+        private static ApplicationDbContext _context;
+        private static UserManager<ApplicationUser> _userManager;
+
+        public ClassController()
+        {
+            _context = new ApplicationDbContext();
+            _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+        }
         // GET: Class
+
         public ActionResult Index()
         {
             return View();
@@ -35,16 +46,32 @@ namespace TechLead.Controllers
                 @class.ClassInvitationCode = Guid.NewGuid().ToString();
 
                 string random = GenerateRandom6CharCode();
-                //Check if random already exists
-                //set classInvitationCode = random if does not.
+                while(_context.Classes.Any(cl => cl.ClassInvitationCode == random)){
+                    random = GenerateRandom6CharCode();
+                }
+                
+                //Now, we are sure that the newly generated invitation code doesn't exists in our db.
+                //It's a small chance of duplicates apearring, but however.
+                @class.ClassInvitationCode = random;
+                @class.CreationDate = DateTime.Now;
+                @class.ClassCreatorID = User.Identity.GetUserId();
+
+                //Save data to DB
+                _context.Classes.Add(@class);
+                _context.SaveChanges();
 
                 return View("~/Views/Home/Index.cshtml");
             }
             catch (Exception e)
             {
-                return View("~/Views/Home/Index.cshtml");
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = e.Message
+                };
+
+                return View("~/Views/Shared/Error.cshtml", Error);
             }
-            
         }
 
         public string GenerateRandom6CharCode()
