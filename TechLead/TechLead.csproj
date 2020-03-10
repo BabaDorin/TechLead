@@ -374,11 +374,13 @@
     </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\Class.cs" />
+    <Compile Include="Models\ClassToDisplayViewModel.cs" />
     <Compile Include="Models\ClassViewModel.cs" />
     <Compile Include="Models\CreateRoleViewModel.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\DeleteProblemViewModel.cs" />
     <Compile Include="Models\DisplayApplicationUserViewModel.cs" />
+    <Compile Include="Models\DisplayClassesViewModel.cs" />
     <Compile Include="Models\DisplayExerciseViewModel.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\ImportExerciseViewModel.cs" />
@@ -783,6 +785,7 @@
     <Content Include="Views\Class\JoinClass.cshtml" />
     <Content Include="Views\Class\SeeJoinRequests.cshtml" />
     <Content Include="Views\Class\SeeMembers.cshtml" />
+    <Content Include="Views\Class\MyClasses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

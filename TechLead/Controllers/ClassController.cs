@@ -160,6 +160,48 @@ namespace TechLead.Controllers
         }
 
         [Authorize]
+        public ActionResult MyClasses()
+        {
+            //Show all classes to admins
+            if (isAdministrator())
+            {
+                DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
+                List<Class> classes = _context.Classes.ToList();
+                foreach(Class c in classes)
+                {
+                    displayClasses.Classes_Joined.Add(ClassFromModelToDisplayViewModel(c));
+                }
+                return View(displayClasses);
+            }
+            else
+            {
+                //Get only the classes in which the current user is member of
+                ApplicationUser user = (ApplicationUser)_context.Users.Where(u => u.Id == User.Identity.GetUserId());
+                DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
+                
+                //Classes where the user is a simple member
+                List<Class> joinedClasses = new List<Class>();
+                displayClasses.Classes_Joined = new List<ClassToDisplayViewModel>();
+                joinedClasses = user.Classes.ToList();
+                foreach(Class c in joinedClasses)
+                {
+                    displayClasses.Classes_Joined.Add(ClassFromModelToDisplayViewModel(c));
+                }
+
+                //Classes that were created by the user
+                List<Class> ownedClasses = new List<Class>();
+                ownedClasses = (from e in _context.Classes
+                                where e.ClassCreatorID == User.Identity.GetUserId()
+                                select e).ToList();
+                foreach(Class c in ownedClasses)
+                {
+                    displayClasses.Classes_Owned.Add(ClassFromModelToDisplayViewModel(c));
+                }
+                return View(displayClasses);
+            }
+        }
+
+        [Authorize]
         public ActionResult ImportExercise(int classID)
         {
             // Check if user is admin or class creator
@@ -468,6 +510,19 @@ namespace TechLead.Controllers
             };
 
             return @class;
+        }
+        public ClassToDisplayViewModel ClassFromModelToDisplayViewModel(Class @class)
+        {
+            return new ClassToDisplayViewModel
+            {
+                ID = @class.ClassID,
+                Name = @class.ClassName,
+                CreatorId = @class.ClassCreatorID,
+                CreatorName = (from u in _context.Users
+                               where u.Id == @class.ClassCreatorID
+                               select u.UserName).ToString(),
+                NumberOfMembers = @class.Members.Count()
+            };
         }
         public ClassViewModel ClassFromModelToViewModel(Class @class)
         {
