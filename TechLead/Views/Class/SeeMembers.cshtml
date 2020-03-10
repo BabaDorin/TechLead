@@ -6,16 +6,18 @@
 
 <div class="Content">
     <div class="TitleBox">
-        Class Members
+        <h2>Class Members</h2>
     </div>
     <div class="Box">
-        @foreach(var s in Model)
+
+        @foreach (var s in Model)
         {
-            <p>
-                @s.Name
-            </p>
+            <a href="@Url.Action("ViewProfile", "Profile", new { userID = s.userID })">
+                <div class="UserToDisplay">
+                    @s.Name
+                </div>
+            </a>
         }
     </div>
 </div>
-<h2>SeeMembers</h2>
 

@@ -526,7 +526,8 @@ namespace TechLead.Controllers
                 {
                     Id = user.Id,
                     JoinDate = DateTime.Now,
-                    Name = user.UserName
+                    Name = user.UserName,
+                    userID = user.Id
                 });
             }
 

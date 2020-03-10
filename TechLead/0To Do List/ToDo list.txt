@@ -1,6 +1,9 @@
 ﻿
 	TO DO IMMEDIATELY
 
+>>There is an error when trying to display the submission under "Restricted Mode" problem from
+profile of Baba Dorin (The one having a bottle of wine as profile photo);
+
 >> Add See members feature
 	(If got some time) delete feature -> A button near to each member which says - Remove member
 

@@ -9,6 +9,7 @@ namespace TechLead.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public string userID { get; set; }
         public DateTime JoinDate { get; set; }
     }
 }

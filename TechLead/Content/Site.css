@@ -740,3 +740,34 @@ button.NotsuccessTestContainer:active{
     font-size: 17px;
     margin: 0;
 }
+
+
+/****************************************** GROUP STUFF ***************************/
+
+.MiniBox{
+    padding:2%;
+    min-width:500px;
+    width:70%;
+    margin:auto;
+}
+
+.UserToDisplay {
+    align-items: center;
+    background-color: aliceblue;
+    color: #333;
+    padding: 2%;
+    margin: 2px;
+    font-size: large;
+    width: 100%;
+    box-shadow: 1px 8px 20px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(64, 64, 75, 0);
+    text-decoration: none;
+}
+
+.UserToDisplay:hover{
+    position:relative;
+    z-index:1;
+    background-color: aliceblue;
+    color: #333332;
+    border-color: aliceblue;
+    text-decoration:none;
+}
