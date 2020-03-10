@@ -254,9 +254,53 @@ namespace TechLead.Controllers
             return View();
         }
         
+        [Authorize]
         public ActionResult JoinClass()
         {
-            return View();
+            JoinRequestViewModel jrvw = new JoinRequestViewModel();
+            jrvw.AuthorID = User.Identity.GetUserId();
+            return View(jrvw);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult JoinClass(JoinRequestViewModel jrvw)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(jrvw);
+            }
+            else
+            {
+                //check if the provided code exists (Points to a valid class)
+                if(_context.Classes.Any(c => c.ClassInvitationCode == jrvw.InvitationCode))
+                {
+                    //Register the join
+                    int classId = (from c in _context.Classes
+                                   where c.ClassInvitationCode == jrvw.InvitationCode
+                                   select c.ClassID).SingleOrDefault();
+
+                    JoinRequest joinRequest = new JoinRequest
+                    {
+                        AuthorId = User.Identity.GetUserId(),
+                        ClassId = classId,
+                    };
+
+                    _context.JoinRequests.Add(joinRequest);
+                    _context.SaveChanges();
+
+                    return View("Index", "Home");
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Error",
+                        Description = "Class not found, verify the code and try again"
+                    };
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
         }
 
         public ActionResult SeeClasses()

@@ -383,6 +383,7 @@
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\ImportExerciseViewModel.cs" />
     <Compile Include="Models\JoinRequest.cs" />
+    <Compile Include="Models\JoinRequestViewModel.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
     <Compile Include="Models\SubmissionToDisplayViewModel.cs" />
     <Compile Include="Models\SubmissionViewModel.cs" />
@@ -778,6 +779,7 @@
     <Content Include="Views\Class\Details.cshtml" />
     <Content Include="Views\Class\Manage.cshtml" />
     <Content Include="Views\Class\ImportExercise.cshtml" />
+    <Content Include="Views\Class\JoinClass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
