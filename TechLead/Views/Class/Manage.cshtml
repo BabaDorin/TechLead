@@ -10,12 +10,31 @@
         <h2>@Model.ClassName</h2>
         <h3>@Model.ClassInfo</h3>
         <p class="InvitationCode">Invitation code: @Model.ClassInvittionCode</p>
-        <a href='@Url.Action("ImportExercise", "Class", new { classID = Model.ClassID })'>
-            <input type='button' class="btn btn-info" value='Import a problem' />
-        </a>
-        <a href='@Url.Action("CreateExercise", "Class", new { classID = Model.ClassID })'>
-            <input type='button' class="btn btn-light" value='Create a problem' />
-        </a>
+        <div class="row">
+            <div class="col-md-6" style="margin-top:10px">
+                <a href='@Url.Action("ImportExercise", "Class", new { classID = Model.ClassID })'>
+                    <input type='button' class="btn btn-info" value='Import a problem' />
+                </a>
+                <a href='@Url.Action("CreateExercise", "Class", new { classID = Model.ClassID })'>
+                    <input type='button' class="btn btn-light" value='Create a problem' />
+                </a>
+            </div>
+            <div class="col-md-6" style="margin-top:10px">
+                <a href="@Url.Action("SeeMembers", "Class", new { classId = Model.ClassID })">
+                    <div type="button" class="btn btn-primary pull-right" style="margin-left: 10px">
+                        Members
+                    </div>
+                </a>
+                    
+                <a href="@Url.Action("SeeJoinRequests", "Class", new { classId = Model.ClassID })">
+                    <div type="button" class="btn btn-primary pull-right">
+                        Join Requests <span class="badge badge-light">@Model.PendingJoinRequests</span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
     </div>
     <div class="Box">
         <!--Display the problems here-->

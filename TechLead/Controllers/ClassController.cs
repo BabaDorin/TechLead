@@ -26,7 +26,7 @@ namespace TechLead.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View("~/Views/Home/Index.cshtml");
         }
 
         [HttpGet]
@@ -535,6 +535,7 @@ namespace TechLead.Controllers
                 ClassInvittionCode = @class.ClassInvitationCode,
                 ClassID = @class.ClassID,
                 CreationDate = @class.CreationDate,
+                PendingJoinRequests = @class.JoinRequests.Count()
             };
 
             //Optimize this, extract only what's needed.

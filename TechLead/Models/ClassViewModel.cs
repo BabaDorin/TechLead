@@ -17,7 +17,7 @@ namespace TechLead.Models
         public string ClassInfo { get; set; }
         public DateTime CreationDate { get; set; }
         public string ClassCreatorID { get; set; }
-
+        public int PendingJoinRequests { get; set; }
         //A unique 6 characters string randomly generated via Guid
         public string ClassInvittionCode { get; set; }
 
