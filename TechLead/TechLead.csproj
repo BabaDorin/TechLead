@@ -385,6 +385,7 @@
     <Compile Include="Models\JoinRequest.cs" />
     <Compile Include="Models\JoinRequestViewModel.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
+    <Compile Include="Models\SeeMembersViewModel.cs" />
     <Compile Include="Models\SubmissionToDisplayViewModel.cs" />
     <Compile Include="Models\SubmissionViewModel.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\Compiler.cs" />
@@ -781,6 +782,7 @@
     <Content Include="Views\Class\ImportExercise.cshtml" />
     <Content Include="Views\Class\JoinClass.cshtml" />
     <Content Include="Views\Class\SeeJoinRequests.cshtml" />
+    <Content Include="Views\Class\SeeMembers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

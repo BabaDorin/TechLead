@@ -1,0 +1,21 @@
+﻿@model List<TechLead.Models.SeeMembersViewModel>
+@{
+    ViewBag.Title = "SeeMembers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="Content">
+    <div class="TitleBox">
+        Class Members
+    </div>
+    <div class="Box">
+        @foreach(var s in Model)
+        {
+            <p>
+                @s.Name
+            </p>
+        }
+    </div>
+</div>
+<h2>SeeMembers</h2>
+

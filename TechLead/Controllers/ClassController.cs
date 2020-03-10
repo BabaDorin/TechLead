@@ -262,6 +262,7 @@ namespace TechLead.Controllers
             return View(jrvw);
         }
 
+
         [HttpPost]
         [Authorize]
         public ActionResult JoinClass(JoinRequestViewModel jrvw)
@@ -289,7 +290,7 @@ namespace TechLead.Controllers
                     _context.JoinRequests.Add(joinRequest);
                     _context.SaveChanges();
 
-                    return View("Index", "Home");
+                    return View("~/Views/Home/Index.cshtml");
                 }
                 else
                 {
@@ -336,9 +337,25 @@ namespace TechLead.Controllers
             return View();
         }
 
-        public ActionResult SeeMembers()
+        [Authorize]
+        public ActionResult SeeMembers(int classId)
         {
-            return View();
+            Class @class = _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault();
+            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            {
+                List<SeeMembersViewModel> MembersViewModel = SeeMembersFromModelToViewModel(@class);
+                return View(MembersViewModel);
+            }
+            else
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "You don't have acces to this page."
+                };
+
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
         }
 
         public string GenerateRandom6CharCode()
@@ -346,7 +363,7 @@ namespace TechLead.Controllers
             Random rnd = new Random();
             string chars = "ABCDEFGHJIKLMNOPQRSTUVXYZabcdefghjiklmnopqrstuvxyz1234567890";
             return new string(Enumerable.Repeat(chars, 6).Select(s => s[rnd.Next(chars.Length)]).ToArray());
-        }
+        } 
 
         public Class ClassFromViewModelToModel(ClassViewModel classViewModel)
         {
@@ -405,5 +422,21 @@ namespace TechLead.Controllers
             else return false;
         }
 
+        public List<SeeMembersViewModel> SeeMembersFromModelToViewModel(Class cls)
+        {
+            List<SeeMembersViewModel> seeMembersViewModels = new List<SeeMembersViewModel>();
+            List<ApplicationUser> applicationUsers = cls.Members.ToList();
+            foreach(ApplicationUser user in applicationUsers)
+            {
+                seeMembersViewModels.Add(new SeeMembersViewModel
+                {
+                    Id = user.Id,
+                    JoinDate = DateTime.Now,
+                    Name = user.UserName
+                });
+            }
+
+            return seeMembersViewModels;
+        }
     }
 }
