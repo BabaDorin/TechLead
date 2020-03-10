@@ -1,8 +1,54 @@
-﻿
+﻿@model TechLead.Models.DisplayClassesViewModel
 @{
     ViewBag.Title = "MyClasses";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="Content">
+    <div class="TitleBox">
+        <h2>My classes</h2>
+    </div>
+    <div class="Box">
+        @if (Model.Classes_Owned != null && Model.Classes_Owned.Count > 0)
+        {
+            <h3>Classes I own</h3>
+            foreach (var c in Model.Classes_Owned)
+            {
+                <a href="@Url.Action("Details", "Class", new {c.ID })">
+                    <div class="ToDisplay">
+                        <div class="row">
+                            <div class="col-md-7">
+                                @c.Name
+                            </div>
+                            <div class="col-md 4">
+                                <span class="pull-right">@c.NumberOfMembers Members</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+            <br />
+        }
 
-<h2>MyClasses</h2>
+        @if (Model.Classes_Joined != null && Model.Classes_Joined.Count > 0)
+        {
+            <h3>Classes I've joined</h3>
+            foreach (var c in Model.Classes_Joined)
+            {
+                <a href="@Url.Action("Details", "Class", new {c.ID })">
+                    <div class="ToDisplay">
+                        <div class="row">
+                            <div class="col-md-7">
+                                @c.Name
+                            </div>
+                            <div class="col-md 4">
+                                <span class="pull-right">@c.NumberOfMembers Members</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+            <br />
+        }
+    </div>
+</div>
 

@@ -176,12 +176,12 @@ namespace TechLead.Controllers
             else
             {
                 //Get only the classes in which the current user is member of
-                ApplicationUser user = (ApplicationUser)_context.Users.Where(u => u.Id == User.Identity.GetUserId());
+                string userId = User.Identity.GetUserId();
+                var user = _context.Users.Where(u => u.Id == userId).First();
                 DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
                 
                 //Classes where the user is a simple member
                 List<Class> joinedClasses = new List<Class>();
-                displayClasses.Classes_Joined = new List<ClassToDisplayViewModel>();
                 joinedClasses = user.Classes.ToList();
                 foreach(Class c in joinedClasses)
                 {
@@ -191,8 +191,9 @@ namespace TechLead.Controllers
                 //Classes that were created by the user
                 List<Class> ownedClasses = new List<Class>();
                 ownedClasses = (from e in _context.Classes
-                                where e.ClassCreatorID == User.Identity.GetUserId()
+                                where e.ClassCreatorID == userId
                                 select e).ToList();
+
                 foreach(Class c in ownedClasses)
                 {
                     displayClasses.Classes_Owned.Add(ClassFromModelToDisplayViewModel(c));

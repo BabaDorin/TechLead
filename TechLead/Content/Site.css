@@ -744,14 +744,7 @@ button.NotsuccessTestContainer:active{
 
 /****************************************** GROUP STUFF ***************************/
 
-.MiniBox{
-    padding:2%;
-    min-width:500px;
-    width:70%;
-    margin:auto;
-}
-
-.UserToDisplay {
+.ToDisplay {
     align-items: center;
     background-color: aliceblue;
     color: #333;
@@ -763,7 +756,7 @@ button.NotsuccessTestContainer:active{
     text-decoration: none;
 }
 
-.UserToDisplay:hover{
+.ToDisplay:hover{
     position:relative;
     z-index:1;
     background-color: aliceblue;

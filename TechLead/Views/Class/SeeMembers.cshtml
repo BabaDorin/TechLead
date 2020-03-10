@@ -13,7 +13,7 @@
         @foreach (var s in Model)
         {
             <a href="@Url.Action("ViewProfile", "Profile", new { userID = s.userID })">
-                <div class="UserToDisplay">
+                <div class="ToDisplay">
                     @s.Name
                 </div>
             </a>
