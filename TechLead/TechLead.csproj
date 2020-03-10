@@ -780,6 +780,7 @@
     <Content Include="Views\Class\Manage.cshtml" />
     <Content Include="Views\Class\ImportExercise.cshtml" />
     <Content Include="Views\Class\JoinClass.cshtml" />
+    <Content Include="Views\Class\SeeJoinRequests.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

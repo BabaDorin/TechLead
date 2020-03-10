@@ -303,8 +303,36 @@ namespace TechLead.Controllers
             }
         }
 
+        [Authorize]
+        public ActionResult SeeJoinRequests(int classId)
+        {
+            //Show a list with all requests to a specific group
+            //The group creator or admin can accept or decline the request
+            Class @class = _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault();
+            if(isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            {
+                List<JoinRequest> joinRequests = @class.JoinRequests.ToList();
+                Debug.WriteLine(joinRequests.Count() + " join requests");
+
+                return View(joinRequests);
+            }
+            else
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "You don't have access to this page, sorry."
+                };
+
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
+        [Authorize]
         public ActionResult SeeClasses()
         {
+
+            
             return View();
         }
 
