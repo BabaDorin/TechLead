@@ -33,6 +33,9 @@ namespace TechLead.Models
         //The collection of exercises within the class
         public virtual ICollection<Exercise> Exercises { get; set; }
 
+        //The collection of join requests
+        public virtual ICollection<JoinRequest> JoinRequests { get; set; }
+
 
     }
 }

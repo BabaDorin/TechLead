@@ -253,6 +253,16 @@ namespace TechLead.Controllers
         {
             return View();
         }
+        
+        public ActionResult JoinClass()
+        {
+            return View();
+        }
+
+        public ActionResult SeeClasses()
+        {
+            return View();
+        }
 
         public ActionResult SeeMembers()
         {

@@ -368,6 +368,10 @@
     <Compile Include="Migrations\202003091944174_AddAvaialableOnlyForTheClassPropertyForExerciseModel.Designer.cs">
       <DependentUpon>202003091944174_AddAvaialableOnlyForTheClassPropertyForExerciseModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003100003474_AddingJoingRequests.cs" />
+    <Compile Include="Migrations\202003100003474_AddingJoingRequests.Designer.cs">
+      <DependentUpon>202003100003474_AddingJoingRequests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\ClassViewModel.cs" />
@@ -378,6 +382,7 @@
     <Compile Include="Models\DisplayExerciseViewModel.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\ImportExerciseViewModel.cs" />
+    <Compile Include="Models\JoinRequest.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
     <Compile Include="Models\SubmissionToDisplayViewModel.cs" />
     <Compile Include="Models\SubmissionViewModel.cs" />
@@ -983,6 +988,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003091944174_AddAvaialableOnlyForTheClassPropertyForExerciseModel.resx">
       <DependentUpon>202003091944174_AddAvaialableOnlyForTheClassPropertyForExerciseModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003100003474_AddingJoingRequests.resx">
+      <DependentUpon>202003100003474_AddingJoingRequests.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

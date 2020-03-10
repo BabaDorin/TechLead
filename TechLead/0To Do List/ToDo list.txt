@@ -1,5 +1,7 @@
 ﻿
 	TO DO IMMEDIATELY
+
+>> Add an image on the importExercise page so the users will know where to take the ID from.
 >> Add the "My classes" feature. It will display all classes of which the current user is a member or creator.
 >> If the current user is the creator of a class, then allow him to delete or update data about it.
 
