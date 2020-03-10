@@ -262,11 +262,11 @@ namespace TechLead.Controllers
             return View(jrvw);
         }
 
-
         [HttpPost]
         [Authorize]
         public ActionResult JoinClass(JoinRequestViewModel jrvw)
         {
+            //!! Implement Error - you're already a member of this group
             if (!ModelState.IsValid)
             {
                 return View(jrvw);
@@ -323,6 +323,100 @@ namespace TechLead.Controllers
                 {
                     Title = "Error",
                     Description = "You don't have access to this page, sorry."
+                };
+
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+        
+        [Authorize]
+        public ActionResult AcceptJoinRequest(int JoinRequestId)
+        {
+            //Check if the current user is the class creator or an admin.
+            //check if there is a request join from user having userId to the class
+            //having classID, if so, Accept it.
+            //Accept means inserting the user into class members and deleting the record from joinRequest.
+            //after that, redirect to seeJoinRequests
+            JoinRequest request = _context.JoinRequests.Where(j => j.Id == JoinRequestId).FirstOrDefault();
+            Class @class = _context.Classes.Where(c => c.ClassID == request.ClassId).FirstOrDefault();
+            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            {
+                //Check if user exists
+                if(@class.JoinRequests.Any(j => j.Id == JoinRequestId))
+                {
+                    //Process of accepting the request
+                    //Add the user to the class
+                    ApplicationUser user = _context.Users.Where(u => u.Id == request.AuthorId).FirstOrDefault();
+                    @class.Members.Add(user);
+                    _context.Entry(@class);
+                    _context.JoinRequests.Remove(request);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("SeeJoinRequests", new { classId = @class.ClassID });
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Error",
+                        Description = "Something wrong happened. The selected joinRequest is not" +
+                        " assigned to your class."
+                    };
+
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            else
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "You don't have acces to this page."
+                };
+
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
+        [Authorize]
+        public ActionResult DeclineJoinRequest(int JoinRequestId)
+        {
+            //Check if the current user is the class creator or an admin.
+            //check if there is a request join from user having userId to the class
+            //having classID, if so, Decline it.
+            //Decline means deleting the record from joinRequest.
+            //after that, redirect to seeJoinRequests
+            JoinRequest request = _context.JoinRequests.Where(j => j.Id == JoinRequestId).FirstOrDefault();
+            Class @class = _context.Classes.Where(c => c.ClassID == request.ClassId).FirstOrDefault();
+            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            {
+                //Check if user exists
+                if (@class.JoinRequests.Any(j => j.Id == JoinRequestId))
+                {
+                    //Process of deleting the request
+                    _context.JoinRequests.Remove(request);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("SeeJoinRequests", new { classId = @class.ClassID });
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Error",
+                        Description = "Something wrong happened. The selected joinRequest is not" +
+                        " assigned to your class."
+                    };
+
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            else
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "You don't have acces to this page."
                 };
 
                 return View("~/Views/Shared/Error.cshtml", Error);
