@@ -357,9 +357,18 @@ namespace TechLead.Controllers
             if(isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
             {
                 List<JoinRequest> joinRequests = @class.JoinRequests.ToList();
-                Debug.WriteLine(joinRequests.Count() + " join requests");
+                List<DisplayJoinRequestViewModel> displayJoinRequests = new List<DisplayJoinRequestViewModel>();
+                foreach(JoinRequest j in joinRequests)
+                {
+                    displayJoinRequests.Add(new DisplayJoinRequestViewModel
+                    {
+                        Id = j.Id,
+                        AuthorId = j.AuthorId,
+                        AuthorName = j.Author.UserName
+                    });
+                }
 
-                return View(joinRequests);
+                return View(displayJoinRequests);
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿@model List<TechLead.Models.JoinRequest>
+﻿@model List<TechLead.Models.DisplayJoinRequestViewModel>
 @{
     ViewBag.Title = "SeeJoinRequests";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,10 +21,16 @@
         {
             for (int i = 0; i < Model.Count; i++)
             {
-                <p>
-                    @Model[i].AuthorId       @Html.ActionLink("Accept", "AcceptJoinRequest", new { JoinRequestId = Model[i].Id })
-                    @Html.ActionLink("Decline", "DeclineJoinRequest", new { JoinRequestId = Model[i].Id })
-                </p>
+                <div class="ToDisplay">
+                    <div class="row">
+                        <div class="col-md-8">
+                            @Model[i].AuthorName
+                        </div>
+                        <div class="col-md-4">
+                            <span class="pull-right">@Html.ActionLink("Accept", "AcceptJoinRequest", new { JoinRequestId = Model[i].Id })    @Html.ActionLink("Decline", "DeclineJoinRequest", new { JoinRequestId = Model[i].Id })</span>
+                        </div>
+                    </div>
+                </div>
             }
         }
     </div>

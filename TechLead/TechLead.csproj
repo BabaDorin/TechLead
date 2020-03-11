@@ -382,6 +382,7 @@
     <Compile Include="Models\DisplayApplicationUserViewModel.cs" />
     <Compile Include="Models\DisplayClassesViewModel.cs" />
     <Compile Include="Models\DisplayExerciseViewModel.cs" />
+    <Compile Include="Models\DisplayJoinRequestViewModel.cs" />
     <Compile Include="Models\ExerciseViewModel.cs" />
     <Compile Include="Models\ImportExerciseViewModel.cs" />
     <Compile Include="Models\JoinRequest.cs" />
