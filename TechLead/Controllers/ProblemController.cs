@@ -43,11 +43,68 @@ namespace TechLead.Controllers
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
-                ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
-                EVM.MakeSourceCodePublic = true;
-                TempData["Object"] = e;
+                if (e.AvailableOnlyForTheClass)
+                {
+                    //The class is available only for the class having id = MotherClassID
 
-                return View(EVM);
+                    //check if class still exists, 
+                    //if it does, then display to admins without any restrictions.
+                    //for regular users check if they are a member of the indicated class.
+                    //Or it's creator
+                    if (isAdministrator() || (User.Identity.IsAuthenticated && e.AuthorID == User.Identity.GetUserId()))
+                    {
+                        ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
+                        EVM.MakeSourceCodePublic = true;
+                        TempData["Object"] = e;
+
+                        return View(EVM);
+                    }
+                    else
+                    {
+                        //check if the current user is a member of the group.
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            var user = _context.Users.Single(u => u.Id == User.Identity.GetUserId());
+                            if(user.Classes.Any(c => c.ClassID == e.MotherClassID))
+                            {
+                                //Is member
+                                ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
+                                EVM.MakeSourceCodePublic = true;
+                                TempData["Object"] = e;
+                                return View(EVM);
+                            }
+                            else
+                            {
+                                //Is not a member
+                                ErrorViewModel Error = new ErrorViewModel
+                                {
+                                    Title = "No acces",
+                                    Description = "Sorry, this problem is not listed as public."
+                                };
+                                return View("~/Views/Shared/Error.cshtml", Error);
+                            }
+                        }
+                        else
+                        {
+                            //is not authenticated
+                            ErrorViewModel Error = new ErrorViewModel
+                            {
+                                Title = "No acces",
+                                Description = "Sorry, this problem is not listed as public."
+                            };
+                            return View("~/Views/Shared/Error.cshtml", Error);
+                        }
+                    }
+                }
+                else
+                {
+                    //Available for everyone
+                    ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
+                    EVM.MakeSourceCodePublic = true;
+                    TempData["Object"] = e;
+
+                    return View(EVM);
+                }]
             }
             catch (Exception)
             {
@@ -266,14 +323,16 @@ namespace TechLead.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult Create()
+        public ActionResult Create(bool AvailableJustForTheClass)
         {
             try
             {
                 var viewModel = new ExerciseViewModel
                 {
-                    Difficulty = _context.Difficulty.ToList()
+                    Difficulty = _context.Difficulty.ToList(),
+                    AvailableOnlyForTheClass = AvailableJustForTheClass
                 };
+
                 viewModel.Test = new Test[10];
                 return View(viewModel);
             }
@@ -1081,6 +1140,8 @@ namespace TechLead.Controllers
             Exercise e = new Exercise();
             e.Id = ExerciseViewModel.Id;
             e.isArchieved = ExerciseViewModel.isArchieved;
+            e.AvailableOnlyForTheClass = ExerciseViewModel.AvailableOnlyForTheClass;
+            e.MotherClassID = ExerciseViewModel.MotherClassID;
             e.Author = ExerciseViewModel.Author;
             e.AuthorID = ExerciseViewModel.AuthorID;
             e.Name = ExerciseViewModel.Name;
@@ -1188,6 +1249,7 @@ namespace TechLead.Controllers
             EVM.Name = exercise.Name;
             EVM.Points = exercise.Points;
             EVM.RestrictedMode = exercise.RestrictedMode;
+            EVM.MotherClassID = exercise.MotherClassID;
             EVM.SubmissionsAbove10Points = exercise.SubmissionsAbove10Points;
             EVM.SubmissionsUnder10Points = exercise.SubmissionsUnder10Points;
             EVM.Author = exercise.Author;

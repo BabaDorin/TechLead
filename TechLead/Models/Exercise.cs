@@ -28,6 +28,8 @@ namespace TechLead.Models
         //public or not.
         public bool AvailableOnlyForTheClass { get; set; }
 
+        public int MotherClassID { get; set; }
+
         [Required(ErrorMessage ="Please, enter a Name for your problem")]
         public string Name { get; set; }
 

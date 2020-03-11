@@ -26,7 +26,7 @@ namespace TechLead.Controllers
 
         public ActionResult Index()
         {
-            return View("~/Views/Home/Index.cshtml");
+            return RedirectToAction("MyClasses");
         }
 
         [HttpGet]
@@ -294,7 +294,13 @@ namespace TechLead.Controllers
         [Authorize]
         public ActionResult CreateExercise(int classId)
         {
-            return View();
+            //check one more time if user has a class (Owns)
+            //do the security stuff
+            //Pass ExerciseViewModel to "Create" "Problem" Action havint the "CreatedWithinAClass" parameter
+            //set to true.
+            //The POST "Create" "Problem" will do the rest.
+
+            return RedirectToAction("Create", "Problem", true, classId);
         }
         
         [Authorize]

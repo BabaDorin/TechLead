@@ -20,6 +20,14 @@ namespace TechLead.Models
 
         //If true, it will be deleted, 'kinda'. Only it's creator will be able to see it.
         public bool isArchieved { get; set; }
+        
+        //If this parameter is set to true, then the problem won't be public after publishing and will be accesible
+        //only for the members of the class the problem was assigned to.
+        public bool AvailableOnlyForTheClass { get; set; }
+
+        //if AvailableOnlyForTheClass is true then the problem will be accesible
+        //only within the mother class (The class where it has been created) having id = MotherClassID 
+        public int MotherClassID { get; set; }
 
         //When restricted mode is on, the user will be able to see only his submissions.
         //The author of the problem and the admins will be able to see all the submissions
