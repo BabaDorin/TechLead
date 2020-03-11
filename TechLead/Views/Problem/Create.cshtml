@@ -8,6 +8,7 @@
     @using (Html.BeginForm("Create", "Problem", FormMethod.Post, new { id = "submitForm" }))
     {
         @Html.AntiForgeryToken();
+        @Html.HiddenFor(m => m.MotherClassID)
         <div class="CreateProblem">
             <p><strong>Create an exercise</strong></p>
             <br />
@@ -17,44 +18,60 @@
             </div>
             <p>Write down the information that will be displayed to the user</p>
             <br />
-                  <div class="form-group">
-                      <br />
-                      <div class="alert alert-info">
-                          <p>
-                              Please, select the type of the problem
-                          </p>
-                      </div>
-                      <br />
-                      <div class="row">
-                          <div class="col-md-6" style="position:relative">
-                              <div class="kindaButton" style="text-align:center">
-                                  @Html.RadioButtonFor(m => m.RestrictedMode, false)
-                                  <b>Normal</b>
-                              </div>
-                              <div class="alert alert-info">
-                                  <p style="text-align:center;">
-                                      The <b>friendly</b> mode. The user will be able to see other people's
-                                      source codes and their submission details. Also, he will be able to see the input and the expected
-                                      output for the back-end test cases if his output is incorrect.
-                                  </p>
-                              </div>
-                          </div>
-                          <div class="col-md-6">
-                              <div class="kindaButton" style="text-align:center">
-                                  @Html.RadioButtonFor(m => m.RestrictedMode, true)
-                                  <b>Restricted</b>
-                              </div>
-                              <div class="alert alert-info">
-                                  <p style="text-align:center;">
-                                      The <b>restricted</b> mode. The user will be able to see only his submissions, while the author of
-                                      the problem will see all of them. Also, he won't get hints along the way (Inputs and expected outputs
-                                      will not be shown)
-                                  </p>
-                              </div>
-                          </div>
-                      </div>
+            <div class="form-group">
+                <br />
+                <div class="alert alert-info">
+                    <p>
+                        Please, select the type of the problem
+                    </p>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6" style="position:relative">
+                        <div class="kindaButton" style="text-align:center">
+                            @Html.RadioButtonFor(m => m.RestrictedMode, false)
+                            <b>Normal</b>
+                        </div>
+                        <div class="alert alert-info">
+                            <p style="text-align:center;">
+                                The <b>friendly</b> mode. The user will be able to see other people's
+                                source codes and their submission details. Also, he will be able to see the input and the expected
+                                output for the back-end test cases if his output is incorrect.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="kindaButton" style="text-align:center">
+                            @Html.RadioButtonFor(m => m.RestrictedMode, true)
+                            <b>Restricted</b>
+                        </div>
+                        <div class="alert alert-info">
+                            <p style="text-align:center;">
+                                The <b>restricted</b> mode. The user will be able to see only his submissions, while the author of
+                                the problem will see all of them. Also, he won't get hints along the way (Inputs and expected outputs
+                                will not be shown)
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-                  </div>
+            </div>
+
+            @if (Model.AvailableOnlyForTheClass)
+            {
+                <div class="form-group">
+                    <div class="alert alert-info">
+                        <p style="text-align:center;">
+                            By default, the problem will be available only for your class members. If you check the box below, it will go public
+                            and will be available for everyone.<br />
+                            <b>NOTE: </b>you can make the problem public afterwards by clicking the "Publish" button within your class.
+                    </div>
+                    <div class="kindaButton">
+                        @Html.CheckBoxFor(ex => ex.AvailableOnlyForTheClass, false);
+                        <b>Make the problem available for outside of the class</b>
+                    </div>
+                </div>
+            }
 
 
             <div class="form-group">

@@ -1,9 +1,11 @@
 ﻿
 	TO DO IMMEDIATELY
 
+>> html hiddenFor ExerciseViewModel MotherClassID
 >> Do not display private problems on Beginner / Intermediate / Advanced branch
 >> Allow the classCreator to change the problem to be public within "Create" view
 >> Allow the classCreator to make the problem public afterwards
+>> Add validateAntiForgeryToken stuff for pages from "Class"
 
 >>There is an error when trying to display the submission under "Restricted Mode" problem from
 profile of Baba Dorin (The one having a bottle of wine as profile photo);

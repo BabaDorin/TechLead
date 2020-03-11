@@ -372,6 +372,10 @@
     <Compile Include="Migrations\202003100003474_AddingJoingRequests.Designer.cs">
       <DependentUpon>202003100003474_AddingJoingRequests.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003111719073_AddingClassRelatedFiels_Exercise.cs" />
+    <Compile Include="Migrations\202003111719073_AddingClassRelatedFiels_Exercise.Designer.cs">
+      <DependentUpon>202003111719073_AddingClassRelatedFiels_Exercise.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\ClassToDisplayViewModel.cs" />
@@ -1000,6 +1004,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003100003474_AddingJoingRequests.resx">
       <DependentUpon>202003100003474_AddingJoingRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003111719073_AddingClassRelatedFiels_Exercise.resx">
+      <DependentUpon>202003111719073_AddingClassRelatedFiels_Exercise.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

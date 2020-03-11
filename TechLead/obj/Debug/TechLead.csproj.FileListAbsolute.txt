@@ -1918,3 +1918,4 @@ C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Mig
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.RenamingClassInvitationProperty.resources
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.AddAvaialableOnlyForTheClassPropertyForExerciseModel.resources
 C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingJoingRequests.resources
+C:\Users\Baba Dorin\Desktop\TechLead\TL\techlead\TechLead\obj\Debug\TechLead.Migrations.AddingClassRelatedFiels_Exercise.resources

@@ -104,7 +104,7 @@ namespace TechLead.Controllers
                     TempData["Object"] = e;
 
                     return View(EVM);
-                }]
+                }
             }
             catch (Exception)
             {
@@ -323,17 +323,18 @@ namespace TechLead.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult Create(bool AvailableJustForTheClass)
+        public ActionResult Create(bool AvailableJustForTheClass, int classId = -1)
         {
             try
             {
                 var viewModel = new ExerciseViewModel
                 {
                     Difficulty = _context.Difficulty.ToList(),
-                    AvailableOnlyForTheClass = AvailableJustForTheClass
+                    AvailableOnlyForTheClass = AvailableJustForTheClass,
                 };
-
+                if (viewModel.AvailableOnlyForTheClass) viewModel.MotherClassID = classId;
                 viewModel.Test = new Test[10];
+
                 return View(viewModel);
             }
             catch (Exception e)
@@ -381,9 +382,15 @@ namespace TechLead.Controllers
                     exerciseViewModel.Author = User.Identity.Name;
                 }
                 Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
-                Debug.WriteLine("Restricted - " + exercise.RestrictedMode);
                 exercise.AuthorID = User.Identity.GetUserId();
                 _context.Exercises.Add(exercise);
+
+                //Assign the problem to the motherClass, if needed
+                if (exercise.AvailableOnlyForTheClass)
+                {
+                    Class @class = _context.Classes.Single(c => c.ClassID == exercise.MotherClassID);
+                    @class.Exercises.Add(exercise);
+                }
                 _context.SaveChanges();
                 return RedirectToAction("Details", new { id = exercise.Id });
             }

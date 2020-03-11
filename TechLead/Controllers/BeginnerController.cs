@@ -22,7 +22,7 @@ namespace TechLead.Controllers
                 foreach (Exercise e in _context.Exercises)
                 {
                     //If it's archieved, then it's skiped.
-                    if (!e.isArchieved)
+                    if (!e.isArchieved && !e.AvailableOnlyForTheClass)
                     {
                         if (e.DifficultyId == 4)
                         {

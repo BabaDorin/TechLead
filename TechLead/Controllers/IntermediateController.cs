@@ -20,7 +20,7 @@ namespace TechLead.Controllers
                 List<Exercise> IntermediateExercises = new List<Exercise>();
                 foreach (Exercise e in _context.Exercises)
                 {
-                    if (!e.isArchieved)
+                    if (!e.isArchieved && !e.AvailableOnlyForTheClass)
                     {
                         if (e.DifficultyId == 5)
                         {

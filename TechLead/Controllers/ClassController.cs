@@ -300,7 +300,7 @@ namespace TechLead.Controllers
             //set to true.
             //The POST "Create" "Problem" will do the rest.
 
-            return RedirectToAction("Create", "Problem", true, classId);
+            return RedirectToAction("Create", "Problem", new { AvailableJustForTheClass = true, classId = classId });
         }
         
         [Authorize]
