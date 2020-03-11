@@ -43,6 +43,7 @@ namespace TechLead.Controllers
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
+                Debug.WriteLine("Only for class: " + e.AvailableOnlyForTheClass);
                 if (e.AvailableOnlyForTheClass)
                 {
                     //The class is available only for the class having id = MotherClassID
@@ -496,6 +497,43 @@ namespace TechLead.Controllers
                 };
                 return View("~/Views/Shared/Error.cshtml", error);
             }
+        }
+
+        [Authorize]
+        public ActionResult MakeItPublic(int problemId)
+        {
+            try
+            {
+                //Check if the user it admin or he created this problem
+                Exercise exercise = _context.Exercises.Single(e => e.Id == problemId);
+                if(isAdministrator() || User.Identity.GetUserId() == exercise.AuthorID)
+                {
+                    exercise.AvailableOnlyForTheClass = false;
+                    _context.Entry(exercise).State = System.Data.Entity.EntityState.Modified;
+                    _context.SaveChanges();
+                    return RedirectToAction("Details", new { id = problemId });
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Error",
+                        Description = "You can't do that",
+                    };
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = e.Message,
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+
+            
         }
 
         [HttpGet]
@@ -1267,6 +1305,7 @@ namespace TechLead.Controllers
             EVM.Points = exercise.Points;
             EVM.RestrictedMode = exercise.RestrictedMode;
             EVM.MotherClassID = exercise.MotherClassID;
+            EVM.MakeItPublic = !exercise.AvailableOnlyForTheClass;
             EVM.SubmissionsAbove10Points = exercise.SubmissionsAbove10Points;
             EVM.SubmissionsUnder10Points = exercise.SubmissionsUnder10Points;
             EVM.Author = exercise.Author;
