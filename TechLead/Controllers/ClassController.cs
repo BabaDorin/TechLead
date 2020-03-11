@@ -350,6 +350,7 @@ namespace TechLead.Controllers
         [Authorize]
         public ActionResult SeeJoinRequests(int classId)
         {
+            ViewBag.ClassID = classId;
             //Show a list with all requests to a specific group
             //The group creator or admin can accept or decline the request
             Class @class = _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault();

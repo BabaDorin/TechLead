@@ -9,12 +9,23 @@
         <h2>Join requests</h2>
     </div>
     <div class="Box">
-        @for(int i=0; i<Model.Count; i++)
+        @if (Model.Count() == 0)
         {
-        <p>
-            @Model[i].AuthorId       @Html.ActionLink("Accept", "AcceptJoinRequest", new { JoinRequestId = Model[i].Id })
-                @Html.ActionLink("Decline", "DeclineJoinRequest", new { JoinRequestId = Model[i].Id })
-        </p>
+            <div style="text-align:center; margin-bottom: 50px">
+                <span class="caption">There are no pending join requests</span>
+                <br />
+                @Html.ActionLink("Go back to class", "Details", "Class", new { id = (int)ViewBag.ClassID }, null)
+            </div>
+        }
+        else
+        {
+            for (int i = 0; i < Model.Count; i++)
+            {
+                <p>
+                    @Model[i].AuthorId       @Html.ActionLink("Accept", "AcceptJoinRequest", new { JoinRequestId = Model[i].Id })
+                    @Html.ActionLink("Decline", "DeclineJoinRequest", new { JoinRequestId = Model[i].Id })
+                </p>
+            }
         }
     </div>
 </div>
