@@ -6,19 +6,12 @@
 >> PROTECT problems that are set with OnlyForClassMembers = ON.	
 >> Check if modal works on internet explorer
 
->> Add validateAntiForgeryToken stuff for pages from "Class"
 
 >>There is an error when trying to display the submission under "Restricted Mode" problem from
 profile of Baba Dorin (The one having a bottle of wine as profile photo);
 
 >> Add See members feature
 	(If got some time) delete feature -> A button near to each member which says - Remove member
-
-
->> Implement further the JoinRequest feature
-	Each request will have 2 buttons associated, Accept and Decline.
-	Accept -> redirect to AcceptRequest(...) { // do stuff } and redirect back to the seeJoinRequests page.
-	Same with decline.
 
 >> Implement the create problem feature. If the problem is with restricted mode on, then the group
 cretor will actually be the problem author so don't overengineer
@@ -29,9 +22,6 @@ cretor will actually be the problem author so don't overengineer
 >> Add an image on the importExercise page so the users will know where to take the ID from.
 >> Add the "My classes" feature. It will display all classes of which the current user is a member or creator.
 >> If the current user is the creator of a class, then allow him to delete or update data about it.
-
-
-
 
 >> lilbit of styling for displying input/output
 
@@ -87,6 +77,13 @@ the user has failed. It won't cost anything.
 
 
 >>>>>>>>>>>>>>>>>> DONE <<<<<<<<<<<<<<<<<<<<<,
+
+>> Implement further the JoinRequest feature
+	Each request will have 2 buttons associated, Accept and Decline.
+	Accept -> redirect to AcceptRequest(...) { // do stuff } and redirect back to the seeJoinRequests page.
+	Same with decline.
+
+>> Add validateAntiForgeryToken stuff for pages from "Class"
 
 >> Each problem within a group will have an "Exclude" button associated. This will remove the problem from class
 

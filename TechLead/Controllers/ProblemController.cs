@@ -32,10 +32,7 @@ namespace TechLead.Controllers
             _userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
         }
 
-
-        //-------------------------------------------------------------------------------------------
         //------------------------- Action Results - Get and Post -----------------------------------
-        //-------------------------------------------------------------------------------------------
 
         [HttpGet]
         public ActionResult Details(int id)
@@ -47,17 +44,14 @@ namespace TechLead.Controllers
                 if (e.AvailableOnlyForTheClass)
                 {
                     //The class is available only for the class having id = MotherClassID
-
                     //check if class still exists, 
                     //if it does, then display to admins without any restrictions.
                     //for regular users check if they are a member of the indicated class.
-                    //Or it's creator
                     if (isAdministrator() || (User.Identity.IsAuthenticated && e.AuthorID == User.Identity.GetUserId()))
                     {
                         ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
                         EVM.MakeSourceCodePublic = true;
                         TempData["Object"] = e;
-
                         return View(EVM);
                     }
                     else
@@ -80,7 +74,7 @@ namespace TechLead.Controllers
                                 ErrorViewModel Error = new ErrorViewModel
                                 {
                                     Title = "No acces",
-                                    Description = "Sorry, this problem is not listed as public."
+                                    Description = "Sorry, but this problem is not listed as public."
                                 };
                                 return View("~/Views/Shared/Error.cshtml", Error);
                             }
@@ -103,7 +97,6 @@ namespace TechLead.Controllers
                     ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
                     EVM.MakeSourceCodePublic = true;
                     TempData["Object"] = e;
-
                     return View(EVM);
                 }
             }
@@ -116,69 +109,6 @@ namespace TechLead.Controllers
             }
         }
 
-        //This will be called when the input / output is too large to display on the page
-        public string SeeData(int problemId, int submissionId, int index, string what)
-        {
-            //If problemID == -1, is means that we are looking to display a specific output
-            //of the user's solution.
-            //I submissionId == -1, it means that we are going to display the input of the expected
-            //output for the problem having id = problemId.
-            //The "what" variable will tell us what do we want to display, the input or the expected output
-
-            try
-            {
-                string result = "";
-                if (problemId != -1)
-                {
-                    //check if the problem is restricted or not.
-                    //If it is restricted, then do not show the input.
-                    string restricted = (from e in _context.Exercises
-                                         where e.Id == problemId
-                                         select e.RestrictedMode.ToString()).FirstOrDefault();
-
-                    Debug.WriteLine("restricted = " + restricted);
-                    if (restricted == "True")
-                    {
-                        return ":)";
-                    }
-
-                    //Display input or output
-                    if (what == "input")
-                    {
-                        result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).InputColection;
-                        result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
-                        return result;
-                    }
-                    else
-                    {
-                        result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).OutputColection;
-                        result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
-                        return result;
-                    }
-                }
-                else
-                {
-                    //display user's solution output, but only if the problem is not restricted
-                    string restricted = (from e in _context.Exercises
-                                         where e.Id == int.Parse((from s in _context.Submissions
-                                                                  where s.SubmissionID == submissionId
-                                                                  select s.ExerciseId).ToString())
-                                         select e.RestrictedMode.ToString()).FirstOrDefault();
-                    if (restricted == "True")
-                    {
-                        return ":)";
-                    }
-
-                    result = _context.Submissions.SingleOrDefault(mytable => mytable.SubmissionID == problemId).OutputCollection;
-                    result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
-                    return result;
-                }
-            } catch (Exception)
-            {
-                return "Error";
-            }
-            
-        }
         [HttpPost]
         [Authorize]
         public ActionResult Details(HttpPostedFileBase file, ExerciseViewModel EVM)
@@ -326,6 +256,7 @@ namespace TechLead.Controllers
         [Authorize]
         public ActionResult Create(bool AvailableJustForTheClass, int classId = -1)
         {
+            //if classId == -1, then it means that the problem is not under any class
             try
             {
                 var viewModel = new ExerciseViewModel
@@ -335,7 +266,6 @@ namespace TechLead.Controllers
                     MotherClassID = classId
                 };
                 viewModel.Test = new Test[10];
-
                 return View(viewModel);
             }
             catch (Exception e)
@@ -532,8 +462,6 @@ namespace TechLead.Controllers
                 };
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
-
-            
         }
 
         [HttpGet]
@@ -574,8 +502,6 @@ namespace TechLead.Controllers
             return View("~/Views/Home/Index.cshtml");
         }
 
-    
-        
         public ActionResult Submissions(int? page, int exerciseId)
         {
             try
@@ -590,12 +516,28 @@ namespace TechLead.Controllers
                 //if it does - Display only user's submissions
                 //if it doesn't - Display all of the submissions.
 
-                string exerciseAuthorId = (from e in _context.Exercises
-                                           where e.Id == exerciseId
-                                           select e.AuthorID).Single();
-                Debug.WriteLine("ExerciseAuthorId - " + exerciseAuthorId);
-                if (exerciseAuthorId == null)
-                    Debug.WriteLine("Null");
+                //But, first of all, if the problem is AvailableOnlyForClassMembers, then do all the actions needed, like
+                //check if the user is a member of the class etc etc etc
+
+                Exercise exercise = _context.Exercises.Single(e => e.Id == exerciseId);
+                string exerciseAuthorId = exercise.AuthorID;
+
+                if (exercise.AvailableOnlyForTheClass && !(isAdministrator() || User.Identity.GetUserId() == exerciseAuthorId))
+                {
+                    //It checks if the user is not a member of the MotherClass.
+                    //If he is a member, then it exists the if statement and goes further
+                    var user = _context.Users.Single(u => u.Id == User.Identity.GetUserId());
+                    if(!user.Classes.Any(c => c.ClassID == exercise.MotherClassID))
+                    {
+                        //The user can not acces this page.
+                        ErrorViewModel Error = new ErrorViewModel
+                        {
+                            Title = "Error",
+                            Description = "This problem is available for the member of the class it is associated with."
+                        };
+                        return View("~/Views/Shared/Error.cshtml", Error);
+                    }
+                }
 
                 ViewBag.NotAuthenticated = null;
                 ViewBag.Restricted = null;
@@ -603,18 +545,12 @@ namespace TechLead.Controllers
 
                 if (isAdministrator() || (User.Identity.IsAuthenticated && User.Identity.GetUserId() == exerciseAuthorId))
                 {
-                    //No restriction for these
                     SubmissionForASpecificExercise = NoRestriction(exerciseId);
                 }
                 else
                 {
                     //Average users
-
-                    //Check if the problem is restricted
-                    bool restrictedMode = (from e in _context.Exercises
-                                           where e.Id == exerciseId
-                                           select e.RestrictedMode).Single();
-                    if (restrictedMode)
+                    if (exercise.RestrictedMode)
                     {
                         //Average user, the problem is restricted, Show only their own submissions
                         ViewBag.Restricted = "This problem is set with restricted mode. You can see only your submissions.";
@@ -642,56 +578,8 @@ namespace TechLead.Controllers
                     Title = "Error",
                     Description = e.Message,
                 };
-
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
-        }
-
-        public List<SubmissionToDisplayViewModel> NoRestriction(int exerciseId)
-        {
-            List<SubmissionToDisplayViewModel> SubmissionForASpecificExercise = new List<SubmissionToDisplayViewModel>();
-            SubmissionForASpecificExercise =
-                       (
-                       from submission in _context.Submissions
-                       where submission.ExerciseId == exerciseId
-                       select new SubmissionToDisplayViewModel
-                       {
-                           SubmissionID = submission.SubmissionID,
-                           SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
-                           Date = submission.Date,
-                           ExerciseId = submission.ExerciseId,
-                           Exercise = submission.Exercise,
-                           ScoredPoints = submission.ScoredPoints,
-
-                       }
-                       ).ToList();
-            SubmissionForASpecificExercise.Reverse();
-
-            return SubmissionForASpecificExercise;
-        }
-        public List<SubmissionToDisplayViewModel> WithRestriction(int exerciseId)
-        {
-            List<SubmissionToDisplayViewModel> SubmissionForASpecificExercise = new List<SubmissionToDisplayViewModel>();
-            string UserId = User.Identity.GetUserId();
-            SubmissionForASpecificExercise =
-                (
-                from submission in _context.Submissions
-                where submission.ExerciseId == exerciseId
-                && submission.SubmissionAuthorId == UserId
-                select new SubmissionToDisplayViewModel
-                {
-                    SubmissionID = submission.SubmissionID,
-                    SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
-                    Date = submission.Date,
-                    ExerciseId = submission.ExerciseId,
-                    Exercise = submission.Exercise,
-                    ScoredPoints = submission.ScoredPoints,
-                }
-                ).ToList();
-
-            SubmissionForASpecificExercise.Reverse();
-
-            return SubmissionForASpecificExercise;
         }
 
         public ActionResult RenderError(ErrorViewModel Err)
@@ -699,12 +587,7 @@ namespace TechLead.Controllers
             return View("~/Views/Shared/Error.cshtml", Err);
         }
 
-
-
-        //-------------------------------------------------------------------------------------------
         //------------------------- Compilation and judging stuff -----------------------------------
-        //-------------------------------------------------------------------------------------------
-
 
         public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
         {
@@ -1183,12 +1066,7 @@ namespace TechLead.Controllers
             }
         }
 
-
-
-        //-------------------------------------------------------------------------------------------
         //------------------------- Other methods ---------------------------------------------------
-        //-------------------------------------------------------------------------------------------
-
 
         private Exercise ExerciseFromViewModelToModel(ExerciseViewModel ExerciseViewModel)
         {
@@ -1346,6 +1224,55 @@ namespace TechLead.Controllers
             return EVM;
         }
 
+        public List<SubmissionToDisplayViewModel> NoRestriction(int exerciseId)
+        {
+            //Returns all of the submissions under the problem with id = exerciseId
+            List<SubmissionToDisplayViewModel> SubmissionForASpecificExercise = new List<SubmissionToDisplayViewModel>();
+            SubmissionForASpecificExercise =
+                       (
+                       from submission in _context.Submissions
+                       where submission.ExerciseId == exerciseId
+                       select new SubmissionToDisplayViewModel
+                       {
+                           SubmissionID = submission.SubmissionID,
+                           SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
+                           Date = submission.Date,
+                           ExerciseId = submission.ExerciseId,
+                           Exercise = submission.Exercise,
+                           ScoredPoints = submission.ScoredPoints,
+
+                       }
+                       ).ToList();
+            SubmissionForASpecificExercise.Reverse();
+
+            return SubmissionForASpecificExercise;
+        }
+
+        public List<SubmissionToDisplayViewModel> WithRestriction(int exerciseId)
+        {
+            //Returns all of the user's submissions under the problem having id = exerciseId
+            List<SubmissionToDisplayViewModel> SubmissionForASpecificExercise = new List<SubmissionToDisplayViewModel>();
+            string UserId = User.Identity.GetUserId();
+            SubmissionForASpecificExercise =
+                (
+                from submission in _context.Submissions
+                where submission.ExerciseId == exerciseId
+                && submission.SubmissionAuthorId == UserId
+                select new SubmissionToDisplayViewModel
+                {
+                    SubmissionID = submission.SubmissionID,
+                    SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
+                    Date = submission.Date,
+                    ExerciseId = submission.ExerciseId,
+                    Exercise = submission.Exercise,
+                    ScoredPoints = submission.ScoredPoints,
+                }
+                ).ToList();
+
+            SubmissionForASpecificExercise.Reverse();
+
+            return SubmissionForASpecificExercise;
+        }
         public void InsertBestSubmission(ref string bestsubmission, Submission submission, double TotalPoints, ref double AddToUsersTotalPoints)
         {
             if (bestsubmission == null) bestsubmission = "";
@@ -1405,6 +1332,69 @@ namespace TechLead.Controllers
             else return false;
         }
 
-    }
+        //This will be called when the input / output is too large to be displayed on the page
+        public string SeeData(int problemId, int submissionId, int index, string what)
+        {
+            //If problemID == -1, is means that we are looking to display a specific output
+            //of the user's solution.
+            //I submissionId == -1, it means that we are going to display the input of the expected
+            //output for the problem having id = problemId.
+            //The "what" variable will tell us what do we want to display, the input or the expected output
 
+            try
+            {
+                string result = "";
+                if (problemId != -1)
+                {
+                    //check if the problem is restricted or not.
+                    //If it is restricted, then do not show the input.
+                    string restricted = (from e in _context.Exercises
+                                         where e.Id == problemId
+                                         select e.RestrictedMode.ToString()).FirstOrDefault();
+
+                    Debug.WriteLine("restricted = " + restricted);
+                    if (restricted == "True")
+                    {
+                        return ":)";
+                    }
+
+                    //Display input or output
+                    if (what == "input")
+                    {
+                        result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).InputColection;
+                        result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
+                        return result;
+                    }
+                    else
+                    {
+                        result = _context.Exercises.SingleOrDefault(mytable => mytable.Id == problemId).OutputColection;
+                        result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
+                        return result;
+                    }
+                }
+                else
+                {
+                    //display user's solution output, but only if the problem is not restricted
+                    string restricted = (from e in _context.Exercises
+                                         where e.Id == int.Parse((from s in _context.Submissions
+                                                                  where s.SubmissionID == submissionId
+                                                                  select s.ExerciseId).ToString())
+                                         select e.RestrictedMode.ToString()).FirstOrDefault();
+                    if (restricted == "True")
+                    {
+                        return ":)";
+                    }
+
+                    result = _context.Submissions.SingleOrDefault(mytable => mytable.SubmissionID == problemId).OutputCollection;
+                    result = result.Split(new string[] { data.Delimitator }, StringSplitOptions.None)[index];
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                return "Error";
+            }
+
+        }
+    }
 }
