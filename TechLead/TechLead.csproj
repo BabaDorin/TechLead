@@ -600,6 +600,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="ImageResources\import.jpg" />
     <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\example\iEdit.css" />
     <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\example\iEdit.js" />
     <Content Include="Minimal-Image-Cropping-Plugin-jQuery-Canvas-iEdit\example\index.html" />
@@ -790,7 +791,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ImageResources\" />
     <Folder Include="Images\" />
     <Folder Include="Run\" />
     <Folder Include="Tests SourceCode\" />
