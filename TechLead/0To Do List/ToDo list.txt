@@ -2,6 +2,7 @@
 	TO DO IMMEDIATELY
 
 >> PROTECT problems that are set with OnlyForClassMembers = ON.	
+>> Check if modal works on internet explorer
 
 >> Add validateAntiForgeryToken stuff for pages from "Class"
 

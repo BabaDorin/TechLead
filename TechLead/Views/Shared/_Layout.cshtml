@@ -3,12 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    @Styles.Render("~/Content/css")
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text&display=swap" rel="stylesheet">
     <title>@ViewBag.Title - TechLead</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jqueryval")
 
 </head>
 <body>
@@ -88,9 +87,13 @@
 
 </body>
 </html>
+
 @section Scripts {
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    @Scripts.Render("~/bundles/modernizr")
+
     @Scripts.Render("~/bundles/jqueryval")
-    
+
     @if (!string.IsNullOrEmpty(ViewBag.Info))
     {
         <script type="text/javascript">

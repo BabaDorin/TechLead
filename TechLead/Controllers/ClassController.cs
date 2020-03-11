@@ -273,10 +273,15 @@ namespace TechLead.Controllers
                     else
                     {
                         //The problem exists
-                        //Class cls  = _context.Classes.Where(c => c.ClassID == ievm.ClassId).FirstOrDefault();
-                        //cls.Exercises.Add(e);
+                        //but first check if it is available
+                        if (e.AvailableOnlyForTheClass == true)
+                        {
+                            ViewBag.ModalMessage = "The problem you're trying to import is not public.";
+                            return RedirectToAction("ImportExercise", new { classID = ievm.ClassId });
+                        }
+                        
+                        //If it is a public problem, then assign it to the class.
                         _context.Classes.Include("Exercises").FirstOrDefault(x => x.ClassID == ievm.ClassId).Exercises.Add(e);
-                        //_context.Entry(@class).State = System.Data.Entity.EntityState.Modified;
                         _context.SaveChanges();
                         return RedirectToAction("Manage", new { id = ievm.ClassId });
                     }
