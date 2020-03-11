@@ -24,6 +24,7 @@ namespace TechLead.Models
         //If this parameter is set to true, then the problem won't be public after publishing and will be accesible
         //only for the members of the class the problem was assigned to.
         public bool AvailableOnlyForTheClass { get; set; }
+        public bool MakeItPublic { get; set; }
 
         //if AvailableOnlyForTheClass is true then the problem will be accesible
         //only within the mother class (The class where it has been created) having id = MotherClassID 

@@ -376,17 +376,18 @@ namespace TechLead.Controllers
                 }
 
                 //If everything is OK, we copy all the data from ExerciseViewModel to Exercise
-
                 if (Request.IsAuthenticated)
                 {
                     exerciseViewModel.Author = User.Identity.Name;
                 }
+                //If MakeItPublic = true, then AvailableOnlyForTheClass = false.
+                exerciseViewModel.AvailableOnlyForTheClass = !exerciseViewModel.MakeItPublic;
                 Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
                 exercise.AuthorID = User.Identity.GetUserId();
                 _context.Exercises.Add(exercise);
 
                 //Assign the problem to the motherClass, if needed
-                if (exercise.AvailableOnlyForTheClass)
+                if (exercise.MotherClassID != -1)
                 {
                     Class @class = _context.Classes.Single(c => c.ClassID == exercise.MotherClassID);
                     @class.Exercises.Add(exercise);
