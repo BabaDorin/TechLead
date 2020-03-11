@@ -502,6 +502,7 @@ namespace TechLead.Controllers
             Class @class = _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault();
             if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
             {
+                ViewBag.ClassID = @class.ClassID;
                 List<SeeMembersViewModel> MembersViewModel = SeeMembersFromModelToViewModel(@class);
                 return View(MembersViewModel);
             }
@@ -511,6 +512,41 @@ namespace TechLead.Controllers
                 {
                     Title = "Error",
                     Description = "You don't have acces to this page."
+                };
+
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
+        public ActionResult ExcludeMember(int classId, string memberId)
+        {
+            //1) check if the user who wants to exclude the member is either Administrator
+            //or classCreator
+
+            Class @class = _context.Classes.Where(c => c.ClassID == classId).First();
+
+            if(isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            {
+                //Check if the specified member exists within class members
+                if(@class.Members.Any(m => m.Id == memberId))
+                {
+                    ApplicationUser userToExclude = _context.Users.Where(u => u.Id == memberId).First();
+                    @class.Members.Remove(userToExclude);
+                    _context.SaveChanges();
+                    return RedirectToAction("SeeMembers", new { classId = classId });
+                }
+                else
+                {
+                    ViewBag.ModalMessage = "The user is not a member of the class";
+                    return RedirectToAction("SeeMembers", new { classId = classId });
+                }
+            }
+            else
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "You don't have acces to this thing."
                 };
 
                 return View("~/Views/Shared/Error.cshtml", Error);
@@ -603,7 +639,7 @@ namespace TechLead.Controllers
             {
                 seeMembersViewModels.Add(new SeeMembersViewModel
                 {
-                    Id = user.Id,
+                    ClassId = cls.ClassID,
                     JoinDate = DateTime.Now,
                     Name = user.UserName,
                     userID = user.Id

@@ -7,7 +7,7 @@ namespace TechLead.Models
 {
     public class SeeMembersViewModel
     {
-        public string Id { get; set; }
+        public int ClassId { get; set; }
         public string Name { get; set; }
         public string userID { get; set; }
         public DateTime JoinDate { get; set; }
