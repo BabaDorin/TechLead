@@ -24,6 +24,7 @@ namespace TechLead.Controllers
         }
         // GET: Class
 
+        //------------------------------------------ G E N E R A L ------------------------------------------
         public ActionResult Index()
         {
             return RedirectToAction("MyClasses");
@@ -38,6 +39,7 @@ namespace TechLead.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(ClassViewModel classViewModel)
         {
             try
@@ -88,10 +90,9 @@ namespace TechLead.Controllers
             try
             {
                 ViewBag.ClassId = id;
-                // - if the user is administrator or classCreator then display the data, if not
-                // - check if the user is a member of the class.
+                // - if the user is administrator or classCreator then goto Manage Action. If not,
+                // check if the user is a member of the class.
                 Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
-                TempData["Class"] = @class;
 
                 if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
                 {
@@ -131,78 +132,91 @@ namespace TechLead.Controllers
         [Authorize]
         public ActionResult Manage(int id)
         {
-            //try
-            //{
-            ViewBag.ClassId = id;
-            Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
-            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            try
             {
-                ClassViewModel classViewModel = ClassFromModelToViewModel(@class);
-                return View(classViewModel);
+                ViewBag.ClassId = id;
+                Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+                {
+                    ClassViewModel classViewModel = ClassFromModelToViewModel(@class);
+                    return View(classViewModel);
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Nope.",
+                        Description = "You don't have acces to this page"
+                    };
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
             }
-            else
+            catch (Exception e)
             {
                 ErrorViewModel Error = new ErrorViewModel
                 {
-                    Title = "Nope.",
-                    Description = "You don't have acces to this page"
+                    Title = "Error",
+                    Description = "Invalid request. Details: " + e.Message
                 };
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
-            //}
-            //catch (Exception e)
-            //{
-            //    ErrorViewModel Error = new ErrorViewModel
-            //    {
-            //        Title = "Error",
-            //        Description = "Invalid request. Details: " + e.Message
-            //    };
-            //    return View("~/Views/Shared/Error.cshtml", Error);
-            //}
         }
 
         [Authorize]
         public ActionResult MyClasses()
         {
-            //Show all classes to admins
-            if (isAdministrator())
+            try
             {
-                DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
-                List<Class> classes = _context.Classes.ToList();
-                foreach (Class c in classes)
+                //Show all classes to admins
+                if (isAdministrator())
                 {
-                    displayClasses.Classes_Joined.Add(ClassFromModelToDisplayViewModel(c));
+                    DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
+                    List<Class> classes = _context.Classes.ToList();
+                    foreach (Class c in classes)
+                    {
+                        displayClasses.Classes_Joined.Add(ClassFromModelToDisplayViewModel(c));
+                    }
+                    return View(displayClasses);
                 }
-                return View(displayClasses);
-            }
-            else
+                else
+                {
+                    //Get only the classes in which the current user is member of
+                    string userId = User.Identity.GetUserId();
+                    var user = _context.Users.Where(u => u.Id == userId).First();
+                    DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
+
+                    //Classes where the user is a simple member
+                    List<Class> joinedClasses = new List<Class>();
+                    joinedClasses = user.Classes.ToList();
+                    foreach (Class c in joinedClasses)
+                    {
+                        displayClasses.Classes_Joined.Add(ClassFromModelToDisplayViewModel(c));
+                    }
+
+                    //Classes that were created by the user
+                    List<Class> ownedClasses = new List<Class>();
+                    ownedClasses = (from e in _context.Classes
+                                    where e.ClassCreatorID == userId
+                                    select e).ToList();
+
+                    foreach (Class c in ownedClasses)
+                    {
+                        displayClasses.Classes_Owned.Add(ClassFromModelToDisplayViewModel(c));
+                    }
+                    return View(displayClasses);
+                }
+            }catch(Exception e)
             {
-                //Get only the classes in which the current user is member of
-                string userId = User.Identity.GetUserId();
-                var user = _context.Users.Where(u => u.Id == userId).First();
-                DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
-
-                //Classes where the user is a simple member
-                List<Class> joinedClasses = new List<Class>();
-                joinedClasses = user.Classes.ToList();
-                foreach (Class c in joinedClasses)
+                ErrorViewModel Error = new ErrorViewModel
                 {
-                    displayClasses.Classes_Joined.Add(ClassFromModelToDisplayViewModel(c));
-                }
-
-                //Classes that were created by the user
-                List<Class> ownedClasses = new List<Class>();
-                ownedClasses = (from e in _context.Classes
-                                where e.ClassCreatorID == userId
-                                select e).ToList();
-
-                foreach (Class c in ownedClasses)
-                {
-                    displayClasses.Classes_Owned.Add(ClassFromModelToDisplayViewModel(c));
-                }
-                return View(displayClasses);
+                    Title = "Error",
+                    Description = e.Message,
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
+
+        //------------------------------------------ P R O B L E M S ------------------------------------------
 
         [Authorize]
         public ActionResult ImportExercise(int classID)
@@ -247,6 +261,7 @@ namespace TechLead.Controllers
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ImportExercise(ImportExerciseViewModel ievm)
         {
             try
@@ -257,18 +272,13 @@ namespace TechLead.Controllers
                 }
                 else
                 {
-                    //Insert the problem into class colection of problems.
                     Exercise e = _context.Exercises.Where(ex => ex.Id == ievm.ExerciseId).FirstOrDefault();
                     if (e == null)
                     {
-                        //The id provided is incorrect - The problem does not exist
+                        //The provided id is incorrect - The problem does not exist
                         //throw new Exception();
-                        ErrorViewModel Error = new ErrorViewModel
-                        {
-                            Title = "Error",
-                            Description = "We couldn't find any problem having the id specified"
-                        };
-                        return View("~/Views/Shared/Error.cshtml", Error);
+                        ViewBag.ModalMessage = "The provided ID is incorrect. We could not find any problems associated with it.";
+                        return RedirectToAction("ImportExercise", new { classId = ievm.ClassId });
                     }
                     else
                     {
@@ -289,12 +299,8 @@ namespace TechLead.Controllers
             }
             catch (Exception e)
             {
-                ErrorViewModel Error = new ErrorViewModel
-                {
-                    Title = "Error. The exercise could not be imported. Please, try again",
-                    Description = e.Message
-                };
-                return View("~/Views/Shared/Error.cshtml", Error);
+                ViewBag.ModalMessage = "The provided ID is incorrect. We could not find any problems associated with it.";
+                return RedirectToAction("ImportExercise", new { classId = ievm.ClassId });
             }
         }
 
@@ -302,12 +308,21 @@ namespace TechLead.Controllers
         public ActionResult CreateExercise(int classId)
         {
             //check one more time if user has a class (Owns)
-            //do the security stuff
-            //Pass ExerciseViewModel to "Create" "Problem" Action havint the "CreatedWithinAClass" parameter
-            //set to true.
             //The POST "Create" "Problem" will do the rest.
-
-            return RedirectToAction("Create", "Problem", new { AvailableJustForTheClass = true, classId = classId });
+            Class @class = _context.Classes.Single(c => c.ClassID == classId);
+            if(isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            {
+                return RedirectToAction("Create", "Problem", new { AvailableJustForTheClass = true, classId = classId });
+            }
+            else
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "Something went wrong"
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
         }
 
         [Authorize]
@@ -357,6 +372,9 @@ namespace TechLead.Controllers
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
+
+        //------------------------------------------ M E M B E R S ------------------------------------------
+
         [Authorize]
         public ActionResult JoinClass()
         {
@@ -366,12 +384,12 @@ namespace TechLead.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize]
         public ActionResult JoinClass(JoinRequestViewModel jrvw)
         {
             try
             {
-                //!! Implement Error - you're already a member of this group
                 if (!ModelState.IsValid)
                 {
                     return View(jrvw);
@@ -422,196 +440,234 @@ namespace TechLead.Controllers
         [Authorize]
         public ActionResult SeeJoinRequests(int classId)
         {
-            ViewBag.ClassID = classId;
-            //Show a list with all requests to a specific group
-            //The group creator or admin can accept or decline the request
-            Class @class = _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault();
-            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            try
             {
-                List<JoinRequest> joinRequests = @class.JoinRequests.ToList();
-                List<DisplayJoinRequestViewModel> displayJoinRequests = new List<DisplayJoinRequestViewModel>();
-                foreach (JoinRequest j in joinRequests)
+                //Shows a list with all requests to a specific group
+                //The group creator or admin can accept or decline the request
+                ViewBag.ClassID = classId;
+                Class @class = _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault();
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
                 {
-                    displayJoinRequests.Add(new DisplayJoinRequestViewModel
+                    List<JoinRequest> joinRequests = @class.JoinRequests.ToList();
+                    List<DisplayJoinRequestViewModel> displayJoinRequests = new List<DisplayJoinRequestViewModel>();
+                    foreach (JoinRequest j in joinRequests)
                     {
-                        Id = j.Id,
-                        AuthorId = j.AuthorId,
-                        AuthorName = j.Author.UserName
-                    });
-                }
-
-                return View(displayJoinRequests);
-            }
-            else
-            {
-                ErrorViewModel Error = new ErrorViewModel
-                {
-                    Title = "Error",
-                    Description = "You don't have access to this page, sorry."
-                };
-
-                return View("~/Views/Shared/Error.cshtml", Error);
-            }
-        }
-
-        [Authorize]
-        public ActionResult AcceptJoinRequest(int JoinRequestId)
-        {
-            //Check if the current user is the class creator or an admin.
-            //check if there is a request join from user having userId to the class
-            //having classID, if so, Accept it.
-            //Accept means inserting the user into class members and deleting the record from joinRequest.
-            //after that, redirect to seeJoinRequests
-            JoinRequest request = _context.JoinRequests.Where(j => j.Id == JoinRequestId).FirstOrDefault();
-            Class @class = _context.Classes.Where(c => c.ClassID == request.ClassId).FirstOrDefault();
-            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
-            {
-                //Check if user exists
-                if (@class.JoinRequests.Any(j => j.Id == JoinRequestId))
-                {
-                    //Process of accepting the request
-                    //Add the user to the class
-                    ApplicationUser user = _context.Users.Where(u => u.Id == request.AuthorId).FirstOrDefault();
-                    @class.Members.Add(user);
-                    _context.Entry(@class);
-                    _context.JoinRequests.Remove(request);
-                    _context.SaveChanges();
-
-                    return RedirectToAction("SeeJoinRequests", new { classId = @class.ClassID });
+                        displayJoinRequests.Add(new DisplayJoinRequestViewModel
+                        {
+                            Id = j.Id,
+                            AuthorId = j.AuthorId,
+                            AuthorName = j.Author.UserName
+                        });
+                    }
+                    return View(displayJoinRequests);
                 }
                 else
                 {
                     ErrorViewModel Error = new ErrorViewModel
                     {
                         Title = "Error",
-                        Description = "Something wrong happened. The selected joinRequest is not" +
-                        " assigned to your class."
+                        Description = "You don't have access to this page, sorry."
                     };
 
                     return View("~/Views/Shared/Error.cshtml", Error);
                 }
             }
-            else
+            catch(Exception e)
             {
                 ErrorViewModel Error = new ErrorViewModel
                 {
                     Title = "Error",
-                    Description = "You don't have acces to this page."
+                    Description = e.Message,
                 };
-
                 return View("~/Views/Shared/Error.cshtml", Error);
+            }
+            
+        }
+
+        [Authorize]
+        public ActionResult AcceptJoinRequest(int JoinRequestId)
+        {
+            try
+            {
+                //Check if the current user is the class creator or an admin.
+                //check if there is a request join from user having userId to the class
+                //having classID, if so, Accept it.
+                //Accept means inserting the user into class members and deleting the record from joinRequest.
+                //after that, redirect to seeJoinRequests
+                JoinRequest request = _context.JoinRequests.Where(j => j.Id == JoinRequestId).FirstOrDefault();
+                Class @class = _context.Classes.Where(c => c.ClassID == request.ClassId).FirstOrDefault();
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+                {
+                    //Check if user exists
+                    if (@class.JoinRequests.Any(j => j.Id == JoinRequestId))
+                    {
+                        //Process of accepting the request
+                        //Add the user to the class
+                        ApplicationUser user = _context.Users.Where(u => u.Id == request.AuthorId).FirstOrDefault();
+                        @class.Members.Add(user);
+                        _context.Entry(@class);
+                        _context.JoinRequests.Remove(request);
+                        _context.SaveChanges();
+
+                        return RedirectToAction("SeeJoinRequests", new { classId = @class.ClassID });
+                    }
+                    else
+                    {
+                        ErrorViewModel Error = new ErrorViewModel
+                        {
+                            Title = "Error",
+                            Description = "Something wrong happened. The selected joinRequest is not" +
+                            " assigned to your class."
+                        };
+
+                        return View("~/Views/Shared/Error.cshtml", Error);
+                    }
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Error",
+                        Description = "You don't have acces to this page."
+                    };
+
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.ModalMessage = "Error. Something happened. Please, try again :)\n"+e.Message;
+                return View("AcceptJoinRequest", new { JoinRequestId });
             }
         }
 
         [Authorize]
         public ActionResult DeclineJoinRequest(int JoinRequestId)
         {
-            //Check if the current user is the class creator or an admin.
-            //check if there is a request join from user having userId to the class
-            //having classID, if so, Decline it.
-            //Decline means deleting the record from joinRequest.
-            //after that, redirect to seeJoinRequests
-            JoinRequest request = _context.JoinRequests.Where(j => j.Id == JoinRequestId).FirstOrDefault();
-            Class @class = _context.Classes.Where(c => c.ClassID == request.ClassId).FirstOrDefault();
-            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            try
             {
-                //Check if user exists
-                if (@class.JoinRequests.Any(j => j.Id == JoinRequestId))
+                //Check if the current user is the class creator or an admin.
+                //check if there is a request join from user having userId to the class
+                //having classID, if so, Decline it.
+                //Decline means deleting the record from joinRequest.
+                //after that, redirect to seeJoinRequests
+                JoinRequest request = _context.JoinRequests.Where(j => j.Id == JoinRequestId).FirstOrDefault();
+                Class @class = _context.Classes.Where(c => c.ClassID == request.ClassId).FirstOrDefault();
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
                 {
-                    //Process of deleting the request
-                    _context.JoinRequests.Remove(request);
-                    _context.SaveChanges();
+                    //Check if user exists
+                    if (@class.JoinRequests.Any(j => j.Id == JoinRequestId))
+                    {
+                        //Process of deleting the request
+                        _context.JoinRequests.Remove(request);
+                        _context.SaveChanges();
 
-                    return RedirectToAction("SeeJoinRequests", new { classId = @class.ClassID });
+                        return RedirectToAction("SeeJoinRequests", new { classId = @class.ClassID });
+                    }
+                    else
+                    {
+                        ErrorViewModel Error = new ErrorViewModel
+                        {
+                            Title = "Error",
+                            Description = "Something wrong happened. The selected joinRequest is not" +
+                            " assigned to your class."
+                        };
+
+                        return View("~/Views/Shared/Error.cshtml", Error);
+                    }
                 }
                 else
                 {
                     ErrorViewModel Error = new ErrorViewModel
                     {
                         Title = "Error",
-                        Description = "Something wrong happened. The selected joinRequest is not" +
-                        " assigned to your class."
+                        Description = "You don't have acces to this page."
                     };
 
                     return View("~/Views/Shared/Error.cshtml", Error);
                 }
             }
-            else
+            catch(Exception e)
             {
-                ErrorViewModel Error = new ErrorViewModel
-                {
-                    Title = "Error",
-                    Description = "You don't have acces to this page."
-                };
-
-                return View("~/Views/Shared/Error.cshtml", Error);
+                ViewBag.ModalMessage = "Error. Something happened. Please, try again :)\n" + e.Message;
+                return View("DeclineJoinRequest", new { JoinRequestId });
             }
-        }
-
-        [Authorize]
-        public ActionResult SeeClasses()
-        {
-
-
-            return View();
         }
 
         [Authorize]
         public ActionResult SeeMembers(int classId)
         {
-            Class @class = _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault();
-            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            try
             {
-                ViewBag.ClassID = @class.ClassID;
-                List<SeeMembersViewModel> MembersViewModel = SeeMembersFromModelToViewModel(@class);
-                return View(MembersViewModel);
-            }
-            else
-            {
-                ErrorViewModel Error = new ErrorViewModel
+                Class @class = _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault();
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
                 {
-                    Title = "Error",
-                    Description = "You don't have acces to this page."
-                };
-
-                return View("~/Views/Shared/Error.cshtml", Error);
-            }
-        }
-
-        public ActionResult ExcludeMember(int classId, string memberId)
-        {
-            //1) check if the user who wants to exclude the member is either Administrator
-            //or classCreator
-
-            Class @class = _context.Classes.Where(c => c.ClassID == classId).First();
-
-            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
-            {
-                //Check if the specified member exists within class members
-                if (@class.Members.Any(m => m.Id == memberId))
-                {
-                    ApplicationUser userToExclude = _context.Users.Where(u => u.Id == memberId).First();
-                    @class.Members.Remove(userToExclude);
-                    _context.SaveChanges();
-                    return RedirectToAction("SeeMembers", new { classId = classId });
+                    ViewBag.ClassID = @class.ClassID;
+                    List<SeeMembersViewModel> MembersViewModel = SeeMembersFromModelToViewModel(@class);
+                    return View(MembersViewModel);
                 }
                 else
                 {
-                    ViewBag.ModalMessage = "The user is not a member of the class";
-                    return RedirectToAction("SeeMembers", new { classId = classId });
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Error",
+                        Description = "You don't have acces to this page."
+                    };
+
+                    return View("~/Views/Shared/Error.cshtml", Error);
                 }
             }
-            else
+            catch (Exception e)
             {
-                ErrorViewModel Error = new ErrorViewModel
-                {
-                    Title = "Error",
-                    Description = "You don't have acces to this thing."
-                };
-
-                return View("~/Views/Shared/Error.cshtml", Error);
+                ViewBag.ModalMessage = "Error. Please, try again\n"+e.Message;
+                return View("Manage", new { id = classId });
             }
         }
+
+        [Authorize]
+        public ActionResult ExcludeMember(int classId, string memberId)
+        {
+            try
+            {
+                //1) check if the user who wants to exclude the member is either Administrator
+                //or classCreator
+                Class @class = _context.Classes.Where(c => c.ClassID == classId).First();
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+                {
+                    //Check if the specified member exists within class members
+                    if (@class.Members.Any(m => m.Id == memberId))
+                    {
+                        ApplicationUser userToExclude = _context.Users.Where(u => u.Id == memberId).First();
+                        @class.Members.Remove(userToExclude);
+                        _context.SaveChanges();
+                        return RedirectToAction("SeeMembers", new { classId = classId });
+                    }
+                    else
+                    {
+                        ViewBag.ModalMessage = "The user is not a member of the class";
+                        return RedirectToAction("SeeMembers", new { classId = classId });
+                    }
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Error",
+                        Description = "You don't have acces to this thing."
+                    };
+
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.ModalMessage = "Error. Something happened, the member has not been excluded. Please, try again\n"+e.Message;
+                return View("SeeMemebers", new { classId });
+            }
+            
+        }
+
+        //------------------------------------------ O T H E R   M E T H O D S ----------------------------------
 
         public string GenerateRandom6CharCode()
         {
@@ -619,7 +675,6 @@ namespace TechLead.Controllers
             string chars = "ABCDEFGHJIKLMNOPQRSTUVXYZabcdefghjiklmnopqrstuvxyz1234567890";
             return new string(Enumerable.Repeat(chars, 6).Select(s => s[rnd.Next(chars.Length)]).ToArray());
         }
-
         public Class ClassFromViewModelToModel(ClassViewModel classViewModel)
         {
             Class @class = new Class
@@ -675,7 +730,6 @@ namespace TechLead.Controllers
 
             return classViewModel;
         }
-
         public bool isAdministrator()
         {
             if (HttpContext.User != null)
@@ -690,7 +744,6 @@ namespace TechLead.Controllers
             }
             else return false;
         }
-
         public List<SeeMembersViewModel> SeeMembersFromModelToViewModel(Class cls)
         {
             List<SeeMembersViewModel> seeMembersViewModels = new List<SeeMembersViewModel>();

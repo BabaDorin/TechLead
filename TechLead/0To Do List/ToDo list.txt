@@ -1,6 +1,8 @@
 ﻿
 	TO DO IMMEDIATELY
 
+>> Add Modal thing to ImportExercise, JoinClass,
+
 >> PROTECT problems that are set with OnlyForClassMembers = ON.	
 >> Check if modal works on internet explorer
 
