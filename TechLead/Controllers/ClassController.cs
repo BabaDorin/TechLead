@@ -87,6 +87,7 @@ namespace TechLead.Controllers
         {
             try
             {
+                ViewBag.ClassId = id;
                 // - if the user is administrator or classCreator then display the data, if not
                 // - check if the user is a member of the class.
                 Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
@@ -132,21 +133,22 @@ namespace TechLead.Controllers
         {
             //try
             //{
-                Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
-                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            ViewBag.ClassId = id;
+            Class @class = _context.Classes.Where(c => c.ClassID == id).FirstOrDefault();
+            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            {
+                ClassViewModel classViewModel = ClassFromModelToViewModel(@class);
+                return View(classViewModel);
+            }
+            else
+            {
+                ErrorViewModel Error = new ErrorViewModel
                 {
-                    ClassViewModel classViewModel = ClassFromModelToViewModel(@class);
-                    return View(classViewModel);
-                }
-                else
-                {
-                    ErrorViewModel Error = new ErrorViewModel
-                    {
-                        Title = "Nope.",
-                        Description = "You don't have acces to this page"
-                    };
-                    return View("~/Views/Shared/Error.cshtml", Error);
-                }
+                    Title = "Nope.",
+                    Description = "You don't have acces to this page"
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
             //}
             //catch (Exception e)
             //{
@@ -167,7 +169,7 @@ namespace TechLead.Controllers
             {
                 DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
                 List<Class> classes = _context.Classes.ToList();
-                foreach(Class c in classes)
+                foreach (Class c in classes)
                 {
                     displayClasses.Classes_Joined.Add(ClassFromModelToDisplayViewModel(c));
                 }
@@ -179,11 +181,11 @@ namespace TechLead.Controllers
                 string userId = User.Identity.GetUserId();
                 var user = _context.Users.Where(u => u.Id == userId).First();
                 DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
-                
+
                 //Classes where the user is a simple member
                 List<Class> joinedClasses = new List<Class>();
                 joinedClasses = user.Classes.ToList();
-                foreach(Class c in joinedClasses)
+                foreach (Class c in joinedClasses)
                 {
                     displayClasses.Classes_Joined.Add(ClassFromModelToDisplayViewModel(c));
                 }
@@ -194,7 +196,7 @@ namespace TechLead.Controllers
                                 where e.ClassCreatorID == userId
                                 select e).ToList();
 
-                foreach(Class c in ownedClasses)
+                foreach (Class c in ownedClasses)
                 {
                     displayClasses.Classes_Owned.Add(ClassFromModelToDisplayViewModel(c));
                 }
@@ -215,21 +217,21 @@ namespace TechLead.Controllers
             {
                 Class @class = _context.Classes.Where(c => c.ClassID == classID).FirstOrDefault();
 
-            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
-            {
-                ImportExerciseViewModel ievm = new ImportExerciseViewModel();
-                ievm.ClassId = @class.ClassID;
-                return View(ievm);
-            }
-            else
-            {
-                ErrorViewModel Error = new ErrorViewModel
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
                 {
-                    Title = "Nope.",
-                    Description = "You don't have acces to this page"
-                };
-                return View("~/Views/Shared/Error.cshtml", Error);
-            }
+                    ImportExerciseViewModel ievm = new ImportExerciseViewModel();
+                    ievm.ClassId = @class.ClassID;
+                    return View(ievm);
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Nope.",
+                        Description = "You don't have acces to this page"
+                    };
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
             }
             catch (Exception e)
             {
@@ -302,7 +304,54 @@ namespace TechLead.Controllers
 
             return RedirectToAction("Create", "Problem", new { AvailableJustForTheClass = true, classId = classId });
         }
-        
+
+        [Authorize]
+        public ActionResult RemoveExercise(int problemId, int classId)
+        {
+            try
+            {
+                //Check if the user has enough privillege to do this.
+                Class @class = _context.Classes.Single(c => c.ClassID == classId);
+                if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+                {
+                    //If exercise exists within class, remove it
+                    if (@class.Exercises.Any(e => e.Id == problemId))
+                    {
+                        Exercise e = _context.Exercises.Single(ex => ex.Id == problemId);
+                        @class.Exercises.Remove(e);
+                        _context.SaveChanges();
+                        return RedirectToAction("Details", new { id = classId });
+                    }
+                    else
+                    {
+                        ErrorViewModel Error = new ErrorViewModel
+                        {
+                            Title = "Error",
+                            Description = "The problem is no more assigned to the class."
+                        };
+                        return View("~/Views/Shared/Error.cshtml", Error);
+                    }
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Error",
+                        Description = "You don't have enough privillege to do this."
+                    };
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = e.Message
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
         [Authorize]
         public ActionResult JoinClass()
         {
@@ -372,11 +421,11 @@ namespace TechLead.Controllers
             //Show a list with all requests to a specific group
             //The group creator or admin can accept or decline the request
             Class @class = _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault();
-            if(isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
             {
                 List<JoinRequest> joinRequests = @class.JoinRequests.ToList();
                 List<DisplayJoinRequestViewModel> displayJoinRequests = new List<DisplayJoinRequestViewModel>();
-                foreach(JoinRequest j in joinRequests)
+                foreach (JoinRequest j in joinRequests)
                 {
                     displayJoinRequests.Add(new DisplayJoinRequestViewModel
                     {
@@ -399,7 +448,7 @@ namespace TechLead.Controllers
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
-        
+
         [Authorize]
         public ActionResult AcceptJoinRequest(int JoinRequestId)
         {
@@ -413,7 +462,7 @@ namespace TechLead.Controllers
             if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
             {
                 //Check if user exists
-                if(@class.JoinRequests.Any(j => j.Id == JoinRequestId))
+                if (@class.JoinRequests.Any(j => j.Id == JoinRequestId))
                 {
                     //Process of accepting the request
                     //Add the user to the class
@@ -498,7 +547,7 @@ namespace TechLead.Controllers
         public ActionResult SeeClasses()
         {
 
-            
+
             return View();
         }
 
@@ -531,10 +580,10 @@ namespace TechLead.Controllers
 
             Class @class = _context.Classes.Where(c => c.ClassID == classId).First();
 
-            if(isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
+            if (isAdministrator() || User.Identity.GetUserId() == @class.ClassCreatorID)
             {
                 //Check if the specified member exists within class members
-                if(@class.Members.Any(m => m.Id == memberId))
+                if (@class.Members.Any(m => m.Id == memberId))
                 {
                     ApplicationUser userToExclude = _context.Users.Where(u => u.Id == memberId).First();
                     @class.Members.Remove(userToExclude);
@@ -564,7 +613,7 @@ namespace TechLead.Controllers
             Random rnd = new Random();
             string chars = "ABCDEFGHJIKLMNOPQRSTUVXYZabcdefghjiklmnopqrstuvxyz1234567890";
             return new string(Enumerable.Repeat(chars, 6).Select(s => s[rnd.Next(chars.Length)]).ToArray());
-        } 
+        }
 
         public Class ClassFromViewModelToModel(ClassViewModel classViewModel)
         {
@@ -606,7 +655,7 @@ namespace TechLead.Controllers
             List<Exercise> exercises = @class.Exercises.ToList();
             Debug.WriteLine("THE LIST HAS " + exercises.Count() + " ITEMS");
             classViewModel.Exercises = new List<DisplayExerciseGeneralInfoViewModel>();
-            foreach(Exercise e in exercises)
+            foreach (Exercise e in exercises)
             {
                 classViewModel.Exercises.Add(new DisplayExerciseGeneralInfoViewModel
                 {
@@ -641,7 +690,7 @@ namespace TechLead.Controllers
         {
             List<SeeMembersViewModel> seeMembersViewModels = new List<SeeMembersViewModel>();
             List<ApplicationUser> applicationUsers = cls.Members.ToList();
-            foreach(ApplicationUser user in applicationUsers)
+            foreach (ApplicationUser user in applicationUsers)
             {
                 seeMembersViewModels.Add(new SeeMembersViewModel
                 {

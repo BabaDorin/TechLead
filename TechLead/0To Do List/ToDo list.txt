@@ -1,10 +1,8 @@
 ﻿
 	TO DO IMMEDIATELY
 
->> html hiddenFor ExerciseViewModel MotherClassID
->> Do not display private problems on Beginner / Intermediate / Advanced branch
->> Allow the classCreator to change the problem to be public within "Create" view
->> Allow the classCreator to make the problem public afterwards
+>> PROTECT problems that are set with OnlyForClassMembers = ON.	
+
 >> Add validateAntiForgeryToken stuff for pages from "Class"
 
 >>There is an error when trying to display the submission under "Restricted Mode" problem from
@@ -86,6 +84,13 @@ the user has failed. It won't cost anything.
 
 
 >>>>>>>>>>>>>>>>>> DONE <<<<<<<<<<<<<<<<<<<<<,
+
+>> Each problem within a group will have an "Exclude" button associated. This will remove the problem from class
+
+>> html hiddenFor ExerciseViewModel MotherClassID
+>> Do not display private problems on Beginner / Intermediate / Advanced branch
+>> Allow the classCreator to change the problem to be public within "Create" view
+>> Allow the classCreator to make the problem public afterwards
 
 >>  if the problem is restricted, the submissionviewModel shouldn't have inputs and outputs in it.
 
