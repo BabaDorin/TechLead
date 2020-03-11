@@ -309,41 +309,53 @@ namespace TechLead.Controllers
         [Authorize]
         public ActionResult JoinClass(JoinRequestViewModel jrvw)
         {
-            //!! Implement Error - you're already a member of this group
-            if (!ModelState.IsValid)
+            try
             {
-                return View(jrvw);
-            }
-            else
-            {
-                //check if the provided code exists (Points to a valid class)
-                if(_context.Classes.Any(c => c.ClassInvitationCode == jrvw.InvitationCode))
+                //!! Implement Error - you're already a member of this group
+                if (!ModelState.IsValid)
                 {
-                    //Register the join
-                    int classId = (from c in _context.Classes
-                                   where c.ClassInvitationCode == jrvw.InvitationCode
-                                   select c.ClassID).SingleOrDefault();
-
-                    JoinRequest joinRequest = new JoinRequest
-                    {
-                        AuthorId = User.Identity.GetUserId(),
-                        ClassId = classId,
-                    };
-
-                    _context.JoinRequests.Add(joinRequest);
-                    _context.SaveChanges();
-
-                    return View("~/Views/Home/Index.cshtml");
+                    return View(jrvw);
                 }
                 else
                 {
-                    ErrorViewModel Error = new ErrorViewModel
+                    //check if the provided code exists (Points to a valid class)
+                    if (_context.Classes.Any(c => c.ClassInvitationCode == jrvw.InvitationCode))
                     {
-                        Title = "Error",
-                        Description = "Class not found, verify the code and try again"
-                    };
-                    return View("~/Views/Shared/Error.cshtml", Error);
+                        //Check if the user is already a member of the class
+                        Class @class = _context.Classes.Where(c => c.ClassInvitationCode == jrvw.InvitationCode).First();
+                        if (@class.Members.Any(m => m.Id == User.Identity.GetUserId()))
+                        {
+                            ViewBag.ModalMessage = "It seems like you are already a member of the indicated class - " + @class.ClassName;
+                            return View(jrvw);
+                        }
+
+                        JoinRequest joinRequest = new JoinRequest
+                        {
+                            AuthorId = User.Identity.GetUserId(),
+                            ClassId = @class.ClassID,
+                        };
+
+                        _context.JoinRequests.Add(joinRequest);
+                        _context.SaveChanges();
+
+                        return View("~/Views/Home/Index.cshtml");
+                    }
+                    else
+                    {
+                        ViewBag.ModalMessage = "We could not find any class having the specified invitation code :(";
+                        return View(jrvw);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error. Something happened :( Please, try again",
+                    Description = e.Message
+                };
+
+                return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
 
