@@ -331,8 +331,8 @@ namespace TechLead.Controllers
                 {
                     Difficulty = _context.Difficulty.ToList(),
                     AvailableOnlyForTheClass = AvailableJustForTheClass,
+                    MotherClassID = classId
                 };
-                if (viewModel.AvailableOnlyForTheClass) viewModel.MotherClassID = classId;
                 viewModel.Test = new Test[10];
 
                 return View(viewModel);
@@ -380,8 +380,12 @@ namespace TechLead.Controllers
                 {
                     exerciseViewModel.Author = User.Identity.Name;
                 }
-                //If MakeItPublic = true, then AvailableOnlyForTheClass = false.
-                exerciseViewModel.AvailableOnlyForTheClass = !exerciseViewModel.MakeItPublic;
+
+                if (exerciseViewModel.MotherClassID != -1)
+                {
+                    //Public = true, availableForEveryOne = false.
+                    exerciseViewModel.AvailableOnlyForTheClass = !exerciseViewModel.MakeItPublic;
+                }
                 Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
                 exercise.AuthorID = User.Identity.GetUserId();
                 _context.Exercises.Add(exercise);
@@ -469,8 +473,13 @@ namespace TechLead.Controllers
                     return View("Update", exerciseViewModel);
                 }
 
-                //If everything is OK, the exercise will get updated, but first we store the previous restriction
+                //If everything is OK, the exercise will get updated
 
+                if (exerciseViewModel.MotherClassID != -1)
+                {
+                    //Public = true, availableForEveryOne = false.
+                    exerciseViewModel.AvailableOnlyForTheClass = !exerciseViewModel.MakeItPublic;
+                }
                 Exercise exercise = ExerciseFromViewModelToModel(exerciseViewModel);
                 exercise.AuthorID = HttpContext.User.Identity.GetUserId();
                 exercise.Author = HttpContext.User.Identity.Name;

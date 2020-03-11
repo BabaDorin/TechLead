@@ -13,6 +13,7 @@
         @Html.HiddenFor(model => model.AuthorID)
         @Html.HiddenFor(model => model.Author)
         @Html.HiddenFor(model => model.isArchieved)
+        @Html.HiddenFor(model => model.AvailableOnlyForTheClass)
     <div class="CreateProblem">
         <p><strong>Update the exercise</strong></p>
         <br />
@@ -59,8 +60,23 @@
                     </div>
                 </div>
             </div>
-
         </div>
+        
+        @if (Model.MotherClassID != -1)
+        {
+            <div class="form-group">
+                <div class="kindaButton">
+                    @Html.CheckBoxFor(ex => ex.MakeItPublic, true)
+                    <b>Make the problem available for outside of the class</b>
+                </div>
+                <div class="alert alert-info">
+                    <p style="text-align:center;">
+                        By default, the problem will be available only for your class members. If you check the box below, it will go public
+                        and will be available for everyone.<br />
+                        <b>NOTE: </b>you can make the problem public afterwards by clicking the "Publish" button within your class.
+                </div>
+            </div>
+        }
 
         <div class="form-group">
             @Html.LabelFor(ex => ex.Name, "Title")
