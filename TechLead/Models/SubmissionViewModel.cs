@@ -53,5 +53,7 @@ namespace TechLead.Models
 
         //Error message
         public string[] ErrorMessage { get; set; }
+        
+        public string[] AllMedia { get; set; }
     }
 }

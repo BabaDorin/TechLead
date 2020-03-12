@@ -99,5 +99,54 @@ namespace TechLead.Models
 
             return result;
         }
+
+        public string[] AllMedia()
+        {
+            string lowPath = AppDomain.CurrentDomain.BaseDirectory + @"\ImageResources\memes\low";
+            string mediumPath = AppDomain.CurrentDomain.BaseDirectory + @"\ImageResources\memes\medium";
+            string highPath = AppDomain.CurrentDomain.BaseDirectory + @"\ImageResources\memes\high";
+            string[] low = Directory.GetFiles(lowPath);
+            string[] medium = Directory.GetFiles(mediumPath);
+            string[] high = Directory.GetFiles(highPath);
+            string[] result = new string[low.Length + high.Length + high.Length];
+            Debug.WriteLine("low => " + low.Length);
+            Debug.WriteLine("medium => " + medium.Length);
+            Debug.WriteLine("high => " + high.Length);
+            int k = 0;
+            for (int i = 0; i < low.Length; i++)
+            {
+                result[k] = Path.GetFileName(low[i]);
+                k++;
+            }
+            for (int i = 0; i < medium.Length; i++)
+            {
+                result[k] = Path.GetFileName(medium[i]);
+                k++;
+            }
+            for (int i = 0; i < high.Length; i++)
+            {
+                result[k] = Path.GetFileName(high[i]);
+                k++;
+            }
+
+            return result;
+        }
+
+        public string GetRandomMediaPath(string successIndex)
+        {
+            //Success index will have 3 values, "low", "medium" & "high".
+            //If "low" - display a meme that encourages the user, you got the point.
+            if(successIndex=="low" || successIndex == "medium" || successIndex == "high")
+            {
+                string[] memePaths = Directory.GetFiles("~/ImageResources/memes/" + successIndex+"/");
+                Random random = new Random();
+                return memePaths[random.Next(0, memePaths.Length - 1)];
+            }
+            else
+            {
+                Debug.WriteLine(successIndex + " is an invalid succes index. Acceptable values: low / medium / high");
+                throw new Exception();
+            }
+        }
     }
 }

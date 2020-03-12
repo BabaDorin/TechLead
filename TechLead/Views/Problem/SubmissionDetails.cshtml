@@ -111,12 +111,15 @@
                                 }
                             </div>
                         }
-
                     </div>
                 </div>
             }
-
             <br />
+        }
+        @for(int i=0; i<Model.AllMedia.Length; i++)
+        {
+            @Model.AllMedia[i] <br />
+                <img src="@Url.Content("~/ImageResources/memes/high/" + Model.AllMedia[i])"/>
         }
         <br />
         @if (Request.UrlReferrer != null)

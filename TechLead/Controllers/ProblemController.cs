@@ -216,10 +216,56 @@ namespace TechLead.Controllers
         {
             try
             {
+                //If the problem under which the submission was created is AvailableOnlyForClassMembers, 
+                //Then submission will be available only for Administrators, classCreator and class Memember.
+                //After that, we will check if that problem was set to be restricted. If so, then restrict displaying
+                //submissions.
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
-                bool restrictedMode = (from e in _context.Exercises
-                                       where e.Id == S.ExerciseId
-                                       select e.RestrictedMode).FirstOrDefault();
+                Exercise exercise = _context.Exercises.Single(e => e.Id == S.ExerciseId);
+                if (exercise.AvailableOnlyForTheClass)
+                {
+                    Class @class = _context.Classes.Single(c => c.ClassID == exercise.MotherClassID);
+                    if(User.Identity.IsAuthenticated && (isAdministrator() || User.Identity.GetUserId() == S.SubmissionAuthorId ||User.Identity.GetUserId() == exercise.AuthorID
+                        || User.Identity.GetUserId() == @class.ClassCreatorID))
+                    {
+                        //user is Admin, class creator, problem creator or submission author.
+                        //No restrictions for these
+                        SubmissionViewModel SubmissionViewModel = SubmissionFromModelToViewModel(S);
+                        return View(SubmissionViewModel);
+                    }
+                    else
+                    {
+                        //If current user is a class member then exit the if statement. If not => Display an error
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            string userID = User.Identity.GetUserId();
+                            var user = _context.Users.Single(u => u.Id == userID);
+                            if (!user.Classes.Any(c => c.ClassID == @class.ClassID))
+                            {
+                                //User is authenticated but is not a class member
+                                ErrorViewModel Error = new ErrorViewModel
+                                {
+                                    Title = "Error",
+                                    Description = "You don't have access to this page."
+                                };
+                                return View("~/Views/Shared/Error.cshtml", Error);
+                            }
+                        }
+                        else
+                        {
+                            //User is not authenticated
+                            ErrorViewModel Error = new ErrorViewModel
+                            {
+                                Title = "Error",
+                                Description = "You don't have access to this page."
+                            };
+                            return View("~/Views/Shared/Error.cshtml", Error);
+                        }
+                    }
+                }
+
+                bool restrictedMode = exercise.RestrictedMode;
+
                 //The page with submission details won't be accesible for other people, except 
                 if(!isAdministrator())
                     if (restrictedMode && (User.Identity.IsAuthenticated == false || (User.Identity.GetUserId() != S.SubmissionAuthorId && User.Identity.GetUserId() != S.ExerciseAuthorId)))
@@ -239,15 +285,14 @@ namespace TechLead.Controllers
                     S.OutputCollection = "";
                     S.ExpectedOutput = "";
                 }
-
                 SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
                 return View(submissionViewModel);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 ErrorViewModel Error = new ErrorViewModel();
                 Error.Title = "Error";
-                Error.Description = "We could not find the submission specified. Sorry ):";
+                Error.Description = "Something happened, we could not render the specified submission.\n" + e.Message;
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
         }
@@ -1143,24 +1188,26 @@ namespace TechLead.Controllers
             //Svm.NumberOfTestCases = submission.NumberOfTestCases;
             Svm.DistributedPointsPerTestCase = submission.DistributedPointsPerTestCase;
             Svm.SourceCode = submission.SourceCode;
-            Svm.Inputs = submission.InputCollection.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
-            for(int i=0; i<Svm.Inputs.Length; i++)
+            if(Svm.RestrictedMode == false)
             {
-                if (Svm.Inputs[i].Length > 1500) Svm.Inputs[i] = "TooBigTestCaseBoi";
-            }
+                Svm.Inputs = submission.InputCollection.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+                for (int i = 0; i < Svm.Inputs.Length; i++)
+                {
+                    if (Svm.Inputs[i].Length > 1500) Svm.Inputs[i] = "TooBigTestCaseBoi";
+                }
 
-            Svm.Outputs = submission.OutputCollection.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
-            for (int i = 0; i < Svm.Outputs.Length; i++)
-            {
-                if (Svm.Outputs[i].Length > 1500) Svm.Outputs[i] = "TooBigTestCaseBoi";
-            }
+                Svm.Outputs = submission.OutputCollection.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+                for (int i = 0; i < Svm.Outputs.Length; i++)
+                {
+                    if (Svm.Outputs[i].Length > 1500) Svm.Outputs[i] = "TooBigTestCaseBoi";
+                }
 
-            Svm.ExpectedOutputs = submission.ExpectedOutput.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
-            for (int i = 0; i < Svm.ExpectedOutputs.Length; i++)
-            {
-                if (Svm.ExpectedOutputs[i].Length > 1500) Svm.ExpectedOutputs[i] = "TooBigTestCaseBoi";
+                Svm.ExpectedOutputs = submission.ExpectedOutput.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
+                for (int i = 0; i < Svm.ExpectedOutputs.Length; i++)
+                {
+                    if (Svm.ExpectedOutputs[i].Length > 1500) Svm.ExpectedOutputs[i] = "TooBigTestCaseBoi";
+                }
             }
-
             Svm.Points = Array.ConvertAll(submission.PointsPerTestCase.Split(new string[] { data.Delimitator }, StringSplitOptions.None),
                 x => double.Parse(x));
             Svm.ExecutionTime = Array.ConvertAll(submission.ExecutionTimePerTestCase.Split(new string[] { data.Delimitator }, StringSplitOptions.None),
@@ -1169,6 +1216,7 @@ namespace TechLead.Controllers
             Svm.ErrorMessage = submission.ErrorMessage.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
             Svm.NumberOfTestCases = Svm.Points.Length;
             Svm.MakeSourceCodePublic = submission.MakeSourceCodePublic;
+            Svm.AllMedia = data.AllMedia();
             return Svm;
         }
         public ExerciseViewModel ExerciseFromModelToViewModel(Exercise exercise, bool CopyBackendTests)
