@@ -376,6 +376,10 @@
     <Compile Include="Migrations\202003111719073_AddingClassRelatedFiels_Exercise.Designer.cs">
       <DependentUpon>202003111719073_AddingClassRelatedFiels_Exercise.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003121104277_AddingTables_Memes_SuccesIndices.cs" />
+    <Compile Include="Migrations\202003121104277_AddingTables_Memes_SuccesIndices.Designer.cs">
+      <DependentUpon>202003121104277_AddingTables_Memes_SuccesIndices.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\BestSubmission.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\ClassToDisplayViewModel.cs" />
@@ -392,9 +396,11 @@
     <Compile Include="Models\JoinRequest.cs" />
     <Compile Include="Models\JoinRequestViewModel.cs" />
     <Compile Include="Models\Judge0JsonModel.cs" />
+    <Compile Include="Models\Meme.cs" />
     <Compile Include="Models\SeeMembersViewModel.cs" />
     <Compile Include="Models\SubmissionToDisplayViewModel.cs" />
     <Compile Include="Models\SubmissionViewModel.cs" />
+    <Compile Include="Models\SuccesIndex.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\Compiler.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\CPPCompiler.cs" />
     <Compile Include="Old but maybe useful stuff\Compiler\CSharpCompiler.cs" />
@@ -1122,6 +1128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003111719073_AddingClassRelatedFiels_Exercise.resx">
       <DependentUpon>202003111719073_AddingClassRelatedFiels_Exercise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003121104277_AddingTables_Memes_SuccesIndices.resx">
+      <DependentUpon>202003121104277_AddingTables_Memes_SuccesIndices.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

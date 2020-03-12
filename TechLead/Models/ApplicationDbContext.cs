@@ -9,6 +9,8 @@ namespace TechLead.Models
         public DbSet<Difficulty> Difficulty { get; set; }
         public DbSet<Submission> Submissions { get; set; }
         public DbSet<JoinRequest> JoinRequests { get; set; }
+        public DbSet<Meme> Memes { get; set; }
+        public DbSet<SuccesIndex> SuccesIndices { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
