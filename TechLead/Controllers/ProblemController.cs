@@ -212,7 +212,7 @@ namespace TechLead.Controllers
             }
         }
 
-        public ActionResult SubmissionDetails(int id)
+        public ActionResult SubmissionDetails(int id, int? classId)
         {
             try
             {
@@ -222,13 +222,21 @@ namespace TechLead.Controllers
                 //submissions.
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
                 Exercise exercise = _context.Exercises.Single(e => e.Id == S.ExerciseId);
+                if (isAdministrator() || (User.Identity.IsAuthenticated && User.Identity.GetUserId() == exercise.AuthorID)
+                {
+                    //Even if the problem has restricted mode, administrators and problem creator 
+                    //can see input/output/expectedOutput collections
+                    SubmissionViewModel subViewModel = SubmissionFromModelToViewModel(S);
+                    return View(subViewModel);
+                }
+
                 if (exercise.AvailableOnlyForTheClass)
                 {
                     Class @class = _context.Classes.Single(c => c.ClassID == exercise.MotherClassID);
-                    if(User.Identity.IsAuthenticated && (isAdministrator() || User.Identity.GetUserId() == S.SubmissionAuthorId ||User.Identity.GetUserId() == exercise.AuthorID
+                    if(User.Identity.IsAuthenticated && (User.Identity.GetUserId() == S.SubmissionAuthorId ||User.Identity.GetUserId() == exercise.AuthorID
                         || User.Identity.GetUserId() == @class.ClassCreatorID))
                     {
-                        //user is Admin, class creator, problem creator or submission author.
+                        //class creator, problem creator or submission author.
                         //No restrictions for these
                         SubmissionViewModel SubmissionViewModel = SubmissionFromModelToViewModel(S);
                         return View(SubmissionViewModel);
@@ -265,18 +273,37 @@ namespace TechLead.Controllers
                 }
 
                 bool restrictedMode = exercise.RestrictedMode;
-
-                //The page with submission details won't be accesible for other people, except 
-                if(!isAdministrator())
-                    if (restrictedMode && (User.Identity.IsAuthenticated == false || (User.Identity.GetUserId() != S.SubmissionAuthorId && User.Identity.GetUserId() != S.ExerciseAuthorId)))
+                if(classId!=null)
+                {
+                    if (restrictedMode)
                     {
-                    
-                        ErrorViewModel Error = new ErrorViewModel();
-                        Error.Title = "Sorry, you can not see this submission";
-                        Error.Description = "This submission was made under a problem with restricted mode. Only the " +
-                            "person who made this submission can see it.";
-                        return View("~/Views/Shared/Error.cshtml", Error);
+                        //Restricted problem. Display it to classCreator and SubmissionAuthor only
+                        string userId = User.Identity.GetUserId();
+                        Class @class = _context.Classes.Single(c => c.ClassID == classId);
+                        var user = _context.Users.Single(u => u.Id == userId);
+                        if(user.Classes.Any(c => c.ClassID == classId) || user.Id == @class.ClassCreatorID)
+                        {
+                            if (restrictedMode)
+                            {
+                                S.InputCollection = "";
+                                S.OutputCollection = "";
+                                S.ExpectedOutput = "";
+                            }
+                            SubmissionViewModel subViewModel = SubmissionFromModelToViewModel(S);
+                            return View(subViewModel);
+                        }
                     }
+                }
+
+                //If we are here, it means that the submission has to be rendered in natural mode.
+                if (restrictedMode && (User.Identity.IsAuthenticated == false || (User.Identity.GetUserId() != S.SubmissionAuthorId && User.Identity.GetUserId() != S.ExerciseAuthorId)))
+                {
+                    ErrorViewModel Error = new ErrorViewModel();
+                    Error.Title = "Sorry, you can not see this submission";
+                    Error.Description = "This submission was made under a problem with restricted mode. Only the " +
+                        "person who made this submission can see it.";
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
 
                 //Do not send test-cases if the problem under which this solution was sent is restricted
                 if (restrictedMode)
