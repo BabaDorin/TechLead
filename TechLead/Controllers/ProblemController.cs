@@ -668,8 +668,14 @@ namespace TechLead.Controllers
                 //Class creator has to see them all
                 //List<Submission> submissions = _context.Submissions.Where(s => s.ExerciseId == exerciseId && @class.Members.Any(m => m.Id == s.SubmissionAuthorId)).ToList();
                 List<SubmissionToDisplayViewModel> submissionViewModels = new List<SubmissionToDisplayViewModel>();
+                string userID = User.Identity.GetUserId();
                 submissionViewModels = (from submission in _context.Submissions //NOT WORKING
-                                        where submission.ExerciseId == exerciseId && @class.Members.Any(m => m.Id == submission.SubmissionAuthorId)
+                                        where submission.ExerciseId == exerciseId &&
+                                        (
+                                        submission.SubmissionAuthorId == userID
+                                        ||
+                                        _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault().Members.Contains(_context.Users.Where(u => u.Id == submission.SubmissionAuthorId).FirstOrDefault())
+                                        )
                                         select new SubmissionToDisplayViewModel
                                         {
                                             SubmissionID = submission.SubmissionID,
@@ -680,10 +686,11 @@ namespace TechLead.Controllers
                                             ScoredPoints = submission.ScoredPoints,
 
                                         }).ToList();
+
                 submissionViewModels.Reverse();
                 ViewBag.classId = classId;
                 ViewBag.Restricted = "This problem has restricted mode.";
-                return View(submissionViewModels.ToList().ToPagedList(page ?? 1, 40));
+                return View("Submissions", submissionViewModels.ToList().ToPagedList(page ?? 1, 40));
             }
             else
                 return RedirectToAction("Submissions", new { exerciseId });
