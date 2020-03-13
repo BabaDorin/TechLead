@@ -222,7 +222,7 @@ namespace TechLead.Controllers
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
            
                 //If the problem under which the submission was created is AvailableOnlyForClassMembers, 
-                //Then submission will be available only for Administrators, classCreator and class Memember.
+                //Then submission will be available only for Administrators, classCreator and class Member.
                 //After that, we will check if that problem was set to be restricted. If so, then restrict displaying
                 //submissions.
 
@@ -244,6 +244,7 @@ namespace TechLead.Controllers
                         //class creator, problem creator or submission author.
                         //No restrictions for these
                         SubmissionViewModel SubmissionViewModel = SubmissionFromModelToViewModel(S);
+                        SubmissionViewModel.classId = classId;
                         return View(SubmissionViewModel);
                     }
                     else
@@ -292,6 +293,7 @@ namespace TechLead.Controllers
                             S.OutputCollection = "";
                             S.ExpectedOutput = "";
                             SubmissionViewModel subViewModel = SubmissionFromModelToViewModel(S);
+                            subViewModel.classId = classId;
                             return View(subViewModel);
                         }
                         else
@@ -308,6 +310,7 @@ namespace TechLead.Controllers
                     {
                         //Submission was made within a class, but the problem does not have restricted mode.
                         SubmissionViewModel subViewModel = SubmissionFromModelToViewModel(S);
+                        subViewModel.classId = classId;
                         return View(subViewModel);
                     }
                 }
@@ -330,6 +333,7 @@ namespace TechLead.Controllers
                     S.ExpectedOutput = "";
                 }
                 SubmissionViewModel submissionViewModel = SubmissionFromModelToViewModel(S);
+                submissionViewModel.classId = classId;
                 return View(submissionViewModel);
             }
             catch (Exception e)
@@ -1325,7 +1329,6 @@ namespace TechLead.Controllers
             Svm.ErrorMessage = submission.ErrorMessage.Split(new string[] { data.Delimitator }, StringSplitOptions.None);
             Svm.NumberOfTestCases = Svm.Points.Length;
             Svm.MakeSourceCodePublic = submission.MakeSourceCodePublic;
-            Svm.AllMedia = data.AllMedia();
             return Svm;
         }
         public ExerciseViewModel ExerciseFromModelToViewModel(Exercise exercise, bool CopyBackendTests)

@@ -7,11 +7,19 @@
 <div class="Content">
 
     <div class="TitleBox">
-        <h2>Submission ID @Model.SubmissionID</h2>
-        @if (Model.MakeSourceCodePublic)
-        {
-            <button type="button" class="btn btn-info btn-lg" data-target="#SourceCode" data-toggle="modal">See the code</button>
-        }
+        <div class="row">
+            <div class="col-md-6">
+                <h3  class="pull-left">Submission ID @Model.SubmissionID</h3>
+            </div>
+            <div class="col-md-6 pull-right">
+                @if (Model.MakeSourceCodePublic)
+                {
+                    <button type="button" class="btn btn-info btn-lg" style ="margin-top:3px" data-target="#SourceCode" data-toggle="modal">See the code</button>
+                }
+            </div>
+        </div>
+        
+        
     </div>
 
     <div class="Box">
@@ -24,13 +32,21 @@
                 }
                 else
                 {
-                    <p>@Model.SubmissionAuthorUserName</p>
+                    if (Model.SubmissionAuthorId != null)
+                    {
+                        <p>@Html.ActionLink(Model.SubmissionAuthorUserName, "ViewProfile", "Profile", new { userID = Model.SubmissionAuthorId }, null)</p>
+                    }
+                    else
+                    {
+                        <p>@Model.SubmissionAuthorUserName</p>
+                    }
+
                 }
             </div>
 
             <div class="col-md-4">
                 <p><strong>Problem</strong></p>
-                <p>@Model.Exercise [ID @Model.ExerciseId]</p>
+                <p>@Html.ActionLink(Model.Exercise, "Details", new { id = Model.ExerciseId, classId = Model.classId })</p>
             </div>
 
             <div class="col-md-4">
@@ -49,16 +65,14 @@
         {
             if (Model.Points[i] != 0)
             {
-                <p>Test @(i + 1)</p>
                 <div class="successTestContainer">
-                    <p>Accepted - @Model.DistributedPointsPerTestCase</p>
+                    <p>Test @(i+1) - Accepted</p>
                 </div>
             }
             else
             {
-                <p>Test @(i + 1)</p>
                 <button class="NotsuccessTestContainer">
-                    <p>Declined</p>
+                    <p>Test @(i + 1) - Declined</p>
                 </button>
                 <div class="showError">
                     <div class="alert alert-danger" role="alert">
@@ -116,16 +130,12 @@
             }
             <br />
         }
-        @for(int i=0; i<Model.AllMedia.Length; i++)
-        {
-            @Model.AllMedia[i] <br />
-                <img src="@Url.Content("~/ImageResources/memes/high/" + Model.AllMedia[i])"/>
-        }
         <br />
         @if (Request.UrlReferrer != null)
         {
             <a class="bottomNav" onclick="history.go(-1); return false;" href="#">Back</a><br />
         }
+        
     </div>
 
     <div class="modal" id="SourceCode" role="dialog">

@@ -12,6 +12,7 @@ namespace TechLead.Models
 
         public bool RestrictedMode { get; set; }
         public string SubmissionAuthorUserName { get; set; }
+        public int? classId { get; set; }
 
         //Date when the user submitted the solution
         public DateTime Date { get; set; }
