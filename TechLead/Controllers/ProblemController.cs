@@ -225,7 +225,6 @@ namespace TechLead.Controllers
                 //Then submission will be available only for Administrators, classCreator and class Member.
                 //After that, we will check if that problem was set to be restricted. If so, then restrict displaying
                 //submissions.
-
                 Exercise exercise = _context.Exercises.Single(e => e.Id == S.ExerciseId);
                 if (isAdministrator() || (User.Identity.IsAuthenticated && User.Identity.GetUserId() == exercise.AuthorID))
                 {

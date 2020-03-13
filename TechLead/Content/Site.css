@@ -789,3 +789,9 @@ button.NotsuccessTestContainer:active{
     color: #333;
     text-align:center;
 }
+
+#profilepic {
+    display: block;
+    position: relative;
+    width: 20%;
+}
