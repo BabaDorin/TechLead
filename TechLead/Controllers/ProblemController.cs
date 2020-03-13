@@ -674,39 +674,66 @@ namespace TechLead.Controllers
         //When the submissions page is acceses within a class
         public ActionResult SubmissionsWithinClass(int? page, int exerciseId, int classId)
         {
-            //Check if the current user is class creator. If not, redirect to Submissions.
-            Class @class = _context.Classes.Single(c => c.ClassID == classId);
-            if (User.Identity.IsAuthenticated && User.Identity.GetUserId() == @class.ClassCreatorID)
+            try
             {
-                //Render all the submission that were made by the members of the class.
-                //Class creator has to see them all
-                //List<Submission> submissions = _context.Submissions.Where(s => s.ExerciseId == exerciseId && @class.Members.Any(m => m.Id == s.SubmissionAuthorId)).ToList();
-                List<SubmissionToDisplayViewModel> submissionViewModels = new List<SubmissionToDisplayViewModel>();
-                string userID = User.Identity.GetUserId();
-                submissionViewModels = (from submission in _context.Submissions //NOT WORKING
-                                        where submission.ExerciseId == exerciseId &&
-                                        (
-                                        submission.SubmissionAuthorId == userID
-                                        ||
-                                        _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault().Members.Contains(_context.Users.Where(u => u.Id == submission.SubmissionAuthorId).FirstOrDefault())
-                                        )
-                                        select new SubmissionToDisplayViewModel
-                                        {
-                                            SubmissionID = submission.SubmissionID,
-                                            SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
-                                            Date = submission.Date,
-                                            ExerciseId = submission.ExerciseId,
-                                            Exercise = submission.Exercise,
-                                            ScoredPoints = submission.ScoredPoints,
-                                            ClassId = classId
-                                        }).ToList();
+                //First of all, check if the problem is included in the indicated class
+                Class @class = _context.Classes.Single(c => c.ClassID == classId);
+                if(@class.Exercises.Any(e => e.Id == exerciseId))
+                {
+                    //Check if the current user is class creator. If not, redirect to Submissions.
 
-                submissionViewModels.Reverse();
-                ViewBag.Restricted = "This problem has restricted mode.";
-                return View("Submissions", submissionViewModels.ToList().ToPagedList(page ?? 1, 40));
+                    if (User.Identity.IsAuthenticated && User.Identity.GetUserId() == @class.ClassCreatorID)
+                    {
+                        //Render all the submission that were made by the members of the class.
+                        //Class creator has to see them all
+                        //List<Submission> submissions = _context.Submissions.Where(s => s.ExerciseId == exerciseId && @class.Members.Any(m => m.Id == s.SubmissionAuthorId)).ToList();
+                        List<SubmissionToDisplayViewModel> submissionViewModels = new List<SubmissionToDisplayViewModel>();
+                        string userID = User.Identity.GetUserId();
+                        submissionViewModels = (from submission in _context.Submissions //NOT WORKING
+                                                where submission.ExerciseId == exerciseId &&
+                                                (
+                                                submission.SubmissionAuthorId == userID
+                                                ||
+                                                _context.Classes.Where(c => c.ClassID == classId).FirstOrDefault().Members.Contains(_context.Users.Where(u => u.Id == submission.SubmissionAuthorId).FirstOrDefault())
+                                                )
+                                                select new SubmissionToDisplayViewModel
+                                                {
+                                                    SubmissionID = submission.SubmissionID,
+                                                    SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
+                                                    Date = submission.Date,
+                                                    ExerciseId = submission.ExerciseId,
+                                                    Exercise = submission.Exercise,
+                                                    ScoredPoints = submission.ScoredPoints,
+                                                    ClassId = classId
+                                                }).ToList();
+
+                        submissionViewModels.Reverse();
+                        ViewBag.Restricted = "This problem has restricted mode.";
+                        return View("Submissions", submissionViewModels.ToList().ToPagedList(page ?? 1, 40));
+                    }
+                    else
+                        return RedirectToAction("Submissions", new { exerciseId });
+                }
+                else
+                {
+                    ErrorViewModel Error = new ErrorViewModel
+                    {
+                        Title = "Error",
+                        Description = "The problem is not within the class."
+                    };
+                    return View("~/Views/Shared/Error.cshtml", Error);
+                }
             }
-            else
-                return RedirectToAction("Submissions", new { exerciseId });
+            catch(Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "An error occured.",
+                    Description = e.Message,
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+            
         }
 
         public ActionResult RenderError(ErrorViewModel Err)
