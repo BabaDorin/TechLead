@@ -795,3 +795,36 @@ button.NotsuccessTestContainer:active{
     position: relative;
     width: 20%;
 }
+
+.infoArea {
+    margin: auto;
+    width: 1200px;
+    max-width: 100%;
+    align-items: center;
+    color: #333;
+    padding: 4% 4% 1% 1%;
+    font-size: large;
+}
+
+.infoArea img{
+    border-radius:5px;
+}
+
+.card{
+    background-color:aliceblue;
+    padding:20px;
+    width:300px;
+    border-radius:5px;
+}
+
+.Name {
+    font-family:Arial;
+    margin-top:10px;
+    font-size:30px;
+}
+
+.Email{
+    font-size:18px;
+    font-family:Arial;
+    color:#333;
+}

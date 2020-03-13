@@ -401,8 +401,16 @@ namespace TechLead.Controllers
                     //check if the provided code exists (Points to a valid class)
                     if (_context.Classes.Any(c => c.ClassInvitationCode == jrvw.InvitationCode))
                     {
-                        //Check if the user is already a member of the class
                         Class @class = _context.Classes.Where(c => c.ClassInvitationCode == jrvw.InvitationCode).First();
+
+                        //Check if the user is the creator of that class.
+                        if (User.Identity.GetUserId() == @class.ClassCreatorID)
+                        {
+                            ViewBag.ModalMessage = "You've created that class. You're there implicitly";
+                            return View(jrvw);
+                        }
+
+                        //Check if the user is already a member of the class
                         if (@class.Members.Any(m => m.Id == User.Identity.GetUserId()))
                         {
                             ViewBag.ModalMessage = "It seems like you are already a member of the indicated class - " + @class.ClassName;

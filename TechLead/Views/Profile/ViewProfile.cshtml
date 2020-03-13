@@ -4,23 +4,27 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <div class="Content">
-    <div class="Box">
+    <div class="infoArea">
         <div class="row">
-            <div class="col-md-2">
-                <div class="ProfilePhoto">
-                    @if (Model.ProfilePhoto == null)
-                    {
-                        <img src="~/ImageResources/undefinedlogo.jpg" />
-                    }
-                    else
-                    {
-                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.ProfilePhoto)" />
-                    }
-                </div>
+            <div class="col-md-3 card">
+                @if (Model.ProfilePhoto == null)
+                {
+                    <img src="~/ImageResources/undefinedlogo.jpg" style="width:400px" />
+                }
+                else
+                {
+                    <img src="data:image;base64,@System.Convert.ToBase64String(Model.ProfilePhoto)" style="width:260px" />
+                }
                 <br />
+                <p class="Name">@Model.UserName</p>
+                <hr />
+                <p class="Email"><i class="fas fa-mail-bulk">@Model.Email</i></p>
+                <p class="Email">Here since @Model.FirstRegistration.ToString("MMM d yyyy")</p>
+                
             </div>
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <div class="ProfileInformation" id="ProfileInformation">
                     <div class="row">
                         <div class="columnInfo">
@@ -59,6 +63,7 @@
             </div>
         </div>
     </div>
+    
     <div class="Box">
         <div class="About">
             <p><strong>About</strong></p>
@@ -68,7 +73,8 @@
                     <span>@Html.DisplayFor(u => u.About)</span>
                 </div>
             }
-            else {
+            else
+            {
                 <p>@Model.UserName doesn't want to tell us about himself :(</p>
             }
         </div>
