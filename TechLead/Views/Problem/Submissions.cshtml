@@ -20,7 +20,7 @@
         {
             <h2>@ViewBag.Restricted</h2>
         }
-        @if(ViewBag.NotAuthenticated != null)
+        @if (ViewBag.NotAuthenticated != null)
         {
             <h3>@ViewBag.NotAuthenticated</h3>
         }
@@ -44,7 +44,14 @@
                 </tr>
             }
         </table>
-        @Html.PagedListPager(Model, page => Url.Action("Submissions","Problem", new { page , exerciseId = eId}))
+        @if (ViewBag.classId != null)
+        {
+            @Html.PagedListPager(Model, page => Url.Action("SubmissionsWithinClass", "Problem", new { page, exerciseId = eId, classId = ViewBag.classId }))
+        }
+        else
+        {
+            @Html.PagedListPager(Model, page => Url.Action("Submissions", "Problem", new { page, exerciseId = eId }))
+        }
         <br />
         @if (Request.UrlReferrer != null)
         {

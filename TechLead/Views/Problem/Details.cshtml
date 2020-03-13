@@ -9,7 +9,7 @@
 <div class="Content">
     <div class="TitleBox">
         <div class="row">
-
+            class id = @Model.ClassId
             <div class="col-md-8"> <h2><b>@Html.DisplayFor(ex => ex.Name)</b></h2></div>
 
             <div class="col-md-4">
@@ -32,7 +32,7 @@
 
                 @Html.ActionLink("Delete", "Delete", "Problem", new { @ProblemID = Model.Id }, null)
 
-                @if (Model.MakeItPublic==false)
+                @if (Model.MakeItPublic == false)
                 {
 
                     @Html.ActionLink("Make it public", "MakeItPublic", "Problem", new { problemId = Model.Id }, null)
@@ -206,7 +206,13 @@
         </div>
     }
     <div class="TitleBox">
-        <a href="@Url.Action("Submissions", "Problem", new { exerciseId = Model.Id, restrictedMode = Model.RestrictedMode })" class="elements">Submissions</a>
+        @if (Model.ClassId != null)
+        {
+            <a href="@Url.Action("SubmissionsWithinClass", "Problem", new { exerciseId = Model.Id, restrictedMode = Model.RestrictedMode, classId = Model.ClassId })" class="elements">Submissions</a>
+        }
+        else
+        {
+            <a href="@Url.Action("Submissions", "Problem", new { exerciseId = Model.Id, restrictedMode = Model.RestrictedMode })" class="elements">Submissions</a>
+        }
     </div>
-
 </div>

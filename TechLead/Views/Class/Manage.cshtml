@@ -48,7 +48,7 @@
         {
             for (int i = 0; i < Model.Exercises.Count; i++)
             {
-                <a href="@Url.Action("Details", "Problem", new { id = Model.Exercises[i].Id }, null)" class="elements">
+                <a href="@Url.Action("Details", "Problem", new { id = Model.Exercises[i].Id, classId = Model.ClassID}, null)" class="elements">
                     <div class="ProblemToDisplay">
                         <div class="row">
                             <div class="col-md-8">

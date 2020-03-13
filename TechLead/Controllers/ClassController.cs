@@ -186,8 +186,10 @@ namespace TechLead.Controllers
                     DisplayClassesViewModel displayClasses = new DisplayClassesViewModel();
 
                     //Classes where the user is a simple member
-                    List<Class> joinedClasses = new List<Class>();
-                    joinedClasses = user.Classes.ToList();
+                    List<Class> joinedClasses = (from c in _context.Classes
+                                                 where c.Members.Any(m => m.Id == userId)
+                                                 select c).ToList();
+                    Debug.WriteLine("User has " + joinedClasses.Count() + " joined classes");
                     foreach (Class c in joinedClasses)
                     {
                         displayClasses.Classes_Joined.Add(ClassFromModelToDisplayViewModel(c));
@@ -440,8 +442,8 @@ namespace TechLead.Controllers
         [Authorize]
         public ActionResult SeeJoinRequests(int classId)
         {
-            try
-            {
+            //try
+            //{
                 //Shows a list with all requests to a specific group
                 //The group creator or admin can accept or decline the request
                 ViewBag.ClassID = classId;
@@ -456,7 +458,9 @@ namespace TechLead.Controllers
                         {
                             Id = j.Id,
                             AuthorId = j.AuthorId,
-                            AuthorName = j.Author.UserName
+                            AuthorName = (from u in _context.Users
+                                          where u.Id == j.AuthorId
+                                          select u.UserName).First()
                         });
                     }
                     return View(displayJoinRequests);
@@ -471,16 +475,16 @@ namespace TechLead.Controllers
 
                     return View("~/Views/Shared/Error.cshtml", Error);
                 }
-            }
-            catch(Exception e)
-            {
-                ErrorViewModel Error = new ErrorViewModel
-                {
-                    Title = "Error",
-                    Description = e.Message,
-                };
-                return View("~/Views/Shared/Error.cshtml", Error);
-            }
+            //}
+            //catch(Exception e)
+            //{
+            //    ErrorViewModel Error = new ErrorViewModel
+            //    {
+            //        Title = "Error",
+            //        Description = e.Message,
+            //    };
+            //    return View("~/Views/Shared/Error.cshtml", Error);
+            //}
             
         }
 
@@ -505,6 +509,7 @@ namespace TechLead.Controllers
                         //Add the user to the class
                         ApplicationUser user = _context.Users.Where(u => u.Id == request.AuthorId).FirstOrDefault();
                         @class.Members.Add(user);
+                        user.Classes.Add(@class);
                         _context.Entry(@class);
                         _context.JoinRequests.Remove(request);
                         _context.SaveChanges();

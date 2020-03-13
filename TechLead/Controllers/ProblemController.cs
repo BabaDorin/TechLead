@@ -35,12 +35,12 @@ namespace TechLead.Controllers
         //------------------------- Action Results - Get and Post -----------------------------------
 
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, int? classId)
         {
+            Debug.WriteLine("CLASS ID = " + classId);
             try
             {
                 Exercise e = _context.Exercises.Single(ex => ex.Id == id);
-                Debug.WriteLine("Only for class: " + e.AvailableOnlyForTheClass);
                 if (e.AvailableOnlyForTheClass)
                 {
                     //The class is available only for the class having id = MotherClassID
@@ -50,6 +50,7 @@ namespace TechLead.Controllers
                     if (isAdministrator() || (User.Identity.IsAuthenticated && e.AuthorID == User.Identity.GetUserId()))
                     {
                         ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
+                        EVM.ClassId = classId;
                         EVM.MakeSourceCodePublic = true;
                         TempData["Object"] = e;
                         return View(EVM);
@@ -64,6 +65,7 @@ namespace TechLead.Controllers
                             {
                                 //Is member
                                 ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
+                                EVM.ClassId = classId;
                                 EVM.MakeSourceCodePublic = true;
                                 TempData["Object"] = e;
                                 return View(EVM);
@@ -95,6 +97,7 @@ namespace TechLead.Controllers
                 {
                     //Available for everyone
                     ExerciseViewModel EVM = ExerciseFromModelToViewModel(e, false);
+                    EVM.ClassId = classId;
                     EVM.MakeSourceCodePublic = true;
                     TempData["Object"] = e;
                     return View(EVM);
@@ -222,7 +225,7 @@ namespace TechLead.Controllers
                 //submissions.
                 Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
                 Exercise exercise = _context.Exercises.Single(e => e.Id == S.ExerciseId);
-                if (isAdministrator() || (User.Identity.IsAuthenticated && User.Identity.GetUserId() == exercise.AuthorID)
+                if (isAdministrator() || (User.Identity.IsAuthenticated && User.Identity.GetUserId() == exercise.AuthorID))
                 {
                     //Even if the problem has restricted mode, administrators and problem creator 
                     //can see input/output/expectedOutput collections
@@ -574,6 +577,7 @@ namespace TechLead.Controllers
             return View("~/Views/Home/Index.cshtml");
         }
 
+        //When the submissions page is accessed from public access
         public ActionResult Submissions(int? page, int exerciseId)
         {
             try
@@ -652,6 +656,37 @@ namespace TechLead.Controllers
                 };
                 return View("~/Views/Shared/Error.cshtml", Error);
             }
+        }
+        //When the submissions page is acceses within a class
+        public ActionResult SubmissionsWithinClass(int? page, int exerciseId, int classId)
+        {
+            //Check if the current user is class creator. If not, redirect to Submissions.
+            Class @class = _context.Classes.Single(c => c.ClassID == classId);
+            if (User.Identity.IsAuthenticated && User.Identity.GetUserId() == @class.ClassCreatorID)
+            {
+                //Render all the submission that were made by the members of the class.
+                //Class creator has to see them all
+                //List<Submission> submissions = _context.Submissions.Where(s => s.ExerciseId == exerciseId && @class.Members.Any(m => m.Id == s.SubmissionAuthorId)).ToList();
+                List<SubmissionToDisplayViewModel> submissionViewModels = new List<SubmissionToDisplayViewModel>();
+                submissionViewModels = (from submission in _context.Submissions //NOT WORKING
+                                        where submission.ExerciseId == exerciseId && @class.Members.Any(m => m.Id == submission.SubmissionAuthorId)
+                                        select new SubmissionToDisplayViewModel
+                                        {
+                                            SubmissionID = submission.SubmissionID,
+                                            SubmissionAuthorUserName = submission.SubmissionAuthorUserName,
+                                            Date = submission.Date,
+                                            ExerciseId = submission.ExerciseId,
+                                            Exercise = submission.Exercise,
+                                            ScoredPoints = submission.ScoredPoints,
+
+                                        }).ToList();
+                submissionViewModels.Reverse();
+                ViewBag.classId = classId;
+                ViewBag.Restricted = "This problem has restricted mode.";
+                return View(submissionViewModels.ToList().ToPagedList(page ?? 1, 40));
+            }
+            else
+                return RedirectToAction("Submissions", new { exerciseId });
         }
 
         public ActionResult RenderError(ErrorViewModel Err)
