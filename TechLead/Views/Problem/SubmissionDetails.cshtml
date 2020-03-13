@@ -81,49 +81,45 @@
                         <br />
                         @if (!Model.RestrictedMode)
                         {
-                            <div class="test-case">
-                                Input:
-                                <br />
-                                @if (Model.Inputs[i] != "TooBigTestCaseBoi")
-                                {
-                                    <p>@Model.Inputs[i]</p>
-                                }
-                                else
-                                {
-                                    <a href="@Url.Action("SeeData", "Problem", new { problemId = Model.ExerciseId, submissionId = -1, index = i, what = "input"})" class="elements">Click here</a>
-                                }
-                            </div>
+                        <div class="IOContainer" style="width:70%">
+                            Input:
                             <br />
-                            <div class="test-case">
-                                Expected output:
-                                <br />
-                                @if (Model.ExpectedOutputs[i] != "TooBigTestCaseBoi")
-                                {
-                                    <p>@Model.ExpectedOutputs[i]</p>
-                                }
-                                else
-                                {
-                                    <a href="@Url.Action("SeeData", "Problem", new { problemId = Model.ExerciseId, submissionId = -1, index = i, what = "output"})" class="elements">Click here</a>
-                                }
-                            </div>
+                            @if (Model.Inputs[i] != "TooBigTestCaseBoi")
+                            {
+                                <p>@Model.Inputs[i]</p>
+                            }
+                            else
+                            {
+                                <p><a href="@Url.Action("SeeData", "Problem", new { problemId = Model.ExerciseId, submissionId = -1, index = i, what = "input"})" class="elements">Click here to see</a></p>
+                            }
                             <br />
-                            <div class="test-case">
-                                Your output:
-                                <br />
-                                @if (i >= Model.Outputs.Length)
-                                {
-                                    <p></p>
-                                }
-                                else
-                                if (Model.Outputs[i] != "TooBigTestCaseBoi")
-                                {
-                                    <p>@Model.Outputs[i]</p>
-                                }
-                                else
-                                {
-                                    <a href="@Url.Action("SeeData", "Problem", new { problemId = -1, submissionId = Model.SubmissionID, index = i, what = "who cares"})" class="elements">Click here</a>
-                                }
-                            </div>
+                            Expected output:
+                            <br />
+                            @if (Model.ExpectedOutputs[i] != "TooBigTestCaseBoi")
+                            {
+                                <p style="color:lawngreen">@Model.ExpectedOutputs[i]</p>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("SeeData", "Problem", new { problemId = Model.ExerciseId, submissionId = -1, index = i, what = "output"})" class="elements">Click here to see</a>
+                            }
+                            <br />
+                            Your output:
+                            <br />
+                            @if (i >= Model.Outputs.Length)
+                            {
+                                <p></p>
+                            }
+                            else
+                            if (Model.Outputs[i] != "TooBigTestCaseBoi")
+                            {
+                                <p style="color:red">@Model.Outputs[i]</p>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("SeeData", "Problem", new { problemId = -1, submissionId = Model.SubmissionID, index = i, what = "who cares"})" class="elements">Click here to see</a>
+                            }
+                        </div>
                         }
                     </div>
                 </div>
