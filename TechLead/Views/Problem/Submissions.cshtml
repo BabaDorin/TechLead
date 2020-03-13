@@ -13,37 +13,44 @@
 
     <div class="TitleBox">
         <h2>Submissions</h2>
-    </div>
-
-    <div class="Box">
         @if (ViewBag.Restricted != null)
         {
-            <h2>@ViewBag.Restricted</h2>
+            <p class="restricted">@ViewBag.Restricted</p>
         }
         @if (ViewBag.NotAuthenticated != null)
         {
-            <h3>@ViewBag.NotAuthenticated</h3>
+            <p class="notAuthenticated">@ViewBag.NotAuthenticated. @Html.ActionLink("Log in", "Login", "Account", routeValues: new { @returnUrl = ViewContext.HttpContext.Request.Url.PathAndQuery }, htmlAttributes: new { id = "loginLink" })</p>
         }
-        <table>
-            <tr>
-                <th>Submission ID</th>
-                <th>User</th>
-                <th>Time</th>
-                <th>Points</th>
-                <th></th>
-            </tr>
-            @foreach (SubmissionToDisplayViewModel S in Model)
-            {
-                eId = S.ExerciseId;
+    </div>
+
+    <div class="Box">
+        @if (Model.Count == 0)
+        {
+            <Br />
+            <p class="notAuthenticated">There are no submissions available for this problem</p>
+        }
+        else
+        {
+            <table>
                 <tr>
-                    <td>@S.SubmissionID</td>
-                    <td>@S.SubmissionAuthorUserName</td>
-                    <td>@S.Date</td>
-                    <td>@S.ScoredPoints</td>
-                    <td>@Html.ActionLink("See More", "SubmissionDetails", "Problem", new { id = @S.SubmissionID, classId = S.ClassId}, null)</td>
+                    <th>User</th>
+                    <th>Time</th>
+                    <th>Points</th>
+                    <th></th>
                 </tr>
-            }
-        </table>
+                @foreach (SubmissionToDisplayViewModel S in Model)
+                {
+                    eId = S.ExerciseId;
+                    <tr>
+                        <td>@S.SubmissionAuthorUserName</td>
+                        <td>@S.Date.ToString("dd MMM yyyy") <span style="font-size:13px">@S.Date.ToString("HH:mm")</span></td>
+                        <td>@S.ScoredPoints</td>
+                        <td>@Html.ActionLink("See More", "SubmissionDetails", "Problem", new { id = @S.SubmissionID, classId = S.ClassId }, null)</td>
+                    </tr>
+                }
+            </table>
+        }
+
         @if (ViewBag.classId != null)
         {
             @Html.PagedListPager(Model, page => Url.Action("SubmissionsWithinClass", "Problem", new { page, exerciseId = eId, classId = ViewBag.classId }))
