@@ -63,6 +63,7 @@ namespace TechLead.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            Session["salt"] = "salt";
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }

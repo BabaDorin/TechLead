@@ -1,10 +1,10 @@
 ﻿
 	TO DO IMMEDIATELY
 
->> Add Modal thing to ImportExercise, JoinClass, Index
 
->> PROTECT problems that are set with OnlyForClassMembers = ON.	
->> Check if modal works on internet explorer
+>> Check if OWIN Works on Laptop.
+
+>> If the user created the class, he can't join it.
 
 
 >>There is an error when trying to display the submission under "Restricted Mode" problem from
@@ -77,6 +77,12 @@ the user has failed. It won't cost anything.
 
 
 >>>>>>>>>>>>>>>>>> DONE <<<<<<<<<<<<<<<<<<<<<,
+
+>> Check if modal works on internet explorer
+
+>> Add Modal thing to ImportExercise, JoinClass, Index
+
+>> PROTECT problems that are set with OnlyForClassMembers = ON.	
 
 >> Implement further the JoinRequest feature
 	Each request will have 2 buttons associated, Accept and Decline.

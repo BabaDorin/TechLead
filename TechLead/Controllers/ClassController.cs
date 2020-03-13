@@ -280,7 +280,7 @@ namespace TechLead.Controllers
                         //The provided id is incorrect - The problem does not exist
                         //throw new Exception();
                         ViewBag.ModalMessage = "The provided ID is incorrect. We could not find any problems associated with it.";
-                        return RedirectToAction("ImportExercise", new { classId = ievm.ClassId });
+                        return View(ievm);
                     }
                     else
                     {
@@ -289,7 +289,7 @@ namespace TechLead.Controllers
                         if (e.AvailableOnlyForTheClass == true)
                         {
                             ViewBag.ModalMessage = "The problem you're trying to import is not public.";
-                            return RedirectToAction("ImportExercise", new { classID = ievm.ClassId });
+                            return View(ievm);
                         }
                         
                         //If it is a public problem, then assign it to the class.
@@ -299,10 +299,10 @@ namespace TechLead.Controllers
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 ViewBag.ModalMessage = "The provided ID is incorrect. We could not find any problems associated with it.";
-                return RedirectToAction("ImportExercise", new { classId = ievm.ClassId });
+                return View(ievm);
             }
         }
 
