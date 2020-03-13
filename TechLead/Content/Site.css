@@ -37,6 +37,13 @@ span{
     white-space:pre-wrap;
 }
 
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .asText{
     background:none;
     border:none;
@@ -324,8 +331,8 @@ body {
     align-items: center;
     background-color: aliceblue;
     color: #333;
-    padding: 4%;
-    margin-top: 120px;
+    padding: 2% 4%;
+    margin-top: 40px;
     font-size: large;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     clear: both;
@@ -342,9 +349,15 @@ body {
 
 
 .IOContainer {
-    background-color: #e7eeef;
     min-height: 200px;
     padding: 25px;
+    display: block;
+    background-color: black;
+    color: white;
+    font-family: Consolas;
+    border-style: inset;
+    word-break: break-all;
+    margin:2px;
 }
 
 pre {

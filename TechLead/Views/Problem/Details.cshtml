@@ -9,47 +9,43 @@
 <div class="Content">
     <div class="TitleBox">
         <div class="row">
-            class id = @Model.ClassId
             <div class="col-md-8"> <h2><b>@Html.DisplayFor(ex => ex.Name)</b></h2></div>
 
             <div class="col-md-4">
-                <div class="PointsAndDifficultyBox">
+                <div class="pull-right">
                     @switch (Model.DifficultyId)
                     {
-                        case 4:<p>Beginner</p>break;
-                        case 5:<p>Intermediate</p>break;
-                        case 6:<p>Advanced</p>break;
-                    }
-
-                    @Html.DisplayFor(ex => ex.Points)
+                        case 4:<p class="alert alert-success" role="alert">Beginner  <span class="badge badge-light">@Html.DisplayFor(ex => ex.Points)</span></p>break;
+                    case 5:<p class="alert alert-warning">Intermediate  <span class="badge badge-light">@Html.DisplayFor(ex => ex.Points)</span></p>break;
+                case 6:<p class="alert alert-danger">Advanced <span class="badge badge-light">@Html.DisplayFor(ex => ex.Points)</span></p>break;
+        }
                 </div>
             </div>
         </div>
-        @if (User.Identity.IsAuthenticated && (User.Identity.GetUserId() == Model.AuthorID || User.IsInRole("Administrator")))
-        {
-            <p>
-                @Html.ActionLink("Update", "Update", "Problem", new { @ProblemID = Model.Id }, null)
-
-                @Html.ActionLink("Delete", "Delete", "Problem", new { @ProblemID = Model.Id }, null)
-
-                @if (Model.MakeItPublic == false)
+        <div class="row">
+            <div class="col-md-6 pull-left">
+                @if (Model.AuthorID != null)
                 {
 
-                    @Html.ActionLink("Make it public", "MakeItPublic", "Problem", new { problemId = Model.Id }, null)
+                    <p>Author: @Html.ActionLink(Model.Author, "ViewProfile", "Profile", new { userID = Model.AuthorID }, null)</p>
                 }
-            </p>
-        }
-        @if (Model.AuthorID != null)
-        {
-
-            <p>Author: @Html.ActionLink(Model.Author, "ViewProfile", "Profile", new { userID = Model.AuthorID }, null)</p>
-        }
-        else
-        {
-            <p>Author: Anonymous</p>
-        }
-        <p style="font-size: 15px">Problem ID: @Model.Id</p>
-
+                else
+                {
+                    <p>Author: Anonymous</p>
+                }
+                <p style="font-size: 15px">Problem ID: @Model.Id</p>
+            </div>
+            <div class="col-lg-6">
+                @if (User.Identity.IsAuthenticated && (User.Identity.GetUserId() == Model.AuthorID || User.IsInRole("Administrator")))
+                {
+                    <span class="btn-group pull-right">@Html.ActionLink("Update", "Update", "Problem", new { @ProblemID = Model.Id }, new { @class = "btn btn-info" })@Html.ActionLink("Delete", "Delete", "Problem", new { @ProblemID = Model.Id, }, new { @class = "btn btn-info" })</span>
+                    if (Model.MakeItPublic == false)
+                    {
+                        <span class="pull-right">@Html.ActionLink("Make it public", "MakeItPublic", "Problem", new { problemId = Model.Id }, null)</span>
+                    }
+                }
+            </div>
+        </div>
     </div>
     @using (Html.BeginForm("Details", "Problem", FormMethod.Post,
         new { enctype = "multipart/form-data" }))
@@ -59,7 +55,6 @@
             <br />
 
             <p><strong>Condition</strong></p>
-            <br />
             <span> @Html.DisplayFor(ex => ex.Condition)</span>
             <br /><br /><br />
 
@@ -75,45 +70,52 @@
             <span> @Html.DisplayFor(ex => ex.OutputFormat)</span>
             <br /><br /><br />
 
+            <p><strong> Test case</strong></p>
             <div class="row">
-                <p><strong>Test case</strong></p>
-                <br />
                 <div class="col-md-6">
                     <div class="IOContainer">
-                        <span>@Html.DisplayFor(ex => ex.Input1) </span>
+                        <b>Input</b>
+                        <hr />
+                        @Html.DisplayFor(ex => ex.Input1)
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="IOContainer">
-                        <span> @Html.DisplayFor(ex => ex.Output1)</span>
+                        <b>Output</b>
+                        <hr />
+                        @Html.DisplayFor(ex => ex.Output1)
                     </div>
                 </div>
             </div>
 
-            <br /><br />
+            <br />
             <p><strong>Explanation</strong></p>
             <span> @Html.DisplayFor(ex => ex.Explanation1)</span>
             <br /><br /><br />
 
             @if (Model.Input2 != null)
             {
+                <p><strong> Test case</strong></p>
                 <div class="row">
-                    <p><strong>Test case</strong></p>
                     <div class="col-md-6">
                         <div class="IOContainer">
+                            <b>Input</b>
+                            <hr />
                             <span>@Html.DisplayFor(ex => ex.Input2) </span>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="IOContainer">
+                            <b>Output</b>
+                            <hr />
                             <span> @Html.DisplayFor(ex => ex.Output2)</span>
                         </div>
                     </div>
                 </div>
 
-                <br /> <br />
+                <br />
                 <p><strong>Explanation</strong></p>
                 <span> @Html.DisplayFor(ex => ex.Explanation2)</span>
                 <br /><br /><br />
@@ -122,22 +124,26 @@
 
             @if (Model.Input3 != null)
             {
+                <p><strong> Test case</strong></p>
                 <div class="row">
-                    <p><strong>Test case</strong></p>
                     <div class="col-md-6">
                         <div class="IOContainer">
+                            <b>Input</b>
+                            <hr />
                             <span>@Html.DisplayFor(ex => ex.Input3) </span>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="IOContainer">
+                            <b>Output</b>
+                            <hr />
                             <span>  @Html.DisplayFor(ex => ex.Output3)</span>
                         </div>
                     </div>
                 </div>
 
-                <br /> <br />
+                <br />
                 <p><strong>Explanation</strong></p>
                 <span> @Html.DisplayFor(ex => ex.Explanation3)</span>
                 <br /><br /><br />
@@ -145,22 +151,26 @@
 
             @if (Model.Input4 != null)
             {
+                <p><strong> Test case</strong></p>
                 <div class="row">
-                    <p><strong>Test case</strong></p>
                     <div class="col-md-6">
                         <div class="IOContainer">
+                            <b>Input</b>
+                            <hr />
                             <span> @Html.DisplayFor(ex => ex.Input4)</span>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="IOContainer">
+                            <b>Output</b>
+                            <hr />
                             <span> @Html.DisplayFor(ex => ex.Output4)</span>
                         </div>
                     </div>
                 </div>
 
-                <br /> <br />
+                <br />
                 <p><strong>Explanation</strong></p>
                 <span> @Html.DisplayFor(ex => ex.Explanation4)</span>
                 <br /><br /><br />
@@ -168,26 +178,29 @@
 
             @if (Model.Input5 != null)
             {
+                <p><strong> Test case</strong></p>
                 <div class="row">
-                    <p><strong>Test case</strong></p>
                     <div class="col-md-6">
                         <div class="IOContainer">
+                            <b>Input</b>
+                            <hr />
                             <span>@Html.DisplayFor(ex => ex.Input5) </span>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="IOContainer">
+                            <b>Output</b>
+                            <hr />
                             <span>@Html.DisplayFor(ex => ex.Output5) </span>
                         </div>
                     </div>
                 </div>
-                <br /> <br />
+                <br />
                 <p><strong>Explanation</strong></p>
                 <span> @Html.DisplayFor(ex => ex.Explanation5)</span>
-                <br /><br /><br />
             }
-
+            <hr />
             <div class="fileUpload">
                 <p><strong>Submit your solution here </strong></p>
                 <br />
@@ -200,9 +213,6 @@
                 <br />
                 <input type="submit" value="Submit" />
             </div>
-
-            <hr />
-            @Url.Action("Testx", "Problem", new { problemId = Model.Id })
         </div>
     }
     <div class="TitleBox">
@@ -214,5 +224,7 @@
         {
             <a href="@Url.Action("Submissions", "Problem", new { exerciseId = Model.Id, restrictedMode = Model.RestrictedMode })" class="elements">Submissions</a>
         }
+
+
     </div>
 </div>
