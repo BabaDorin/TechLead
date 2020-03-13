@@ -32,5 +32,6 @@ namespace TechLead.Models
         //Total points scored by the program
         public double ScoredPoints { get; set; }
         public bool RestrictedMode { get; set; }
+        public int? ClassId { get; set; }
     }
 }

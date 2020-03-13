@@ -219,11 +219,13 @@ namespace TechLead.Controllers
         {
             try
             {
+                Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
+           
                 //If the problem under which the submission was created is AvailableOnlyForClassMembers, 
                 //Then submission will be available only for Administrators, classCreator and class Memember.
                 //After that, we will check if that problem was set to be restricted. If so, then restrict displaying
                 //submissions.
-                Submission S = _context.Submissions.Single(sub => sub.SubmissionID == id);
+
                 Exercise exercise = _context.Exercises.Single(e => e.Id == S.ExerciseId);
                 if (isAdministrator() || (User.Identity.IsAuthenticated && User.Identity.GetUserId() == exercise.AuthorID))
                 {
@@ -278,23 +280,35 @@ namespace TechLead.Controllers
                 bool restrictedMode = exercise.RestrictedMode;
                 if(classId!=null)
                 {
+                    Class @class = _context.Classes.Single(c => c.ClassID == classId);
                     if (restrictedMode)
                     {
                         //Restricted problem. Display it to classCreator and SubmissionAuthor only
                         string userId = User.Identity.GetUserId();
-                        Class @class = _context.Classes.Single(c => c.ClassID == classId);
                         var user = _context.Users.Single(u => u.Id == userId);
-                        if(user.Classes.Any(c => c.ClassID == classId) || user.Id == @class.ClassCreatorID)
+                        if(userId == S.SubmissionAuthorId || user.Id == @class.ClassCreatorID)
                         {
-                            if (restrictedMode)
-                            {
-                                S.InputCollection = "";
-                                S.OutputCollection = "";
-                                S.ExpectedOutput = "";
-                            }
+                            S.InputCollection = "";
+                            S.OutputCollection = "";
+                            S.ExpectedOutput = "";
                             SubmissionViewModel subViewModel = SubmissionFromModelToViewModel(S);
                             return View(subViewModel);
                         }
+                        else
+                        {
+                            //user is not submission author, nor class creator
+                            ErrorViewModel Error = new ErrorViewModel();
+                            Error.Title = "Sorry, you can not see this submission";
+                            Error.Description = "This submission was made under a problem with restricted mode. Only the " +
+                                "person who made this submission can see it.";
+                            return View("~/Views/Shared/Error.cshtml", Error);
+                        }
+                    }
+                    else
+                    {
+                        //Submission was made within a class, but the problem does not have restricted mode.
+                        SubmissionViewModel subViewModel = SubmissionFromModelToViewModel(S);
+                        return View(subViewModel);
                     }
                 }
 
@@ -684,11 +698,10 @@ namespace TechLead.Controllers
                                             ExerciseId = submission.ExerciseId,
                                             Exercise = submission.Exercise,
                                             ScoredPoints = submission.ScoredPoints,
-
+                                            ClassId = classId
                                         }).ToList();
 
                 submissionViewModels.Reverse();
-                ViewBag.classId = classId;
                 ViewBag.Restricted = "This problem has restricted mode.";
                 return View("Submissions", submissionViewModels.ToList().ToPagedList(page ?? 1, 40));
             }

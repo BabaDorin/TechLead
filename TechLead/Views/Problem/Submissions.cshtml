@@ -40,7 +40,7 @@
                     <td>@S.SubmissionAuthorUserName</td>
                     <td>@S.Date</td>
                     <td>@S.ScoredPoints</td>
-                    <td>@Html.ActionLink("See More", "SubmissionDetails", "Problem", new { id = @S.SubmissionID }, null)</td>
+                    <td>@Html.ActionLink("See More", "SubmissionDetails", "Problem", new { id = @S.SubmissionID, classId = S.ClassId}, null)</td>
                 </tr>
             }
         </table>
