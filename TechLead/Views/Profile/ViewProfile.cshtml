@@ -8,96 +8,80 @@
 <div class="Content">
     <div class="infoArea">
         <div class="row">
-            <div class="col-md-3 card">
-                @if (Model.ProfilePhoto == null)
-                {
-                    <img src="~/ImageResources/undefinedlogo.jpg" style="width:400px" />
-                }
-                else
-                {
-                    <img src="data:image;base64,@System.Convert.ToBase64String(Model.ProfilePhoto)" style="width:260px" />
-                }
-                <br />
-                <p class="Name">@Model.UserName</p>
-                <hr />
-                <p class="Email"><i class="fas fa-mail-bulk">@Model.Email</i></p>
-                <p class="Email">Here since @Model.FirstRegistration.ToString("MMM d yyyy")</p>
-                
+            <div class="col-lg-3 col-md-4 col-sm-12">
+                <div class="card-left">
+                    @if (Model.ProfilePhoto == null)
+                    {
+                        <img src="~/ImageResources/undefinedlogo.jpg" style="width:400px" />
+                    }
+                    else
+                    {
+                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.ProfilePhoto)" />
+                    }
+                    <br />
+                    <p class="Name">@Model.UserName</p>
+                    <hr />
+                    <p class="Email"><i class="fas fa-envelope"></i>    @Model.Email</p>
+                    @if (Model.Job != null)
+                    {
+                        <p class="Email">
+                            <i class="fas fa-address-card"></i>    @Model.Job
+                        </p>
+                    }
+                    @if (Model.PhoneNumber != null)
+                    {
+                        <p class="Email"><i class="fas fa-phone-alt"></i>    @Model.PhoneNumber</p>
+                    }
+                    <p class="Email">Here since @Model.FirstRegistration.ToString("MMM d yyyy")</p>
+                </div>
             </div>
-            <div class="col-md-9">
-                <div class="ProfileInformation" id="ProfileInformation">
-                    <div class="row">
-                        <div class="columnInfo">
-                            <p><strong>UserName:</strong> @Model.UserName</p>
-                            <p><strong>Email:</strong><span style="color:#ff6a00"> @Model.Email</span></p>
-                            <p>
-                                @if (Model.Job != null)
-                                {
-                                    <strong>Job:</strong> <span>@Model.Job</span>
-                                }
-                                else
-                                {
-                                    if (Model.PhoneNumber != null)
-                                    {
-                                        <strong>Phone Number: </strong><span>@Model.PhoneNumber</span>
-                                    }
-                                }
-                            </p>
-                        </div>
-                        <div class="columnInfo">
-                            <p>
-                                @if (Model.Job != null && Model.PhoneNumber != null)
-                                {
-                                    <strong>Phone Number: </strong><span>@Model.PhoneNumber</span>
-                                }
-                                else
-                                {
-                                    <span> </span>
-                                }
-                            </p>
-                            <p> </p>
-                            <p><strong>Here since </strong>   @Model.FirstRegistration.ToString("MMM d yyyy")</p>
-                        </div>
+
+            <div class="col-lg-9 col-md-8 col-sm-12">
+                <div class="card-right">
+                    <div class="About">
+                        <p><strong>About</strong></p>
+                        @if (Model.About != null)
+                        {
+                            <div id="InfoAbout">
+                                <span>@Html.DisplayFor(u => u.About)</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <p>@Model.UserName doesn't want to tell us about himself :(</p>
+                        }
                     </div>
                 </div>
+                <div class="card-right">
+                    <p style="text-align:center;"><b>User's contribution</b></p>
+                    <p>Problem 1</p>
+                    <p>Problem 2</p>
+                    <p>Problem 3</p>
+                </div>
+                <div class="card-right">
+
+                    @if (Model.bestSubmissions != null)
+                    {
+                        <p style="text-align:center"><b>User's last best submissions</b></p>
+                        for (int i = 0; i < Model.bestSubmissions.Length; i++)
+                        {
+                            if (i > 20)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("SubmissionDetails", "Problem", new { id = Model.bestSubmissions[i].SubmissionID })">
+                                    <div class="ProblemToDisplay">
+                                        @Model.bestSubmissions[i].ProblemName
+                                        <span class="PointsToDisplay">@Model.bestSubmissions[i].MaxScoredPoints out of @Model.bestSubmissions[i].TotalPoints</span>
+                                    </div>
+                                </a>
+                            }
+                        }
+                    }
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div class="Box">
-        <div class="About">
-            <p><strong>About</strong></p>
-            @if (Model.About != null)
-            {
-                <div id="InfoAbout">
-                    <span>@Html.DisplayFor(u => u.About)</span>
-                </div>
-            }
-            else
-            {
-                <p>@Model.UserName doesn't want to tell us about himself :(</p>
-            }
-        </div>
-        <br /><br /><br />
-        @if (Model.bestSubmissions != null)
-        {
-            <p style="text-align:center">User's last best submissions</p>
-            for (int i = 0; i < Model.bestSubmissions.Length; i++)
-            {
-                if (i > 20)
-                {
-                    break;
-                }
-                else
-                {
-                    <a href="@Url.Action("SubmissionDetails", "Problem", new { id = Model.bestSubmissions[i].SubmissionID })">
-                        <div class="ProblemToDisplay">
-                            @Model.bestSubmissions[i].ProblemName
-                            <span class="PointsToDisplay">@Model.bestSubmissions[i].MaxScoredPoints out of @Model.bestSubmissions[i].TotalPoints</span>
-                        </div>
-                    </a>
-                }
-            }
-        }
     </div>
 </div>

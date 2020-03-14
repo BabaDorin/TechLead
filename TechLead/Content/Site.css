@@ -661,9 +661,7 @@ button.NotsuccessTestContainer:active{
 }
 
 .About{
-    min-width:250px;
-    max-width:1000px;
-    margin:auto;
+    width:100%;
     font-size:19px;
 }
 
@@ -802,29 +800,51 @@ button.NotsuccessTestContainer:active{
     max-width: 100%;
     align-items: center;
     color: #333;
-    padding: 4% 4% 1% 1%;
+    padding: 2%;
     font-size: large;
 }
 
 .infoArea img{
+    width:100%;
     border-radius:5px;
+
 }
 
-.card{
-    background-color:aliceblue;
-    padding:20px;
-    width:300px;
-    border-radius:5px;
+.card-left {
+    background-color: aliceblue;
+    padding: 5%;
+    margin: 0 auto 10px auto;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    word-break:break-all;
+}
+
+.card-right {
+    background-color: aliceblue;
+    padding: 20px;
+    width: 100%;
+    min-width: 75%;
+    float: right;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    word-break: break-all;
 }
 
 .Name {
-    font-family:Arial;
-    margin-top:10px;
-    font-size:30px;
+    font-family: Roboto;
+    margin-top: 10px;
+    font-size: 20px;
 }
 
 .Email{
-    font-size:18px;
-    font-family:Arial;
-    color:#333;
+    font-size:14px;
+    font-family:Roboto;
+    color:#333332;
+}
+
+.infoArea .col-sm-6{
+ 
 }
