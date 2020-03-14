@@ -1,6 +1,9 @@
 ﻿
 	TO DO IMMEDIATELY
 
+>> Display user's exercises on viewProfile and on Manage page.
+>>Extracted from db => done
+>>Display then on both Manage and ViewProfile views
 
 >> Check if OWIN Works on Laptop.
 

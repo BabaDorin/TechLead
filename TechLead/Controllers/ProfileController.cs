@@ -32,13 +32,22 @@ namespace TechLead.Controllers
             {
                 ProfileViewModel viewModel;
                 ApplicationUser User = _context.Users.Find(userID);
-                viewModel = new ProfileViewModel(User.UserName, User.PhoneNumber, User.About,
-                    User.TotalPoints, User.FirstRegistration, User.Job, User.Email, User.ProfilePhoto);
+                viewModel = new ProfileViewModel(User);
+                viewModel.usersExercises = (from e in _context.Exercises
+                                            where e.AuthorID == User.Id
+                                            select new DisplayExerciseGeneralInfoViewModel
+                                            {
+                                                Author = User.UserName,
+                                                AuthorID = e.AuthorID,
+                                                DifficultyID = e.DifficultyId,
+                                                Id = e.Id,
+                                                Points = e.Points,
+                                                Name = e.Name
+                                            }).ToList();
 
-                viewModel.bestSubmissions = data.ConvertBestSubmissionFromStringToArray(User.BestSubmisions);
+                    viewModel.bestSubmissions = data.ConvertBestSubmissionFromStringToArray(User.BestSubmisions);
                 if(viewModel.bestSubmissions!=null)
                     viewModel.bestSubmissions.Reverse();
-
                 return View(viewModel);
             }
             catch (Exception e)

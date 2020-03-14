@@ -14,17 +14,18 @@ namespace TechLead.Models
         public string Job { get; set; }
         public string Email { get; set; }
         public BestSubmission[] bestSubmissions;
-        public ProfileViewModel(string UserName, string PhoneNumber, string About, double TotalPoints,
-            DateTime FirstRegistration, string Job, string Email, byte[] ProfilePhoto)
+        public List<DisplayExerciseGeneralInfoViewModel> usersExercises { get; set; }
+
+        public ProfileViewModel(ApplicationUser User)
         {
-            this.UserName = UserName;
-            this.PhoneNumber = PhoneNumber;
-            this.About = About;
-            this.TotalPoints = TotalPoints;
-            this.FirstRegistration = FirstRegistration;
-            this.Job = Job;
-            this.Email = Email;
-            this.ProfilePhoto = ProfilePhoto;
+            UserName = User.UserName;
+            PhoneNumber = User.PhoneNumber;
+            About = User.About;
+            TotalPoints = User.TotalPoints;
+            FirstRegistration = User.FirstRegistration;
+            Job = User.Job;
+            Email = User.Email;
+            ProfilePhoto = User.ProfilePhoto;
         }
     }
 }
