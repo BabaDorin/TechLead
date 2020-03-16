@@ -798,6 +798,7 @@
     <Content Include="Views\Class\SeeJoinRequests.cshtml" />
     <Content Include="Views\Class\SeeMembers.cshtml" />
     <Content Include="Views\Class\MyClasses.cshtml" />
+    <Content Include="Views\Problem\SeeAllProblems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,49 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@using TechLead.Models;
+@using Microsoft.AspNet.Identity;
+@model IPagedList<TechLead.Models.DisplayExerciseGeneralInfoViewModel>
+
+@{
+    ViewBag.Title = "Beginner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="Content">
+
+    <div class="TitleBox">
+        <h2>Archive</h2>
+    </div>
+    <div class="Box">
+        <br />
+        <br />
+        <ul>
+            @foreach (DisplayExerciseGeneralInfoViewModel E in Model)
+            {
+                //Display the problem 'In a different way' if the problem was created by the current user
+                <li>
+                    @if (User.Identity.IsAuthenticated && (User.Identity.GetUserId() == E.AuthorID))
+                    {
+                        <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
+                            <div class="ProblemToDisplayForCreator">
+                                @E.Name
+                                <span class="PointsToDisplay">@E.Points</span>
+                            </div>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Details", "Problem", new { id = E.Id }, null)" class="elements">
+                            <div class="ProblemToDisplay">
+                                @E.Name
+                                <span class="PointsToDisplay">@E.Points</span>
+                            </div>
+                        </a>
+                    }
+                </li>
+            }
+        </ul>
+
+        @Html.PagedListPager(Model, page => Url.Action("SeeAllProblems", "Problem", new { page }))
+    </div>
+</div>
