@@ -31,7 +31,7 @@
                     <div class="dropdown" id="firstDropdown">
                         <button class="dropbtn">Problems <i class="fa fa-caret-down"></i></button>
                         <div class="dropdown-content">
-                            <a class = "effect-box" href="#">See all problems</a>
+                            @Html.ActionLink("See all problems", "SeeAllProblems", "Problem", null, new { @class = "effect-box" })
                             <a class = "effect-box" href="#">Beginner</a>
                             <a class = "effect-box" href="#">Intermediate</a>
                             <a class = "effect-box" href="#">Advanced</a>

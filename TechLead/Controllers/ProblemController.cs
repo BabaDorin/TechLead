@@ -748,7 +748,6 @@ namespace TechLead.Controllers
         {
             //Display all the problems from database, regarding their difficulty, except problems that
             //are available only within a class.
-            int toSkip = (page == null) ? 0 : (int)(page-1) * 5;
             List<DisplayExerciseGeneralInfoViewModel> Exercises = new List<DisplayExerciseGeneralInfoViewModel>();
             Exercises = (from e in _context.Exercises
                          where e.AvailableOnlyForTheClass == false
@@ -760,8 +759,9 @@ namespace TechLead.Controllers
                              Author = _context.Users.Where(u => u.Id == e.AuthorID).FirstOrDefault().UserName,
                              AuthorID = e.AuthorID,
                              Points = e.Points
-                         }).OrderBy(e => e.Id).Skip(toSkip).Take(5).ToList();
-            return View(Exercises.ToList().ToPagedList(page ?? 1, 5));
+                         }).ToList();
+
+            return View(Exercises.ToList().ToPagedList(page ?? 1, 80));
         }
 
         //------------------------- Compilation and judging stuff -----------------------------------
