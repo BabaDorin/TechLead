@@ -25,18 +25,17 @@
                     <span><img src="~/logo.png" style="width:auto; height:46px;" /></span>
                     <span> TechLead</span>
                 </a>
-                @*@Html.ActionLink("TechLead", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                     <div class="dropdown" id="firstDropdown">
                         <button class="dropbtn">Problems <i class="fa fa-caret-down"></i></button>
                         <div class="dropdown-content">
                             @Html.ActionLink("See all problems", "SeeAllProblems", "Problem", null, new { @class = "effect-box" })
-                            <a class = "effect-box" href="#">Beginner</a>
-                            <a class = "effect-box" href="#">Intermediate</a>
-                            <a class = "effect-box" href="#">Advanced</a>
-                            <a class = "effect-box" href="#">Create a problem</a>
-                            <a class = "effect-box" href="#">Random problem</a>
+                            @Html.ActionLink("Beginner", "BeginnerBranch", "Beginner", null, new { @class = "effect-box" })
+                            @Html.ActionLink("Intermediate", "IntermediateBranch", "Intermediate", null, new { @class = "effect-box" })
+                            @Html.ActionLink("Advanced", "AdvancedBranch", "Advanced", null, new { @class = "effect-box" })
+                            @Html.ActionLink("Create a problem", "Create", "Problem", new { AvailableJustForTheClass = false }, new { @class = "effect-box" })
+                            @Html.ActionLink("Random problem", "Random", "Problem", null, new {@class = "effect-box" })
                         </div>
                     </div>
                     <div class="dropdown">
