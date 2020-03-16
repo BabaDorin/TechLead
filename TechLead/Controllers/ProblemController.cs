@@ -764,6 +764,29 @@ namespace TechLead.Controllers
             return View(Exercises.ToList().ToPagedList(page ?? 1, 80));
         }
 
+        public ActionResult RandomProblem()
+        {
+            try
+            {
+                //picks a random problem from the database, except the ones which are available only within class.
+                int[] ids = (from e in _context.Exercises
+                             where e.AvailableOnlyForTheClass == false
+                             select e.Id).ToArray();
+                Random random = new Random();
+                int pickedIndex = random.Next(0, ids.Length);
+                return RedirectToAction("Details", new { id = ids[pickedIndex] });
+            }
+            catch(Exception e)
+            {
+                ErrorViewModel Error = new ErrorViewModel
+                {
+                    Title = "Error",
+                    Description = "Something happened. Please, try again.\n" + e.Message
+                };
+                return View("~/Views/Shared/Error.cshtml", Error);
+            }
+        }
+
         //------------------------- Compilation and judging stuff -----------------------------------
 
         public Submission CompileAndTest(Exercise e, Judge0_SubmissionViewModel judge0_Submission)
