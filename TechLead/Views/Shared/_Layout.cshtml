@@ -28,11 +28,31 @@
                 @*@Html.ActionLink("TechLead", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Create a class", "Create", "Class")</li>
-                    <li>@Html.ActionLink("My classes", "MyClasses", "Class")</li>
-                    <li>@Html.ActionLink("Join a class", "JoinClass", "Class")</li>
-                </ul>
+                    <div class="dropdown" id="firstDropdown">
+                        <button class="dropbtn">Problems <i class="fa fa-caret-down"></i></button>
+                        <div class="dropdown-content">
+                            <a class = "effect-box" href="#">See all problems</a>
+                            <a class = "effect-box" href="#">Beginner</a>
+                            <a class = "effect-box" href="#">Intermediate</a>
+                            <a class = "effect-box" href="#">Advanced</a>
+                            <a class = "effect-box" href="#">Create a problem</a>
+                            <a class = "effect-box" href="#">Random problem</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="dropbtn">Classes <i class="fa fa-caret-down"></i></button>
+                        <div class="dropdown-content">
+                            <a class = "effect-box" href="#">My classes</a>
+                            <a class = "effect-box" href="#">Join a class</a>
+                            <a class = "effect-box" href="#">Create a class</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="dropbtn">Community <i class="fa fa-caret-down"></i></button>
+                        <div class="dropdown-content">
+                            <a class = "effect-box" href="#">TechLeads</a>
+                        </div>
+                    </div>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

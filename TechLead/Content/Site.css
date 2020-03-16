@@ -27,14 +27,14 @@ textarea {
 
 
 /*  -----------------------------------Bootstrap overrides-----------------------------------  */
-button{
-    outline:none;
+button {
+    outline: none;
 }
 
 
 /******************************************************************** G E N E R A L   C H A N G E S **********************************************************/
-span{
-    white-space:pre-wrap;
+span {
+    white-space: pre-wrap;
 }
 
 hr {
@@ -44,12 +44,12 @@ hr {
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.asText{
-    background:none;
-    border:none;
-    margin:0;
-    padding:0;
-    text-decoration:none;
+.asText {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
 }
 
 .container {
@@ -57,7 +57,7 @@ hr {
     padding-left: 15px;
     margin-right: 3%;
     margin-left: 3%;
-    width:auto;
+    width: auto;
 }
 
 li {
@@ -73,14 +73,14 @@ a:hover, a:visited, a:link, a:active {
     text-decoration: none;
 }
 
-ul{
-    padding:0;
+ul {
+    padding: 0;
 }
 
-html{
-    height:100%;
-    margin:0;
-    padding:0;
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -114,14 +114,14 @@ body {
     display: inline-block;
 }
 
-.RegisterButton:hover{
-    background-color: #4e4e4e;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    display: inline-block;
-}
+    .RegisterButton:hover {
+        background-color: #4e4e4e;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        display: inline-block;
+    }
 
 .LoginButton {
     background-color: #17b4dd;
@@ -131,14 +131,15 @@ body {
     text-align: center;
     display: inline-block;
 }
-.LoginButton:hover{
-    background-color:#16a0c4;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    display: inline-block;
-}
+
+    .LoginButton:hover {
+        background-color: #16a0c4;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        display: inline-block;
+    }
 
 .navbar-inverse {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -157,9 +158,9 @@ body {
     transition: top 0.3s; /* it will take 0.3 seconds to hide itself*/
 }
 
-.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-    border-color: #101010;
-}
+    .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+        border-color: #101010;
+    }
 
 .Content {
     width: auto;
@@ -201,11 +202,11 @@ body {
     padding-right: 15%;
     background-size: cover;
     background-image: url("/ImageResources/jumbotron.jpg");
-    transition:0.5s;
+    transition: 0.5s;
 }
 
-.txt-type{
-    border-right:2px solid;
+.txt-type {
+    border-right: 2px solid;
 }
 
 .jumbotron h1 {
@@ -219,29 +220,29 @@ body {
     color: white;
     height: 16pc;
     padding: 10%;
-    margin-top:4%;
-    text-align:center;
+    margin-top: 4%;
+    text-align: center;
 }
 
 .option {
     transition: all .2s ease-in-out;
 }
 
-.option:hover {
-    position:relative;
-    z-index:1;
-    transform: scale(1.1);
-    background-color: azure;
-    color: #333332;
-    border-color: aliceblue;
-}
+    .option:hover {
+        position: relative;
+        z-index: 1;
+        transform: scale(1.1);
+        background-color: azure;
+        color: #333332;
+        border-color: aliceblue;
+    }
 
 .Pre-info-Container {
     background-color: #636363;
-    padding:1%;
-    width:100%;
-    border-width:2px;
-    border-color:aqua;
+    padding: 1%;
+    width: 100%;
+    border-width: 2px;
+    border-color: aqua;
     text-align: center;
 }
 
@@ -284,31 +285,32 @@ body {
     text-align: center;
 }
 
-.Content button{
-    font-size:18px;
+.Content button {
+    font-size: 18px;
 }
 
 .field-validation-error {
     color: red;
     font-size: 14px;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 
 
-.problem{
-    padding:1%;
-    background-color:white;
-    border-bottom-color:gray;
-    border-bottom-style:groove;
-    border-radius:5px;
-    color:darkcyan;
+.problem {
+    padding: 1%;
+    background-color: white;
+    border-bottom-color: gray;
+    border-bottom-style: groove;
+    border-radius: 5px;
+    color: darkcyan;
 }
-.problem .points{
-    text-align:right;
-    border-color:black;
-    border-radius:10%;
-}
+
+    .problem .points {
+        text-align: right;
+        border-color: black;
+        border-radius: 10%;
+    }
 
 .Box {
     margin: auto;
@@ -357,7 +359,7 @@ body {
     font-family: Consolas;
     border-style: inset;
     word-break: break-all;
-    margin:2px;
+    margin: 2px;
 }
 
 pre {
@@ -376,7 +378,7 @@ pre {
     word-break: break-all;
     word-wrap: break-word;
     background: none;
-    border:none;
+    border: none;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -396,15 +398,15 @@ pre {
     text-decoration: none;
 }
 
-.ProblemToDisplayForCreator:hover{
-    position:relative;
-    z-index:1;
-    transform: scale(1.02);
-    background-color: aliceblue;
-    color: #333332;
-    border-color: aliceblue;
-    text-decoration:none;
-}
+    .ProblemToDisplayForCreator:hover {
+        position: relative;
+        z-index: 1;
+        transform: scale(1.02);
+        background-color: aliceblue;
+        color: #333332;
+        border-color: aliceblue;
+        text-decoration: none;
+    }
 
 .ProblemToDisplay {
     align-items: center;
@@ -419,19 +421,19 @@ pre {
     text-decoration: none;
 }
 
-.ProblemToDisplay:hover{
-    position:relative;
-    z-index:1;
-    transform: scale(1.02);
-    background-color: aliceblue;
-    color: #333332;
-    border-color: aliceblue;
-    text-decoration:none;
-}
+    .ProblemToDisplay:hover {
+        position: relative;
+        z-index: 1;
+        transform: scale(1.02);
+        background-color: aliceblue;
+        color: #333332;
+        border-color: aliceblue;
+        text-decoration: none;
+    }
 
-.ProblemToDisplay:visited{
-    background-color:red;
-}
+    .ProblemToDisplay:visited {
+        background-color: red;
+    }
 
 .PointsToDisplay {
     float: right;
@@ -447,13 +449,13 @@ input[type='file'] {
     min-height: 35px;
     padding: 10px;
     border: none;
-    border-radius:5px;
+    border-radius: 5px;
     font-size: 0.9em;
 }
 
-.Box input[type='submit']:hover {
-    background: #4ec0b4;
-}
+    .Box input[type='submit']:hover {
+        background: #4ec0b4;
+    }
 
 /********************************************************* Error page ****************************************************************************************/
 .ErrorBox {
@@ -463,34 +465,34 @@ input[type='file'] {
     padding: 5%;
 }
 
-.ErrorBox p{
-    font-size:medium;
-}
+    .ErrorBox p {
+        font-size: medium;
+    }
 
-.ErrorBox a{
-    font-size:large;
-}
+    .ErrorBox a {
+        font-size: large;
+    }
 
 /********************************************************* Results page ****************************************************************************************/
 
 table {
     text-align: center;
     width: 67%;
-    margin:auto;
+    margin: auto;
 }
 
 th {
-   text-align:center;
-   padding-bottom:20px;
+    text-align: center;
+    padding-bottom: 20px;
 }
 
-td{
-    padding:5px;
+td {
+    padding: 5px;
 }
 
 tr {
     border-bottom: 1px solid #ccc;
-    padding:5px;
+    padding: 5px;
 }
 
 
@@ -498,12 +500,12 @@ tr {
 
 .Box .successTestContainer {
     background-color: aliceblue;
-    margin-top:1%;
+    margin-top: 1%;
     padding: 20px;
     -webkit-box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
     -moz-box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
     box-shadow: -3px 5px 20px 0 rgba(0, 255, 55, 0.53);
-    text-align:center;
+    text-align: center;
 }
 
 button.NotsuccessTestContainer {
@@ -521,13 +523,13 @@ button.NotsuccessTestContainer {
     transition: 0.3s;
 }
 
-button.NotsuccessTestContainer:hover {
-    background-color: #ffd1d1;
-}
+    button.NotsuccessTestContainer:hover {
+        background-color: #ffd1d1;
+    }
 
-button.NotsuccessTestContainer:active{
-    background-color: #ffd1d1;
-}
+    button.NotsuccessTestContainer:active {
+        background-color: #ffd1d1;
+    }
 
 .showError {
     overflow: hidden;
@@ -537,11 +539,11 @@ button.NotsuccessTestContainer:active{
     transition: 0.3s;
 }
 
-.showError.show{
-    opacity:1;
-    max-height:none;
-    transition:0.3s;
-}
+    .showError.show {
+        opacity: 1;
+        max-height: none;
+        transition: 0.3s;
+    }
 
 .InfoSubmission {
     text-align: center;
@@ -550,21 +552,21 @@ button.NotsuccessTestContainer:active{
     margin-right: 5%;
 }
 
-.InfoSubmission .col-md-4{
-    margin-bottom:10px;
-}
+    .InfoSubmission .col-md-4 {
+        margin-bottom: 10px;
+    }
 
 .TitleBox button {
-    float:right;
+    float: right;
 }
 
-.Content .modal{
-    color:black;
-    font-size:medium;
+.Content .modal {
+    color: black;
+    font-size: medium;
 }
 
-.modal pre{
-    font-size:medium;
+.modal pre {
+    font-size: medium;
 }
 
 .Content .modal-dialog {
@@ -574,12 +576,14 @@ button.NotsuccessTestContainer:active{
     margin-right: 10%;
     align-content: center;
 }
+
 .Content .modal-content {
     margin-top: 10%;
     position: center;
 }
-.Content .modal-header{
-    font-size:30px;
+
+.Content .modal-header {
+    font-size: 30px;
 }
 
 /********************************************** L O G I N  /  R E G I S T R A T I O N  P A G E *******************************************************************/
@@ -611,15 +615,15 @@ button.NotsuccessTestContainer:active{
     box-shadow: 0 0 20px 20px rgba(0, 0, 0, 0.1);
 }
 
-.RegistrationLoginForm input[type='submit'] {
-    background: #03A595;
-    color: #fff;
-    min-height: 35px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin-left: 15px;
-}
+    .RegistrationLoginForm input[type='submit'] {
+        background: #03A595;
+        color: #fff;
+        min-height: 35px;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        margin-left: 15px;
+    }
 
 .ExternLogRegBox {
     color: #292929;
@@ -640,19 +644,19 @@ button.NotsuccessTestContainer:active{
 
 
 
-.ProfilePhoto img{
-    height:100%; 
-    width:100%;
-    max-height:155px;
-    max-width:155px;
-    margin-top:10%;
-    margin-bottom:10px;
-    margin:auto;
+.ProfilePhoto img {
+    height: 100%;
+    width: 100%;
+    max-height: 155px;
+    max-width: 155px;
+    margin-top: 10%;
+    margin-bottom: 10px;
+    margin: auto;
 }
 
-.Info1{
-    min-width:50%;
-    background-color:rebeccapurple;
+.Info1 {
+    min-width: 50%;
+    background-color: rebeccapurple;
 }
 
 .Info2 {
@@ -660,18 +664,18 @@ button.NotsuccessTestContainer:active{
     background-color: seashell;
 }
 
-.About{
-    width:100%;
-    font-size:19px;
+.About {
+    width: 100%;
+    font-size: 19px;
 }
 
-.About p{
-    text-align:center;
-}
+    .About p {
+        text-align: center;
+    }
 
 .Box textarea {
     font-family: 'Roboto', sans-serif;
-    font-size:19px;
+    font-size: 19px;
 }
 
 .About input[type="button"] {
@@ -680,13 +684,13 @@ button.NotsuccessTestContainer:active{
     text-decoration: underline;
     background: none;
     color: #636363;
-    font-size:17px;
-    margin:0;
+    font-size: 17px;
+    margin: 0;
 }
 
-.About input[type="button"]:hover {
-    color:#292929;
-}
+    .About input[type="button"]:hover {
+        color: #292929;
+    }
 
 .About input[type="submit"] {
     border: none;
@@ -698,10 +702,10 @@ button.NotsuccessTestContainer:active{
     margin: 0;
 }
 
-.About input[type="submit"]:hover {
-    color: #292929;
-    background:none;
-}
+    .About input[type="submit"]:hover {
+        color: #292929;
+        background: none;
+    }
 
 .About textarea {
     font-family: 'Crimson Text', serif;
@@ -711,37 +715,37 @@ button.NotsuccessTestContainer:active{
     font-family: 'Crimson Text', serif;
 }
 
-.ProfileInformation{
-    font-size:17px;
+.ProfileInformation {
+    font-size: 17px;
 }
 
-.ProfileInformation p{
-    padding:4px;
-}
+    .ProfileInformation p {
+        padding: 4px;
+    }
 
-.ProfileInformation input{
-    border: none;
-    outline: none;
-    text-decoration: underline;
-    background: none;
-    color: #636363;
-    font-size:17px;
-    margin:0;
-}
+    .ProfileInformation input {
+        border: none;
+        outline: none;
+        text-decoration: underline;
+        background: none;
+        color: #636363;
+        font-size: 17px;
+        margin: 0;
+    }
 
-.ProfileInformation input:hover {
-    color:#292929;
-}
+        .ProfileInformation input:hover {
+            color: #292929;
+        }
 
 .columnInfo {
     float: left;
     width: 50%;
-    font-size:17px;
+    font-size: 17px;
 }
 
-.columnInfo p{
-    padding:4px;
-}
+    .columnInfo p {
+        padding: 4px;
+    }
 
 .UploadPhoto input[id="file"] {
     border: none;
@@ -768,24 +772,24 @@ button.NotsuccessTestContainer:active{
     text-decoration: none;
 }
 
-.ToDisplay:hover{
-    position:relative;
-    z-index:1;
-    background-color: aliceblue;
-    color: #333332;
-    border-color: aliceblue;
-    text-decoration:none;
-}
+    .ToDisplay:hover {
+        position: relative;
+        z-index: 1;
+        background-color: aliceblue;
+        color: #333332;
+        border-color: aliceblue;
+        text-decoration: none;
+    }
 
-.restricted{
-    text-align:center;
-    color:#333;
+.restricted {
+    text-align: center;
+    color: #333;
 }
 
 .littleInfo {
     font-size: 16px;
     color: #333;
-    text-align:center;
+    text-align: center;
 }
 
 #profilepic {
@@ -804,11 +808,10 @@ button.NotsuccessTestContainer:active{
     font-size: large;
 }
 
-.infoArea img{
-    width:100%;
-    border-radius:5px;
-
-}
+    .infoArea img {
+        width: 100%;
+        border-radius: 5px;
+    }
 
 .card-left {
     background-color: aliceblue;
@@ -818,7 +821,7 @@ button.NotsuccessTestContainer:active{
     max-width: 300px;
     border-radius: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    word-break:break-all;
+    word-break: break-all;
 }
 
 .card-right {
@@ -839,8 +842,109 @@ button.NotsuccessTestContainer:active{
     font-size: 20px;
 }
 
-.Email{
-    font-size:14px;
-    font-family:Roboto;
-    color:#333332;
+.Email {
+    font-size: 14px;
+    font-family: Roboto;
+    color: #333332;
+}
+
+#firstDropdown {
+    margin-left:20px;
+}
+
+.dropbtn {
+    background-color: transparent;
+    color: #9d9d9d;
+    height: 50px;
+    padding: 0 5px;
+    border: none;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    background-color:#46464c;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    color:white;
+}
+
+.dropbtn:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    display: inline-block;
+    height: 1em;
+    width: 100%;
+    border-bottom: 1px solid;
+    margin-top: 10px;
+    opacity: 0;
+    -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+    transition: opacity 0.35s, transform 0.35s;
+    -webkit-transform: scale(0,1);
+    transform: scale(0,1);
+}
+
+.dropbtn:hover:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+a.effect-box:after,
+a.effect-box:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    display: inline-block;
+    height: 29px;
+    width: 100%;
+    margin-top:-4px;
+    /*margin-top: 10px;*/
+    opacity: 0;
+    -webkit-transition: opacity 0.35s, -webkit-transform 0.35s;
+    transition: opacity 0.35s, transform 0.35s;
+}
+
+a.effect-box:before {
+    border-left: 2px solid;
+    border-right: 2px solid;
+    -webkit-transform: scale(1,0);
+    transform: scale(1,0);
+}
+
+a.effect-box:after {
+    border-bottom: 2px solid;
+    border-top: 2px solid;
+    -webkit-transform: scale(0,1);
+    transform: scale(0,1);
+}
+
+a.effect-box:hover:after,
+a.effect-box:hover:before {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
 }
