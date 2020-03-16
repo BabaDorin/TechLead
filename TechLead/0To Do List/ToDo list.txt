@@ -5,6 +5,32 @@
 >>Extracted from db => done
 >>Display then on both Manage and ViewProfile views
 
+>> Features to add
+	- Problems menu dropdown, having the following menus
+		See all problems
+		Beginner
+		Intermediate
+		Advanced
+		Pick a random one
+		Create a problem
+	
+	- MyClass dropdown Menu
+		MyClasses
+		Join a class
+		Create a class
+
+	- Community dropdown menu
+		TechLeads (Display all the users, descending by the total scored points)
+	
+	- Learn dropdown Menu
+		Overview (General)
+		Graph Theory
+		Sorting algorithms
+		Dynamic Programming
+		Greedy Algorithms
+			   ....
+
+>> Check if OWIN Works on Laptop.
 >> Check if OWIN Works on Laptop.
 
 >> If the user created the class, he can't join it.

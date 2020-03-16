@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using TechLead.Custom_Exceptions;
+
 namespace TechLead.Controllers
 {
     public class ProfileController : Controller
@@ -24,7 +25,6 @@ namespace TechLead.Controllers
         Data data = new Data();
         public ProfileController()
         {
-            
         }
         public ActionResult ViewProfile(string userID)
         {
@@ -48,6 +48,7 @@ namespace TechLead.Controllers
                     viewModel.bestSubmissions = data.ConvertBestSubmissionFromStringToArray(User.BestSubmisions);
                 if(viewModel.bestSubmissions!=null)
                     viewModel.bestSubmissions.Reverse();
+                
                 return View(viewModel);
             }
             catch (Exception e)
