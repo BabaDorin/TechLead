@@ -41,9 +41,9 @@
                     <div class="dropdown">
                         <button class="dropbtn">Classes <i class="fa fa-caret-down"></i></button>
                         <div class="dropdown-content">
-                            <a class = "effect-box" href="#">My classes</a>
-                            <a class = "effect-box" href="#">Join a class</a>
-                            <a class = "effect-box" href="#">Create a class</a>
+                            @Html.ActionLink("My classes", "MyClasses", "Class", null, new { @class = "effect-box" })
+                            @Html.ActionLink("Join a class", "JoinClass", "Class", null, new { @class = "effect-box" })
+                            @Html.ActionLink("Create a class", "Create", "Class", null, new { @class = "effect-box" })
                         </div>
                     </div>
                     <div class="dropdown">
