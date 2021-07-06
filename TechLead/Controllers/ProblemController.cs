@@ -1175,7 +1175,7 @@ namespace TechLead.Controllers
                 string result;
 
                 //building the request and passing the parameters we are looking for.
-                var request = (HttpWebRequest)WebRequest.Create("https://api.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status,time,memory");
+                var request = (HttpWebRequest)WebRequest.Create("https://ce.judge0.com/submissions/" + token + "?base64_encoded=false&fields=stdout,stderr,status_id,language_id,compile_output,stdin,message,status,time,memory");
                 request.ContentType = "application/json";
                 request.Method = "GET";
 
@@ -1214,7 +1214,7 @@ namespace TechLead.Controllers
 
                 var json = JsonConvert.SerializeObject(jsonModel);
                 var dataToSend = new StringContent(json, Encoding.UTF8, "application/json");
-                var url = "https://api.judge0.com/submissions/?base64_encoded=true&wait=false";
+                var url = "https://ce.judge0.com/submissions/?base64_encoded=true&wait=false";
                 string res;
 
                 //Sending the request and storing the data being returned
